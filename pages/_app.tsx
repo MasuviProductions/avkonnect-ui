@@ -27,6 +27,7 @@ const MyApp = ({
   emotionCache = clientSideEmotionCache,
 }: MyAppProps) => {
   const [theme, setTheme] = useState<ThemeOptions>(THEMES_LIST[0].themeOption);
+
   const onThemeSelect = useCallback(
     (selectedTheme: ThemeOptions) => setTheme(selectedTheme),
     []
