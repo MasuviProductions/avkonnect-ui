@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import UserCard from "../../src/containers/UserCard";
+import UserCard from "../../containers/UserCard";
 
 const Profile = ({}: InferGetServerSidePropsType<
   typeof getServerSideProps

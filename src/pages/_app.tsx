@@ -9,10 +9,10 @@ import {
   Container,
 } from "@mui/material";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import { THEMES_LIST } from "../src/constants/theme";
-import Header from "../src/components/Header";
-import createEmotionCache from "../src/createEmotionCache";
-import APIQueryClient from "../src/contexts/APIQueryClient";
+import { THEMES_LIST } from "../constants/theme";
+import Header from "../components/Header";
+import createEmotionCache from "../createEmotionCache";
+import APIQueryClient from "../contexts/APIQueryClient";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

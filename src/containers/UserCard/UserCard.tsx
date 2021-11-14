@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { useQuery } from "react-query";
-import { IUserApiResponse } from "../../../pages/api/user";
+import { IUserApiResponse } from "../../pages/api/user";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import { fetchUser } from "../../utils/api";
 import UserCardSkeleton from "./Skeleton";
