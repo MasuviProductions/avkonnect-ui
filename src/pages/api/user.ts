@@ -11,7 +11,14 @@ const handler = async (
   res: NextApiResponse<IUserApiResponse>
 ) => {
   const userRes = await new Promise<IUserApiResponse>((resolve) => {
-    setTimeout(() => resolve({ name: "John Doe", title: "Actor" }), 2000);
+    setTimeout(
+      () =>
+        resolve({
+          name: "John Doe",
+          title: `Actor ${Math.floor(Math.random() * 10)}`,
+        }),
+      2000
+    );
   });
 
   res.status(200).json(userRes);
