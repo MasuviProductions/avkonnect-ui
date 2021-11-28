@@ -7,6 +7,10 @@ const SignIn: NextPage = () => {
   const router = useRouter();
   const { data: authData, status: authStatus } = useSession();
 
+  const handleSignIn = () => {
+    signIn("cognito");
+  };
+
   if (authStatus === "loading") return <></>;
 
   if (authData) router.push("/");
@@ -18,7 +22,7 @@ const SignIn: NextPage = () => {
           <Grid item>
             <Box sx={{ paddingY: 20 }}>
               <Button
-                onClick={() => signIn("cognito")}
+                onClick={handleSignIn}
                 variant="contained"
                 sx={{ textTransform: "none" }}
               >
