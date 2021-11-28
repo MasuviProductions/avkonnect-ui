@@ -1,7 +1,19 @@
-import { IUserApiResponse } from "../pages/api/user";
-import ENV from "../constants/env";
+import { ISampleUserApiResponse } from "../pages/api/sampleUser";
+import { IAuthUserApiResponse } from "../interfaces/api/external";
+import API_ENDPOINTS from "../constants/api";
 
-export const fetchUser = async (): Promise<IUserApiResponse> => {
-  const res = await fetch(`/api/user`);
+export const fetchSampleUser = async (): Promise<ISampleUserApiResponse> => {
+  const res = await fetch(`/api/sampleUser`);
+  return res.json();
+};
+
+export const fetchAuthUser = async (
+  accessToken: string
+): Promise<IAuthUserApiResponse> => {
+  const res = await fetch(API_ENDPOINTS.AUTH_USER.url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return res.json();
 };

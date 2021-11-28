@@ -1,27 +1,29 @@
-import { Grid } from "@mui/material";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { Grid, Box } from "@mui/material";
+import type { NextPage } from "next";
+import { Session } from "next-auth";
 import UserCard from "../../containers/UserCard";
+import { handleServerSideAuthenticationRedirect } from "../../utils/generic";
 
-const Profile = ({}: InferGetServerSidePropsType<
-  typeof getServerSideProps
->) => {
+const Profile: NextPage = () => {
   return (
-    <Grid container>
+    <Grid container justifyContent="center">
       <Grid item>
-        <UserCard />
+        <Box sx={{ paddingY: 10 }}>
+          <UserCard />
+        </Box>{" "}
       </Grid>
     </Grid>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  await new Promise<string>((resolve) => {
-    setTimeout(resolve, 2000);
-  });
-
-  return {
-    props: {},
+export const getServerSideProps = async (context: any) => {
+  const handlerSSRProps = (session: Session) => {
+    return {
+      props: { session },
+    };
   };
+
+  return handleServerSideAuthenticationRedirect(context, handlerSSRProps);
 };
 
 export default Profile;

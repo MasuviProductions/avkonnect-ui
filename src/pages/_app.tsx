@@ -13,11 +13,13 @@ import { THEMES_LIST } from "../constants/theme";
 import Header from "../components/Header";
 import createEmotionCache from "../createEmotionCache";
 import APIQueryClient from "../contexts/APIQueryClient";
+import AuthContextProvider from "../contexts/AuthContext";
+import { SessionProvider } from "next-auth/react";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-interface MyAppProps extends AppProps {
+interface MyAppProps extends AppProps<{ requireAuth: boolean }> {
   emotionCache: EmotionCache;
 }
 
@@ -37,10 +39,14 @@ const MyApp = ({
     <CacheProvider value={emotionCache}>
       <APIQueryClient>
         <ThemeProvider theme={createTheme(theme)}>
-          <Header onThemeSelect={onThemeSelect} />
-          <Container maxWidth="lg">
-            <Component {...pageProps} />
-          </Container>
+          <SessionProvider session={pageProps.session}>
+            <AuthContextProvider>
+              <Header onThemeSelect={onThemeSelect} />
+              <Container maxWidth="lg">
+                <Component {...pageProps} />
+              </Container>
+            </AuthContextProvider>
+          </SessionProvider>
           <CssBaseline />
         </ThemeProvider>
       </APIQueryClient>

@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Button,
   Container,
   IconButton,
   Menu,
@@ -10,16 +9,20 @@ import {
   Typography,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useState } from "react";
 import Link from "next/link";
-import { THEMES_LIST } from "../constants/theme";
-import { LABELS } from "../constants/labels";
+import { THEMES_LIST } from "../../constants/theme";
+import { LABELS } from "../../constants/labels";
+import { signOut, useSession } from "next-auth/react";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
 }
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
+  const { data: authData } = useSession();
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
@@ -32,29 +35,46 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   const handleThemeOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
     setThemeAnchorEl(event.currentTarget);
 
+  const handleSignOut = () => signOut();
+
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "navbar.main" }}>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ padding: 0 }}>
         <Toolbar>
           <Link href="/" passHref>
             <Typography
               variant="h5"
-              sx={{ flexGrow: 1, color: "navbar.contrastText" }}
+              sx={{
+                flexGrow: 1,
+                color: "navbar.contrastText",
+                textTransform: "none",
+              }}
             >
               {LABELS.TITLE}
             </Typography>
           </Link>
 
-          <Link href="/profile" passHref>
-            <Button sx={{ color: "navbar.contrastText" }}>Profile</Button>
-          </Link>
+          {authData && (
+            <Link href="/profile" passHref>
+              <IconButton aria-label="open profile">
+                <AccountCircleIcon
+                  fontSize="large"
+                  sx={{ color: "navbar.contrastText" }}
+                />
+              </IconButton>
+            </Link>
+          )}
 
           <IconButton
             onClick={handleThemeOpen}
             aria-label="open drawer"
             aria-haspopup="true"
+            sx={{ paddingX: 2 }}
           >
-            <ColorLensIcon sx={{ color: "navbar.contrastText" }} />
+            <ColorLensIcon
+              fontSize="large"
+              sx={{ color: "navbar.contrastText" }}
+            />
           </IconButton>
 
           <Menu
@@ -73,6 +93,17 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               </MenuItem>
             ))}
           </Menu>
+
+          {authData && (
+            <>
+              <IconButton onClick={handleSignOut} aria-label="logout">
+                <LogoutIcon
+                  fontSize="large"
+                  sx={{ color: "navbar.contrastText" }}
+                />
+              </IconButton>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
