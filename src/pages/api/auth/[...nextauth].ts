@@ -65,6 +65,7 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
 };
 
 export default NextAuth({
+  secret: ENV.NEXTAUTH_SECRET,
   providers: [
     CognitoProvider({
       clientId: ENV.COGNITO_CLIENT_ID,
