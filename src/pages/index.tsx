@@ -1,6 +1,10 @@
 import type { NextPage } from "next";
 import { Box, Button, Typography } from "@mui/material";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
+import { useAuthContext } from "../contexts/AuthContext";
+import { Session } from "next-auth";
+import { handleServerSideAuthenticationRedirect } from "../utils/generic";
 
 const Home: NextPage = () => {
   return (
@@ -29,6 +33,16 @@ const Home: NextPage = () => {
       </Box>
     </Box>
   );
+};
+
+export const getServerSideProps = async (context: any) => {
+  const handlerSSRProps = (session: Session) => {
+    return {
+      props: { session },
+    };
+  };
+
+  return await handleServerSideAuthenticationRedirect(context, handlerSSRProps);
 };
 
 export default Home;

@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Box } from "@mui/material";
+import { Card, Grid, Box } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import React from "react";
 

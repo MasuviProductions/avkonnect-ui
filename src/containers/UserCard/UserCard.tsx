@@ -1,34 +1,35 @@
-import { Card, CardContent, CardMedia, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { useQuery } from "react-query";
-import { IUserApiResponse } from "../../pages/api/user";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
-import { fetchUser } from "../../utils/api";
-import UserCardSkeleton from "./Skeleton";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import UserCardSkeleton from "./Skeleton";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 interface IProfileProps {}
 
 const UserCard: ReactFCWithSkeleton<IProfileProps> = ({}) => {
-  const { data, isLoading, status } = useQuery<IUserApiResponse>(
-    "todos",
-    fetchUser
-  );
+  const { user } = useAuthContext();
 
-  if (status === "loading") return <UserCardSkeleton />;
+  // if (status === "loading") return <UserCardSkeleton />;
 
-  if (status === "success")
+  if (user)
     return (
       <Card>
-        <Box p={4}>
-          <Grid container justifyContent="space-between" alignItems="center">
+        <Box py={3} px={1}>
+          <Grid
+            container
+            justifyContent="center"
+            flexWrap="wrap-reverse"
+            alignItems="center"
+          >
             <Grid item>
               <Grid container flexDirection="column">
                 <Grid item xs={12}>
                   <Box sx={{ paddingX: 2, paddingY: 1 }}>
                     <Typography color="primary" textAlign="center" variant="h4">
-                      {data?.name}
+                      {user?.name}
                     </Typography>
                   </Box>
                 </Grid>
@@ -36,7 +37,7 @@ const UserCard: ReactFCWithSkeleton<IProfileProps> = ({}) => {
                 <Grid item xs={12}>
                   <Box sx={{ paddingX: 2, paddingY: 1 }}>
                     <Typography color="text.primary" variant="h5">
-                      {data?.title}
+                      {user?.email}
                     </Typography>
                   </Box>
                 </Grid>
@@ -45,11 +46,11 @@ const UserCard: ReactFCWithSkeleton<IProfileProps> = ({}) => {
 
             <Grid item>
               <Box sx={{ paddingX: 2, paddingY: 1 }}>
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  sx={{ width: "80px", borderRadius: "50%", marginX: "2" }}
-                  src="https://anthonycarbonepersonalinjurylawyer.com/wp-content/uploads/2018/06/shutterstock_126920099.jpg"
+                <AccountCircleIcon
+                  sx={{
+                    color: "navbar.contrastText",
+                    fontSize: 100,
+                  }}
                 />
               </Box>
             </Grid>

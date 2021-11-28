@@ -1,16 +1,15 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export interface IUserApiResponse {
+export interface ISampleUserApiResponse {
   name: string;
   title: string;
 }
 
-const handler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<IUserApiResponse>
+const sampleUserHandler = async (
+  _req: NextApiRequest,
+  res: NextApiResponse<ISampleUserApiResponse>
 ) => {
-  const userRes = await new Promise<IUserApiResponse>((resolve) => {
+  const userRes = await new Promise<ISampleUserApiResponse>((resolve) => {
     setTimeout(
       () =>
         resolve({
@@ -24,4 +23,4 @@ const handler = async (
   res.status(200).json(userRes);
 };
 
-export default handler;
+export default sampleUserHandler;
