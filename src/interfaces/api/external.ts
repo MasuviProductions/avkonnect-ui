@@ -1,10 +1,15 @@
+export interface HttpResponseError {
+  message: string;
+  code: string;
+}
+export interface HttpResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: HttpResponseError;
+}
+
 export interface IAuthUserApiResponse {
   id: string;
-  connectionIds: string[];
-  dateOfBirth: string;
   email: string;
-  followerIds: string[];
-  followingIds: string[];
   name: string;
-  preferences?: unknown;
 }

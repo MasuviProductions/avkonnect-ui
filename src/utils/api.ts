@@ -1,5 +1,5 @@
 import { ISampleUserApiResponse } from "../pages/api/sampleUser";
-import { IAuthUserApiResponse } from "../interfaces/api/external";
+import { HttpResponse, IAuthUserApiResponse } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 
 export const fetchSampleUser = async (): Promise<ISampleUserApiResponse> => {
@@ -9,7 +9,7 @@ export const fetchSampleUser = async (): Promise<ISampleUserApiResponse> => {
 
 export const fetchAuthUser = async (
   accessToken: string
-): Promise<IAuthUserApiResponse> => {
+): Promise<HttpResponse<IAuthUserApiResponse>> => {
   const res = await fetch(API_ENDPOINTS.AUTH_USER.url, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
