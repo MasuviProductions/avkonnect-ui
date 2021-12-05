@@ -46,10 +46,12 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
       throw refreshedTokens;
     }
 
+    const currentTime = Date.now();
+
     const newToken: JWT = {
       ...token,
       accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      accessTokenExpiresAt: currentTime + refreshedTokens.expires_in * 1000,
       // Fall back to old refresh token
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
     };
@@ -79,11 +81,13 @@ export default NextAuth({
         return Promise.resolve({
           accessToken: params.account.access_token,
           refreshToken: params.account.refresh_token,
-          accessTokenExpiresAt: Date.now() + params.account.expires_at! * 1000,
+          accessTokenExpiresAt: params.account.expires_at! * 1000,
         });
       }
+
+      const currentTime = Date.now();
       // Return previous token if the access token has not expired yet
-      if (Date.now() < (params.token.accessTokenExpiresAt as number)) {
+      if (currentTime < (params.token.accessTokenExpiresAt as number)) {
         return Promise.resolve(params.token);
       }
       // Access token has expired, try to update it
