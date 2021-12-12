@@ -1,9 +1,10 @@
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, Skeleton } from "@mui/material";
 import { NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { NextPageWithSkeleton } from "../interfaces/app";
 
-const SignIn: NextPage = () => {
+const SignIn: NextPageWithSkeleton = () => {
   const router = useRouter();
   const { data: authData, status: authStatus } = useSession();
 
@@ -28,7 +29,7 @@ const SignIn: NextPage = () => {
               >
                 <Typography align="center" variant="h4">
                   Sign-in
-                </Typography>{" "}
+                </Typography>
               </Button>
             </Box>
           </Grid>
@@ -37,5 +38,11 @@ const SignIn: NextPage = () => {
     );
   else return <></>;
 };
+
+const SignInSkeleton: React.FC = () => {
+  return <Skeleton variant="circular" width={500} height={500} />;
+};
+
+SignIn.Skeleton = SignInSkeleton;
 
 export default SignIn;

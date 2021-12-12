@@ -15,6 +15,20 @@ const API_ENDPOINTS = {
     key: "",
     url: `https://${ENV.COGNITO_CLIENT_DOMAIN}/oauth2/token`,
   },
+  USER_PROFILE: {
+    key: "",
+    url: (userId: string): string => `${AVCONNECT_URL.USERS()}/${userId}`,
+  },
+  USER_DISPLAY_PICTURE: {
+    key: "display-picture",
+    url: (userId: string): string =>
+      `${AVCONNECT_URL.USERS()}/${userId}/displayPicture`,
+  },
+  USER_BACKGROUND_PICTURE: {
+    key: "background-picture",
+    url: (userId: string): string =>
+      `${AVCONNECT_URL.USERS()}/${userId}/backgroundPicture`,
+  },
 };
 
 export enum API_QUERY_KEYS {

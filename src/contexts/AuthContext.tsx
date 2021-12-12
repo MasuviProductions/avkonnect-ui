@@ -29,8 +29,7 @@ const AuthContextProvider: React.FC = ({ children }) => {
   const { data: authData, status: authStatus } = useSession();
   const { data: authUserData, error: authUserError } = useQuery(
     API_ENDPOINTS.AUTH_USER.key,
-    () =>
-      fetchAuthUser(authData?.accessToken as string).then((res) => res.data),
+    () => fetchAuthUser(authData?.accessToken as string),
     {
       // Cache API response for upto 3 minutes
       cacheTime: 1000 * 60 * 3,
@@ -45,7 +44,6 @@ const AuthContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (authUserData) {
-      console.log(authUserData);
       setUser(authUserData);
     }
   }, [authUserData]);

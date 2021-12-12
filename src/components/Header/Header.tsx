@@ -16,6 +16,7 @@ import Link from "next/link";
 import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
 import { signOut, useSession } from "next-auth/react";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -23,6 +24,7 @@ interface IHeaderProps {
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   const { data: authData } = useSession();
+  const { user } = useAuthContext();
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
@@ -55,7 +57,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
           </Link>
 
           {authData && (
-            <Link href="/profile" passHref>
+            <Link href={`/profile/${user?.id}`} passHref>
               <IconButton aria-label="open profile">
                 <AccountCircleIcon
                   fontSize="large"

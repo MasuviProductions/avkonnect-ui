@@ -1,12 +1,11 @@
-import type { NextPage } from "next";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
-import { useAuthContext } from "../contexts/AuthContext";
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { handleServerSideAuthenticationRedirect } from "../utils/generic";
+import { NextPageWithSkeleton, SessionProps } from "../interfaces/app";
 
-const Home: NextPage = () => {
+const Home: NextPageWithSkeleton = () => {
   return (
     <Box p={4} sx={{ minHeight: "100vh" }}>
       <Head>
@@ -35,8 +34,20 @@ const Home: NextPage = () => {
   );
 };
 
-export const getServerSideProps = async (context: any) => {
-  const handlerSSRProps = (session: Session) => {
+const HomeSkeleton: React.FC = () => {
+  return <Skeleton variant="rectangular" width="100%" height={500} />;
+};
+
+Home.Skeleton = HomeSkeleton;
+
+interface IHomePageProps extends SessionProps {}
+
+export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
+  context: any
+) => {
+  const handlerSSRProps = async (
+    session: Session
+  ): Promise<GetServerSidePropsResult<IHomePageProps>> => {
     return {
       props: { session },
     };

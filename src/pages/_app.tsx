@@ -7,7 +7,9 @@ import {
   ThemeProvider,
   CssBaseline,
   Container,
+  Theme,
 } from "@mui/material";
+import { SxProps } from "@mui/system";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { THEMES_LIST } from "../constants/theme";
 import Header from "../components/Header";
@@ -15,11 +17,12 @@ import createEmotionCache from "../createEmotionCache";
 import APIQueryClient from "../contexts/APIQueryClient";
 import AuthContextProvider from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
+import WithPageSkeleton from "../components/WithPageSkeleton/WithPageSkeleton";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-interface MyAppProps extends AppProps<{ requireAuth: boolean }> {
+interface MyAppProps extends AppProps<{ Skeleton: React.FC }> {
   emotionCache: EmotionCache;
 }
 
@@ -42,8 +45,10 @@ const MyApp = ({
           <SessionProvider session={pageProps.session}>
             <AuthContextProvider>
               <Header onThemeSelect={onThemeSelect} />
-              <Container maxWidth="lg">
-                <Component {...pageProps} />
+              <Container maxWidth="lg" sx={containerSx}>
+                <WithPageSkeleton>
+                  <Component {...pageProps} />
+                </WithPageSkeleton>
               </Container>
             </AuthContextProvider>
           </SessionProvider>
@@ -53,5 +58,11 @@ const MyApp = ({
     </CacheProvider>
   );
 };
+
+const containerSx: SxProps<Theme> = (theme: Theme) => ({
+  [theme.breakpoints.down("sm")]: {
+    padding: 0,
+  },
+});
 
 export default MyApp;

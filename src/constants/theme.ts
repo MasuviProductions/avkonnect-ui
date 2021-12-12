@@ -19,11 +19,11 @@ export const THEMES_LIST: ITheme[] = [
           main: "#ff1",
         },
         background: {
-          default: "#1a1a1a",
-          paper: "#222",
+          default: "#000",
+          paper: "#1d2222",
         },
         text: {
-          primary: "#b2b2b2",
+          primary: "#cacaca",
           secondary: "",
           disabled: "",
         },
@@ -40,7 +40,7 @@ export const THEMES_LIST: ITheme[] = [
     themeOption: {
       palette: {
         primary: {
-          main: "#063f57",
+          main: "#000",
         },
         secondary: {
           main: "#0f2e42",
@@ -53,7 +53,7 @@ export const THEMES_LIST: ITheme[] = [
           primary: "#0f2e42",
         },
         navbar: {
-          main: "#063f57",
+          main: "#000",
           contrastText: "#b2b2b2",
         },
       },

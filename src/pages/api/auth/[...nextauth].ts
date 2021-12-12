@@ -58,7 +58,6 @@ const refreshAccessToken = async (token: JWT): Promise<JWT> => {
 
     return newToken;
   } catch (error) {
-    console.log(error);
     return {
       ...token,
       error: "RefreshAccessTokenError",

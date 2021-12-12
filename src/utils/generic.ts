@@ -1,3 +1,4 @@
+import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { URLSearchParams } from "url";
@@ -7,10 +8,10 @@ export const getQueryStringParams = (url: string): URLSearchParams => {
   return params;
 };
 
-export const handleServerSideAuthenticationRedirect = async (
+export const handleServerSideAuthenticationRedirect = async <T>(
   context: any,
-  onSSRProps: (session: Session) => {}
-) => {
+  getSSRProps: (session: Session) => Promise<GetServerSidePropsResult<T>>
+): Promise<GetServerSidePropsResult<T>> => {
   const session = await getSession(context);
 
   if (!session)
@@ -20,5 +21,5 @@ export const handleServerSideAuthenticationRedirect = async (
         permanent: false,
       },
     };
-  return onSSRProps(session);
+  return await getSSRProps(session);
 };

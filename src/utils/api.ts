@@ -1,19 +1,36 @@
-import { ISampleUserApiResponse } from "../pages/api/sampleUser";
-import { HttpResponse, IAuthUserApiResponse } from "../interfaces/api/external";
+import {
+  AVConnectApiResponse,
+  IAuthUserApiResponse,
+  IUserProfileApiResponse,
+} from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
-
-export const fetchSampleUser = async (): Promise<ISampleUserApiResponse> => {
-  const res = await fetch(`/api/sampleUser`);
-  return res.json();
-};
+import axios from "axios";
 
 export const fetchAuthUser = async (
   accessToken: string
-): Promise<HttpResponse<IAuthUserApiResponse>> => {
-  const res = await fetch(API_ENDPOINTS.AUTH_USER.url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return res.json();
+): Promise<IAuthUserApiResponse> => {
+  const userProfileResponse = await axios
+    .get<AVConnectApiResponse<IAuthUserApiResponse>>(
+      API_ENDPOINTS.AUTH_USER.url,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data?.data as IAuthUserApiResponse);
+  return userProfileResponse;
+};
+
+export const fetchUserProfile = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserProfileApiResponse>> => {
+  const userProfileResponse = await axios
+    .get<AVConnectApiResponse<IUserProfileApiResponse>>(
+      API_ENDPOINTS.USER_PROFILE.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userProfileResponse;
 };
