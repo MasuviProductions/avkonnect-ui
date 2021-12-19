@@ -1,7 +1,9 @@
+import { MouseEvent } from "react";
 import {
   Avatar,
   Box,
   Button,
+  Container,
   Grid,
   IconButton,
   Link,
@@ -20,12 +22,14 @@ import { usernameToColor } from "../../../utils/generic";
 import EditAboutUser from "../EditAboutUser";
 import { LABELS } from "../../../constants/labels";
 import { useUserContext } from "../../../contexts/UserContext";
+import ModalLayout from "../../../components/ModalLayout";
 
 interface IUserCardProps {}
 
 const UserCard: React.FC<IUserCardProps> = () => {
   const {
     user: {
+      isAuthUser,
       displayPictureUrl,
       backgroundImageUrl,
       name,
@@ -36,17 +40,38 @@ const UserCard: React.FC<IUserCardProps> = () => {
   } = useUserContext();
 
   const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
+  const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
     useState<boolean>(false);
+  const [showDisplayPicture, setShowDisplayPicture] = useState<boolean>(false);
   const [showDisplayPictureCropper, setShowDisplayPictureCropper] =
     useState<boolean>(false);
 
-  const handleBackgroundImageCropperOpen = () => {
+  const handleBackgroundImageOpen = () => {
+    setShowBackgroundImage(true);
+  };
+
+  const handleBackgroundImageClose = () => {
+    setShowBackgroundImage(false);
+  };
+
+  const handleBackgroundImageCropperOpen = (
+    event: MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
     setShowBackgroundImageCropper(true);
   };
 
   const handleBackgroundImageCropperClose = () => {
     setShowBackgroundImageCropper(false);
+  };
+
+  const handleDisplayPictureOpen = () => {
+    setShowDisplayPicture(true);
+  };
+
+  const handleDisplayPictureClose = () => {
+    setShowDisplayPicture(false);
   };
 
   const handleDisplayPictureCropperOpen = () => {
@@ -77,7 +102,12 @@ const UserCard: React.FC<IUserCardProps> = () => {
     <>
       <LayoutCard>
         <Grid container>
-          <Grid item xs={12} sx={userBackgroundContainer}>
+          <Grid
+            item
+            xs={12}
+            sx={userBackgroundContainer}
+            onClick={handleBackgroundImageOpen}
+          >
             <Image
               src={backgroundImageUrl || JPG.UserBGPlaceholder}
               alt="backgroundPicture"
@@ -86,12 +116,14 @@ const UserCard: React.FC<IUserCardProps> = () => {
               layout="responsive"
               priority
             />
-            <IconButton
-              sx={userBackgroundEditButton}
-              onClick={handleBackgroundImageCropperOpen}
-            >
-              <EditIcon fontSize="medium" />
-            </IconButton>
+            {isAuthUser && (
+              <IconButton
+                sx={userBackgroundEditButton}
+                onClick={handleBackgroundImageCropperOpen}
+              >
+                <EditIcon fontSize="medium" />
+              </IconButton>
+            )}
           </Grid>
 
           <Grid container p={3}>
@@ -102,7 +134,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
                     alt={name}
                     src={displayPictureUrl}
                     sx={handleUserAvatarSx}
-                    onClick={handleDisplayPictureCropperOpen}
+                    onClick={
+                      isAuthUser
+                        ? handleDisplayPictureCropperOpen
+                        : handleDisplayPictureOpen
+                    }
                   >
                     {name[0]}
                   </Avatar>
@@ -127,7 +163,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
               </Grid>
             </Grid>
 
-            {!aboutUser && (
+            {!aboutUser && isAuthUser && (
               <Grid item mt={3}>
                 <Button
                   color="primary"
@@ -141,6 +177,25 @@ const UserCard: React.FC<IUserCardProps> = () => {
           </Grid>
         </Grid>
 
+        {showBackgroundImage && (
+          <ModalLayout
+            showModal={showBackgroundImage}
+            onModalClose={handleBackgroundImageClose}
+            showTitleBorder={false}
+          >
+            <Container sx={userBackgroundImagePreviewContainer}>
+              <Image
+                src={backgroundImageUrl || JPG.UserBGPlaceholder}
+                alt="backgroundPicture"
+                width={4}
+                height={1}
+                layout="responsive"
+                priority
+              />
+            </Container>
+          </ModalLayout>
+        )}
+
         {showBackgroundImageCropper && (
           <UserImageSelector
             imageUrl={backgroundImageUrl}
@@ -148,6 +203,25 @@ const UserCard: React.FC<IUserCardProps> = () => {
             showModal={showBackgroundImageCropper}
             onModalClose={handleBackgroundImageCropperClose}
           />
+        )}
+
+        {showDisplayPicture && (
+          <ModalLayout
+            showModal={showDisplayPicture}
+            onModalClose={handleDisplayPictureClose}
+            showTitleBorder={false}
+          >
+            <Container sx={userDisplayPicturePreviewContainer}>
+              <Image
+                src={displayPictureUrl || JPG.UserBGPlaceholder}
+                alt="displayPicture"
+                width={1}
+                height={1}
+                layout="responsive"
+                priority
+              />
+            </Container>
+          </ModalLayout>
         )}
 
         {showDisplayPictureCropper && (
@@ -181,6 +255,10 @@ const userBackgroundContainer: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
+const userBackgroundImagePreviewContainer: SxProps<Theme> = (theme: Theme) => ({
+  paddingBottom: 3,
+});
+
 const userBackgroundEditButton: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",
   zIndex: 2,
@@ -198,6 +276,10 @@ const userAvatarContainer: SxProps<Theme> = {
   transform: "translateY(-280%)",
   height: "40px",
 };
+
+const userDisplayPicturePreviewContainer: SxProps<Theme> = (theme: Theme) => ({
+  paddingBottom: 3,
+});
 
 const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
   return {

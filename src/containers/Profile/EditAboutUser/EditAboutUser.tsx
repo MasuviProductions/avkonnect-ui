@@ -11,6 +11,7 @@ import { useQuery } from "react-query";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { IUserProfilePatchApiRequest } from "../../../interfaces/api/external";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 
 interface IEditAboutUserProps extends IModal {}
 
@@ -18,16 +19,13 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
   showModal,
   onModalClose,
 }) => {
+  const { setSnackbar } = useSnackbarContext();
   const { accessToken, authUser } = useAuthContext();
   const { user, setUser } = useUserContext();
   const [aboutUser, setAboutUser] = useState(user.aboutUser);
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
-  const {
-    data: patchUserData,
-    status: patchUserStatus,
-    error: patchUserError,
-  } = useQuery(
+  const { data: patchUserData, status: patchUserStatus } = useQuery(
     `ImageSelector: ${API_ENDPOINTS.USER_PROFILE.key}`,
     () =>
       patchUserProfile(
@@ -49,11 +47,24 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
 
   useEffect(() => {
     if (patchUserStatus === "success") {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_SUCCESS,
+        messageType: "success",
+      }));
       setUser((prev) => ({
         ...prev,
         aboutUser: patchUserData?.data?.aboutUser as string,
       }));
       onModalClose?.();
+    }
+  });
+
+  useEffect(() => {
+    if (patchUserStatus === "error") {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
     }
   });
 
@@ -104,7 +115,7 @@ const aboutField: SxProps<Theme> = (theme: Theme) => ({
     color: theme.palette.text.primary,
   },
 
-  "& .MuiOutlinedInput-root": {
+  ".MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
       borderColor: theme.palette.grey[500],
     },

@@ -18,6 +18,7 @@ import APIQueryClient from "../contexts/APIQueryClient";
 import AuthContextProvider from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
 import WithPageSkeleton from "../components/WithPageSkeleton/WithPageSkeleton";
+import SnackbarProvider from "../contexts/SnackbarContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -40,21 +41,23 @@ const MyApp = ({
 
   return (
     <CacheProvider value={emotionCache}>
-      <APIQueryClient>
-        <ThemeProvider theme={createTheme(theme)}>
+      <ThemeProvider theme={createTheme(theme)}>
+        <APIQueryClient>
           <SessionProvider session={pageProps.session}>
             <AuthContextProvider>
-              <Header onThemeSelect={onThemeSelect} />
-              <Container maxWidth="lg" sx={containerSx}>
-                <WithPageSkeleton>
-                  <Component {...pageProps} />
-                </WithPageSkeleton>
-              </Container>
+              <SnackbarProvider>
+                <Header onThemeSelect={onThemeSelect} />
+                <Container maxWidth="lg" sx={containerSx}>
+                  <WithPageSkeleton>
+                    <Component {...pageProps} />
+                  </WithPageSkeleton>
+                </Container>
+              </SnackbarProvider>
             </AuthContextProvider>
           </SessionProvider>
           <CssBaseline />
-        </ThemeProvider>
-      </APIQueryClient>
+        </APIQueryClient>
+      </ThemeProvider>
     </CacheProvider>
   );
 };

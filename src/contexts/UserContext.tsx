@@ -3,10 +3,13 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
+import { useAuthContext } from "./AuthContext";
 
 export interface IUser {
+  id: string;
   displayPictureUrl: string;
   backgroundImageUrl: string;
   email: string;
@@ -15,6 +18,7 @@ export interface IUser {
   headline: string;
   dateOfBirth: number;
   aboutUser: string;
+  isAuthUser: boolean;
 }
 
 interface IUserContext {
@@ -23,6 +27,7 @@ interface IUserContext {
 }
 
 const defaultUserValues: IUser = {
+  id: "",
   displayPictureUrl: "",
   backgroundImageUrl: "",
   email: "",
@@ -31,6 +36,7 @@ const defaultUserValues: IUser = {
   headline: "",
   dateOfBirth: 0,
   aboutUser: "",
+  isAuthUser: false,
 };
 
 const UserContext = createContext<IUserContext>({
@@ -40,6 +46,7 @@ const UserContext = createContext<IUserContext>({
 
 const UserContextProvider: React.FC<IUser> = ({
   children,
+  id,
   displayPictureUrl,
   backgroundImageUrl,
   email,
@@ -48,8 +55,10 @@ const UserContextProvider: React.FC<IUser> = ({
   dateOfBirth,
   headline,
   aboutUser,
+  isAuthUser,
 }) => {
   const [user, setUser] = useState<IUser>({
+    id,
     displayPictureUrl,
     backgroundImageUrl,
     email,
@@ -58,7 +67,17 @@ const UserContextProvider: React.FC<IUser> = ({
     headline,
     dateOfBirth,
     aboutUser,
+    isAuthUser,
   });
+
+  const { authUser } = useAuthContext();
+
+  useEffect(() => {
+    if (authUser?.id === user.id && !user.isAuthUser) {
+      setUser((prev) => ({ ...prev, isAuthUser: true }));
+    }
+  }, [authUser?.id, user.id, user.isAuthUser]);
+
   return (
     <UserContext.Provider value={{ user: user, setUser: setUser }}>
       {children}

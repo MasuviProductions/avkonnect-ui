@@ -27,6 +27,7 @@ import { getCroppedImg } from "../../../../utils/imageProcessing";
 import { getPublicUrlFromS3SignedUrl } from "../../../../utils/generic";
 import { USER_IMAGE_SELECTOR_ATTRIBUTES } from "../../../../constants/app";
 import { useUserContext } from "../../../../contexts/UserContext";
+import { useSnackbarContext } from "../../../../contexts/SnackbarContext";
 
 const Input = styled("input")({
   display: "none",
@@ -45,6 +46,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   onModalClose,
   onSuccessfulUpload,
 }) => {
+  const { setSnackbar } = useSnackbarContext();
   const { setUser } = useUserContext();
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
   const [activeImageUrl, setActiveImageUrl] = useState<string>();
@@ -153,7 +155,25 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   }, [s3PutImagetoS3Status, s3PutUrl, imageType]);
 
   useEffect(() => {
+    if (
+      s3PutImagetoS3Status === "error" ||
+      userSignedUrlError === "error" ||
+      patchUserStatus === "error" ||
+      patchUserError === "error"
+    ) {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
+    }
+  });
+
+  useEffect(() => {
     if (patchUserStatus === "success") {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_SUCCESS,
+        messageType: "success",
+      }));
       setUser((prev) => ({
         ...prev,
         backgroundImageUrl: patchUserData?.data?.backgroundImageUrl as string,
@@ -174,6 +194,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     patchUserReq,
     setUser,
     patchUserData,
+    setSnackbar,
   ]);
 
   if (!showModal) {

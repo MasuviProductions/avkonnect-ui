@@ -7,10 +7,8 @@ import {
   Typography,
   Theme,
 } from "@mui/material";
-import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { SxProps } from "@mui/system";
-
+import { SxProps, SystemStyleObject } from "@mui/system";
 import LayoutCard from "../LayoutCard";
 
 export interface IModal {
@@ -20,13 +18,19 @@ export interface IModal {
 
 export interface IModalLayoutProps extends IModal {
   title?: string;
+  showTitleBorder?: boolean;
 }
 const ModalLayout: React.FC<IModalLayoutProps> = ({
   children,
   title,
+  showTitleBorder = true,
   showModal,
   onModalClose,
 }) => {
+  const handleHeaderContainerSx = (theme: Theme): SystemStyleObject<Theme> => {
+    return headerContainer(theme, showTitleBorder);
+  };
+
   return (
     <Modal
       open={showModal}
@@ -40,7 +44,7 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
             container
             justifyContent="space-between"
             alignItems="center"
-            sx={headerContainer}
+            sx={handleHeaderContainerSx}
           >
             <Grid item>
               <Typography variant="h6">{title}</Typography>
@@ -62,19 +66,24 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
 
 const modalContainer: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",
-  top: "40%",
+  top: "15%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-50%, -15%)",
 });
 
 const closeButton: SxProps<Theme> = (theme: Theme) => ({
   color: `${theme.palette.text.primary}`,
 });
 
-const headerContainer: SxProps<Theme> = (theme: Theme) => ({
+const headerContainer = (
+  theme: Theme,
+  showBorder: boolean
+): SystemStyleObject<Theme> => ({
   paddingY: 1,
   paddingX: 2,
-  borderBottom: `1px solid ${theme.palette.grey[700]}`,
+  borderBottom: `1px solid ${
+    showBorder ? theme.palette.grey[700] : "transparent"
+  }`,
 });
 
 export default ModalLayout;

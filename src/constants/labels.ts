@@ -1,5 +1,8 @@
 export const LABELS = {
   TITLE: "AVConnect",
+  SAVE: "Save",
+  SAVE_SUCCESS: "Save was successful",
+  SAVE_FAILED: "Something went wrong while saving",
   // Impage Upload Labels
   BACKGROUND_IMAGE_CROPPER_TITLE: "Background Image",
   DISPLAY_PICTURE_CROPPER_TITLE: "Display Picture",
@@ -11,7 +14,6 @@ export const LABELS = {
   //About User labels:
   ADD_SUMMARY: "Add Summary",
   ABOUT_FIELD_LABEL: "About",
-  SAVE: "Save",
   ABOUT_EDIT_TITLE: "About you",
   ABOUT_HEADLINE: "Lets add a few words about you",
   ABOUT_PLACEHOLDER:

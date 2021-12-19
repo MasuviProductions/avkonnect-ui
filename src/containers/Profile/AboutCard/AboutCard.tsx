@@ -40,14 +40,16 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
                     {LABELS.ABOUT_FIELD_LABEL}
                   </Typography>
                 </Grid>
-                <Grid item>
-                  <IconButton
-                    sx={aboutCardEditBtn}
-                    onClick={handleAboutModalOpen}
-                  >
-                    <EditIcon fontSize="medium" />
-                  </IconButton>
-                </Grid>
+                {user.isAuthUser && (
+                  <Grid item>
+                    <IconButton
+                      sx={aboutCardEditBtn}
+                      onClick={handleAboutModalOpen}
+                    >
+                      <EditIcon fontSize="medium" />
+                    </IconButton>
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 

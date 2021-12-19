@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Error from "../../../components/Error/Error";
 import API_ENDPOINTS from "../../../constants/api";
 import Profile from "../../../containers/Profile";
+import { useAuthContext } from "../../../contexts/AuthContext";
 import UserContextProvider, {
   useUserContext,
 } from "../../../contexts/UserContext";
@@ -20,6 +21,7 @@ import { fetchUserProfile } from "../../../utils/api";
 import { handleServerSideAuthenticationRedirect } from "../../../utils/generic";
 
 interface IProfilePageData {
+  id: string;
   displayPictureUrl: string;
   backgroundImageUrl: string;
   email: string;
@@ -42,6 +44,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
 
   return (
     <UserContextProvider
+      id={data.id}
       displayPictureUrl={data.displayPictureUrl}
       backgroundImageUrl={data.backgroundImageUrl}
       email={data.email}
@@ -50,6 +53,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       headline={data.headline}
       dateOfBirth={data.dateOfBirth}
       aboutUser={data.aboutUser}
+      isAuthUser={false}
     >
       <Profile />
     </UserContextProvider>
@@ -91,6 +95,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
     return { data: null, error: transformedError };
   } else {
     const transformedData: IProfilePageData = {
+      id: response.data.id,
       name: response.data.name,
       email: response.data.email,
       dateOfBirth: response.data.dateOfBirth,
