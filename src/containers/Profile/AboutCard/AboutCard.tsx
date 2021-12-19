@@ -7,10 +7,12 @@ import LayoutCard from "../../../components/LayoutCard";
 import EditAboutUser from "../EditAboutUser";
 import { useUserContext } from "../../../contexts/UserContext";
 import ReadMore from "../../../components/ReadMore/ReadMore";
+import { ReactFCWithSkeleton } from "../../../interfaces/app";
+import AboutCardSkeleton from "./AboutCardSkeleton";
 
 interface IAboutCartProps {}
 
-const AboutCard: React.FC<IAboutCartProps> = () => {
+const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   const { user } = useUserContext();
   const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
 
@@ -65,6 +67,8 @@ const AboutCard: React.FC<IAboutCartProps> = () => {
     </>
   );
 };
+
+AboutCard.Skeleton = AboutCardSkeleton;
 
 const aboutCardContainer: SxProps<Theme> = {
   paddingY: 3,

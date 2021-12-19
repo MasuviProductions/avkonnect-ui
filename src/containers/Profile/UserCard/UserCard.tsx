@@ -183,9 +183,9 @@ const userBackgroundContainer: SxProps<Theme> = (theme: Theme) => ({
 
 const userBackgroundEditButton: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",
-  zIndex: 1,
-  top: 24,
-  right: 24,
+  zIndex: 2,
+  top: "24px",
+  right: "24px",
   color: theme.palette.text.primary,
   bgcolor: theme.palette.background.default,
   ":hover": {
