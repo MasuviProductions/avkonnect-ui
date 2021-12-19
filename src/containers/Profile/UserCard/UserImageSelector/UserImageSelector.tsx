@@ -44,9 +44,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   onModalClose,
   onSuccessfulUpload,
 }) => {
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string>(
-    imageUrl as string
-  );
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob>();
   const [s3PutUrl, setS3PutUrl] = useState<string>();
   const [patchUserReq, setPatchUserReq] =
@@ -94,7 +92,6 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   );
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files?.[0]);
     setSelectedImageUrl(URL.createObjectURL(event.target.files?.[0] as Blob));
   };
 
@@ -172,10 +169,10 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
       onModalClose={onModalClose}
       title={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].label}
     >
-      {selectedImageUrl && (
+      {(selectedImageUrl || imageUrl) && (
         <ImageCropper
           aspectRatio={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].aspectRatio}
-          image={selectedImageUrl}
+          image={(selectedImageUrl || imageUrl) as string}
           fitType={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].fitType}
           onCropComplete={onCropComplete}
         />
