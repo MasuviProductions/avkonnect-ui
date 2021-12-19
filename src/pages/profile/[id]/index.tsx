@@ -17,7 +17,7 @@ import { handleServerSideAuthenticationRedirect } from "../../../utils/generic";
 
 interface IProfilePageData {
   displayPictureUrl: string;
-  backgroundPictureUrl: string;
+  backgroundImageUrl: string;
   email: string;
   name: string;
   currentPosition: string;
@@ -39,7 +39,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
   return (
     <Profile
       displayPictureUrl={data.displayPictureUrl}
-      backgroundPictureUrl={data.backgroundPictureUrl}
+      backgroundImageUrl={data.backgroundImageUrl}
       email={data.email}
       name={data.name}
       currentPosition={data.currentPosition}
@@ -87,12 +87,8 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       name: response.data.name,
       email: response.data.email,
       dateOfBirth: response.data.dateOfBirth,
-      displayPictureUrl: response.data.displayPictureUrl
-        ? API_ENDPOINTS.USER_DISPLAY_PICTURE.url(response.data.id)
-        : "",
-      backgroundPictureUrl: response.data.backgroundPictureUrl
-        ? API_ENDPOINTS.USER_BACKGROUND_PICTURE.url(response.data.id)
-        : "",
+      displayPictureUrl: response.data.displayPictureUrl,
+      backgroundImageUrl: response.data.backgroundImageUrl,
       aboutUser: response.data.aboutUser,
       currentPosition: response.data.currentPosition,
       headline: response.data.headline,

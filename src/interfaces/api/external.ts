@@ -24,7 +24,7 @@ export interface IUserProfileApiResponse {
   aboutUser: string;
   following: string[];
   displayPictureUrl: string;
-  backgroundPictureUrl: string;
+  backgroundImageUrl: string;
   followers: string[];
   connections: IUserProfileConnectionApiModel[];
   createdAt: number;
@@ -38,3 +38,20 @@ export interface IUserProfileApiResponse {
   id: string;
   phone: string;
 }
+
+export type IUserProfilePatchApiRequest = Partial<
+  Omit<
+    IUserProfileApiResponse,
+    | "id"
+    | "following"
+    | "followers"
+    | "connections"
+    | "createdAt"
+    | "email"
+    | "updatedAt"
+  >
+>;
+
+export type IUserImageType = "background_image" | "display_picture";
+
+export type IUserUploadSignedUrlApiResponse = string;

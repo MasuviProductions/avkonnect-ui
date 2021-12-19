@@ -26,3 +26,9 @@ export interface IProtectedPageProps<T = any> extends SessionProps {
   data?: T | null;
   error?: IPageError | null;
 }
+
+export interface IImageSelectorAttrib {
+  aspectRatio: number;
+  label: string;
+  fitType: "horizontal-cover" | "vertical-cover";
+}

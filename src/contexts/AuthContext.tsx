@@ -26,16 +26,16 @@ const useAuthContext = (): IAuthContextProps => {
 };
 
 const AuthContextProvider: React.FC = ({ children }) => {
-  const { data: authData, status: authStatus } = useSession();
+  const { data: sessionData, status: sessionStatus } = useSession();
   const { data: authUserData, error: authUserError } = useQuery(
     API_ENDPOINTS.AUTH_USER.key,
-    () => fetchAuthUser(authData?.accessToken as string),
+    () => fetchAuthUser(sessionData?.accessToken as string),
     {
       // Cache API response for upto 3 minutes
       cacheTime: 1000 * 60 * 3,
       retry: 2,
       retryDelay: 1000,
-      enabled: Boolean(authData) && authStatus !== "loading",
+      enabled: Boolean(sessionData) && sessionStatus !== "loading",
     }
   );
 
@@ -47,6 +47,12 @@ const AuthContextProvider: React.FC = ({ children }) => {
       setUser(authUserData);
     }
   }, [authUserData]);
+
+  useEffect(() => {
+    if (sessionData) {
+      setAccessToken(sessionData?.accessToken as string);
+    }
+  }, [sessionData]);
 
   return (
     <AuthContext.Provider

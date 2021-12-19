@@ -1,10 +1,13 @@
 import {
   AVConnectApiResponse,
   IAuthUserApiResponse,
+  IUserUploadSignedUrlApiResponse,
+  IUserImageType,
   IUserProfileApiResponse,
+  IUserProfilePatchApiRequest,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const fetchAuthUser = async (
   accessToken: string
@@ -31,6 +34,50 @@ export const fetchUserProfile = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
+    .then((res) => res.data);
+  return userProfileResponse;
+};
+
+export const patchUserProfile = async (
+  accessToken: string,
+  userId: string,
+  reqBody: IUserProfilePatchApiRequest
+): Promise<AVConnectApiResponse<IUserProfileApiResponse>> => {
+  const userProfileResponse = await axios
+    .patch<
+      IUserProfilePatchApiRequest,
+      AxiosResponse<AVConnectApiResponse<IUserProfileApiResponse>>
+    >(API_ENDPOINTS.USER_PROFILE.url(userId), reqBody, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userProfileResponse;
+};
+
+export const fetchUserImageSignedUrl = async (
+  accessToken: string,
+  userId: string,
+  imageType: IUserImageType
+): Promise<AVConnectApiResponse<IUserUploadSignedUrlApiResponse>> => {
+  const userProfileResponse = await axios
+    .get<AVConnectApiResponse<IUserUploadSignedUrlApiResponse>>(
+      `${API_ENDPOINTS.USER_SIGNED_URL.url(userId)}?imageType=${imageType}`,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userProfileResponse;
+};
+
+export const putUserImageToS3 = async (
+  signedUrl: string,
+  file: Blob
+): Promise<any> => {
+  const userProfileResponse = await axios
+    .put<any, AxiosResponse<any>>(signedUrl, file, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
     .then((res) => res.data);
   return userProfileResponse;
 };

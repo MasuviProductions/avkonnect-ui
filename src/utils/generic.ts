@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsResult } from "next";
+import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { URLSearchParams } from "url";
@@ -22,4 +22,21 @@ export const handleServerSideAuthenticationRedirect = async <T>(
       },
     };
   return await getSSRProps(session);
+};
+
+export const getPublicUrlFromS3SignedUrl = (s3SignedUrl: string): string => {
+  return s3SignedUrl.split("?")[0] as string;
+};
+
+export const usernameToColor = (string: string): string => {
+  let hash = 0;
+  for (let index = 0; index < string.length; index += 1) {
+    hash = string.charCodeAt(index) + ((hash << 5) - hash);
+  }
+  let color = "#";
+  for (let index = 0; index < 3; index += 1) {
+    const value = (hash >> (index * 8)) & 0xff;
+    color += `00${value.toString(16)}`.substr(-2);
+  }
+  return color;
 };

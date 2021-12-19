@@ -11,7 +11,7 @@ import UserCard from "./UserCard";
 
 interface IProfileProps {
   displayPictureUrl: string;
-  backgroundPictureUrl: string;
+  backgroundImageUrl: string;
   email: string;
   name: string;
   currentPosition: string;
@@ -22,7 +22,7 @@ interface IProfileProps {
 
 const Profile: ReactFCWithSkeleton<IProfileProps> = ({
   displayPictureUrl,
-  backgroundPictureUrl,
+  backgroundImageUrl,
   email,
   name,
   currentPosition,
@@ -37,7 +37,7 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = ({
       <Grid item mt={2} xs={12}>
         <UserCard
           displayPictureUrl={displayPictureUrl}
-          backgroundPictureUrl={backgroundPictureUrl}
+          backgroundImageUrl={backgroundImageUrl}
           email={email}
           name={name}
           currentPosition={currentPosition}

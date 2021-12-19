@@ -1,18 +1,20 @@
-import { Grid, Theme } from "@mui/material";
+import { Container, Grid, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 
-const LayoutCard: React.FC = ({ children }) => {
+interface ILayoutCardProps {}
+const LayoutCard: React.FC<ILayoutCardProps> = ({ children }) => {
   return (
-    <Grid container sx={layoutCardContainer}>
+    <Container fixed sx={layoutCardContainer} disableGutters>
       {children}
-    </Grid>
+    </Container>
   );
 };
 
 const layoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
-  border: `2px solid ${theme.palette.background.paper}`,
+  border: `2px solid ${theme.palette.grey[800]}`,
   borderRadius: "10px",
   backgroundColor: theme.palette.background.paper,
+  position: "relative",
 });
 
 export default LayoutCard;

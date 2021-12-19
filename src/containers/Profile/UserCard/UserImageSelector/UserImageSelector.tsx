@@ -1,0 +1,227 @@
+import { Button, Grid, styled } from "@mui/material";
+import {
+  ChangeEvent,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { Area } from "react-easy-crop/types";
+import { useQuery } from "react-query";
+import {
+  IUserImageType,
+  IUserProfilePatchApiRequest,
+} from "../../../../interfaces/api/external";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import ImageCropper from "../../../../components/ImageCropper";
+import ModalLayout from "../../../../components/ModalLayout";
+import { IModal } from "../../../../components/ModalLayout/ModalLayout";
+import API_ENDPOINTS from "../../../../constants/api";
+import { LABELS } from "../../../../constants/labels";
+import {
+  fetchUserImageSignedUrl,
+  patchUserProfile,
+  putUserImageToS3,
+} from "../../../../utils/api";
+import { getCroppedImg } from "../../../../utils/imageProcessing";
+import { getPublicUrlFromS3SignedUrl } from "../../../../utils/generic";
+import { USER_IMAGE_SELECTOR_ATTRIBUTES } from "../../../../constants/app";
+
+const Input = styled("input")({
+  display: "none",
+});
+
+interface IUserImageSelectorProps extends IModal {
+  imageUrl?: string;
+  imageType: IUserImageType;
+  onSuccessfulUpload?: (uploadUrl?: string) => void;
+}
+
+const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
+  imageUrl,
+  imageType,
+  showModal,
+  onModalClose,
+  onSuccessfulUpload,
+}) => {
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>(
+    imageUrl as string
+  );
+  const [croppedImageBlob, setCroppedImageBlob] = useState<Blob>();
+  const [s3PutUrl, setS3PutUrl] = useState<string>();
+  const [patchUserReq, setPatchUserReq] =
+    useState<IUserProfilePatchApiRequest>();
+  const { accessToken, user } = useAuthContext();
+
+  const { status: s3PutImagetoS3Status, refetch: s3PutImagetoS3ApiTrigger } =
+    useQuery(
+      `s3_upload_${imageType}`,
+      () => putUserImageToS3(s3PutUrl as string, croppedImageBlob as Blob),
+      { cacheTime: 0, enabled: !!s3PutUrl && !!croppedImageBlob }
+    );
+
+  const {
+    data: patchUserData,
+    status: patchUserStatus,
+    error: patchUserError,
+  } = useQuery(
+    `ImageSelector: ${API_ENDPOINTS.USER_PROFILE.key}`,
+    () =>
+      patchUserProfile(
+        accessToken as string,
+        user?.id as string,
+        patchUserReq as IUserProfilePatchApiRequest
+      ),
+    { cacheTime: 0, enabled: !!patchUserReq }
+  );
+
+  const {
+    data: userSignedUrlData,
+    error: userSignedUrlError,
+    refetch: userSignedUrlDataApiTrigger,
+  } = useQuery(
+    API_ENDPOINTS.USER_SIGNED_URL.key,
+    () =>
+      fetchUserImageSignedUrl(
+        accessToken as string,
+        user?.id as string,
+        imageType
+      ),
+    {
+      cacheTime: 0,
+      enabled: false,
+    }
+  );
+
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.files?.[0]);
+    setSelectedImageUrl(URL.createObjectURL(event.target.files?.[0] as Blob));
+  };
+
+  const handleApplyBtnClick: MouseEventHandler<HTMLButtonElement> | undefined =
+    (_event) => {
+      userSignedUrlDataApiTrigger();
+    };
+
+  const handleRemoveBtnClick: MouseEventHandler<HTMLButtonElement> | undefined =
+    (_event) => {
+      const patchUserReqBody: IUserProfilePatchApiRequest = {};
+      if (imageType === "background_image") {
+        patchUserReqBody.backgroundImageUrl = "";
+      } else if (imageType === "display_picture") {
+        patchUserReqBody.displayPictureUrl = "";
+      }
+      setPatchUserReq(patchUserReqBody);
+    };
+
+  const onCropComplete = useCallback(
+    async (_croppedArea: Area, croppedAreaPixels: Area) => {
+      if (selectedImageUrl) {
+        const blob = await getCroppedImg(selectedImageUrl, croppedAreaPixels);
+        if (blob) {
+          setCroppedImageBlob(blob);
+        }
+      }
+    },
+    [selectedImageUrl]
+  );
+
+  useEffect(() => {
+    if (userSignedUrlData) {
+      setS3PutUrl(userSignedUrlData.data);
+    }
+  }, [s3PutImagetoS3ApiTrigger, userSignedUrlData]);
+
+  useEffect(() => {
+    if (s3PutImagetoS3Status === "success") {
+      const patchUserReqBody: IUserProfilePatchApiRequest = {};
+      const publicUrl = getPublicUrlFromS3SignedUrl(s3PutUrl as string);
+      if (imageType === "background_image") {
+        patchUserReqBody.backgroundImageUrl = publicUrl;
+      } else if (imageType === "display_picture") {
+        patchUserReqBody.displayPictureUrl = publicUrl;
+      }
+      setPatchUserReq(patchUserReqBody);
+    }
+  }, [s3PutImagetoS3Status, s3PutUrl, imageType]);
+
+  useEffect(() => {
+    if (patchUserStatus === "success") {
+      let publicUrl: string | undefined;
+      if (patchUserReq?.backgroundImageUrl || patchUserReq?.displayPictureUrl) {
+        publicUrl = URL.createObjectURL(croppedImageBlob as Blob);
+      }
+      onSuccessfulUpload?.(publicUrl);
+      onModalClose();
+    }
+  }, [
+    onModalClose,
+    croppedImageBlob,
+    onSuccessfulUpload,
+    patchUserStatus,
+    patchUserReq,
+  ]);
+
+  if (!showModal) {
+    return <></>;
+  }
+
+  return (
+    <ModalLayout
+      showModal={showModal}
+      onModalClose={onModalClose}
+      title={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].label}
+    >
+      {selectedImageUrl && (
+        <ImageCropper
+          aspectRatio={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].aspectRatio}
+          image={selectedImageUrl}
+          fitType={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].fitType}
+          onCropComplete={onCropComplete}
+        />
+      )}
+
+      <Grid container justifyContent="space-between" p={2} flexWrap="nowrap">
+        <Grid item>
+          {selectedImageUrl && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleRemoveBtnClick}
+            >
+              {LABELS.USER_IMAGE_REMOVE}
+            </Button>
+          )}
+        </Grid>
+        <Grid item>
+          <Grid container justifyContent="flex-end" spacing={2}>
+            <Grid item>
+              <label htmlFor="contained-button-file">
+                <Input
+                  accept="image/*"
+                  id="contained-button-file"
+                  type="file"
+                  onChange={handleImageUpload}
+                />
+                <Button variant="contained" component="span">
+                  {selectedImageUrl
+                    ? LABELS.USER_IMAGE_CHANGE_IMAGE
+                    : LABELS.USER_IMAGE_CHOOSE_IMAGE}
+                </Button>
+              </label>
+            </Grid>
+            <Grid item>
+              {selectedImageUrl && (
+                <Button variant="contained" onClick={handleApplyBtnClick}>
+                  {LABELS.USER_IMAGE_APPLY}
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </ModalLayout>
+  );
+};
+
+export default UserImageSelector;

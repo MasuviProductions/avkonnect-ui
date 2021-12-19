@@ -19,6 +19,11 @@ const API_ENDPOINTS = {
     key: "",
     url: (userId: string): string => `${AVCONNECT_URL.USERS()}/${userId}`,
   },
+  USER_SIGNED_URL: {
+    key: "",
+    url: (userId: string): string =>
+      `${AVCONNECT_URL.USERS()}/${userId}/signedURL`,
+  },
   USER_DISPLAY_PICTURE: {
     key: "display-picture",
     url: (userId: string): string =>

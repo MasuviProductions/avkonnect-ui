@@ -1,13 +1,25 @@
-import { Avatar, Grid, Link, Theme, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Grid,
+  IconButton,
+  Link,
+  Theme,
+  Typography,
+} from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
-import { SxProps } from "@mui/system";
+import EditIcon from "@mui/icons-material/Edit";
+import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
 import LayoutCard from "../../../components/LayoutCard";
 import { JPG } from "../../../assets/JPG";
+import UserImageSelector from "./UserImageSelector/UserImageSelector";
+import { useState } from "react";
+import { usernameToColor } from "../../../utils/generic";
 
 interface IUserCardProps {
   displayPictureUrl: string;
-  backgroundPictureUrl: string;
+  backgroundImageUrl: string;
   email: string;
   name: string;
   currentPosition: string;
@@ -18,31 +30,78 @@ interface IUserCardProps {
 
 const UserCard: React.FC<IUserCardProps> = ({
   displayPictureUrl,
-  backgroundPictureUrl,
+  backgroundImageUrl,
   email,
   name,
   currentPosition,
   headline,
   dateOfBirth,
 }) => {
+  const [dpUrl, setDpUrl] = useState<string | undefined>(displayPictureUrl);
+  const [bgUrl, setBgUrl] = useState<string | undefined>(backgroundImageUrl);
+  const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
+    useState(false);
+  const [showDisplayPictureCropper, setShowDisplayPictureCropper] =
+    useState(false);
+
+  const handleBackgroundImageCropperOpen = () => {
+    setShowBackgroundImageCropper(true);
+  };
+
+  const handleBackgroundImageCropperClose = () => {
+    setShowBackgroundImageCropper(false);
+  };
+
+  const onSuccessfulBgUrlUpload = (uploadUrl?: string) => {
+    setBgUrl(uploadUrl);
+  };
+
+  const handleDisplayPictureCropperOpen = () => {
+    setShowDisplayPictureCropper(true);
+  };
+
+  const handleDisplayPictureCropperClose = () => {
+    setShowDisplayPictureCropper(false);
+  };
+
+  const onSuccessfulDpUrlUpload = (uploadUrl?: string) => {
+    setDpUrl(uploadUrl);
+  };
+
+  const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
+    return userAvatar(theme, usernameToColor(name));
+  };
+
   return (
     <>
       <LayoutCard>
         <Grid container>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={userBackgroundContainer}>
             <Image
-              src={backgroundPictureUrl || JPG.UserBGPlaceholder}
+              src={bgUrl || JPG.UserBGPlaceholder}
               alt="backgroundPicture"
               width={4}
               height={1}
               layout="responsive"
+              priority
             />
+            <IconButton
+              sx={userBackgroundEditButton}
+              onClick={handleBackgroundImageCropperOpen}
+            >
+              <EditIcon fontSize="medium" />
+            </IconButton>
           </Grid>
           <Grid container p={3}>
             <Grid item xs={12}>
               <Grid container>
                 <Grid item xs={12} sx={userAvatarContainer}>
-                  <Avatar alt={name} src={displayPictureUrl} sx={userAvatar}>
+                  <Avatar
+                    alt={name}
+                    src={dpUrl}
+                    sx={handleUserAvatarSx}
+                    onClick={handleDisplayPictureCropperOpen}
+                  >
                     {name[0]}
                   </Avatar>
                 </Grid>
@@ -64,10 +123,44 @@ const UserCard: React.FC<IUserCardProps> = ({
             </Grid>
           </Grid>
         </Grid>
+
+        {showBackgroundImageCropper && (
+          <UserImageSelector
+            imageUrl={bgUrl}
+            imageType="background_image"
+            onSuccessfulUpload={onSuccessfulBgUrlUpload}
+            showModal={showBackgroundImageCropper}
+            onModalClose={handleBackgroundImageCropperClose}
+          />
+        )}
+
+        {showDisplayPictureCropper && (
+          <UserImageSelector
+            imageUrl={dpUrl}
+            imageType="display_picture"
+            onSuccessfulUpload={onSuccessfulDpUrlUpload}
+            showModal={showDisplayPictureCropper}
+            onModalClose={handleDisplayPictureCropperClose}
+          />
+        )}
       </LayoutCard>
     </>
   );
 };
+
+const userBackgroundContainer: SxProps<Theme> = { position: "relative" };
+
+const userBackgroundEditButton: SxProps<Theme> = (theme: Theme) => ({
+  position: "absolute",
+  zIndex: 1,
+  top: 5,
+  right: 5,
+  color: theme.palette.text.primary,
+  bgcolor: theme.palette.background.default,
+  ":hover": {
+    bgcolor: theme.palette.background.default,
+  },
+});
 
 const userAvatarContainer: SxProps<Theme> = {
   zIndex: 1,
@@ -75,13 +168,16 @@ const userAvatarContainer: SxProps<Theme> = {
   height: "40px",
 };
 
-const userAvatar: SxProps<Theme> = (theme: Theme) => ({
-  width: 140,
-  height: 140,
-  fontSize: "4rem",
-  border: `3px solid ${theme.palette.background.default}`,
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
-});
+const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
+  return {
+    width: 140,
+    height: 140,
+    fontSize: "4rem",
+    border: `3px solid ${theme.palette.background.default}`,
+    backgroundColor: color,
+    color: theme.palette.getContrastText(color),
+    cursor: "pointer",
+  };
+};
 
 export default UserCard;
