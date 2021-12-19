@@ -1,13 +1,8 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
-import { useEffect } from "react";
 import Error from "../../../components/Error/Error";
-import API_ENDPOINTS from "../../../constants/api";
 import Profile from "../../../containers/Profile";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import UserContextProvider, {
-  useUserContext,
-} from "../../../contexts/UserContext";
+import UserContextProvider from "../../../contexts/UserContext";
 import {
   AVConnectApiResponse,
   IUserProfileApiResponse,

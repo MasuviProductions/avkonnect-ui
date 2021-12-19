@@ -1,7 +1,6 @@
 import { MouseEvent } from "react";
 import {
   Avatar,
-  Box,
   Button,
   Container,
   Grid,
@@ -129,7 +128,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
           <Grid container p={3}>
             <Grid item xs={12}>
               <Grid container>
-                <Grid item xs={12} sx={userAvatarContainer}>
+                <Grid item sx={userAvatarContainer}>
                   <Avatar
                     alt={name}
                     src={displayPictureUrl}
