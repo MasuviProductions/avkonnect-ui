@@ -13,10 +13,10 @@ import { fetchAuthUser } from "../utils/api";
 import { IAuthUserApiResponse } from "../interfaces/api/external";
 
 interface IAuthContextProps {
-  user?: IAuthUserApiResponse;
+  authUser?: IAuthUserApiResponse;
   accessToken?: string;
-  setUser?: SetStateAction<Dispatch<IAuthUserApiResponse>>;
-  setAccessToken?: SetStateAction<Dispatch<string>>;
+  setAuthUser?: Dispatch<SetStateAction<IAuthUserApiResponse | undefined>>;
+  setAccessToken?: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const AuthContext = createContext<IAuthContextProps>({});
@@ -39,12 +39,12 @@ const AuthContextProvider: React.FC = ({ children }) => {
     }
   );
 
-  const [user, setUser] = useState<IAuthUserApiResponse>();
+  const [authUser, setAuthUser] = useState<IAuthUserApiResponse>();
   const [accessToken, setAccessToken] = useState<string>();
 
   useEffect(() => {
     if (authUserData) {
-      setUser(authUserData);
+      setAuthUser(authUserData);
     }
   }, [authUserData]);
 
@@ -56,7 +56,7 @@ const AuthContextProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, accessToken, setAccessToken }}
+      value={{ authUser, setAuthUser, accessToken, setAccessToken }}
     >
       {children}
     </AuthContext.Provider>

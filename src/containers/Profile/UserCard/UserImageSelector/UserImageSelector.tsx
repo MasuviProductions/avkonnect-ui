@@ -26,6 +26,7 @@ import {
 import { getCroppedImg } from "../../../../utils/imageProcessing";
 import { getPublicUrlFromS3SignedUrl } from "../../../../utils/generic";
 import { USER_IMAGE_SELECTOR_ATTRIBUTES } from "../../../../constants/app";
+import { useUserContext } from "../../../../contexts/UserContext";
 
 const Input = styled("input")({
   display: "none",
@@ -44,13 +45,14 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   onModalClose,
   onSuccessfulUpload,
 }) => {
+  const { setUser } = useUserContext();
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
   const [activeImageUrl, setActiveImageUrl] = useState<string>();
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob>();
   const [s3PutUrl, setS3PutUrl] = useState<string>();
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
-  const { accessToken, user } = useAuthContext();
+  const { accessToken, authUser } = useAuthContext();
 
   const { status: s3PutImagetoS3Status, refetch: s3PutImagetoS3ApiTrigger } =
     useQuery(
@@ -68,7 +70,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     () =>
       patchUserProfile(
         accessToken as string,
-        user?.id as string,
+        authUser?.id as string,
         patchUserReq as IUserProfilePatchApiRequest
       ),
     { cacheTime: 0, enabled: !!patchUserReq }
@@ -83,7 +85,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     () =>
       fetchUserImageSignedUrl(
         accessToken as string,
-        user?.id as string,
+        authUser?.id as string,
         imageType
       ),
     {
@@ -152,6 +154,11 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
 
   useEffect(() => {
     if (patchUserStatus === "success") {
+      setUser((prev) => ({
+        ...prev,
+        backgroundImageUrl: patchUserData?.data?.backgroundImageUrl as string,
+        displayPictureUrl: patchUserData?.data?.displayPictureUrl as string,
+      }));
       let publicUrl: string | undefined;
       if (patchUserReq?.backgroundImageUrl || patchUserReq?.displayPictureUrl) {
         publicUrl = URL.createObjectURL(croppedImageBlob as Blob);
@@ -165,6 +172,8 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     onSuccessfulUpload,
     patchUserStatus,
     patchUserReq,
+    setUser,
+    patchUserData,
   ]);
 
   if (!showModal) {
@@ -208,7 +217,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
                   type="file"
                   onChange={handleImageUpload}
                 />
-                <Button variant="contained" component="span">
+                <Button variant="outlined" color="primary" component="span">
                   {activeImageUrl
                     ? LABELS.USER_IMAGE_CHANGE_IMAGE
                     : LABELS.USER_IMAGE_CHOOSE_IMAGE}
@@ -217,7 +226,11 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
             </Grid>
             <Grid item>
               {activeImageUrl && (
-                <Button variant="contained" onClick={handleApplyBtnClick}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleApplyBtnClick}
+                >
                   {LABELS.USER_IMAGE_APPLY}
                 </Button>
               )}

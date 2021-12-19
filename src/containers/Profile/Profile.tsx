@@ -1,50 +1,19 @@
-import { Card, Grid } from "@mui/material";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import React from "react";
+import { Grid } from "@mui/material";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-// import UserCardSkeleton from "./Skeleton";
-import { useAuthContext } from "../../contexts/AuthContext";
 import ProfileSkeleton from "./ProfileSkeleton";
 import UserCard from "./UserCard";
+import AboutCard from "./AboutCard";
 
-interface IProfileProps {
-  displayPictureUrl: string;
-  backgroundImageUrl: string;
-  email: string;
-  name: string;
-  currentPosition: string;
-  headline: string;
-  dateOfBirth: number;
-  aboutUser: string;
-}
+interface IProfileProps {}
 
-const Profile: ReactFCWithSkeleton<IProfileProps> = ({
-  displayPictureUrl,
-  backgroundImageUrl,
-  email,
-  name,
-  currentPosition,
-  headline,
-  dateOfBirth,
-  aboutUser,
-}) => {
-  const { user } = useAuthContext();
-
+const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
   return (
     <Grid container>
       <Grid item mt={2} xs={12}>
-        <UserCard
-          displayPictureUrl={displayPictureUrl}
-          backgroundImageUrl={backgroundImageUrl}
-          email={email}
-          name={name}
-          currentPosition={currentPosition}
-          headline={headline}
-          dateOfBirth={dateOfBirth}
-          aboutUser={aboutUser}
-        />
+        <UserCard />
+      </Grid>
+      <Grid item mt={2} xs={12}>
+        <AboutCard />
       </Grid>
     </Grid>
   );

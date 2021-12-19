@@ -80,7 +80,7 @@ export default NextAuth({
         return Promise.resolve({
           accessToken: params.account.access_token,
           refreshToken: params.account.refresh_token,
-          accessTokenExpiresAt: params.account.expires_at! * 1000,
+          accessTokenExpiresAt: params.account.expires_at! * 1000 - 10000,
         });
       }
 

@@ -11,8 +11,7 @@ const LayoutCard: React.FC<ILayoutCardProps> = ({ children }) => {
 };
 
 const layoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
-  border: `1px solid ${theme.palette.grey[700]}`,
-  borderRadius: "10px",
+  borderRadius: "0.8rem",
   backgroundColor: theme.palette.background.paper,
   position: "relative",
 });

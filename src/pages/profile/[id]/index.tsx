@@ -1,8 +1,12 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
+import { useEffect } from "react";
 import Error from "../../../components/Error/Error";
 import API_ENDPOINTS from "../../../constants/api";
 import Profile from "../../../containers/Profile";
+import UserContextProvider, {
+  useUserContext,
+} from "../../../contexts/UserContext";
 import {
   AVConnectApiResponse,
   IUserProfileApiResponse,
@@ -37,7 +41,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
   }
 
   return (
-    <Profile
+    <UserContextProvider
       displayPictureUrl={data.displayPictureUrl}
       backgroundImageUrl={data.backgroundImageUrl}
       email={data.email}
@@ -46,7 +50,9 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       headline={data.headline}
       dateOfBirth={data.dateOfBirth}
       aboutUser={data.aboutUser}
-    />
+    >
+      <Profile />
+    </UserContextProvider>
   );
 };
 ProfilePage.Skeleton = Profile.Skeleton;
@@ -63,6 +69,7 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
     );
     const transformedResponse =
       transformUserProfileResponsetoIProtectedPageProps(userProfileRes);
+
     return {
       props: {
         session,
@@ -93,6 +100,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       currentPosition: response.data.currentPosition,
       headline: response.data.headline,
     };
+
     return { data: transformedData, error: null };
   }
 };

@@ -24,7 +24,7 @@ interface IHeaderProps {
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   const { data: authData } = useSession();
-  const { user } = useAuthContext();
+  const { authUser } = useAuthContext();
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
@@ -57,7 +57,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
           </Link>
 
           {authData && (
-            <Link href={`/profile/${user?.id}`} passHref>
+            <Link href={`/profile/${authUser?.id}`} passHref>
               <IconButton aria-label="open profile">
                 <AccountCircleIcon
                   fontSize="large"

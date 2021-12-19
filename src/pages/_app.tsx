@@ -12,7 +12,7 @@ import {
 import { SxProps } from "@mui/system";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { THEMES_LIST } from "../constants/theme";
-import Header from "../components/Header";
+import Header from "../containers/Header";
 import createEmotionCache from "../createEmotionCache";
 import APIQueryClient from "../contexts/APIQueryClient";
 import AuthContextProvider from "../contexts/AuthContext";

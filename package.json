@@ -17,6 +17,7 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.1.0",
+    "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^5.1.0",
     "@mui/styles": "^5.1.0",
     "axios": "^0.24.0",
