@@ -40,20 +40,20 @@ export const THEMES_LIST: ITheme[] = [
     themeOption: {
       palette: {
         primary: {
-          main: "#000",
+          main: "#222",
         },
         secondary: {
           main: "#0f2e42",
         },
         background: {
           default: "#d2d2d2",
-          paper: "#eee",
+          paper: "#ddd",
         },
         text: {
           primary: "#0f2e42",
         },
         navbar: {
-          main: "#000",
+          main: "#222",
           contrastText: "#b2b2b2",
         },
       },
