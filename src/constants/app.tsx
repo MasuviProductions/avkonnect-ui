@@ -23,12 +23,12 @@ export const USER_IMAGE_SELECTOR_ATTRIBUTES: Record<
 > = {
   display_picture: {
     aspectRatio: 1 / 1,
-    label: LABELS.BACKGROUND_IMAGE_CROPPER_TITLE,
+    label: LABELS.DISPLAY_PICTURE_CROPPER_TITLE,
     fitType: "vertical-cover",
   },
   background_image: {
     aspectRatio: 4 / 1,
-    label: LABELS.DISPLAY_PICTURE_CROPPER_TITLE,
+    label: LABELS.BACKGROUND_IMAGE_CROPPER_TITLE,
     fitType: "horizontal-cover",
   },
 };

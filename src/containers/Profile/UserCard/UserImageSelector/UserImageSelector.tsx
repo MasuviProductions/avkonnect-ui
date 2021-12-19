@@ -45,6 +45,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   onSuccessfulUpload,
 }) => {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
+  const [activeImageUrl, setActiveImageUrl] = useState<string>();
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob>();
   const [s3PutUrl, setS3PutUrl] = useState<string>();
   const [patchUserReq, setPatchUserReq] =
@@ -92,7 +93,10 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   );
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedImageUrl(URL.createObjectURL(event.target.files?.[0] as Blob));
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImageUrl(URL.createObjectURL(file));
+    }
   };
 
   const handleApplyBtnClick: MouseEventHandler<HTMLButtonElement> | undefined =
@@ -122,6 +126,10 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     },
     [selectedImageUrl]
   );
+
+  useEffect(() => {
+    setActiveImageUrl(selectedImageUrl || imageUrl);
+  }, [selectedImageUrl, imageUrl]);
 
   useEffect(() => {
     if (userSignedUrlData) {
@@ -169,10 +177,10 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
       onModalClose={onModalClose}
       title={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].label}
     >
-      {(selectedImageUrl || imageUrl) && (
+      {activeImageUrl && (
         <ImageCropper
           aspectRatio={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].aspectRatio}
-          image={(selectedImageUrl || imageUrl) as string}
+          image={activeImageUrl as string}
           fitType={USER_IMAGE_SELECTOR_ATTRIBUTES[imageType].fitType}
           onCropComplete={onCropComplete}
         />
@@ -180,7 +188,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
 
       <Grid container justifyContent="space-between" p={2} flexWrap="nowrap">
         <Grid item>
-          {selectedImageUrl && (
+          {activeImageUrl && (
             <Button
               variant="contained"
               color="error"
@@ -201,14 +209,14 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
                   onChange={handleImageUpload}
                 />
                 <Button variant="contained" component="span">
-                  {selectedImageUrl
+                  {activeImageUrl
                     ? LABELS.USER_IMAGE_CHANGE_IMAGE
                     : LABELS.USER_IMAGE_CHOOSE_IMAGE}
                 </Button>
               </label>
             </Grid>
             <Grid item>
-              {selectedImageUrl && (
+              {activeImageUrl && (
                 <Button variant="contained" onClick={handleApplyBtnClick}>
                   {LABELS.USER_IMAGE_APPLY}
                 </Button>
