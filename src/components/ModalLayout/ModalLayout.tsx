@@ -62,7 +62,7 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
 
 const modalContainer: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",
-  top: "30%",
+  top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
 });
@@ -74,7 +74,7 @@ const closeButton: SxProps<Theme> = (theme: Theme) => ({
 const headerContainer: SxProps<Theme> = (theme: Theme) => ({
   paddingY: 1,
   paddingX: 2,
-  borderBottom: `2px solid ${theme.palette.grey[800]}`,
+  borderBottom: `1px solid ${theme.palette.grey[700]}`,
 });
 
 export default ModalLayout;

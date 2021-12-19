@@ -148,7 +148,12 @@ const UserCard: React.FC<IUserCardProps> = ({
   );
 };
 
-const userBackgroundContainer: SxProps<Theme> = { position: "relative" };
+const userBackgroundContainer: SxProps<Theme> = {
+  position: "relative",
+  img: {
+    borderRadius: "10px 10px 0 0",
+  },
+};
 
 const userBackgroundEditButton: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",

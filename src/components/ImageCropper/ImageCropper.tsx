@@ -21,8 +21,8 @@ const ImageCropper: React.FC<IImageCropper> = ({
   const [zoom, setZoom] = useState(1);
 
   return (
-    <Box sx={{ backgroundColor: "black", paddingX: 3 }}>
-      <Container sx={imageCropperContainer}>
+    <Box sx={imageCropperContainer}>
+      <Container sx={imageCropper}>
         <Cropper
           image={image}
           crop={crop}
@@ -34,16 +34,7 @@ const ImageCropper: React.FC<IImageCropper> = ({
           objectFit={fitType}
           onZoomChange={setZoom}
         />
-        <Typography
-          sx={{
-            position: "relative",
-            top: "260px",
-            zIndex: 1,
-            padding: 1,
-            textAlign: "center",
-          }}
-          variant="body1"
-        >
+        <Typography sx={imageCropperMessage} variant="body1">
           {LABELS.IMAGE_CROPPER_MESSAGE}
         </Typography>
       </Container>
@@ -51,11 +42,26 @@ const ImageCropper: React.FC<IImageCropper> = ({
   );
 };
 
-const imageCropperContainer: SxProps<Theme> = (theme: Theme) => ({
+const imageCropper: SxProps<Theme> = (theme: Theme) => ({
   height: 300,
   position: "relative",
   backgroundColor: "black",
   opacity: 1,
 });
+
+const imageCropperContainer: SxProps<Theme> = {
+  backgroundColor: "black",
+  paddingX: 3,
+  paddingY: 2,
+};
+
+const imageCropperMessage: SxProps<Theme> = {
+  position: "relative",
+  top: "260px",
+  zIndex: 1,
+  padding: 1,
+  textAlign: "center",
+  color: "whitesmoke",
+};
 
 export default ImageCropper;
