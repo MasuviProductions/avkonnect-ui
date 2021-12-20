@@ -128,7 +128,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
           <Grid container p={3}>
             <Grid item xs={12}>
               <Grid container>
-                <Grid item sx={userAvatarContainer}>
+                <Grid item xs={12} sx={userAvatarContainer}>
                   <Avatar
                     alt={name}
                     src={displayPictureUrl}
@@ -271,9 +271,7 @@ const userBackgroundEditButton: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const userAvatarContainer: SxProps<Theme> = {
-  zIndex: 1,
-  transform: "translateY(-280%)",
-  height: "40px",
+  height: "30px",
 };
 
 const userDisplayPicturePreviewContainer: SxProps<Theme> = (theme: Theme) => ({
@@ -282,6 +280,8 @@ const userDisplayPicturePreviewContainer: SxProps<Theme> = (theme: Theme) => ({
 
 const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
   return {
+    zIndex: 1,
+    transform: "translateY(-85%)",
     width: 140,
     height: 140,
     fontSize: "4rem",

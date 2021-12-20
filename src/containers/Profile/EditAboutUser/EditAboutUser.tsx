@@ -12,6 +12,7 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { IUserProfilePatchApiRequest } from "../../../interfaces/api/external";
 import { useUserContext } from "../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
+import CustomButton from "../../../components/CustomButton";
 
 interface IEditAboutUserProps extends IModal {}
 
@@ -94,13 +95,13 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
           </Grid>
 
           <Grid>
-            <LoadingButton
-              color="primary"
-              variant="contained"
+            <CustomButton
               onClick={handleAboutSave}
+              loading={patchUserStatus === "loading"}
+              disabled={patchUserStatus === "loading"}
             >
               {LABELS.SAVE}
-            </LoadingButton>
+            </CustomButton>
           </Grid>
         </Grid>
       </ModalLayout>

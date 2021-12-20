@@ -28,6 +28,7 @@ import { getPublicUrlFromS3SignedUrl } from "../../../../utils/generic";
 import { USER_IMAGE_SELECTOR_ATTRIBUTES } from "../../../../constants/app";
 import { useUserContext } from "../../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../../contexts/SnackbarContext";
+import CustomButton from "../../../../components/CustomButton";
 
 const Input = styled("input")({
   display: "none",
@@ -56,18 +57,14 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     useState<IUserProfilePatchApiRequest>();
   const { accessToken, authUser } = useAuthContext();
 
-  const { status: s3PutImagetoS3Status, refetch: s3PutImagetoS3ApiTrigger } =
+  const { status: s3PutImageToS3Status, refetch: s3PutImageToS3ApiTrigger } =
     useQuery(
       `s3_upload_${imageType}`,
       () => putUserImageToS3(s3PutUrl as string, croppedImageBlob as Blob),
       { cacheTime: 0, enabled: !!s3PutUrl && !!croppedImageBlob }
     );
 
-  const {
-    data: patchUserData,
-    status: patchUserStatus,
-    error: patchUserError,
-  } = useQuery(
+  const { data: patchUserData, status: patchUserStatus } = useQuery(
     `ImageSelector: ${API_ENDPOINTS.USER_PROFILE.key}`,
     () =>
       patchUserProfile(
@@ -80,7 +77,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
 
   const {
     data: userSignedUrlData,
-    error: userSignedUrlError,
+    status: userSignedUrlStatus,
     refetch: userSignedUrlDataApiTrigger,
   } = useQuery(
     API_ENDPOINTS.USER_SIGNED_URL.key,
@@ -139,10 +136,10 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     if (userSignedUrlData) {
       setS3PutUrl(userSignedUrlData.data);
     }
-  }, [s3PutImagetoS3ApiTrigger, userSignedUrlData]);
+  }, [s3PutImageToS3ApiTrigger, userSignedUrlData]);
 
   useEffect(() => {
-    if (s3PutImagetoS3Status === "success") {
+    if (s3PutImageToS3Status === "success") {
       const patchUserReqBody: IUserProfilePatchApiRequest = {};
       const publicUrl = getPublicUrlFromS3SignedUrl(s3PutUrl as string);
       if (imageType === "background_image") {
@@ -152,14 +149,13 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
       }
       setPatchUserReq(patchUserReqBody);
     }
-  }, [s3PutImagetoS3Status, s3PutUrl, imageType]);
+  }, [s3PutImageToS3Status, s3PutUrl, imageType]);
 
   useEffect(() => {
     if (
-      s3PutImagetoS3Status === "error" ||
-      userSignedUrlError === "error" ||
-      patchUserStatus === "error" ||
-      patchUserError === "error"
+      s3PutImageToS3Status === "error" ||
+      userSignedUrlStatus === "error" ||
+      patchUserStatus === "error"
     ) {
       setSnackbar?.(() => ({
         message: LABELS.SAVE_FAILED,
@@ -247,13 +243,22 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
             </Grid>
             <Grid item>
               {activeImageUrl && (
-                <Button
-                  variant="contained"
-                  color="primary"
+                <CustomButton
+                  disabled={
+                    s3PutImageToS3Status === "loading" ||
+                    userSignedUrlStatus === "loading" ||
+                    patchUserStatus === "loading" ||
+                    !selectedImageUrl
+                  }
+                  loading={
+                    s3PutImageToS3Status === "loading" ||
+                    userSignedUrlStatus === "loading" ||
+                    patchUserStatus === "loading"
+                  }
                   onClick={handleApplyBtnClick}
                 >
                   {LABELS.USER_IMAGE_APPLY}
-                </Button>
+                </CustomButton>
               )}
             </Grid>
           </Grid>
