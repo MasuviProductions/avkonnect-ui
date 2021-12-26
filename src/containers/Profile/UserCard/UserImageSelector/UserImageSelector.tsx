@@ -47,15 +47,16 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   onModalClose,
   onSuccessfulUpload,
 }) => {
-  const { setSnackbar } = useSnackbarContext();
   const { setUser } = useUserContext();
+  const { setSnackbar } = useSnackbarContext();
+  const { accessToken, authUser } = useAuthContext();
+
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>();
   const [activeImageUrl, setActiveImageUrl] = useState<string>();
   const [croppedImageBlob, setCroppedImageBlob] = useState<Blob>();
   const [s3PutUrl, setS3PutUrl] = useState<string>();
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
-  const { accessToken, authUser } = useAuthContext();
 
   const { status: s3PutImageToS3Status, refetch: s3PutImageToS3ApiTrigger } =
     useQuery(

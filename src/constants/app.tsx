@@ -32,3 +32,20 @@ export const USER_IMAGE_SELECTOR_ATTRIBUTES: Record<
     fitType: "horizontal-cover",
   },
 };
+
+export const MAX_SKILL_LIMIT = 10;
+export const SKILLS_LIST = [
+  "Actor",
+  "Director",
+  "Script Writer",
+  "Art Director",
+  "Line Producer",
+  "Associate Producer",
+  "Executive Producer",
+  "Producer",
+  " Assistant Director",
+  "VFX Director",
+  "Editor",
+  "Assistant Editor",
+  "M Colorist",
+];

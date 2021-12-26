@@ -24,8 +24,7 @@ export const THEMES_LIST: ITheme[] = [
         },
         text: {
           primary: "#cacaca",
-          secondary: "",
-          disabled: "",
+          secondary: "#888888",
         },
         navbar: {
           main: "#282828",
@@ -51,6 +50,7 @@ export const THEMES_LIST: ITheme[] = [
         },
         text: {
           primary: "#0f2e42",
+          secondary: "#999999",
         },
         navbar: {
           main: "#222",

@@ -14,19 +14,13 @@ export interface IAuthUserApiResponse {
   name: string;
 }
 
-export interface IUserProfileConnectionApiModel {
-  isConnected: boolean;
-  isInitiatedByUser: boolean;
-  id: string;
-}
-
 export interface IUserProfileApiResponse {
   aboutUser: string;
-  following: string[];
+  followeeCount: number;
   displayPictureUrl: string;
   backgroundImageUrl: string;
-  followers: string[];
-  connections: IUserProfileConnectionApiModel[];
+  followerCount: number;
+  connectionCount: number;
   createdAt: number;
   email: string;
   name: string;
@@ -34,11 +28,10 @@ export interface IUserProfileApiResponse {
   currentPosition: string;
   headline: string;
   dateOfBirth: number;
-  skills: [];
+  skillsRefId: string;
   id: string;
   phone: string;
 }
-
 export type IUserProfilePatchApiRequest = Partial<
   Omit<
     IUserProfileApiResponse,
@@ -55,3 +48,22 @@ export type IUserProfilePatchApiRequest = Partial<
 export type IUserImageType = "background_image" | "display_picture";
 
 export type IUserUploadSignedUrlApiResponse = string;
+
+export interface IUserSkillEndorserApiModel {
+  rating: number;
+  relationWithUser: string;
+  endorserId: string;
+  name?: string;
+  displayPictureUrl?: string;
+  headline?: string;
+}
+export interface IUserSkillSetApiModel {
+  name: string;
+  endorsers: IUserSkillEndorserApiModel[];
+}
+export interface IUserSkillsApiResponse {
+  createdAt: Date;
+  id: string;
+  skillSets: IUserSkillSetApiModel[];
+  updatedAt: Date;
+}

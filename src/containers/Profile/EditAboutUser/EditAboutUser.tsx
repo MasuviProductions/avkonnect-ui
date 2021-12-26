@@ -1,7 +1,6 @@
 import { IModal } from "../../../components/ModalLayout/ModalLayout";
 import ModalLayout from "../../../components/ModalLayout";
 import { Grid, TextField, Theme, Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import { useEffect, useState } from "react";
 import { SxProps } from "@mui/system";
 import { LABELS } from "../../../constants/labels";
@@ -26,6 +25,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
   const [aboutUser, setAboutUser] = useState(user.aboutUser);
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
+
   const { data: patchUserData, status: patchUserStatus } = useQuery(
     `ImageSelector: ${API_ENDPOINTS.USER_PROFILE.key}`,
     () =>

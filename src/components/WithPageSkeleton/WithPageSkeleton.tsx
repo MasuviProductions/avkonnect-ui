@@ -27,7 +27,7 @@ const WithPageSkeleton: React.FC<any> = ({ children }) => {
         return routes[index].skeleton;
       }
     }
-    return <>{children}</>;
+    return <>Loading..</>;
   }
 
   return <>{children}</>;

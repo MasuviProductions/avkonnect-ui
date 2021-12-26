@@ -8,31 +8,26 @@ const AVCONNECT_URL = {
 
 const API_ENDPOINTS = {
   AUTH_USER: {
-    key: "auth/users",
+    key: "auth-user",
     url: `${AVCONNECT_URL.AUTH()}/user`,
   },
   COGNITO_TOKEN: {
-    key: "",
+    key: "auth-cognito-token",
     url: `https://${ENV.COGNITO_CLIENT_DOMAIN}/oauth2/token`,
   },
   USER_PROFILE: {
-    key: "",
+    key: "user-profile",
     url: (userId: string): string => `${AVCONNECT_URL.USERS()}/${userId}`,
   },
   USER_SIGNED_URL: {
-    key: "",
+    key: "user-signed-url",
     url: (userId: string): string =>
       `${AVCONNECT_URL.USERS()}/${userId}/signedURL`,
   },
-  USER_DISPLAY_PICTURE: {
-    key: "display-picture",
+  USER_SKILLS: {
+    key: "user-skills",
     url: (userId: string): string =>
-      `${AVCONNECT_URL.USERS()}/${userId}/displayPicture`,
-  },
-  USER_BACKGROUND_PICTURE: {
-    key: "background-picture",
-    url: (userId: string): string =>
-      `${AVCONNECT_URL.USERS()}/${userId}/backgroundPicture`,
+      `${AVCONNECT_URL.USERS()}/${userId}/skills`,
   },
 };
 

@@ -1,11 +1,11 @@
 import {
-  Box,
   Container,
   Grid,
   IconButton,
   Modal,
   Typography,
   Theme,
+  Breakpoint,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { SxProps, SystemStyleObject } from "@mui/system";
@@ -19,11 +19,13 @@ export interface IModal {
 export interface IModalLayoutProps extends IModal {
   title?: string;
   showTitleBorder?: boolean;
+  maxWidth?: false | Breakpoint;
 }
 const ModalLayout: React.FC<IModalLayoutProps> = ({
   children,
   title,
   showTitleBorder = true,
+  maxWidth = "md",
   showModal,
   onModalClose,
 }) => {
@@ -38,7 +40,7 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Container maxWidth="md" sx={modalContainer}>
+      <Container maxWidth={maxWidth} sx={modalContainer}>
         <LayoutCard>
           <Grid
             container
@@ -49,14 +51,12 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
             <Grid item>
               <Typography variant="h6">{title}</Typography>
             </Grid>
-
             <Grid item>
               <IconButton onClick={onModalClose} sx={closeButton}>
                 <CloseIcon />
               </IconButton>
             </Grid>
           </Grid>
-
           {children}
         </LayoutCard>
       </Container>
@@ -69,6 +69,11 @@ const modalContainer: SxProps<Theme> = (theme: Theme) => ({
   top: "15%",
   left: "50%",
   transform: "translate(-50%, -15%)",
+
+  [theme.breakpoints.down("sm")]: {
+    maxHeight: "90vh",
+    overflowY: "auto",
+  },
 });
 
 const closeButton: SxProps<Theme> = (theme: Theme) => ({

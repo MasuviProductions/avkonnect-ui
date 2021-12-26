@@ -31,28 +31,15 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   return (
     <>
       <LayoutCard>
+        <LayoutCard.Header title={LABELS.ABOUT_FIELD_LABEL}>
+          {user.isAuthUser && (
+            <IconButton sx={aboutCardEditBtn} onClick={handleAboutModalOpen}>
+              <EditIcon fontSize="medium" />
+            </IconButton>
+          )}
+        </LayoutCard.Header>
         <Container sx={aboutCardContainer}>
           <Grid container>
-            <Grid item xs={12}>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Typography variant="h6" py={1} fontWeight={400}>
-                    {LABELS.ABOUT_FIELD_LABEL}
-                  </Typography>
-                </Grid>
-                {user.isAuthUser && (
-                  <Grid item>
-                    <IconButton
-                      sx={aboutCardEditBtn}
-                      onClick={handleAboutModalOpen}
-                    >
-                      <EditIcon fontSize="medium" />
-                    </IconButton>
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-
             <Grid item xs={12} mt={1}>
               <ReadMore text={user.aboutUser} trimLen={380} />
             </Grid>
@@ -73,7 +60,7 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
 AboutCard.Skeleton = AboutCardSkeleton;
 
 const aboutCardContainer: SxProps<Theme> = {
-  paddingY: 3,
+  paddingBottom: 3,
 };
 
 const aboutCardEditBtn: SxProps<Theme> = (theme: Theme) => ({

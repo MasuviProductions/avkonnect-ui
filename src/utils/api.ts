@@ -5,6 +5,8 @@ import {
   IUserImageType,
   IUserProfileApiResponse,
   IUserProfilePatchApiRequest,
+  IUserSkillsApiResponse,
+  IUserSkillSetApiModel,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -80,4 +82,35 @@ export const putUserImageToS3 = async (
     })
     .then((res) => res.data);
   return userProfileResponse;
+};
+
+export const getUserSkills = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserSkillsApiResponse>> => {
+  const userSkillsResponse = await axios
+    .get<AVConnectApiResponse<IUserSkillsApiResponse>>(
+      API_ENDPOINTS.USER_SKILLS.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userSkillsResponse;
+};
+
+export const patchUserSkills = async (
+  accessToken: string,
+  userId: string,
+  skills: IUserSkillSetApiModel[]
+): Promise<AVConnectApiResponse<IUserSkillsApiResponse>> => {
+  const userSkillsResponse = await axios
+    .patch<
+      IUserSkillSetApiModel[],
+      AxiosResponse<AVConnectApiResponse<IUserSkillsApiResponse>>
+    >(API_ENDPOINTS.USER_SKILLS.url(userId), skills, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userSkillsResponse;
 };
