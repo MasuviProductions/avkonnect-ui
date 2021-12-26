@@ -69,11 +69,6 @@ const modalContainer: SxProps<Theme> = (theme: Theme) => ({
   top: "15%",
   left: "50%",
   transform: "translate(-50%, -15%)",
-
-  [theme.breakpoints.down("sm")]: {
-    maxHeight: "90vh",
-    overflowY: "auto",
-  },
 });
 
 const closeButton: SxProps<Theme> = (theme: Theme) => ({

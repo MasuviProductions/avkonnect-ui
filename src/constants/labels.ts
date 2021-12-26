@@ -29,5 +29,7 @@ export const LABELS = {
   ENDORSEMENT_AND: "and",
   ENDORSEMENT_CONNECTIONS: "connections",
   ADD_SKILL: "Add",
-  MAX_SKILL_LIMIT: "Maximum skill limit is",
+  MAX_SKILL_LIMIT: "Maximum number of skills you can add are",
+  SHOW_MORE_SKILLS: "Show more",
+  SHOW_LESS_SKILLS: "Show less",
 };

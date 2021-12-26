@@ -104,7 +104,7 @@ const AddSkills: React.FC<IAddSkillsProps> = ({
           <Grid item py={3}>
             <CustomButton
               loading={loading}
-              disabled={loading}
+              disabled={loading || selectedSkills.length <= 0}
               onClick={handleAddSkillClick}
             >
               {LABELS.SAVE}

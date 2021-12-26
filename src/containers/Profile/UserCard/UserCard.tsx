@@ -245,12 +245,18 @@ const UserCard: React.FC<IUserCardProps> = () => {
 
 const userBackgroundContainer: SxProps<Theme> = (theme: Theme) => ({
   position: "relative",
-  borderRight: `1px solid ${theme.palette.background.paper}`,
-  borderLeft: `1px solid ${theme.palette.background.paper}`,
-  borderTop: `1px solid ${theme.palette.background.paper}`,
-  borderRadius: "0.8rem 0.8rem 0 0",
-  img: {
+  [theme.breakpoints.up("sm")]: {
+    borderRight: `1px solid ${theme.palette.background.paper}`,
+    borderLeft: `1px solid ${theme.palette.background.paper}`,
+    borderTop: `1px solid ${theme.palette.background.paper}`,
     borderRadius: "0.8rem 0.8rem 0 0",
+    img: {
+      borderRadius: "0.8rem 0.8rem 0 0",
+    },
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    marginTop: -2,
   },
 });
 
@@ -289,6 +295,12 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
     backgroundColor: color,
     color: theme.palette.getContrastText(color),
     cursor: "pointer",
+
+    [theme.breakpoints.down("sm")]: {
+      transform: "translateY(-85%)",
+      width: 100,
+      height: 100,
+    },
   };
 };
 

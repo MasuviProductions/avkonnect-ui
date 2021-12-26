@@ -56,7 +56,12 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
         onModalClose={onModalClose}
         maxWidth="sm"
       >
-        <Grid container justifyContent="flex-end" p={3}>
+        <Grid
+          container
+          justifyContent="flex-end"
+          p={3}
+          sx={skillsEditContainer}
+        >
           <Grid item xs={12}>
             <Grid container>
               {updatedSkillsets.map((skill) => (
@@ -101,6 +106,11 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
     </>
   );
 };
+
+const skillsEditContainer: SxProps<Theme> = (theme: Theme) => ({
+  maxHeight: "80vh",
+  overflowY: "auto",
+});
 
 const skillsDeleteBtn: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.text.secondary,

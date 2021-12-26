@@ -33,6 +33,7 @@ export const USER_IMAGE_SELECTOR_ATTRIBUTES: Record<
   },
 };
 
+export const SKILL_ELLIPSE_LIMIT = 3;
 export const MAX_SKILL_LIMIT = 10;
 export const SKILLS_LIST = [
   "Actor",

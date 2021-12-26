@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { SxProps } from "@mui/system";
 import EditIcon from "@mui/icons-material/Edit";
+import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import SkillItem from "./SkillItem";
 import { useUserContext } from "../../../contexts/UserContext";
 import LayoutCard from "../../../components/LayoutCard";
@@ -22,16 +24,22 @@ import cloneDeep from "lodash.clonedeep";
 import AddSkills from "./AddSkills";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import EditSkills from "./EditSkills";
+import { SKILL_ELLIPSE_LIMIT } from "../../../constants/app";
 
 const SkillsCard: React.FC = () => {
   const { user } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
 
+  const [showMoreSkills, setShowMoreSkills] = useState<boolean>(false);
+  const [isShowMoreSkillsApplicable, setIsShowMoreSkillsApplicable] =
+    useState<boolean>(false);
   const [skillUnderUpdate, setSkillUnderUpdate] = useState<string>("");
   const [showAddSkillsModal, setShowAddSkillsModal] = useState<boolean>(false);
   const [showEditSkillsModal, setShowEditSkillsModal] =
     useState<boolean>(false);
+  const [userSkillsetsEllpised, setUserSkillsetsEllpised] =
+    useState<IUserSkillSetApiModel[]>();
   const [userSkillsets, setUserSkillsets] = useState<IUserSkillSetApiModel[]>();
   const [patchUserSkillReq, setPatchUserSkillReq] =
     useState<IUserSkillSetApiModel[]>();
@@ -128,6 +136,20 @@ const SkillsCard: React.FC = () => {
     setPatchUserSkillReq(skillsets);
   };
 
+  const handleShowLess = () => {
+    setShowMoreSkills(false);
+  };
+
+  const handleShowMore = () => {
+    setShowMoreSkills(true);
+  };
+
+  useEffect(() => {
+    setIsShowMoreSkillsApplicable(
+      !!(userSkillsets && userSkillsets.length > SKILL_ELLIPSE_LIMIT)
+    );
+  }, [userSkillsets]);
+
   useEffect(() => {
     if (getUserSkillsData?.data) {
       setUserSkillsets(
@@ -159,6 +181,20 @@ const SkillsCard: React.FC = () => {
     }
   }, [patchUserSkillsStatus, setSnackbar]);
 
+  useEffect(() => {
+    if (userSkillsets) {
+      if (isShowMoreSkillsApplicable) {
+        if (showMoreSkills) {
+          setUserSkillsetsEllpised(userSkillsets);
+        } else {
+          setUserSkillsetsEllpised(userSkillsets.slice(0, SKILL_ELLIPSE_LIMIT));
+        }
+      } else {
+        setUserSkillsetsEllpised(userSkillsets);
+      }
+    }
+  }, [isShowMoreSkillsApplicable, showMoreSkills, userSkillsets]);
+
   if (userSkillsets && userSkillsets.length <= 0 && authUser?.id !== user.id) {
     return <></>;
   }
@@ -188,7 +224,7 @@ const SkillsCard: React.FC = () => {
           )}
         </LayoutCard.Header>
         <Container sx={skillsLayoutCardContainer}>
-          {userSkillsets?.map((skillset) => (
+          {userSkillsetsEllpised?.map((skillset) => (
             <SkillItem
               key={skillset.name}
               customKey={skillset.name}
@@ -201,6 +237,28 @@ const SkillsCard: React.FC = () => {
             />
           ))}
         </Container>
+
+        {isShowMoreSkillsApplicable && (
+          <>
+            {showMoreSkills ? (
+              <Button onClick={handleShowLess} sx={showMoreOrLessButton}>
+                {LABELS.SHOW_LESS_SKILLS}
+                <ArrowCircleUpOutlinedIcon
+                  sx={showMoreOrLessIcon}
+                  fontSize="small"
+                />
+              </Button>
+            ) : (
+              <Button onClick={handleShowMore} sx={showMoreOrLessButton}>
+                {LABELS.SHOW_MORE_SKILLS}
+                <ArrowDropDownCircleOutlinedIcon
+                  sx={showMoreOrLessIcon}
+                  fontSize="small"
+                />
+              </Button>
+            )}
+          </>
+        )}
 
         {showAddSkillsModal && (
           <AddSkills
@@ -229,6 +287,15 @@ const SkillsCard: React.FC = () => {
 const skillsCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.text.primary,
   marginLeft: 2,
+});
+
+const showMoreOrLessButton: SxProps<Theme> = (theme: Theme) => ({
+  width: "100%",
+  padding: 2,
+});
+
+const showMoreOrLessIcon: SxProps<Theme> = (theme: Theme) => ({
+  marginX: 1,
 });
 
 const skillsLayoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
