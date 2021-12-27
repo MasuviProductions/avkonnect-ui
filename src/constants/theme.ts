@@ -46,7 +46,7 @@ export const THEMES_LIST: ITheme[] = [
         },
         background: {
           default: "#d2d2d2",
-          paper: "#ddd",
+          paper: "#fcfcfc",
         },
         text: {
           primary: "#0f2e42",
