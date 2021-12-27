@@ -2,6 +2,7 @@ import React from "react";
 import {
   Divider,
   Grid,
+  Hidden,
   IconButton,
   Link,
   Theme,
@@ -17,6 +18,7 @@ import { useUserContext } from "../../../../contexts/UserContext";
 import { IUserSkillSetApiModel } from "../../../../interfaces/api/external";
 import { LABELS } from "../../../../constants/labels";
 import SkillEndorsers from "./SkillEndorsers";
+import { useCallback } from "react";
 
 interface ISkillItemProps {
   skillset: IUserSkillSetApiModel;
@@ -43,6 +45,7 @@ const SkillItem: React.FC<ISkillItemProps> = ({
 
   const [hasUserEndorsed, setHasUserEndorsed] = useState<boolean>(false);
   const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
+  const [endorsementString, setEndorsementString] = useState<string>("");
 
   const handleShowSkillModalOpen = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -62,7 +65,7 @@ const SkillItem: React.FC<ISkillItemProps> = ({
     onAddEndorsement?.(customKey, skillset.name, 5, "NA");
   };
 
-  const getEndorsementString = (): string => {
+  const getEndorsementString = useCallback((): string => {
     if (skillset.endorsers.length <= 0) {
       return "";
     }
@@ -85,7 +88,11 @@ const SkillItem: React.FC<ISkillItemProps> = ({
         } ${LABELS.ENDORSEMENT_HAVE} ${LABELS.GIVEN_ENDORSEMENT}`;
       }
     }
-  };
+  }, [hasUserEndorsed, skillset.endorsers]);
+
+  useEffect(() => {
+    setEndorsementString(getEndorsementString());
+  }, [getEndorsementString]);
 
   useEffect(() => {
     setHasUserEndorsed(false);
@@ -143,9 +150,11 @@ const SkillItem: React.FC<ISkillItemProps> = ({
             )}
             <Grid item py={1}>
               <Link
-                href="#"
                 color="text.primary"
                 onClick={handleShowSkillModalOpen}
+                sx={skillField}
+                component="button"
+                disabled={skillset.endorsers.length <= 0}
               >
                 {skillset.name}
               </Link>
@@ -158,16 +167,26 @@ const SkillItem: React.FC<ISkillItemProps> = ({
                     color="text.secondary"
                     onClick={handleShowSkillModalOpen}
                     sx={skillEndorsementCount}
+                    component="button"
                   >{`\u2027 ${skillset.endorsers.length}`}</Link>
                 </Grid>
               )}
-              <Grid item xs={12}>
-                <Link color="text.secondary" onClick={handleShowSkillModalOpen}>
-                  <Typography variant="body2">
-                    {getEndorsementString()}
-                  </Typography>
-                </Link>
-              </Grid>
+              <Hidden smDown>
+                {endorsementString && (
+                  <Grid item xs={12}>
+                    <Link
+                      color="text.secondary"
+                      sx={skillEndorsementLinks}
+                      onClick={handleShowSkillModalOpen}
+                      component="button"
+                    >
+                      <Typography variant="body2">
+                        {endorsementString}
+                      </Typography>
+                    </Link>
+                  </Grid>
+                )}
+              </Hidden>
             </>
           </Grid>
         </Grid>
@@ -189,9 +208,28 @@ const SkillItem: React.FC<ISkillItemProps> = ({
   );
 };
 
-const skillEndorsementCount: SxProps<Theme> = (theme: Theme) => ({
-  marginLeft: 1,
+const skillEndorsementLinks: SxProps<Theme> = {
+  ":not(:hover)": {
+    textDecoration: "none",
+  },
+
+  "&[disabled]": {
+    textDecoration: "none",
+    cursor: "text",
+  },
+};
+
+const skillField: SxProps<Theme> = (theme: Theme) => ({
+  ...skillEndorsementLinks,
+  [theme.breakpoints.down("sm")]: {
+    fontWeight: "bold",
+  },
 });
+
+const skillEndorsementCount: SxProps<Theme> = {
+  ...skillEndorsementLinks,
+  marginLeft: 1,
+};
 
 const skillDivider: SxProps<Theme> = (theme: Theme) => ({
   backgroundColor: theme.palette.text.secondary,
