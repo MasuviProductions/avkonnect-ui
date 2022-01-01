@@ -9,7 +9,6 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
@@ -22,6 +21,7 @@ import EditAboutUser from "../EditAboutUser";
 import { LABELS } from "../../../constants/labels";
 import { useUserContext } from "../../../contexts/UserContext";
 import ModalLayout from "../../../components/ModalLayout";
+import ShareButton from "../../../components/ShareButton";
 
 interface IUserCardProps {}
 
@@ -144,15 +144,13 @@ const UserCard: React.FC<IUserCardProps> = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={8} md={6}>
-                  <Grid container alignContent="flex-end">
+                  <Grid container alignItems="center">
                     <Grid item>
                       <Typography variant="h5">{name}</Typography>
                     </Grid>
 
                     <Grid item px={1}>
-                      <Link href={`mailto:${email}`}>
-                        <EmailIcon fontSize="large" />
-                      </Link>
+                      <ShareButton title={name} />
                     </Grid>
                   </Grid>
                   <Typography variant="body1">{currentPosition}</Typography>

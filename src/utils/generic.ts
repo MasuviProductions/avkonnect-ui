@@ -2,6 +2,7 @@ import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { URLSearchParams } from "url";
+import { APP_ROUTES } from "../constants/app";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -14,10 +15,12 @@ export const handleServerSideAuthenticationRedirect = async <T>(
 ): Promise<GetServerSidePropsResult<T>> => {
   const session = await getSession(context);
 
+  const encodedResolvedRedirectRoute = encodeURI(context.resolvedUrl);
+
   if (!session)
     return {
       redirect: {
-        destination: "/sign-in",
+        destination: `${APP_ROUTES.SIGN_IN.route}?encodedResolvedRedirectRoute=${encodedResolvedRedirectRoute}`,
         permanent: false,
       },
     };

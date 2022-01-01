@@ -15,6 +15,10 @@ export const APP_ROUTES = {
     key: "profile",
     skeleton: <Profile.Skeleton />,
   },
+  SIGN_IN: {
+    route: "/sign-in",
+    key: "sign-in",
+  },
 };
 
 export const USER_IMAGE_SELECTOR_ATTRIBUTES: Record<

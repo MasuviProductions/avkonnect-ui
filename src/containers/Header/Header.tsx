@@ -7,19 +7,22 @@ import {
   ThemeOptions,
   Toolbar,
   Typography,
+  Theme,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useState } from "react";
+import { SxProps } from "@mui/system";
 import Link from "next/link";
 import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Head from "next/head";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../constants/app";
+import { Switch } from "@mui/material";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -43,7 +46,9 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   };
 
   const handleSignOut = () => {
-    signOut();
+    signOut({
+      callbackUrl: `${window.location.origin}${APP_ROUTES.SIGN_IN.route}`,
+    });
   };
 
   return (
@@ -56,7 +61,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
 
       <Container maxWidth="xl" sx={{ padding: 0 }}>
         <Toolbar>
-          <Link href="/" passHref>
+          <Link href={APP_ROUTES.ROOT.route} passHref>
             <Typography
               variant="h5"
               sx={{

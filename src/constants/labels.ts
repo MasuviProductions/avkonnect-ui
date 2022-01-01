@@ -3,6 +3,10 @@ export const LABELS = {
   SAVE: "Save",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
+  LOGIN_OR_REGISTER: "Login or register",
+  // Share Profile
+  SHARE_PROFILE: "Share profile",
+  COPY_PROFILE_LINK: "Copy profile link",
   // Image Upload Labels
   BACKGROUND_IMAGE_CROPPER_TITLE: "Background Image",
   DISPLAY_PICTURE_CROPPER_TITLE: "Display Picture",
