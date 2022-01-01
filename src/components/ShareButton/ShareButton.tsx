@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import { LABELS } from "../../constants/labels";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface IShareButtonProps {
   title?: string;
@@ -10,7 +10,7 @@ interface IShareButtonProps {
 }
 const ShareButton: React.FC<IShareButtonProps> = ({ title, url }) => {
   const shareTitle = title || LABELS.TITLE;
-  const shareUrl = url || window.location.href;
+  const [shareUrl, setShareUrl] = useState(url || "");
 
   const navigatorShareObj = useMemo(
     () => ({
@@ -27,6 +27,18 @@ const ShareButton: React.FC<IShareButtonProps> = ({ title, url }) => {
   const handleCopyClick = () => {
     navigator.clipboard.writeText(shareUrl);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!url) {
+        setShareUrl(window.location.href);
+      }
+    }
+  }, [url]);
+
+  if (typeof window === "undefined") {
+    return <></>;
+  }
 
   return (
     <>
