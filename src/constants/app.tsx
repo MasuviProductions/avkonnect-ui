@@ -18,6 +18,7 @@ export const APP_ROUTES = {
   SIGN_IN: {
     route: "/sign-in",
     key: "sign-in",
+    skeleton: <></>,
   },
 };
 

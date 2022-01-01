@@ -30,7 +30,7 @@ const ShareButton: React.FC<IShareButtonProps> = ({ title, url }) => {
 
   return (
     <>
-      {navigator.canShare(navigatorShareObj) ? (
+      {(navigator as any).canShare?.(navigatorShareObj) ? (
         <Tooltip title={LABELS.SHARE_PROFILE}>
           <IconButton color="secondary" onClick={handleShareClick}>
             <ShareIcon />
