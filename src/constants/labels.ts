@@ -1,5 +1,5 @@
 export const LABELS = {
-  TITLE: "AV",
+  TITLE: "AVConnect",
   SAVE: "Save",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
