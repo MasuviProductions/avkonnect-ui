@@ -42,14 +42,14 @@ export const THEMES_LIST: ITheme[] = [
           main: "#222",
         },
         secondary: {
-          main: "#0f2e42",
+          main: "#222",
         },
         background: {
           default: "#d2d2d2",
           paper: "#fefefe",
         },
         text: {
-          primary: "#0f2e42",
+          primary: "#222",
           secondary: "#999999",
         },
         navbar: {

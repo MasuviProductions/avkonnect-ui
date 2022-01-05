@@ -11,10 +11,11 @@ export const getQueryStringParams = (url: string): URLSearchParams => {
 
 export const handleServerSideAuthenticationRedirect = async <T>(
   context: any,
-  getSSRProps: (session: Session) => Promise<GetServerSidePropsResult<T>>
+  getSSRPropsCallback: (
+    session: Session
+  ) => Promise<GetServerSidePropsResult<T>>
 ): Promise<GetServerSidePropsResult<T>> => {
   const session = await getSession(context);
-
   const encodedResolvedRedirectRoute = encodeURI(context.resolvedUrl);
 
   if (!session)
@@ -24,11 +25,24 @@ export const handleServerSideAuthenticationRedirect = async <T>(
         permanent: false,
       },
     };
-  return await getSSRProps(session);
+  return await getSSRPropsCallback(session);
 };
 
 export const getPublicUrlFromS3SignedUrl = (s3SignedUrl: string): string => {
   return s3SignedUrl.split("?")[0] as string;
+};
+
+export const debounce = (
+  fn: (...args: any[]) => void,
+  delay: number | undefined = 300
+) => {
+  let timer: NodeJS.Timeout;
+  return (...args: any) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => fn(...args), delay);
+  };
 };
 
 export const usernameToColor = (string: string): string => {

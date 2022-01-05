@@ -1,9 +1,16 @@
 export const LABELS = {
-  TITLE: "AVConnect",
+  TITLE: "AV",
   SAVE: "Save",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
   LOGIN_OR_REGISTER: "Login or register",
+  // Search Users
+  SEARCH_RESULTS_FOR: "Search results for",
+  SEARCH_NO_RESULTS_FOR: "No results found for",
+  SEARCH_FOR: "Search for people",
+  SEARCH_TEXT: "Search for someone you know..",
+  SEARCH_NO_RESULTS: "No results found",
+  SEARCH_ALL_RESULTS: "View all results",
   // Share Profile
   SHARE_PROFILE: "Share profile",
   COPY_PROFILE_LINK: "Copy profile link",

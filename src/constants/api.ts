@@ -29,6 +29,11 @@ const API_ENDPOINTS = {
     url: (userId: string): string =>
       `${AVCONNECT_URL.USERS()}/${userId}/skills`,
   },
+  USERS_SEARCH: {
+    key: "users-search",
+    url: (queryString: string): string =>
+      `${AVCONNECT_URL.USERS()}${queryString}`,
+  },
 };
 
 export enum API_QUERY_KEYS {

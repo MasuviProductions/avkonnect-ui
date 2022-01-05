@@ -7,6 +7,7 @@ import {
   IUserProfilePatchApiRequest,
   IUserSkillsApiResponse,
   IUserSkillSetApiModel,
+  IUsersSearchApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -113,4 +114,24 @@ export const patchUserSkills = async (
     })
     .then((res) => res.data);
   return userSkillsResponse;
+};
+
+export const getUsersSearch = async (
+  accessToken: string,
+  searchString: string,
+  limit: number,
+  searchStartFrom?: string
+): Promise<AVConnectApiResponse<IUsersSearchApiResponse[]>> => {
+  const queryString = `?search=${searchString}&limit=${limit}&dDBAssistStartFromId=${
+    searchStartFrom || ""
+  }`;
+  const usersSearchResponse = await axios
+    .get<AVConnectApiResponse<IUsersSearchApiResponse[]>>(
+      API_ENDPOINTS.USERS_SEARCH.url(queryString),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return usersSearchResponse;
 };

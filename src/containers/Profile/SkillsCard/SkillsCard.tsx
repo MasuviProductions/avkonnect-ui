@@ -195,7 +195,7 @@ const SkillsCard: React.FC = () => {
     }
   }, [isShowMoreSkillsApplicable, showMoreSkills, userSkillsets]);
 
-  if (userSkillsets && userSkillsets.length <= 0 && authUser?.id !== user.id) {
+  if (authUser?.id !== user.id && userSkillsets && userSkillsets.length <= 0) {
     return <></>;
   }
 

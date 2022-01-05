@@ -4,15 +4,17 @@ import { compile } from "path-to-regexp";
 import Link from "next/link";
 import { APP_ROUTES } from "../../constants/app";
 import { usernameToColor } from "../../utils/generic";
+import { ReactFCWithSkeleton } from "../../interfaces/app";
+import UserMiniCardSkeleton from "./UserMiniCardSkeleton";
 
-interface IUserStripProps {
+interface IUserMiniCardProps {
   id: string;
   name: string;
   headline: string;
   displayPictureUrl: string;
 }
 
-const UserStrip: React.FC<IUserStripProps> = ({
+const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
   id,
   name,
   headline,
@@ -44,6 +46,7 @@ const UserStrip: React.FC<IUserStripProps> = ({
     </Link>
   );
 };
+UserMiniCard.Skeleton = UserMiniCardSkeleton;
 
 const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
   return {
@@ -60,4 +63,4 @@ const userStripContainer: SxProps<Theme> = (theme: Theme) => ({
   cursor: "pointer",
 });
 
-export default UserStrip;
+export default UserMiniCard;

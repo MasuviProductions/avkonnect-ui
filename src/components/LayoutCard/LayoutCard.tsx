@@ -1,14 +1,22 @@
 import { Container, Grid, Theme } from "@mui/material";
-import { SxProps } from "@mui/system";
+import { SxProps, SystemStyleObject } from "@mui/system";
 import LayoutCardHeader, { ILayoutCartHeader } from "./LayoutCardHeader";
 
-interface ILayoutCardProps {}
+interface ILayoutCardProps {
+  withBorder?: boolean;
+}
 
 const LayoutCard: React.FC<ILayoutCardProps> & {
   Header: React.FC<ILayoutCartHeader>;
-} = ({ children }) => {
+} = ({ children, withBorder = false }) => {
+  const handleLayoutCartContainerSx = (
+    theme: Theme
+  ): SystemStyleObject<Theme> => {
+    return layoutCardContainer(theme, withBorder);
+  };
+
   return (
-    <Container fixed sx={layoutCardContainer} disableGutters>
+    <Container fixed sx={handleLayoutCartContainerSx} disableGutters>
       {children}
     </Container>
   );
@@ -16,11 +24,14 @@ const LayoutCard: React.FC<ILayoutCardProps> & {
 
 LayoutCard.Header = LayoutCardHeader;
 
-const layoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
+const layoutCardContainer = (
+  theme: Theme,
+  isBorder: boolean
+): SystemStyleObject<Theme> => ({
   borderRadius: "0.8rem",
   backgroundColor: theme.palette.background.paper,
   position: "relative",
-
+  border: isBorder ? `1px solid ${theme.palette.grey[800]}` : undefined,
   [theme.breakpoints.down("sm")]: {
     borderRadius: "0",
   },

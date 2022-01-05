@@ -2,10 +2,16 @@ export interface AVConnectApiResponseError {
   message: string;
   code: string;
 }
+
+export interface AVConnectApiResponseDDBPagination {
+  nextSearchStartFromId?: string;
+  count: number;
+}
 export interface AVConnectApiResponse<T> {
   success: boolean;
   data?: T;
   error?: AVConnectApiResponseError;
+  dDBPagination?: AVConnectApiResponseDDBPagination;
 }
 
 export interface IAuthUserApiResponse {
@@ -66,4 +72,11 @@ export interface IUserSkillsApiResponse {
   id: string;
   skillSets: IUserSkillSetApiModel[];
   updatedAt: Date;
+}
+
+export interface IUsersSearchApiResponse {
+  headline: string;
+  displayPictureUrl: string;
+  id: string;
+  name: string;
 }

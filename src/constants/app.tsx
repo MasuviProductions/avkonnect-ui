@@ -2,6 +2,7 @@ import { IUserImageType } from "../interfaces/api/external";
 import { IImageSelectorAttrib } from "../interfaces/app";
 import Home from "../pages";
 import Profile from "../pages/profile/[id]";
+import Search from "../pages/search";
 import { LABELS } from "./labels";
 
 export const APP_ROUTES = {
@@ -19,6 +20,11 @@ export const APP_ROUTES = {
     route: "/sign-in",
     key: "sign-in",
     skeleton: <></>,
+  },
+  SEARCH: {
+    route: "/search\\?key=:key",
+    key: "search",
+    skeleton: <Search.Skeleton />,
   },
 };
 
@@ -55,3 +61,5 @@ export const SKILLS_LIST = [
   "Assistant Editor",
   "M Colorist",
 ];
+
+export const MAX_SEARCH_DROPDOWN_LIMIT = 5;

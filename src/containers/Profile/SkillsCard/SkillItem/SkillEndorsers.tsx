@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import ModalLayout, {
   IModalLayoutProps,
 } from "../../../../components/ModalLayout/ModalLayout";
-import UserStrip from "../../../../components/UserStrip";
+import UserMiniCard from "../../../../components/UserMiniCard";
 import { IUserSkillEndorserApiModel } from "../../../../interfaces/api/external";
 
 interface ISkillEndorsersProps extends IModalLayoutProps {
@@ -26,7 +26,7 @@ const SkillEndorsers: React.FC<ISkillEndorsersProps> = ({
       >
         {endorsers.map((endorser) => (
           <Box key={endorser.endorserId} p={2}>
-            <UserStrip
+            <UserMiniCard
               id={endorser.endorserId}
               name={endorser.name as string}
               headline={endorser.headline as string}
