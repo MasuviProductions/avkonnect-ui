@@ -100,13 +100,13 @@ export const getUserSkills = async (
   return userSkillsResponse;
 };
 
-export const patchUserSkills = async (
+export const putUserSkills = async (
   accessToken: string,
   userId: string,
   skills: IUserSkillSetApiModel[]
 ): Promise<AVConnectApiResponse<IUserSkillsApiResponse>> => {
   const userSkillsResponse = await axios
-    .patch<
+    .put<
       IUserSkillSetApiModel[],
       AxiosResponse<AVConnectApiResponse<IUserSkillsApiResponse>>
     >(API_ENDPOINTS.USER_SKILLS.url(userId), skills, {

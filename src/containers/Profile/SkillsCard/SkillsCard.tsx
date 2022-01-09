@@ -17,7 +17,7 @@ import { useUserContext } from "../../../contexts/UserContext";
 import LayoutCard from "../../../components/LayoutCard";
 import { LABELS } from "../../../constants/labels";
 import API_ENDPOINTS from "../../../constants/api";
-import { getUserSkills, patchUserSkills } from "../../../utils/api";
+import { getUserSkills, putUserSkills } from "../../../utils/api";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { IUserSkillSetApiModel } from "../../../interfaces/api/external";
 import cloneDeep from "lodash.clonedeep";
@@ -62,7 +62,7 @@ const SkillsCard: React.FC = () => {
   } = useQuery(
     `${API_ENDPOINTS.USER_SKILLS.key}${user.id}`,
     () =>
-      patchUserSkills(
+      putUserSkills(
         accessToken as string,
         user?.id as string,
         patchUserSkillReq as IUserSkillSetApiModel[]
