@@ -14,6 +14,24 @@ type IProjectTextFields =
   | "name"
   | "role";
 
+export const INDUSTRY_FIELDS = [
+  "Film",
+  "Music",
+  "News",
+  "Video Game",
+  "Event",
+  "Marketing and Influential",
+];
+
+export const EMPLOYMENT_TYPE_FIELDS = [
+  "Full-time",
+  "Part-time",
+  "Self-employed",
+  "Freelance",
+  "Internship",
+  "Trainee",
+];
+
 const PROJECT_TEXT_FIELDS_CONFIG: Record<IProjectTextFields, ITextFieldConfig> =
   {
     companyName: {
@@ -30,21 +48,13 @@ const PROJECT_TEXT_FIELDS_CONFIG: Record<IProjectTextFields, ITextFieldConfig> =
       label: LABELS.PROJECT_EMPLOYMENT_TYPE,
       id: "employmentType",
       limitations: [{ regex: /.{0,15}/ }],
-      options: [
-        { label: "Fulltime", value: "Fulltime" },
-        { label: "Intern", value: "Intern" },
-      ],
+      options: EMPLOYMENT_TYPE_FIELDS,
     },
     industry: {
       label: LABELS.PROJECT_INDUSTRY,
       id: "industry",
-      limitations: [{ regex: /.{0,15}/ }],
-      options: [
-        { label: "Film", value: "Film" },
-        { label: "Music", value: "Music" },
-        { label: "Video Game", value: "Video Game" },
-        { label: "Dance", value: "Dance" },
-      ],
+      limitations: [{ regex: /.{0,25}/ }],
+      options: INDUSTRY_FIELDS,
     },
     name: {
       label: LABELS.PROJECT_NAME,

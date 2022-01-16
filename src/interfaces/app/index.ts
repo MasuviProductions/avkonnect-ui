@@ -43,25 +43,21 @@ export interface ITextFieldPattern {
   messageType?: "warning" | "error";
 }
 
-export interface ITextFieldOption {
-  label: string;
-  value: string;
-}
 export interface ITextFieldConfig {
   label: string;
   id: string;
   validations?: ITextFieldPattern[];
   limitations?: ITextFieldPattern[];
-  options?: Readonly<ITextFieldOption[]>;
-  intialValue?: string | ITextFieldOption;
+  options?: Readonly<string[]>;
+  intialValue?: string;
 }
 
 export interface ITextField {
   label: string;
-  value: string | ITextFieldOption;
+  value: string;
   message?: string;
   messageType?: string;
-  options?: Readonly<ITextFieldOption[]>;
+  options?: Readonly<string[]>;
 }
 
 export interface ITextFieldValidity {

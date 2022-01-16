@@ -1,9 +1,5 @@
 import { ChangeEvent, SyntheticEvent, useCallback, useState } from "react";
-import {
-  ITextField,
-  ITextFieldConfig,
-  ITextFieldOption,
-} from "../interfaces/app";
+import { ITextField, ITextFieldConfig } from "../interfaces/app";
 import {
   getFieldValidity,
   isFieldValueLimited,
@@ -17,7 +13,7 @@ interface ITextFieldsWithValidation<T extends string> {
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       | SyntheticEvent<Element, Event>,
     field: T,
-    optionValue?: ITextFieldOption | null
+    optionValue?: string | null
   ) => void;
   onFieldValueBlur: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -38,7 +34,7 @@ const useTextFieldsWithValidation = <T extends string>(
         | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         | SyntheticEvent<Element, Event>,
       field: T,
-      optionValue?: ITextFieldOption | null
+      optionValue?: string | null
     ) => {
       if (fieldsConfig[field as T].options) {
         setTextFields((prev) => ({

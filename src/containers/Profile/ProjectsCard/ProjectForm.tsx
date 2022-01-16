@@ -17,6 +17,8 @@ import {
   PROJECT_TEXT_FIELDS_CONFIG,
   IProjectTextFields,
   PROJECT_DATE_RANGE_FIELDS_CONFIG,
+  INDUSTRY_FIELDS,
+  EMPLOYMENT_TYPE_FIELDS,
 } from "../../../constants/forms/project";
 import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
@@ -25,7 +27,6 @@ import {
   IDateRangeFieldConfig,
   IDateRangeType,
   ITextFieldConfig,
-  ITextFieldOption,
 } from "../../../interfaces/app";
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
@@ -47,18 +48,10 @@ const getInitialProjectTextFieldValues = (
   projectTextFieldsConfig.companyName.intialValue = project?.companyName;
   projectTextFieldsConfig.description.intialValue = project?.description;
   projectTextFieldsConfig.role.intialValue = project?.role;
-  projectTextFieldsConfig.industry.intialValue = project?.industry
-    ? {
-        label: project?.industry,
-        value: project?.industry,
-      }
-    : "";
-  projectTextFieldsConfig.employmentType.intialValue = project?.employmentType
-    ? {
-        label: project?.employmentType,
-        value: project?.employmentType,
-      }
-    : "";
+  projectTextFieldsConfig.industry.intialValue =
+    project?.industry || INDUSTRY_FIELDS[0];
+  projectTextFieldsConfig.employmentType.intialValue =
+    project?.employmentType || EMPLOYMENT_TYPE_FIELDS[0];
   return projectTextFieldsConfig;
 };
 
@@ -107,10 +100,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
       companyName: textFields.companyName.value as string,
       collaboratorsRefs: [],
       description: textFields.description.value as string,
-      employmentType: (textFields.employmentType.value as ITextFieldOption)
-        .value,
+      employmentType: textFields.employmentType.value,
       endDate: dateValues.to.value?.valueOf() as number,
-      industry: (textFields.industry.value as ITextFieldOption).value,
+      industry: textFields.industry.value,
       name: textFields.name.value as string,
       role: textFields.role.value as string,
       startDate: dateValues.from.value?.valueOf() as number,
@@ -160,10 +152,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         <Grid item xs={12} md={6}>
           <Autocomplete
             disablePortal
-            value={textFields.industry.value as ITextFieldOption}
-            options={
-              textFields.industry.options as Readonly<ITextFieldOption[]>
-            }
+            value={textFields.industry.value}
+            options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
             renderInput={(params) => (
               <TextField
@@ -193,10 +183,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
         <Grid item xs={12} md={6}>
           <Autocomplete
             disablePortal
-            value={textFields.employmentType.value as ITextFieldOption}
-            options={
-              textFields.employmentType.options as Readonly<ITextFieldOption[]>
-            }
+            value={textFields.employmentType.value}
+            options={textFields.employmentType.options as Readonly<string[]>}
             sx={textField}
             renderInput={(params) => (
               <TextField
