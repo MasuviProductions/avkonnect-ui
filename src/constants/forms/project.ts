@@ -18,9 +18,10 @@ export const INDUSTRY_FIELDS = [
   "Film",
   "Music",
   "News",
-  "Video Game",
+  "eSports",
   "Event",
   "Marketing and Influential",
+  "Public Relations",
 ];
 
 export const EMPLOYMENT_TYPE_FIELDS = [
