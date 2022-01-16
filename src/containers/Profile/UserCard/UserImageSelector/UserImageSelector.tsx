@@ -221,7 +221,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
               color="error"
               onClick={handleRemoveBtnClick}
             >
-              {LABELS.USER_IMAGE_REMOVE}
+              {LABELS.REMOVE}
             </Button>
           )}
         </Grid>

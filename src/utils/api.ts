@@ -8,6 +8,8 @@ import {
   IUserSkillsApiResponse,
   IUserSkillSetApiModel,
   IUsersSearchApiResponse,
+  IUserProjectsApiResponse,
+  IUserProjectApiModel,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -114,6 +116,37 @@ export const putUserSkills = async (
     })
     .then((res) => res.data);
   return userSkillsResponse;
+};
+
+export const getUserProjects = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserProjectsApiResponse>> => {
+  const userProjectsResponse = await axios
+    .get<AVConnectApiResponse<IUserProjectsApiResponse>>(
+      API_ENDPOINTS.USER_PROJECTS.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userProjectsResponse;
+};
+
+export const putUserProjects = async (
+  accessToken: string,
+  userId: string,
+  projects: IUserProjectApiModel[]
+): Promise<AVConnectApiResponse<IUserProjectsApiResponse>> => {
+  const userProjectsResponse = await axios
+    .put<
+      IUserProjectApiModel[],
+      AxiosResponse<AVConnectApiResponse<IUserProjectsApiResponse>>
+    >(API_ENDPOINTS.USER_PROJECTS.url(userId), projects, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userProjectsResponse;
 };
 
 export const getUsersSearch = async (

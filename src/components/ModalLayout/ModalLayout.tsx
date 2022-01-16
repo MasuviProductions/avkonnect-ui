@@ -57,7 +57,13 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
               </IconButton>
             </Grid>
           </Grid>
-          {children}
+          <Grid item xs={12} py={1}>
+            <Grid container>
+              <Grid item xs={12} sx={childContainer}>
+                {children}
+              </Grid>
+            </Grid>
+          </Grid>
         </LayoutCard>
       </Container>
     </Modal>
@@ -84,6 +90,11 @@ const headerContainer = (
   borderBottom: `1px solid ${
     showBorder ? theme.palette.grey[700] : "transparent"
   }`,
+});
+
+const childContainer: SxProps<Theme> = (theme: Theme) => ({
+  maxHeight: "75vh",
+  overflow: "auto",
 });
 
 export default ModalLayout;

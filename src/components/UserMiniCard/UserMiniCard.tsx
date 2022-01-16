@@ -12,6 +12,7 @@ interface IUserMiniCardProps {
   name: string;
   headline: string;
   displayPictureUrl: string;
+  onlyThumbnail?: boolean;
 }
 
 const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
@@ -19,9 +20,10 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
   name,
   headline,
   displayPictureUrl,
+  onlyThumbnail = false,
 }) => {
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
-    return userAvatar(theme, usernameToColor(name));
+    return userAvatar(theme, usernameToColor(name), onlyThumbnail);
   };
 
   return (
@@ -32,26 +34,32 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
             {name[0]}
           </Avatar>
         </Grid>
-        <Grid item>
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant="body2">{name}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body2"> {headline || "--"}</Typography>
+        {!onlyThumbnail && (
+          <Grid item>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography variant="body2">{name}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body2"> {headline || "--"}</Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
     </Link>
   );
 };
 UserMiniCard.Skeleton = UserMiniCardSkeleton;
 
-const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
+const userAvatar = (
+  theme: Theme,
+  color: string,
+  isMini: boolean
+): SystemStyleObject<Theme> => {
   return {
-    width: 55,
-    height: 55,
+    width: isMini ? 40 : 55,
+    height: isMini ? 40 : 55,
     fontSize: "1rem",
     border: `1px solid ${theme.palette.background.default}`,
     backgroundColor: color,
