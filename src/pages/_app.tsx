@@ -19,6 +19,8 @@ import AuthContextProvider from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
 import WithPageSkeleton from "../components/WithPageSkeleton/WithPageSkeleton";
 import SnackbarProvider from "../contexts/SnackbarContext";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDayjs from "@mui/lab/AdapterDayjs";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -46,12 +48,14 @@ const MyApp = ({
           <SessionProvider session={pageProps.session}>
             <AuthContextProvider>
               <SnackbarProvider>
-                <Header onThemeSelect={onThemeSelect} />
-                <Container maxWidth="lg" sx={containerSx}>
-                  <WithPageSkeleton>
-                    <Component {...pageProps} />
-                  </WithPageSkeleton>
-                </Container>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Header onThemeSelect={onThemeSelect} />
+                  <Container maxWidth="lg" sx={containerSx}>
+                    <WithPageSkeleton>
+                      <Component {...pageProps} />
+                    </WithPageSkeleton>
+                  </Container>
+                </LocalizationProvider>
               </SnackbarProvider>
             </AuthContextProvider>
           </SessionProvider>

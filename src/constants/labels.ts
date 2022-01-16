@@ -1,9 +1,11 @@
 export const LABELS = {
   TITLE: "AVConnect",
   SAVE: "Save",
+  REMOVE: "Remove",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
   LOGIN_OR_REGISTER: "Login or register",
+  PRESENT_DATE: "Present",
   // Search Users
   SEARCH_RESULTS_FOR: "Search results for",
   SEARCH_NO_RESULTS_FOR: "No results found for",
@@ -21,7 +23,6 @@ export const LABELS = {
   USER_IMAGE_CHOOSE_IMAGE: "Choose Image",
   USER_IMAGE_CHANGE_IMAGE: "Change Image",
   USER_IMAGE_APPLY: "Apply",
-  USER_IMAGE_REMOVE: "Remove",
   // About User labels
   ADD_SUMMARY: "Add Summary",
   ABOUT_FIELD_LABEL: "About",
@@ -43,4 +44,26 @@ export const LABELS = {
   MAX_SKILL_LIMIT: "Maximum number of skills you can add are",
   SHOW_MORE_SKILLS: "Show more",
   SHOW_LESS_SKILLS: "Show less",
+  // User Experiences Labels
+  COMPANY_NAME_FIELD_LABEL: "Company Name",
+  COMPANY_DESCRIPTION_LABEL: "Description",
+  EMPLOYMENT_TYPE: "Employment Type",
+  END_DATE: "End Date",
+  START_DATE: "Start Date",
+  EXPERIENCE_INDUSTRY: "Industry",
+  EXPERIENCE_ROLE: "Role",
+  // User Projects Labels
+  PROJECTS_TITLE: "Projects",
+  ADD_PROJECT: "Add project",
+  EDIT_PROJECT: "Edit Project",
+  PROJECT_COLLOBORATORS: "Other Collaborators",
+  PROJECT_COMPANY_NAME: "Company Name",
+  PROJECT_DESCRIPTION: "Description",
+  PROJECT_INDUSTRY: "Industry",
+  PROJECT_ROLE: "Role",
+  PROJECT_NAME: "Project Name",
+  PROJECT_EMPLOYMENT_TYPE: "Employment Type",
+  PROJECT_ONGOING: "Ongoing Project",
+  PROJECT_START_DATE: "Start Date",
+  PROJECT_END_DATE: "End Date",
 };

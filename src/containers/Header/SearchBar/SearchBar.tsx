@@ -179,7 +179,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
             <Box sx={searchDropdownContainer}>
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {userSearchData.map((user, index) => (
+                  {userSearchData.map((user) => (
                     <Grid item xs={12} key={user.id} p={1}>
                       <SearchedUserItem
                         id={user.id}

@@ -6,11 +6,13 @@ interface ICustomBtnProps {
   loading?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  dangerBtn?: boolean;
 }
 
 const CustomButton: React.FC<ICustomBtnProps> = ({
   loading = false,
   disabled = false,
+  dangerBtn = false,
   onClick,
   children,
 }) => {
@@ -28,6 +30,7 @@ const CustomButton: React.FC<ICustomBtnProps> = ({
       sx={handleLoadingBtnSx}
       disabled={disabled}
       onClick={onClick}
+      color={dangerBtn ? "error" : undefined}
     >
       {loading && <CircularProgress size="16px" sx={handleSpinnerSx} />}
       {children}

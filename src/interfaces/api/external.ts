@@ -35,6 +35,7 @@ export interface IUserProfileApiResponse {
   headline: string;
   dateOfBirth: number;
   skillsRefId: string;
+  projectsRefId: string;
   id: string;
   phone: string;
 }
@@ -74,9 +75,32 @@ export interface IUserSkillsApiResponse {
   updatedAt: Date;
 }
 
-export interface IUsersSearchApiResponse {
+export interface IUserAvatarApiModel {
+  email: string;
   headline: string;
   displayPictureUrl: string;
   id: string;
   name: string;
 }
+
+export interface IUserProjectApiModel {
+  companyName: string;
+  collaboratorsRefs: string[];
+  collaborators?: IUserAvatarApiModel[];
+  description: string;
+  employmentType: string;
+  endDate: number;
+  industry: string;
+  name: string;
+  role: string;
+  startDate: number;
+}
+
+export interface IUserProjectsApiResponse {
+  createdAt: Date;
+  id: string;
+  projects: IUserProjectApiModel[];
+  updatedAt: Date;
+}
+
+export type IUsersSearchApiResponse = IUserAvatarApiModel;

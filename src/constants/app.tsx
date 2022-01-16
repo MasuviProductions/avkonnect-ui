@@ -62,4 +62,9 @@ export const SKILLS_LIST = [
   "M Colorist",
 ];
 
+export const PROJECTS_ELLIPSE_LIMIT = 2;
+export const MAX_PROJECTS_LIMIT = 8;
+
+export const MAX_DATE = 8640000000000000;
+
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;

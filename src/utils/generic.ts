@@ -53,7 +53,7 @@ export const usernameToColor = (string: string): string => {
   let color = "#";
   for (let index = 0; index < 3; index += 1) {
     const value = (hash >> (index * 8)) & 0xff;
-    color += `00${value.toString(16)}`.substr(-2);
+    color += `00${value.toString(16)}`.slice(-2);
   }
   return color;
 };
