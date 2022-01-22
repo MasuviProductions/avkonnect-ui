@@ -6,6 +6,8 @@ export const LABELS = {
   SAVE_FAILED: "Something went wrong while saving",
   LOGIN_OR_REGISTER: "Login or register",
   PRESENT_DATE: "Present",
+  SHOW_MORE: "Show more",
+  SHOW_LESS: "Show less",
   // Search Users
   SEARCH_RESULTS_FOR: "Search results for",
   SEARCH_NO_RESULTS_FOR: "No results found for",
@@ -23,6 +25,7 @@ export const LABELS = {
   USER_IMAGE_CHOOSE_IMAGE: "Choose Image",
   USER_IMAGE_CHANGE_IMAGE: "Change Image",
   USER_IMAGE_APPLY: "Apply",
+
   // About User labels
   ADD_SUMMARY: "Add Summary",
   ABOUT_FIELD_LABEL: "About",
@@ -30,6 +33,7 @@ export const LABELS = {
   ABOUT_HEADLINE: "Lets add a few words about you",
   ABOUT_PLACEHOLDER:
     "You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.",
+
   // User Skills Labels
   SKILLS_TITLE: "Skills",
   ADD_SKILLS: "Add Skills",
@@ -42,16 +46,22 @@ export const LABELS = {
   ENDORSEMENT_CONNECTIONS: "connections",
   ADD_SKILL: "Add",
   MAX_SKILL_LIMIT: "Maximum number of skills you can add are",
-  SHOW_MORE_SKILLS: "Show more",
-  SHOW_LESS_SKILLS: "Show less",
+
   // User Experiences Labels
-  COMPANY_NAME_FIELD_LABEL: "Company Name",
-  COMPANY_DESCRIPTION_LABEL: "Description",
-  EMPLOYMENT_TYPE: "Employment Type",
-  END_DATE: "End Date",
-  START_DATE: "Start Date",
+  EXPERIENCES_TITLE: "Experiences",
+  ADD_EXPERIENCE: "Add experience",
+  EDIT_EXPERIENCE: "Edit experience",
+  EXPERIENCE_COLLOBORATORS: "Other Collaborators",
+  EXPERIENCE_COMPANY_NAME: "Company Name",
+  EXPERIENCE_DESCRIPTION: "Description",
   EXPERIENCE_INDUSTRY: "Industry",
   EXPERIENCE_ROLE: "Role",
+  EXPERIENCE_NAME: "Company Name",
+  EXPERIENCE_EMPLOYMENT_TYPE: "Employment Type",
+  EXPERIENCE_ONGOING: "Presently working here",
+  EXPERIENCE_START_DATE: "Start Date",
+  EXPERIENCE_END_DATE: "End Date",
+
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
@@ -66,4 +76,17 @@ export const LABELS = {
   PROJECT_ONGOING: "Ongoing Project",
   PROJECT_START_DATE: "Start Date",
   PROJECT_END_DATE: "End Date",
+
+  // User Certifications Labels
+  CERTIFICATIONS_TITLE: "Certifications",
+  ADD_CERTIFICATION: "Add certification",
+  EDIT_CERTIFICATION: "Edit certification",
+  CERTIFICATION_ISSUER_NAME: "Issuer",
+  CERTIFICATION_DESCRIPTION: "Description",
+  CERTIFICATION_INDUSTRY: "Industry",
+  CERTIFICATION_NAME: "Certification Name",
+  CERTIFICATION_LINK: "Certification Link",
+  CERTIFICATION_NO_EXPIRY: "No expiry",
+  CERTIFICATION_ISSUE_DATE: "Issue Date",
+  CERTIFICATION_EXPIRY_DATE: "Expiry Date",
 };

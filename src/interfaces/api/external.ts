@@ -103,4 +103,39 @@ export interface IUserProjectsApiResponse {
   updatedAt: Date;
 }
 
+export interface IUserExperienceApiModel {
+  companyName: string;
+  description: string;
+  employmentType: string;
+  endDate: number;
+  industry: string;
+  role: string;
+  startDate: number;
+}
+
+export interface IUserExperiencesApiResponse {
+  createdAt: Date;
+  id: string;
+  experiences: IUserExperienceApiModel[];
+  updatedAt: Date;
+}
+
+export interface IUserCertificationApiModel {
+  name: string;
+  issuerName: string;
+  description: string;
+  issuedAt: number;
+  expiresAt: number;
+  industry: string;
+  photoUrl: string;
+  link: string;
+}
+
+export interface IUserCertificationsApiResponse {
+  createdAt: Date;
+  id: string;
+  certifications: IUserCertificationApiModel[];
+  updatedAt: Date;
+}
+
 export type IUsersSearchApiResponse = IUserAvatarApiModel;
