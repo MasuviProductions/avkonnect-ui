@@ -33,7 +33,7 @@ const ProjectsCard: React.FC = () => {
   const [userProjectsEllpised, setUserProjectsEllpised] =
     useState<IUserProjectApiModel[]>();
   const [userProjects, setUserProjects] = useState<IUserProjectApiModel[]>();
-  const [patchUserProjectsReq, setPatchUserProjectsReq] =
+  const [putUserProjectsReq, setPatchUserProjectsReq] =
     useState<IUserProjectApiModel[]>();
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number>(-1);
   const [projectRemoving, setProjectRemoving] = useState<boolean>(false);
@@ -48,10 +48,10 @@ const ProjectsCard: React.FC = () => {
   );
 
   const {
-    data: patchUserProjectsData,
-    error: patchUserProjectsError,
-    status: patchUserProjectsStatus,
-    isFetching: patchUserProjectsFetching,
+    data: putUserProjectsData,
+    error: putUserProjectsError,
+    status: putUserProjectsStatus,
+    isFetching: putUserProjectsFetching,
     refetch: triggerPatchUserProjectsApi,
   } = useQuery(
     `${API_ENDPOINTS.USER_PROJECTS.key}${user.id}`,
@@ -59,7 +59,7 @@ const ProjectsCard: React.FC = () => {
       putUserProjects(
         accessToken as string,
         user?.id as string,
-        patchUserProjectsReq as IUserProjectApiModel[]
+        putUserProjectsReq as IUserProjectApiModel[]
       ),
     { enabled: false, cacheTime: 0 }
   );
@@ -127,28 +127,28 @@ const ProjectsCard: React.FC = () => {
   }, [getUserProjectsData?.data]);
 
   useEffect(() => {
-    if (patchUserProjectsReq) {
+    if (putUserProjectsReq) {
       triggerPatchUserProjectsApi();
     }
-  }, [patchUserProjectsReq, triggerPatchUserProjectsApi]);
+  }, [putUserProjectsReq, triggerPatchUserProjectsApi]);
 
   useEffect(() => {
-    if (patchUserProjectsData?.data) {
-      setUserProjects(patchUserProjectsData.data.projects);
+    if (putUserProjectsData?.data) {
+      setUserProjects(putUserProjectsData.data.projects);
       setProjectRemoving(false);
       handleAddProjectModalClose();
       handleEditProjectModalClose();
     }
-  }, [patchUserProjectsData?.data]);
+  }, [putUserProjectsData?.data]);
 
   useEffect(() => {
-    if (patchUserProjectsStatus === "success") {
+    if (putUserProjectsStatus === "success") {
       setSnackbar?.(() => ({
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
     }
-  }, [patchUserProjectsStatus, setSnackbar]);
+  }, [putUserProjectsStatus, setSnackbar]);
 
   useEffect(() => {
     if (userProjects) {
@@ -204,7 +204,7 @@ const ProjectsCard: React.FC = () => {
           <>
             {showMoreProjects ? (
               <Button onClick={handleShowLess} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_LESS_SKILLS}
+                {LABELS.SHOW_LESS}
                 <ArrowCircleUpOutlinedIcon
                   sx={showMoreOrLessIcon}
                   fontSize="small"
@@ -212,7 +212,7 @@ const ProjectsCard: React.FC = () => {
               </Button>
             ) : (
               <Button onClick={handleShowMore} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_MORE_SKILLS}
+                {LABELS.SHOW_MORE}
                 <ArrowDropDownCircleOutlinedIcon
                   sx={showMoreOrLessIcon}
                   fontSize="small"
@@ -226,7 +226,7 @@ const ProjectsCard: React.FC = () => {
           <AddProject
             showModal={showAddProjectModal}
             onModalClose={handleAddProjectModalClose}
-            saveLoading={patchUserProjectsFetching}
+            saveLoading={putUserProjectsFetching}
             onSaveProject={handleProjectSave}
           />
         )}
@@ -235,8 +235,8 @@ const ProjectsCard: React.FC = () => {
           <EditProject
             showModal={showEditProjectModal}
             onModalClose={handleEditProjectModalClose}
-            saveLoading={!projectRemoving && patchUserProjectsFetching}
-            removeLoading={projectRemoving && patchUserProjectsFetching}
+            saveLoading={!projectRemoving && putUserProjectsFetching}
+            removeLoading={projectRemoving && putUserProjectsFetching}
             project={
               userProjects?.[selectedProjectIndex] as IUserProjectApiModel
             }

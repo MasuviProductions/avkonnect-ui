@@ -242,7 +242,7 @@ const SkillsCard: React.FC = () => {
           <>
             {showMoreSkills ? (
               <Button onClick={handleShowLess} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_LESS_SKILLS}
+                {LABELS.SHOW_LESS}
                 <ArrowCircleUpOutlinedIcon
                   sx={showMoreOrLessIcon}
                   fontSize="small"
@@ -250,7 +250,7 @@ const SkillsCard: React.FC = () => {
               </Button>
             ) : (
               <Button onClick={handleShowMore} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_MORE_SKILLS}
+                {LABELS.SHOW_MORE}
                 <ArrowDropDownCircleOutlinedIcon
                   sx={showMoreOrLessIcon}
                   fontSize="small"

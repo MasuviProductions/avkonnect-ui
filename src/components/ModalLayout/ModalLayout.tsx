@@ -57,7 +57,7 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
               </IconButton>
             </Grid>
           </Grid>
-          <Grid item xs={12} py={1}>
+          <Grid item xs={12} py={2}>
             <Grid container>
               <Grid item xs={12} sx={childContainer}>
                 {children}

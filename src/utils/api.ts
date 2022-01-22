@@ -10,6 +10,10 @@ import {
   IUsersSearchApiResponse,
   IUserProjectsApiResponse,
   IUserProjectApiModel,
+  IUserExperiencesApiResponse,
+  IUserExperienceApiModel,
+  IUserCertificationsApiResponse,
+  IUserCertificationApiModel,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -147,6 +151,68 @@ export const putUserProjects = async (
     })
     .then((res) => res.data);
   return userProjectsResponse;
+};
+
+export const getUserExperiences = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserExperiencesApiResponse>> => {
+  const userExperiencesResponse = await axios
+    .get<AVConnectApiResponse<IUserExperiencesApiResponse>>(
+      API_ENDPOINTS.USER_EXPERIENCES.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userExperiencesResponse;
+};
+
+export const putUserExperiences = async (
+  accessToken: string,
+  userId: string,
+  experiences: IUserExperienceApiModel[]
+): Promise<AVConnectApiResponse<IUserExperiencesApiResponse>> => {
+  const userExperiencesResponse = await axios
+    .put<
+      IUserProjectApiModel[],
+      AxiosResponse<AVConnectApiResponse<IUserExperiencesApiResponse>>
+    >(API_ENDPOINTS.USER_EXPERIENCES.url(userId), experiences, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userExperiencesResponse;
+};
+
+export const getUserCertifications = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserCertificationsApiResponse>> => {
+  const userCertificationsResponse = await axios
+    .get<AVConnectApiResponse<IUserCertificationsApiResponse>>(
+      API_ENDPOINTS.USER_CERTIFICATIONS.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userCertificationsResponse;
+};
+
+export const putUserCertifications = async (
+  accessToken: string,
+  userId: string,
+  certifications: IUserCertificationApiModel[]
+): Promise<AVConnectApiResponse<IUserCertificationsApiResponse>> => {
+  const userCertificationsResponse = await axios
+    .put<
+      IUserProjectApiModel[],
+      AxiosResponse<AVConnectApiResponse<IUserCertificationsApiResponse>>
+    >(API_ENDPOINTS.USER_CERTIFICATIONS.url(userId), certifications, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userCertificationsResponse;
 };
 
 export const getUsersSearch = async (
