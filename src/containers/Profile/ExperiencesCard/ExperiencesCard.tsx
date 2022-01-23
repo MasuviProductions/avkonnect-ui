@@ -1,4 +1,4 @@
-import { Button, Container, Grid, IconButton, Theme } from "@mui/material";
+import { Box, Button, Container, Grid, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
@@ -181,7 +181,7 @@ const ExperiencesCard: React.FC = () => {
   }
 
   return (
-    <>
+    <Box my={2}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.EXPERIENCES_TITLE}>
           {user.isAuthUser && (
@@ -259,7 +259,7 @@ const ExperiencesCard: React.FC = () => {
           />
         )}
       </LayoutCard>
-    </>
+    </Box>
   );
 };
 

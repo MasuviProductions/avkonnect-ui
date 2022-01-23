@@ -1,4 +1,4 @@
-import { Button, Container, Grid, IconButton, Theme } from "@mui/material";
+import { Box, Button, Container, Grid, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
@@ -171,7 +171,7 @@ const ProjectsCard: React.FC = () => {
   }
 
   return (
-    <>
+    <Box my={2}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.PROJECTS_TITLE}>
           {user.isAuthUser && (
@@ -245,7 +245,7 @@ const ProjectsCard: React.FC = () => {
           />
         )}
       </LayoutCard>
-    </>
+    </Box>
   );
 };
 

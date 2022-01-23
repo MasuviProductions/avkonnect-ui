@@ -9,16 +9,19 @@ const Home: NextPageWithSkeleton = () => {
   return (
     <Box p={4} sx={{ minHeight: "100vh" }}>
       <Box sx={{ marginTop: "10%" }}>
-        <Typography color="primary" textAlign="center" variant="h3">
-          COMING SOON
+        <Typography color="text.secondary" textAlign="center" variant="h3">
+          Home feeds
+        </Typography>
+        <Typography color="text.secondary" textAlign="center">
+          Under development
         </Typography>
         <Box
           sx={{
             marginTop: "40%",
           }}
         >
-          <Typography color="text.primary" textAlign="center">
-            from
+          <Typography color="text.secondary" textAlign="center">
+            by
           </Typography>
           <Typography color="primary" textAlign="center" variant="h5">
             Masuvi Productions

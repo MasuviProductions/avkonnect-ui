@@ -1,4 +1,4 @@
-import { Button, Container, Grid, IconButton, Theme } from "@mui/material";
+import { Box, Button, Container, Grid, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
@@ -198,87 +198,89 @@ const CertificationsCard: React.FC = () => {
 
   return (
     <>
-      <LayoutCard>
-        <LayoutCard.Header title={LABELS.CERTIFICATIONS_TITLE}>
-          {user.isAuthUser && (
+      <Box my={2}>
+        <LayoutCard>
+          <LayoutCard.Header title={LABELS.CERTIFICATIONS_TITLE}>
+            {user.isAuthUser && (
+              <>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={handleAddCertificationModalOpen}
+                >
+                  {LABELS.ADD_CERTIFICATION}
+                </Button>
+              </>
+            )}
+          </LayoutCard.Header>
+
+          <Container sx={certificationsLayoutCardContainer}>
+            <Grid container spacing={2}>
+              {userCertificationsEllpised?.map((certification, index) => (
+                <Grid item xs={12} key={certification.name}>
+                  <CertificationItem
+                    certification={certification}
+                    onEditCertificationClick={() =>
+                      handleEditCertificationModalOpen(index)
+                    }
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+
+          {isShowMoreCertificationsApplicable && (
             <>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={handleAddCertificationModalOpen}
-              >
-                {LABELS.ADD_CERTIFICATION}
-              </Button>
+              {showMoreCertifications ? (
+                <Button onClick={handleShowLess} sx={showMoreOrLessButton}>
+                  {LABELS.SHOW_LESS}
+                  <ArrowCircleUpOutlinedIcon
+                    sx={showMoreOrLessIcon}
+                    fontSize="small"
+                  />
+                </Button>
+              ) : (
+                <Button onClick={handleShowMore} sx={showMoreOrLessButton}>
+                  {LABELS.SHOW_MORE}
+                  <ArrowDropDownCircleOutlinedIcon
+                    sx={showMoreOrLessIcon}
+                    fontSize="small"
+                  />
+                </Button>
+              )}
             </>
           )}
-        </LayoutCard.Header>
 
-        <Container sx={certificationsLayoutCardContainer}>
-          <Grid container spacing={2}>
-            {userCertificationsEllpised?.map((certification, index) => (
-              <Grid item xs={12} key={certification.name}>
-                <CertificationItem
-                  certification={certification}
-                  onEditCertificationClick={() =>
-                    handleEditCertificationModalOpen(index)
-                  }
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+          {showAddCertificationModal && (
+            <AddCertification
+              showModal={showAddCertificationModal}
+              onModalClose={handleAddCertificationModalClose}
+              saveLoading={putUserCertificationsFetching}
+              onSaveCertification={handleCertificationSave}
+            />
+          )}
 
-        {isShowMoreCertificationsApplicable && (
-          <>
-            {showMoreCertifications ? (
-              <Button onClick={handleShowLess} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_LESS}
-                <ArrowCircleUpOutlinedIcon
-                  sx={showMoreOrLessIcon}
-                  fontSize="small"
-                />
-              </Button>
-            ) : (
-              <Button onClick={handleShowMore} sx={showMoreOrLessButton}>
-                {LABELS.SHOW_MORE}
-                <ArrowDropDownCircleOutlinedIcon
-                  sx={showMoreOrLessIcon}
-                  fontSize="small"
-                />
-              </Button>
-            )}
-          </>
-        )}
-
-        {showAddCertificationModal && (
-          <AddCertification
-            showModal={showAddCertificationModal}
-            onModalClose={handleAddCertificationModalClose}
-            saveLoading={putUserCertificationsFetching}
-            onSaveCertification={handleCertificationSave}
-          />
-        )}
-
-        {showEditCertificationModal && (
-          <EditCertification
-            showModal={showEditCertificationModal}
-            onModalClose={handleEditCertificationModalClose}
-            saveLoading={
-              !certificationRemoving && putUserCertificationsFetching
-            }
-            removeLoading={
-              certificationRemoving && putUserCertificationsFetching
-            }
-            certification={
-              userCertifications?.[
-                selectedCertificationIndex
-              ] as IUserCertificationApiModel
-            }
-            onSaveCertification={handleCertificationSave}
-            onRemoveCertification={handleCertificationRemove}
-          />
-        )}
-      </LayoutCard>
+          {showEditCertificationModal && (
+            <EditCertification
+              showModal={showEditCertificationModal}
+              onModalClose={handleEditCertificationModalClose}
+              saveLoading={
+                !certificationRemoving && putUserCertificationsFetching
+              }
+              removeLoading={
+                certificationRemoving && putUserCertificationsFetching
+              }
+              certification={
+                userCertifications?.[
+                  selectedCertificationIndex
+                ] as IUserCertificationApiModel
+              }
+              onSaveCertification={handleCertificationSave}
+              onRemoveCertification={handleCertificationRemove}
+            />
+          )}
+        </LayoutCard>
+      </Box>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -200,7 +201,7 @@ const SkillsCard: React.FC = () => {
   }
 
   return (
-    <>
+    <Box my={2}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.SKILLS_TITLE}>
           {user.isAuthUser && (
@@ -280,7 +281,7 @@ const SkillsCard: React.FC = () => {
           />
         )}
       </LayoutCard>
-    </>
+    </Box>
   );
 };
 
