@@ -1,4 +1,4 @@
-import { Avatar, Container, Grid, Theme, Typography } from "@mui/material";
+import { Avatar, Box, Container, Grid, Theme, Typography } from "@mui/material";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
 import Link from "next/link";
@@ -6,6 +6,7 @@ import { APP_ROUTES } from "../../constants/app";
 import { usernameToColor } from "../../utils/generic";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import UserMiniCardSkeleton from "./UserMiniCardSkeleton";
+import { useCallback, useMemo } from "react";
 
 interface IUserMiniCardProps {
   id: string;
@@ -13,6 +14,7 @@ interface IUserMiniCardProps {
   headline: string;
   displayPictureUrl: string;
   onlyThumbnail?: boolean;
+  onCardClick?: (id: string) => void;
 }
 
 const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
@@ -21,13 +23,21 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
   headline,
   displayPictureUrl,
   onlyThumbnail = false,
+  onCardClick,
 }) => {
-  const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
-    return userAvatar(theme, usernameToColor(name), onlyThumbnail);
+  const handleUserAvatarSx = useCallback(
+    (theme: Theme): SystemStyleObject<Theme> => {
+      return userAvatar(theme, usernameToColor(name), onlyThumbnail);
+    },
+    [name, onlyThumbnail]
+  );
+
+  const handleCardClick = () => {
+    onCardClick?.(id);
   };
 
-  return (
-    <Link href={compile(APP_ROUTES.PROFILE.route)({ id: id })} passHref>
+  const userCard = useMemo(
+    (): JSX.Element => (
       <Grid container spacing={1} alignItems="center" sx={userStripContainer}>
         <Grid item>
           <Avatar alt={name} src={displayPictureUrl} sx={handleUserAvatarSx}>
@@ -47,7 +57,20 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
           </Grid>
         )}
       </Grid>
-    </Link>
+    ),
+    [displayPictureUrl, handleUserAvatarSx, headline, name, onlyThumbnail]
+  );
+
+  return (
+    <>
+      {onCardClick ? (
+        <Box onClick={handleCardClick}>{userCard}</Box>
+      ) : (
+        <Link href={compile(APP_ROUTES.PROFILE.route)({ id: id })} passHref>
+          {userCard}
+        </Link>
+      )}
+    </>
   );
 };
 UserMiniCard.Skeleton = UserMiniCardSkeleton;
@@ -69,6 +92,7 @@ const userAvatar = (
 
 const userStripContainer: SxProps<Theme> = (theme: Theme) => ({
   cursor: "pointer",
+  color: theme.palette.text.primary,
 });
 
 export default UserMiniCard;

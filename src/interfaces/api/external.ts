@@ -18,6 +18,8 @@ export interface IAuthUserApiResponse {
   id: string;
   email: string;
   name: string;
+  headline: string;
+  displayPictureUrl: string;
 }
 
 export interface IUserProfileApiResponse {

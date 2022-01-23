@@ -28,7 +28,7 @@ const layoutCardContainer = (
   theme: Theme,
   isBorder: boolean
 ): SystemStyleObject<Theme> => ({
-  borderRadius: "0.8rem",
+  borderRadius: "0.4rem",
   backgroundColor: theme.palette.background.paper,
   position: "relative",
   border: isBorder ? `1px solid ${theme.palette.grey[800]}` : undefined,

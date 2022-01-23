@@ -8,6 +8,9 @@ export const LABELS = {
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+  // Header
+  LOGOUT: "Logout",
+  VIEW_PROFILE: "View Profile",
   // Search Users
   SEARCH_RESULTS_FOR: "Search results for",
   SEARCH_NO_RESULTS_FOR: "No results found for",

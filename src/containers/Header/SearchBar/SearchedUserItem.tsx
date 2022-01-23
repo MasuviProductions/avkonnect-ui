@@ -39,7 +39,7 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
                 <SearchOutlined fontSize="small" sx={searchIcon} />
               </Grid>
               <Grid item>
-                <Typography variant="body1" color="text.primary">
+                <Typography variant="body1">
                   {`${name} \u2027 ${headline || "--"}`}
                 </Typography>
               </Grid>
@@ -75,11 +75,15 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
 const searchItemContainer: SxProps<Theme> = (theme: Theme) => ({
   cursor: "pointer",
   padding: "10px 8px",
+  color: theme.palette.text.primary,
+
   "&:hover": {
-    backgroundColor: theme.palette.text.secondary,
+    backgroundColor: theme.palette.grey[800],
+    color: theme.palette.text.secondary,
   },
+
   [theme.breakpoints.up("sm")]: {
-    borderRadius: "8px",
+    borderRadius: "0.4rem",
   },
 });
 

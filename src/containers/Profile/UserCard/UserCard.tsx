@@ -247,9 +247,9 @@ const userBackgroundContainer: SxProps<Theme> = (theme: Theme) => ({
     borderRight: `1px solid ${theme.palette.background.paper}`,
     borderLeft: `1px solid ${theme.palette.background.paper}`,
     borderTop: `1px solid ${theme.palette.background.paper}`,
-    borderRadius: "0.8rem 0.8rem 0 0",
+    borderRadius: "0.4rem 0.4rem 0 0",
     img: {
-      borderRadius: "0.8rem 0.8rem 0 0",
+      borderRadius: "0.4rem 0.4rem 0 0",
     },
   },
 
