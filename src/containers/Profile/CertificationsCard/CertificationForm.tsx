@@ -23,7 +23,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { IUserCertificationApiModel } from "../../../interfaces/api/external";
 import {
-  IDateRangeFieldConfig,
+  IDateFieldConfig,
   IDateRangeType,
   ITextFieldConfig,
 } from "../../../interfaces/app";
@@ -59,7 +59,7 @@ const getInitialCertificationTextFieldValues = (
 
 const getInitialCertificationDateRangeFieldValues = (
   certification?: IUserCertificationApiModel
-): Record<IDateRangeType, IDateRangeFieldConfig> => {
+): Record<IDateRangeType, IDateFieldConfig> => {
   const certificationDateRangeFieldsConfig = cloneDeep(
     CERTIFICATION_DATE_RANGE_FIELDS_CONFIG
   );

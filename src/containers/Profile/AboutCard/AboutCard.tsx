@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SxProps } from "@mui/system";
-import { Container, Typography, Theme, Grid, IconButton } from "@mui/material";
+import { Container, Theme, Grid, IconButton, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { LABELS } from "../../../constants/labels";
 import LayoutCard from "../../../components/LayoutCard";
@@ -29,7 +29,7 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   }
 
   return (
-    <>
+    <Box my={1}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.ABOUT_FIELD_LABEL}>
           {user.isAuthUser && (
@@ -53,7 +53,7 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
           />
         )}
       </LayoutCard>
-    </>
+    </Box>
   );
 };
 

@@ -67,7 +67,7 @@ export interface ITextFieldValidity {
 }
 
 // Date Range Field Interfaces
-export interface IDateRangeFieldConfig {
+export interface IDateFieldConfig {
   id: string;
   label: string;
   value: Dayjs | null;

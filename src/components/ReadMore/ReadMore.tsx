@@ -2,18 +2,12 @@ import { Grid, IconButton, Theme, Typography } from "@mui/material";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { SxProps } from "@mui/system";
 import { useEffect, useState } from "react";
+import { getEllipsedText } from "../../utils/generic";
 
 interface IReadMoreProps {
   text: string;
   trimLen: number;
 }
-
-const getEllipsedText = (text: string, len: number): string => {
-  if (text.length <= len) {
-    return text;
-  }
-  return `${text.substring(0, len)}...`;
-};
 
 const ReadMore: React.FC<IReadMoreProps> = ({ text, trimLen }) => {
   const [displayText, setDisplayText] = useState<string>();

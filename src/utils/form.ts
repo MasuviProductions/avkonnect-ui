@@ -1,4 +1,6 @@
 import {
+  IDateField,
+  IDateFieldConfig,
   ITextField,
   ITextFieldConfig,
   ITextFieldPattern,
@@ -42,7 +44,7 @@ export const isFieldValueLimited = (
   return false;
 };
 
-export const transformFieldConfigToFields = <T extends string>(
+export const transformTextFieldConfigToFields = <T extends string>(
   fieldsConfig: Record<T, ITextFieldConfig>
 ): Record<T, ITextField> => {
   let fields: Record<string, ITextField> = {};
@@ -53,6 +55,24 @@ export const transformFieldConfigToFields = <T extends string>(
       messageType: "",
       label: fieldsConfig[field as T].label,
       options: fieldsConfig[field as T].options,
+    };
+  });
+
+  return fields;
+};
+
+export const transformDateFieldConfigToFields = <T extends string>(
+  fieldsConfig: Record<T, IDateFieldConfig>
+): Record<T, IDateField> => {
+  let fields: Record<string, IDateField> = {};
+  Object.entries(fieldsConfig).forEach(([field, _]) => {
+    fields[field as T] = {
+      value: fieldsConfig[field as T].value || null,
+      label: fieldsConfig[field as T].label,
+      views: fieldsConfig[field as T].views,
+      id: fieldsConfig[field as T].id,
+      minDate: fieldsConfig[field as T].minDate,
+      maxDate: fieldsConfig[field as T].maxDate,
     };
   });
 

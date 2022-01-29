@@ -1,7 +1,7 @@
 import { SearchOutlined } from "@mui/icons-material";
 import { SxProps, SystemStyleObject } from "@mui/system";
-import { Avatar, Box, Grid, Theme, Typography } from "@mui/material";
-import { usernameToColor } from "../../../utils/generic";
+import { Avatar, Box, Grid, Hidden, Theme, Typography } from "@mui/material";
+import { getEllipsedText, usernameToColor } from "../../../utils/generic";
 import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../constants/app";
@@ -24,6 +24,8 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
     return userAvatar(theme, usernameToColor(name));
   };
 
+  const searchedUser = `${name} \u2027 ${headline || "--"}`;
+
   return (
     <Box onClick={onSearchItemClick} sx={searchItemContainer}>
       <Link href={compile(APP_ROUTES.PROFILE.route)({ id: id })} passHref>
@@ -38,11 +40,21 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
               <Grid item xs={1}>
                 <SearchOutlined fontSize="small" sx={searchIcon} />
               </Grid>
-              <Grid item>
-                <Typography variant="body1">
-                  {`${name} \u2027 ${headline || "--"}`}
-                </Typography>
-              </Grid>
+              <Hidden smUp>
+                <Grid item>
+                  <Typography variant="body1">
+                    {getEllipsedText(searchedUser, 28)}
+                  </Typography>
+                </Grid>
+              </Hidden>
+
+              <Hidden smDown>
+                <Grid item>
+                  <Typography variant="body1">
+                    {getEllipsedText(searchedUser, 32)}
+                  </Typography>
+                </Grid>
+              </Hidden>
             </Grid>
           </Grid>
           <Grid item>

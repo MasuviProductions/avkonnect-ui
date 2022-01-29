@@ -24,7 +24,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { IUserExperienceApiModel } from "../../../interfaces/api/external";
 import {
-  IDateRangeFieldConfig,
+  IDateFieldConfig,
   IDateRangeType,
   ITextFieldConfig,
 } from "../../../interfaces/app";
@@ -56,7 +56,7 @@ const getInitialExperienceTextFieldValues = (
 
 const getInitialExperienceDateRangeFieldValues = (
   experience?: IUserExperienceApiModel
-): Record<IDateRangeType, IDateRangeFieldConfig> => {
+): Record<IDateRangeType, IDateFieldConfig> => {
   const experienceDateRangeFieldsConfig = cloneDeep(
     EXPERIENCE_DATE_RANGE_FIELDS_CONFIG
   );

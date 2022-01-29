@@ -3,12 +3,12 @@ import cloneDeep from "lodash.clonedeep";
 import { useCallback, useState } from "react";
 import {
   IDateRange,
-  IDateRangeFieldConfig,
+  IDateFieldConfig,
   IDateRangeType,
 } from "../interfaces/app";
 
 const useDateRangeFieldsWithValidation = (
-  dateConfig: Record<IDateRangeType, IDateRangeFieldConfig>
+  dateConfig: Record<IDateRangeType, IDateFieldConfig>
 ) => {
   const [dateValues, setDateValues] = useState<IDateRange>({
     from: {

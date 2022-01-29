@@ -57,3 +57,10 @@ export const usernameToColor = (string: string): string => {
   }
   return color;
 };
+
+export const getEllipsedText = (text: string, len: number): string => {
+  if (text.length <= len) {
+    return text;
+  }
+  return `${text.substring(0, len)}...`;
+};

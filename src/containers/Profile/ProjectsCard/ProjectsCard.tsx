@@ -2,6 +2,7 @@ import { Box, Button, Container, Grid, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
@@ -171,18 +172,14 @@ const ProjectsCard: React.FC = () => {
   }
 
   return (
-    <Box my={2}>
+    <Box my={1}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.PROJECTS_TITLE}>
           {user.isAuthUser && (
             <>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={handleAddProjectModalOpen}
-              >
-                {LABELS.ADD_PROJECT}
-              </Button>
+              <IconButton onClick={handleAddProjectModalOpen}>
+                <AddCircleOutlineIcon color="primary" fontSize="large" />
+              </IconButton>
             </>
           )}
         </LayoutCard.Header>

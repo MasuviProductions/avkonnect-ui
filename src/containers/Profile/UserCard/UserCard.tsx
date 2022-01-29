@@ -1,15 +1,16 @@
 import { MouseEvent } from "react";
 import {
   Avatar,
+  Box,
   Button,
   Container,
   Grid,
   IconButton,
-  Link,
   Theme,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
 import LayoutCard from "../../../components/LayoutCard";
@@ -22,6 +23,7 @@ import { LABELS } from "../../../constants/labels";
 import { useUserContext } from "../../../contexts/UserContext";
 import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
+import EditUser from "./EditUser";
 
 interface IUserCardProps {}
 
@@ -32,12 +34,13 @@ const UserCard: React.FC<IUserCardProps> = () => {
       displayPictureUrl,
       backgroundImageUrl,
       name,
-      currentPosition,
+      headline,
       email,
       aboutUser,
     },
   } = useUserContext();
 
+  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
   const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
@@ -97,8 +100,16 @@ const UserCard: React.FC<IUserCardProps> = () => {
     handleAboutModalOpen();
   };
 
+  const handleEditUserModalOpen = () => {
+    setShowEditUserModal(true);
+  };
+
+  const handleEditUserModalClose = () => {
+    setShowEditUserModal(false);
+  };
+
   return (
-    <>
+    <Box my={1}>
       <LayoutCard>
         <Grid container>
           <Grid
@@ -120,7 +131,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
                 sx={userBackgroundEditButton}
                 onClick={handleBackgroundImageCropperOpen}
               >
-                <EditIcon fontSize="medium" />
+                <PhotoCameraIcon fontSize="medium" />
               </IconButton>
             )}
           </Grid>
@@ -143,20 +154,37 @@ const UserCard: React.FC<IUserCardProps> = () => {
                   </Avatar>
                 </Grid>
 
-                <Grid item xs={12} sm={8} md={6}>
+                <Grid item xs={12}>
                   <Grid container alignItems="center">
-                    <Grid item>
-                      <Typography variant="h5">{name}</Typography>
-                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container justifyContent="space-between">
+                        <Grid item>
+                          <Grid container>
+                            <Grid item>
+                              <Typography variant="h5">{name}</Typography>
+                            </Grid>
 
-                    <Grid item px={1}>
-                      <ShareButton title={name} />
+                            <Grid item px={1}>
+                              <ShareButton title={name} />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+
+                        <Grid item>
+                          {isAuthUser && (
+                            <IconButton
+                              sx={userCardEditBtn}
+                              onClick={handleEditUserModalOpen}
+                            >
+                              <EditIcon fontSize="medium" />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
-                  <Typography variant="body1">{currentPosition}</Typography>
+                  <Typography variant="body1">{headline}</Typography>
                 </Grid>
-
-                <Grid item xs={12} sm={4} md={6}></Grid>
               </Grid>
             </Grid>
 
@@ -202,6 +230,16 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
 
+        {showEditUserModal && (
+          <ModalLayout
+            showModal={showEditUserModal}
+            onModalClose={handleEditUserModalClose}
+            title={LABELS.USER_INFO_TITLE}
+          >
+            <EditUser onModalClose={handleEditUserModalClose} />
+          </ModalLayout>
+        )}
+
         {showDisplayPicture && (
           <ModalLayout
             showModal={showDisplayPicture}
@@ -237,7 +275,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
       </LayoutCard>
-    </>
+    </Box>
   );
 };
 
@@ -301,5 +339,10 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
     },
   };
 };
+
+const userCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
+  color: theme.palette.text.primary,
+  marginLeft: 2,
+});
 
 export default UserCard;

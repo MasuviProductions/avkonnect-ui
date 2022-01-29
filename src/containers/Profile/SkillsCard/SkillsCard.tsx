@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  IconButton,
-  Typography,
-  Theme,
-} from "@mui/material";
+import { Box, Button, Container, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import SkillItem from "./SkillItem";
 import { useUserContext } from "../../../contexts/UserContext";
@@ -201,18 +194,15 @@ const SkillsCard: React.FC = () => {
   }
 
   return (
-    <Box my={2}>
+    <Box my={1}>
       <LayoutCard>
         <LayoutCard.Header title={LABELS.SKILLS_TITLE}>
           {user.isAuthUser && (
             <>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={handleAddSkillsModalOpen}
-              >
-                {LABELS.ADD_SKILLS}
-              </Button>
+              <IconButton onClick={handleAddSkillsModalOpen}>
+                <AddCircleOutlineIcon color="primary" fontSize="large" />
+              </IconButton>
+
               {userSkillsets && userSkillsets.length > 0 && (
                 <IconButton
                   sx={skillsCardEditBtn}

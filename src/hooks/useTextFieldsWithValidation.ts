@@ -3,7 +3,7 @@ import { ITextField, ITextFieldConfig } from "../interfaces/app";
 import {
   getFieldValidity,
   isFieldValueLimited,
-  transformFieldConfigToFields,
+  transformTextFieldConfigToFields,
 } from "../utils/form";
 
 interface ITextFieldsWithValidation<T extends string> {
@@ -25,7 +25,7 @@ const useTextFieldsWithValidation = <T extends string>(
   fieldsConfig: Record<T, ITextFieldConfig>
 ): ITextFieldsWithValidation<T> => {
   const [textFields, setTextFields] = useState<Record<T, ITextField>>(
-    transformFieldConfigToFields<T>(fieldsConfig)
+    transformTextFieldConfigToFields<T>(fieldsConfig)
   );
 
   const onFieldValueChange = useCallback(

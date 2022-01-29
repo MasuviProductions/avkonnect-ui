@@ -45,7 +45,7 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
           </Avatar>
         </Grid>
         {!onlyThumbnail && (
-          <Grid item>
+          <Grid item xs={9}>
             <Grid container>
               <Grid item xs={12}>
                 <Typography variant="body2">{name}</Typography>

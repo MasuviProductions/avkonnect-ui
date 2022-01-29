@@ -15,10 +15,11 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
   const { authUser } = useAuthContext();
   return (
     <Grid container>
-      <Grid item mt={2} xs={12}>
+      <Grid item xs={12}>
         <UserCard />
       </Grid>
-      <Grid item mt={2} xs={12}>
+
+      <Grid item xs={12}>
         <AboutCard />
       </Grid>
 

@@ -58,12 +58,12 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "navbar.main" }}>
       <Head>
-        <title>AVConnect</title>
+        <title>{LABELS.TITLE}</title>
         <meta name="description" content="-by Masuvi Production" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxWidth="xl" sx={{ padding: 0 }}>
+      <Container maxWidth="lg" sx={{ padding: 0 }}>
         <Toolbar>
           <Typography
             variant="h5"

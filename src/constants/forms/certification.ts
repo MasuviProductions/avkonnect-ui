@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import {
-  IDateRangeFieldConfig,
+  IDateFieldConfig,
   ITextFieldConfig,
   IDateRangeType,
 } from "../../interfaces/app";
@@ -57,7 +57,7 @@ const CERTIFICATION_TEXT_FIELDS_CONFIG: Record<
 
 const CERTIFICATION_DATE_RANGE_FIELDS_CONFIG: Record<
   IDateRangeType,
-  IDateRangeFieldConfig
+  IDateFieldConfig
 > = {
   from: {
     id: "",

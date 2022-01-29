@@ -24,7 +24,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { IUserProjectApiModel } from "../../../interfaces/api/external";
 import {
-  IDateRangeFieldConfig,
+  IDateFieldConfig,
   IDateRangeType,
   ITextFieldConfig,
 } from "../../../interfaces/app";
@@ -57,7 +57,7 @@ const getInitialProjectTextFieldValues = (
 
 const getInitialProjectDateRangeFieldValues = (
   project?: IUserProjectApiModel
-): Record<IDateRangeType, IDateRangeFieldConfig> => {
+): Record<IDateRangeType, IDateFieldConfig> => {
   const projectDateRangeFieldsConfig = cloneDeep(
     PROJECT_DATE_RANGE_FIELDS_CONFIG
   );

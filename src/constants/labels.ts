@@ -1,5 +1,5 @@
 export const LABELS = {
-  TITLE: "AVConnect",
+  TITLE: "AVKonnect",
   SAVE: "Save",
   REMOVE: "Remove",
   SAVE_SUCCESS: "Save was successful",
@@ -8,9 +8,11 @@ export const LABELS = {
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+
   // Header
   LOGOUT: "Logout",
   VIEW_PROFILE: "View Profile",
+
   // Search Users
   SEARCH_RESULTS_FOR: "Search results for",
   SEARCH_NO_RESULTS_FOR: "No results found for",
@@ -18,9 +20,11 @@ export const LABELS = {
   SEARCH_TEXT: "Search for someone you know..",
   SEARCH_NO_RESULTS: "No results found",
   SEARCH_ALL_RESULTS: "View all results",
+
   // Share Profile
   SHARE_PROFILE: "Share profile",
   COPY_PROFILE_LINK: "Copy profile link",
+
   // Image Upload Labels
   BACKGROUND_IMAGE_CROPPER_TITLE: "Background Image",
   DISPLAY_PICTURE_CROPPER_TITLE: "Display Picture",
@@ -28,6 +32,12 @@ export const LABELS = {
   USER_IMAGE_CHOOSE_IMAGE: "Choose Image",
   USER_IMAGE_CHANGE_IMAGE: "Change Image",
   USER_IMAGE_APPLY: "Apply",
+
+  // User Info Labels
+  USER_INFO_TITLE: "Edit User Information",
+  USER_INFO_NAME: "Name",
+  USER_INFO_HEADLINE: "Headline",
+  USER_INFO_DOB: "Date of Birth",
 
   // About User labels
   ADD_SUMMARY: "Add Summary",
