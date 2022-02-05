@@ -1,8 +1,16 @@
-import { Grid, IconButton, Theme, Typography } from "@mui/material";
+import { Grid, IconButton, Link, Theme, Typography } from "@mui/material";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { SxProps } from "@mui/system";
 import { useEffect, useState } from "react";
 import { getEllipsedText } from "../../utils/generic";
+import { URL_MATCH_REGEX } from "../../constants/app";
+
+const getLinkedTextIfURLIsPresent = (para: string) => {
+  return para.replaceAll(
+    URL_MATCH_REGEX,
+    `<a href="$&" target="_blank" rel="noopener noreferrer" style="text-decoration: underline"><strong>$&</strong></a>`
+  );
+};
 
 interface IReadMoreProps {
   text: string;
@@ -20,13 +28,21 @@ const ReadMore: React.FC<IReadMoreProps> = ({ text, trimLen }) => {
   useEffect(() => {
     setDisplayText(ellipsedText);
   }, [ellipsedText]);
+
   return (
     <>
       <Grid container justifyContent="flex-end">
         <Grid item xs={12}>
-          <Typography variant="body2" sx={{ wordWrap: "break-word" }}>
-            {displayText}
-          </Typography>
+          {displayText?.split("\n").map((paragraph, index) => (
+            <Typography
+              key={`about-paragraph-${index}`}
+              variant="body2"
+              sx={{ wordWrap: "break-word" }}
+              dangerouslySetInnerHTML={{
+                __html: getLinkedTextIfURLIsPresent(paragraph),
+              }}
+            />
+          ))}
         </Grid>
       </Grid>
 

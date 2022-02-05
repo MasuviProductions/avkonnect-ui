@@ -74,3 +74,7 @@ export const MAX_CERTIFICATIONS_LIMIT = 8;
 export const MAX_DATE = 8640000000000000;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
+
+export const URL_MATCH_REGEX = new RegExp(
+  /\b(https?|ftp|file):\/\/[\-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[\-A-Za-z0-9+&@#\/%=~_|]/g
+);

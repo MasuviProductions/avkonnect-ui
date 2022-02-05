@@ -180,12 +180,23 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <TextField
+          <Autocomplete
+            disablePortal
             value={textFields.location.value}
-            label={textFields.location.label}
-            onChange={(event) => onFieldValueChange(event, "location")}
-            onBlur={(event) => onFieldValueBlur(event, "location")}
+            options={textFields.location.options as Readonly<string[]>}
             sx={textField}
+            renderInput={(params) => (
+              <TextField
+                helperText={textFields.location.message}
+                error={!!(textFields.location.messageType === "error")}
+                label={textFields.location.label}
+                {...params}
+              />
+            )}
+            onChange={(event, value) =>
+              onFieldValueChange(event, "location", value)
+            }
+            filterSelectedOptions
           />
         </Grid>
 

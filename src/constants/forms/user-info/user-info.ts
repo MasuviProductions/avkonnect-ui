@@ -1,14 +1,13 @@
 import dayjs from "dayjs";
-import {
-  IDateFieldConfig,
-  ITextFieldConfig,
-  IDateRangeType,
-} from "../../interfaces/app";
-import { LABELS } from "../labels";
+import { IDateFieldConfig, ITextFieldConfig } from "../../../interfaces/app";
+import { LABELS } from "../../labels";
+import { CITIES } from "./indian-cities";
 
 type IUserInfoTextFields = "name" | "headline" | "gender" | "location";
 
 const GENDER_FIELDS = ["Male", "Female", "Others"];
+
+const CITY_FIELDS = CITIES;
 
 const USER_INFO_TEXT_FIELDS_CONFIG: Record<
   IUserInfoTextFields,
@@ -29,6 +28,7 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
     label: LABELS.USER_INFO_LOCATION,
     id: "location",
     limitations: [{ regex: /^.{0,100}$/ }],
+    options: CITY_FIELDS,
   },
   headline: {
     label: LABELS.USER_INFO_HEADLINE,
