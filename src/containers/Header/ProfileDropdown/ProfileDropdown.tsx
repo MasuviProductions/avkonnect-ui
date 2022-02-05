@@ -1,6 +1,7 @@
-import { Button, Grid, Switch, Theme } from "@mui/material";
+import { Box, Button, Grid, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
 import LogoutIcon from "@mui/icons-material/Logout";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import { signOut } from "next-auth/react";
 import LayoutCard from "../../../components/LayoutCard";
 import UserMiniCard from "../../../components/UserMiniCard";
@@ -13,8 +14,13 @@ import { compile } from "path-to-regexp";
 
 interface IProfileDropdownProps {
   onClick?: () => void;
+  onFeedbackClick?: () => void;
 }
-const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ onClick }) => {
+
+const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
+  onClick,
+  onFeedbackClick,
+}) => {
   const { authUser } = useAuthContext();
 
   const handleSignOut = () => {
@@ -27,48 +33,73 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({ onClick }) => {
 
   return (
     <>
-      <LayoutCard withBorder>
-        <Grid container p={2} spacing={2}>
-          <Grid item xs={12}>
-            <UserMiniCard
-              id={authUser?.id as string}
-              name={authUser?.name as string}
-              headline={authUser?.headline as string}
-              displayPictureUrl={authUser?.displayPictureUrl as string}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Link
-              href={compile(APP_ROUTES.PROFILE.route)({
-                id: authUser.id as string,
-              })}
-              passHref
-            >
-              <Button
-                variant="outlined"
-                sx={viewProfileButton}
-                onClick={onClick}
+      <Box sx={profileDropdownContainer}>
+        <LayoutCard withBorder>
+          <Grid container p={2}>
+            <Grid item xs={12}>
+              <UserMiniCard
+                id={authUser?.id as string}
+                name={authUser?.name as string}
+                headline={authUser?.headline as string}
+                displayPictureUrl={authUser?.displayPictureUrl as string}
+              />
+            </Grid>
+            <Grid item xs={12} py={2}>
+              <Link
+                href={compile(APP_ROUTES.PROFILE.route)({
+                  id: authUser.id as string,
+                })}
+                passHref
               >
-                {LABELS.VIEW_PROFILE}
-              </Button>
-            </Link>
-          </Grid>
+                <Button
+                  variant="outlined"
+                  sx={viewProfileButton}
+                  onClick={onClick}
+                >
+                  {LABELS.VIEW_PROFILE}
+                </Button>
+              </Link>
+            </Grid>
 
-          <Grid item xs={12}>
-            <ProfileDropdownItem
-              Icon={LogoutIcon}
-              title={LABELS.LOGOUT}
-              onClick={handleSignOut}
-            />
+            <Grid item xs={12} pb={2}>
+              <Box sx={profileFeedbackItem} py={1}>
+                <ProfileDropdownItem
+                  title={LABELS.FEEDBACK}
+                  description={LABELS.FEEDBACK_HELPER}
+                  onClick={onFeedbackClick}
+                  showArrow={false}
+                >
+                  <FeedbackIcon />
+                </ProfileDropdownItem>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <ProfileDropdownItem
+                title={LABELS.LOGOUT}
+                onClick={handleSignOut}
+              >
+                <LogoutIcon />
+              </ProfileDropdownItem>
+            </Grid>
           </Grid>
-        </Grid>
-      </LayoutCard>
+        </LayoutCard>
+      </Box>
     </>
   );
 };
 
 const viewProfileButton: SxProps<Theme> = (theme: Theme) => ({
   width: "100%",
+});
+
+const profileDropdownContainer: SxProps<Theme> = (theme: Theme) => ({
+  width: "350px",
+});
+
+const profileFeedbackItem: SxProps<Theme> = (theme: Theme) => ({
+  borderTop: `2px solid ${theme.palette.grey[700]}`,
+  borderBottom: `2px solid ${theme.palette.grey[700]}`,
 });
 
 export default ProfileDropdown;

@@ -14,6 +14,7 @@ import {
   IUserExperienceApiModel,
   IUserCertificationsApiResponse,
   IUserCertificationApiModel,
+  IUserFeedbackApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -213,6 +214,22 @@ export const putUserCertifications = async (
     })
     .then((res) => res.data);
   return userCertificationsResponse;
+};
+
+export const postUserFeedback = async (
+  accessToken: string,
+  userId: string,
+  feedback: IUserFeedbackApiResponse
+): Promise<AVConnectApiResponse<IUserFeedbackApiResponse>> => {
+  const userFeedbackResponse = await axios
+    .post<
+      IUserFeedbackApiResponse,
+      AxiosResponse<AVConnectApiResponse<IUserFeedbackApiResponse>>
+    >(API_ENDPOINTS.USER_FEEDBACK.url(userId), feedback, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return userFeedbackResponse;
 };
 
 export const getUsersSearch = async (

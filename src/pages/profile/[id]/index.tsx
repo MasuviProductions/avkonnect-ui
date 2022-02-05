@@ -25,6 +25,8 @@ interface IProfilePageData {
   headline: string;
   dateOfBirth: number;
   aboutUser: string;
+  location: string;
+  gender: string;
 }
 
 type IProfilePageProps = IProtectedPageProps<IProfilePageData>;
@@ -49,6 +51,8 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       dateOfBirth={data.dateOfBirth}
       aboutUser={data.aboutUser}
       isAuthUser={false}
+      location={data.location}
+      gender={data.gender}
     >
       <Profile />
     </UserContextProvider>
@@ -99,6 +103,8 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       aboutUser: response.data.aboutUser,
       currentPosition: response.data.currentPosition,
       headline: response.data.headline,
+      location: response.data.location || "",
+      gender: response.data.gender || "",
     };
 
     return { data: transformedData, error: null };

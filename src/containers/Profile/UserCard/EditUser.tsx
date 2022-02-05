@@ -1,6 +1,13 @@
 import DatePicker from "@mui/lab/DatePicker";
 import dayjs from "dayjs";
-import { Container, Grid, Hidden, TextField, Theme } from "@mui/material";
+import {
+  Autocomplete,
+  Container,
+  Grid,
+  Hidden,
+  TextField,
+  Theme,
+} from "@mui/material";
 import { SxProps } from "@mui/system";
 import cloneDeep from "lodash.clonedeep";
 import CustomButton from "../../../components/CustomButton";
@@ -12,10 +19,7 @@ import {
 } from "../../../constants/forms/user-info";
 import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
-import {
-  IUserProfileApiResponse,
-  IUserProfilePatchApiRequest,
-} from "../../../interfaces/api/external";
+import { IUserProfilePatchApiRequest } from "../../../interfaces/api/external";
 import { IDateFieldConfig, ITextFieldConfig } from "../../../interfaces/app";
 import useDateFieldsWithValidation from "../../../hooks/useDateFieldsWithValidation";
 import { patchUserProfile } from "../../../utils/api";
@@ -36,6 +40,8 @@ const getInitialUserInfoTextFieldValues = (
   const userInfoTextFieldsConfig = cloneDeep(USER_INFO_TEXT_FIELDS_CONFIG);
   userInfoTextFieldsConfig.headline.intialValue = userInfo?.headline;
   userInfoTextFieldsConfig.name.intialValue = userInfo?.name;
+  userInfoTextFieldsConfig.gender.intialValue = userInfo?.gender;
+  userInfoTextFieldsConfig.location.intialValue = userInfo?.location;
 
   return userInfoTextFieldsConfig;
 };
@@ -80,6 +86,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
       name: textFields.name.value as string,
       headline: textFields.headline.value as string,
       dateOfBirth: dateFields.dateOfBirth.value?.valueOf() as number,
+      gender: textFields.gender.value as string,
+      location: textFields.location.value as string,
     };
     setPatchUserReq(updatedUserInfo);
   };
@@ -95,6 +103,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         name: patchUserData?.data?.name as string,
         headline: patchUserData?.data?.headline as string,
         dateOfBirth: patchUserData?.data?.dateOfBirth as number,
+        location: patchUserData?.data?.location as string,
+        gender: patchUserData?.data?.gender as string,
       }));
       onModalClose?.();
     }
@@ -125,12 +135,23 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         </Hidden>
 
         <Grid item xs={12} md={6}>
-          <TextField
-            value={textFields.headline.value}
-            label={textFields.headline.label}
-            onChange={(event) => onFieldValueChange(event, "headline")}
-            onBlur={(event) => onFieldValueBlur(event, "headline")}
+          <Autocomplete
+            disablePortal
+            value={textFields.gender.value}
+            options={textFields.gender.options as Readonly<string[]>}
             sx={textField}
+            renderInput={(params) => (
+              <TextField
+                helperText={textFields.gender.message}
+                error={!!(textFields.gender.messageType === "error")}
+                label={textFields.gender.label}
+                {...params}
+              />
+            )}
+            onChange={(event, value) =>
+              onFieldValueChange(event, "gender", value)
+            }
+            filterSelectedOptions
           />
         </Grid>
 
@@ -145,6 +166,26 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             renderInput={(params) => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <TextField
+            value={textFields.headline.value}
+            label={textFields.headline.label}
+            onChange={(event) => onFieldValueChange(event, "headline")}
+            onBlur={(event) => onFieldValueBlur(event, "headline")}
+            sx={textField}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <TextField
+            value={textFields.location.value}
+            label={textFields.location.label}
+            onChange={(event) => onFieldValueChange(event, "location")}
+            onBlur={(event) => onFieldValueBlur(event, "location")}
+            sx={textField}
           />
         </Grid>
 

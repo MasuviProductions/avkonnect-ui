@@ -4,15 +4,19 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForwardIos";
 import { SxProps } from "@mui/system";
 
 interface IProfileDropdownItemProps {
-  Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  // Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   title: string;
+  description?: string;
   onClick?: () => void;
+  showArrow?: boolean;
 }
 
 const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
-  Icon,
   title,
+  description,
   onClick,
+  showArrow = true,
+  children,
 }) => {
   return (
     <Box onClick={onClick}>
@@ -22,19 +26,24 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
         justifyContent="space-between"
         alignItems="center"
       >
-        <Grid item xs={10}>
+        <Grid item xs={showArrow ? 10 : 12}>
           <Grid container>
-            <Grid item>
-              <Icon />
-            </Grid>
-            <Grid item px={1}>
+            {!!children && <Grid item>{children}</Grid>}
+            <Grid item px={1} ml={1}>
               <Typography variant="body1">{title}</Typography>
+              {description && (
+                <Typography variant="caption" color="text.secondary" mt={2}>
+                  {description}
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
-          <ArrowForwardIcon />
-        </Grid>
+        {showArrow && (
+          <Grid item>
+            <ArrowForwardIcon />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

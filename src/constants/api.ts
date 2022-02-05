@@ -44,6 +44,11 @@ const API_ENDPOINTS = {
     url: (userId: string): string =>
       `${AVCONNECT_URL.USERS()}/${userId}/certifications`,
   },
+  USER_FEEDBACK: {
+    key: "user-feedback",
+    url: (userId: string): string =>
+      `${AVCONNECT_URL.USERS()}/${userId}/feedback`,
+  },
   USERS_SEARCH: {
     key: "users-search",
     url: (queryString: string): string =>

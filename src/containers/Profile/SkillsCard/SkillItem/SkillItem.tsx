@@ -19,6 +19,7 @@ import { IUserSkillSetApiModel } from "../../../../interfaces/api/external";
 import { LABELS } from "../../../../constants/labels";
 import SkillEndorsers from "./SkillEndorsers";
 import { useCallback } from "react";
+import SkillEndorserInput from "./SkillEndorserInput";
 
 interface ISkillItemProps {
   skillset: IUserSkillSetApiModel;
@@ -46,6 +47,17 @@ const SkillItem: React.FC<ISkillItemProps> = ({
   const [hasUserEndorsed, setHasUserEndorsed] = useState<boolean>(false);
   const [showSkillModal, setShowSkillModal] = useState<boolean>(false);
   const [endorsementString, setEndorsementString] = useState<string>("");
+  const [showSkillEndorsementModal, setShowSkillEndorsementModal] =
+    useState<boolean>(false);
+
+  const handleShowSkillEndorsementModalOpen = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setShowSkillEndorsementModal(true);
+  };
+
+  const handleShowSkillEndorsementModalClose = () => {
+    setShowSkillEndorsementModal(false);
+  };
 
   const handleShowSkillModalOpen = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -60,9 +72,15 @@ const SkillItem: React.FC<ISkillItemProps> = ({
     onRemoveEndorsement?.(customKey, skillset.name);
   };
 
-  const handleEndorseUserSkill = () => {
-    // TODO: Take input from user using a popup
-    onAddEndorsement?.(customKey, skillset.name, 5, "NA");
+  const handleEndorseUserSkill = (rating?: number, relationship?: string) => {
+    onAddEndorsement?.(
+      customKey,
+      skillset.name,
+      rating || 3,
+      relationship || "NA"
+    );
+
+    handleShowSkillEndorsementModalClose();
   };
 
   const getEndorsementString = useCallback((): string => {
@@ -136,7 +154,7 @@ const SkillItem: React.FC<ISkillItemProps> = ({
                     ) : (
                       <IconButton
                         sx={skillEndorsementButton}
-                        onClick={handleEndorseUserSkill}
+                        onClick={handleShowSkillEndorsementModalOpen}
                       >
                         <AddCircleOutlineIcon
                           fontSize="large"
@@ -202,6 +220,15 @@ const SkillItem: React.FC<ISkillItemProps> = ({
           endorsers={skillset.endorsers}
           showModal={showSkillModal}
           onModalClose={handleShowSkillModalClose}
+        />
+      )}
+
+      {showSkillEndorsementModal && (
+        <SkillEndorserInput
+          showModal={showSkillEndorsementModal}
+          onModalClose={handleShowSkillEndorsementModalClose}
+          onSave={handleEndorseUserSkill}
+          onSkip={handleEndorseUserSkill}
         />
       )}
     </>

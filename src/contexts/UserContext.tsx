@@ -19,6 +19,8 @@ export interface IUser {
   dateOfBirth: number;
   aboutUser: string;
   isAuthUser: boolean;
+  gender: string;
+  location: string;
 }
 
 interface IUserContext {
@@ -37,6 +39,8 @@ const defaultUserValues: IUser = {
   dateOfBirth: 0,
   aboutUser: "",
   isAuthUser: false,
+  gender: "",
+  location: "",
 };
 
 const UserContext = createContext<IUserContext>({
@@ -56,6 +60,8 @@ const UserContextProvider: React.FC<IUser> = ({
   headline,
   aboutUser,
   isAuthUser,
+  location,
+  gender,
 }) => {
   const [user, setUser] = useState<IUser>({
     id,
@@ -68,6 +74,8 @@ const UserContextProvider: React.FC<IUser> = ({
     dateOfBirth,
     aboutUser,
     isAuthUser,
+    location,
+    gender,
   });
 
   const { authUser } = useAuthContext();

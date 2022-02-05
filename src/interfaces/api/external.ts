@@ -40,6 +40,8 @@ export interface IUserProfileApiResponse {
   projectsRefId: string;
   id: string;
   phone: string;
+  gender: string;
+  location: string;
 }
 export type IUserProfilePatchApiRequest = Partial<
   Omit<
@@ -97,7 +99,6 @@ export interface IUserProjectApiModel {
   role: string;
   startDate: number;
 }
-
 export interface IUserProjectsApiResponse {
   createdAt: Date;
   id: string;
@@ -114,7 +115,6 @@ export interface IUserExperienceApiModel {
   role: string;
   startDate: number;
 }
-
 export interface IUserExperiencesApiResponse {
   createdAt: Date;
   id: string;
@@ -132,12 +132,19 @@ export interface IUserCertificationApiModel {
   photoUrl: string;
   link: string;
 }
-
 export interface IUserCertificationsApiResponse {
   createdAt: Date;
   id: string;
   certifications: IUserCertificationApiModel[];
   updatedAt: Date;
+}
+
+export interface IUserFeedbackApiResponse {
+  id?: string;
+  userId?: string;
+  subject: string;
+  description: string;
+  feedbackType: string;
 }
 
 export type IUsersSearchApiResponse = IUserAvatarApiModel;

@@ -6,7 +6,9 @@ import {
 } from "../../interfaces/app";
 import { LABELS } from "../labels";
 
-type IUserInfoTextFields = "name" | "headline";
+type IUserInfoTextFields = "name" | "headline" | "gender" | "location";
+
+const GENDER_FIELDS = ["Male", "Female", "Others"];
 
 const USER_INFO_TEXT_FIELDS_CONFIG: Record<
   IUserInfoTextFields,
@@ -17,7 +19,17 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
     id: "name",
     limitations: [{ regex: /^.{0,25}$/ }],
   },
-
+  gender: {
+    label: LABELS.USER_INFO_GENDER,
+    id: "gender",
+    limitations: [{ regex: /^.{0,25}$/ }],
+    options: GENDER_FIELDS,
+  },
+  location: {
+    label: LABELS.USER_INFO_LOCATION,
+    id: "location",
+    limitations: [{ regex: /^.{0,100}$/ }],
+  },
   headline: {
     label: LABELS.USER_INFO_HEADLINE,
     id: "headline",

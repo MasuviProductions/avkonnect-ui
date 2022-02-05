@@ -1,5 +1,7 @@
 export const LABELS = {
   TITLE: "AVKonnect",
+  SUBMIT: "Submit",
+  SKIP: "Skip",
   SAVE: "Save",
   REMOVE: "Remove",
   SAVE_SUCCESS: "Save was successful",
@@ -11,7 +13,16 @@ export const LABELS = {
 
   // Header
   LOGOUT: "Logout",
+  FEEDBACK: "Feedback",
+  FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
+
+  // Feedback Labels
+  FEEDBACK_TYPE: "Feedback Type",
+  FEEDBACK_SUBJECT: "Title",
+  FEEDBACK_DESCRIPTION: "Description",
+  FEEDBACK_THANK_YOU: "Thank you for your feedback",
+  FEEDBACK_SUBMIT_ERROR: "Something went wrong while submitting feedback",
 
   // Search Users
   SEARCH_RESULTS_FOR: "Search results for",
@@ -38,6 +49,8 @@ export const LABELS = {
   USER_INFO_NAME: "Name",
   USER_INFO_HEADLINE: "Headline",
   USER_INFO_DOB: "Date of Birth",
+  USER_INFO_GENDER: "Gender",
+  USER_INFO_LOCATION: "Location",
 
   // About User labels
   ADD_SUMMARY: "Add Summary",
@@ -59,6 +72,11 @@ export const LABELS = {
   ENDORSEMENT_CONNECTIONS: "connections",
   ADD_SKILL: "Add",
   MAX_SKILL_LIMIT: "Maximum number of skills you can add are",
+  ENDORSEMENT_RELATIONSHIP: "Relationship",
+  ENDORSEMENT_RATING_TITLE: (name: string): string =>
+    `How would you rate ${name}'s skill?`,
+  ENDORSEMENT_RELATIONSHIP_TITLE: (name: string): string =>
+    `How do you know about ${name}'s skill?`,
 
   // User Experiences Labels
   EXPERIENCES_TITLE: "Experiences",
