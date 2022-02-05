@@ -58,7 +58,7 @@ export const LABELS = {
   ABOUT_EDIT_TITLE: "About you",
   ABOUT_HEADLINE: "Lets add a few words about you",
   ABOUT_PLACEHOLDER:
-    "You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences.",
+    "You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences. You can also provide external links to your other portfolios",
 
   // User Skills Labels
   SKILLS_TITLE: "Skills",
