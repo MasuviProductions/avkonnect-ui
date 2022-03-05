@@ -7,11 +7,20 @@ export interface AVConnectApiResponseDDBPagination {
   nextSearchStartFromId?: string;
   count: number;
 }
+
+export interface AVConnectApiResponsePagination {
+  totalCount: number;
+  totalPages: number;
+  page: number;
+  count: number;
+}
+
 export interface AVConnectApiResponse<T> {
   success: boolean;
   data?: T;
   error?: AVConnectApiResponseError;
   dDBPagination?: AVConnectApiResponseDDBPagination;
+  pagination?: AVConnectApiResponsePagination;
 }
 
 export interface IAuthUserApiResponse {
