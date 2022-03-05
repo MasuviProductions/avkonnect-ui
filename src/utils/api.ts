@@ -235,11 +235,11 @@ export const postUserFeedback = async (
 export const getUsersSearch = async (
   accessToken: string,
   searchString: string,
-  limit: number,
-  searchStartFrom?: string
+  page: number,
+  limit: number
 ): Promise<AVConnectApiResponse<IUsersSearchApiResponse[]>> => {
-  const queryString = `?search=${searchString}&limit=${limit}&dDBAssistStartFromId=${
-    searchStartFrom || ""
+  const queryString = `?search=${searchString}&limit=${limit}&page=${
+    page || 0
   }`;
   const usersSearchResponse = await axios
     .get<AVConnectApiResponse<IUsersSearchApiResponse[]>>(
