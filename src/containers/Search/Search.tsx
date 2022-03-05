@@ -19,7 +19,7 @@ interface SearchProps {
 
 const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
   const { accessToken } = useAuthContext();
-  const [nextSearchStartId, setNextSearchStartId] = useState<string>();
+  const [nextPageNumber, setNextPageNumber] = useState<number>(1);
   const [upToDateUsersSearch, setUpToDateUsersSearch] = useState<
     IUsersSearchApiResponse[]
   >([]);
@@ -31,20 +31,15 @@ const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
   } = useQuery(
     `${API_ENDPOINTS.USER_SKILLS.key}?${searchString} `,
     () =>
-      getUsersSearch(
-        accessToken as string,
-        searchString,
-        12,
-        nextSearchStartId
-      ),
+      getUsersSearch(accessToken as string, searchString, nextPageNumber, 12),
     { refetchOnWindowFocus: false, cacheTime: 0 }
   );
 
   const infiniteLoadCallback = useCallback(() => {
-    if (nextSearchStartId) {
+    if (getUsersSearchData?.data?.length) {
       triggerGetUsersApi();
     }
-  }, [nextSearchStartId, triggerGetUsersApi]);
+  }, [getUsersSearchData?.data?.length, triggerGetUsersApi]);
 
   const infiniteLoadRef = useInfiniteLoading(
     getUsersSearchDataFetching,
@@ -57,8 +52,10 @@ const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
         ...prev,
         ...(getUsersSearchData?.data as IUsersSearchApiResponse[]),
       ]);
-      setNextSearchStartId(
-        getUsersSearchData?.dDBPagination?.nextSearchStartFromId
+      setNextPageNumber(
+        getUsersSearchData?.pagination?.page
+          ? getUsersSearchData.pagination.page + 1
+          : 0
       );
     }
   }, [getUsersSearchData]);

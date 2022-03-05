@@ -52,8 +52,8 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
       getUsersSearch(
         accessToken as string,
         searchString,
-        MAX_SEARCH_DROPDOWN_LIMIT,
-        undefined
+        1,
+        MAX_SEARCH_DROPDOWN_LIMIT
       ),
     { enabled: false, cacheTime: 0 }
   );
