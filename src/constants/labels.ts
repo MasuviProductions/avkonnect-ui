@@ -11,6 +11,9 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Home
+  MADE_IN_INDIA: "Made In India",
+
   // Header
   LOGOUT: "Logout",
   FEEDBACK: "Feedback",
@@ -59,12 +62,14 @@ export const LABELS = {
   ABOUT_HEADLINE: "Lets add a few words about you",
   ABOUT_PLACEHOLDER:
     "You can write about your years of experience, industry, or skills. People also talk about their achievements or previous job experiences. You can also provide external links to your other portfolios",
+  ABOUT_HELPER:
+    "A brief summary of you, your acheievements and fields of interest pertaining to the media industry.",
 
   // User Skills Labels
   SKILLS_TITLE: "Skills",
   ADD_SKILLS: "Add Skills",
   EDIT_SKILLS: "Edit Skills",
-  GIVEN_ENDORSEMENT: "given ensorement for this skill",
+  GIVEN_ENDORSEMENT: "given endorsement for this skill",
   ENDORSEMENT_HAVE: "have",
   ENDORSEMENT_HAS: "has",
   ENDORSEMENT_YOU: "You",
@@ -77,6 +82,8 @@ export const LABELS = {
     `How would you rate ${name}'s skill?`,
   ENDORSEMENT_RELATIONSHIP_TITLE: (name: string): string =>
     `How do you know about ${name}'s skill?`,
+  SKILLS_HELPER:
+    "Skills that you are proficient in can be added here. You can also request your friends or colleagues to endorse your skills.",
 
   // User Experiences Labels
   EXPERIENCES_TITLE: "Experiences",
@@ -92,6 +99,8 @@ export const LABELS = {
   EXPERIENCE_ONGOING: "Presently working here",
   EXPERIENCE_START_DATE: "Start Date",
   EXPERIENCE_END_DATE: "End Date",
+  EXPERIENCE_HELPER:
+    "Your relevant career experiences can be highlighted here. They may be professional or personal experiences.",
 
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
@@ -107,6 +116,8 @@ export const LABELS = {
   PROJECT_ONGOING: "Ongoing Project",
   PROJECT_START_DATE: "Start Date",
   PROJECT_END_DATE: "End Date",
+  PROJECT_HELPER:
+    "Professional or personal projects like films, shows, dramas, events etc. that you've closely worked on can be added here.",
 
   // User Certifications Labels
   CERTIFICATIONS_TITLE: "Certifications",
@@ -120,4 +131,6 @@ export const LABELS = {
   CERTIFICATION_NO_EXPIRY: "No expiry",
   CERTIFICATION_ISSUE_DATE: "Issue Date",
   CERTIFICATION_EXPIRY_DATE: "Expiry Date",
+  CERTIFICATION_HELPER:
+    "Any honours, certifications or license earned by you can be showcased here.",
 };

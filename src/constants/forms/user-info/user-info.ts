@@ -16,7 +16,7 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
   name: {
     label: LABELS.USER_INFO_NAME,
     id: "name",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /^.{0,50}$/ }],
   },
   gender: {
     label: LABELS.USER_INFO_GENDER,
@@ -33,7 +33,7 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
   headline: {
     label: LABELS.USER_INFO_HEADLINE,
     id: "headline",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /^.{0,50}$/ }],
   },
 };
 

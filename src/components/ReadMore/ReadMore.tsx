@@ -8,7 +8,14 @@ import { URL_MATCH_REGEX } from "../../constants/app";
 const getLinkedTextIfURLIsPresent = (para: string) => {
   return para.replaceAll(
     URL_MATCH_REGEX,
-    `<a href="$&" target="_blank" rel="noopener noreferrer" style="text-decoration: underline"><strong>$&</strong></a>`
+    `<a href="$&"
+        target="_blank"
+        rel="noopener"
+        style="text-decoration: underline">
+        <strong>
+          $&
+        </strong>
+    </a>`
   );
 };
 

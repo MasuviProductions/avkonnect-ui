@@ -31,7 +31,10 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   return (
     <Box my={1}>
       <LayoutCard>
-        <LayoutCard.Header title={LABELS.ABOUT_FIELD_LABEL}>
+        <LayoutCard.Header
+          title={LABELS.ABOUT_FIELD_LABEL}
+          helperText={user.isAuthUser ? LABELS.ABOUT_HELPER : undefined}
+        >
           {user.isAuthUser && (
             <IconButton sx={aboutCardEditBtn} onClick={handleAboutModalOpen}>
               <EditIcon fontSize="medium" />

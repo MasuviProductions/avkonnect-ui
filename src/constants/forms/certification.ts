@@ -30,7 +30,7 @@ const CERTIFICATION_TEXT_FIELDS_CONFIG: Record<
   name: {
     label: LABELS.CERTIFICATION_NAME,
     id: "name",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /^.{0,100}$/ }],
   },
   description: {
     label: LABELS.CERTIFICATION_DESCRIPTION,
@@ -46,7 +46,7 @@ const CERTIFICATION_TEXT_FIELDS_CONFIG: Record<
   issuerName: {
     label: LABELS.CERTIFICATION_ISSUER_NAME,
     id: "issuer",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ regex: /.{0,50}/ }],
   },
   link: {
     label: LABELS.CERTIFICATION_LINK,

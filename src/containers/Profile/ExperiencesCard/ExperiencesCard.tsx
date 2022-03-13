@@ -184,7 +184,10 @@ const ExperiencesCard: React.FC = () => {
   return (
     <Box my={1}>
       <LayoutCard>
-        <LayoutCard.Header title={LABELS.EXPERIENCES_TITLE}>
+        <LayoutCard.Header
+          title={LABELS.EXPERIENCES_TITLE}
+          helperText={user.isAuthUser ? LABELS.EXPERIENCE_HELPER : undefined}
+        >
           {user.isAuthUser && (
             <>
               <IconButton onClick={handleAddExperienceModalOpen}>

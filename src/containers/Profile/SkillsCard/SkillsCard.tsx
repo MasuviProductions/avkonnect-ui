@@ -196,7 +196,10 @@ const SkillsCard: React.FC = () => {
   return (
     <Box my={1}>
       <LayoutCard>
-        <LayoutCard.Header title={LABELS.SKILLS_TITLE}>
+        <LayoutCard.Header
+          title={LABELS.SKILLS_TITLE}
+          helperText={user.isAuthUser ? LABELS.SKILLS_HELPER : undefined}
+        >
           {user.isAuthUser && (
             <>
               <IconButton onClick={handleAddSkillsModalOpen}>
@@ -290,7 +293,7 @@ const showMoreOrLessIcon: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const skillsLayoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
-  paddingBottom: 3,
+  paddingBottom: 1,
 });
 
 export default SkillsCard;
