@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useCallback } from "react";
 import {
   Avatar,
   Box,
@@ -69,7 +69,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleDisplayPictureOpen = () => {
-    setShowDisplayPicture(true);
+    if (displayPictureUrl) {
+      setShowDisplayPicture(true);
+    }
   };
 
   const handleDisplayPictureClose = () => {
@@ -93,7 +95,12 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
-    return userAvatar(theme, usernameToColor(name));
+    return userAvatar(
+      theme,
+      displayPictureUrl
+        ? theme.palette.background.default
+        : usernameToColor(name)
+    );
   };
 
   const handleAddSummaryClick = () => {

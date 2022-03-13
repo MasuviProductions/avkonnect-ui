@@ -58,7 +58,13 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
       }));
       onModalClose?.();
     }
-  });
+  }, [
+    onModalClose,
+    patchUserData?.data?.aboutUser,
+    patchUserStatus,
+    setSnackbar,
+    setUser,
+  ]);
 
   useEffect(() => {
     if (patchUserStatus === "error") {
@@ -67,7 +73,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
         messageType: "error",
       }));
     }
-  });
+  }, [patchUserStatus, setSnackbar]);
 
   return (
     <>

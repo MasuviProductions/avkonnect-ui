@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["avconnect.s3.ap-south-1.amazonaws.com", "localhost"],
+    domains: ["localhost", process.env.S3_DOMAIN || ""],
     minimumCacheTTL: 0,
   },
 };

@@ -200,7 +200,10 @@ const CertificationsCard: React.FC = () => {
   return (
     <Box my={1}>
       <LayoutCard>
-        <LayoutCard.Header title={LABELS.CERTIFICATIONS_TITLE}>
+        <LayoutCard.Header
+          title={LABELS.CERTIFICATIONS_TITLE}
+          helperText={user.isAuthUser ? LABELS.CERTIFICATION_HELPER : undefined}
+        >
           {user.isAuthUser && (
             <>
               <IconButton onClick={handleAddCertificationModalOpen}>

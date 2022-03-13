@@ -174,7 +174,10 @@ const ProjectsCard: React.FC = () => {
   return (
     <Box my={1}>
       <LayoutCard>
-        <LayoutCard.Header title={LABELS.PROJECTS_TITLE}>
+        <LayoutCard.Header
+          title={LABELS.PROJECTS_TITLE}
+          helperText={user.isAuthUser ? LABELS.PROJECT_HELPER : undefined}
+        >
           {user.isAuthUser && (
             <>
               <IconButton onClick={handleAddProjectModalOpen}>

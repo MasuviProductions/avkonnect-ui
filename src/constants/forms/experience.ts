@@ -39,7 +39,7 @@ const EXPERIENCE_TEXT_FIELDS_CONFIG: Record<
   companyName: {
     label: LABELS.EXPERIENCE_COMPANY_NAME,
     id: "companyName",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /^.{0,50}$/ }],
   },
   description: {
     label: LABELS.EXPERIENCE_DESCRIPTION,

@@ -6,6 +6,7 @@ const ENV = {
   COGNITO_CLIENT_DOMAIN: process.env.COGNITO_CLIENT_DOMAIN as string,
   COGNITO_ISSUER: process.env.COGNITO_ISSUER as string,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  S3_DOMAIN: process.env.S3_DOMAIN,
 };
 
 export default ENV;
