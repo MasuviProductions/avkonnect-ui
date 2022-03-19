@@ -51,7 +51,7 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
               <Hidden smDown>
                 <Grid item>
                   <Typography variant="body1">
-                    {getEllipsedText(searchedUser, 32)}
+                    {getEllipsedText(searchedUser, 30)}
                   </Typography>
                 </Grid>
               </Hidden>

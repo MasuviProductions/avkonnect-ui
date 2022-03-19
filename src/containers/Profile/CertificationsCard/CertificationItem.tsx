@@ -34,15 +34,21 @@ const CertificationItem: React.FC<ICertificationItemProps> = ({
             <Grid item xs={12}>
               <Grid container>
                 <Grid item>
-                  <Link
-                    href={certification.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Typography variant="body2">
+                  {certification.link ? (
+                    <Link
+                      href={certification.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Typography variant="body2">
+                        <strong>{certification.name}</strong>
+                      </Typography>
+                    </Link>
+                  ) : (
+                    <Typography variant="body2" color="primary">
                       <strong>{certification.name}</strong>
                     </Typography>
-                  </Link>
+                  )}
                 </Grid>
 
                 <Grid item ml={1}>

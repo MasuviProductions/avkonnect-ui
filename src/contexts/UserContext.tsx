@@ -78,13 +78,28 @@ const UserContextProvider: React.FC<IUser> = ({
     gender,
   });
 
-  const { authUser } = useAuthContext();
+  const { authUser, setAuthUser } = useAuthContext();
 
   useEffect(() => {
     if (authUser?.id === user.id && !user.isAuthUser) {
       setUser((prev) => ({ ...prev, isAuthUser: true }));
     }
   }, [authUser?.id, user.id, user.isAuthUser]);
+
+  useEffect(() => {
+    if (user.isAuthUser && setAuthUser) {
+      setAuthUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              name: user.name,
+              headline: user.headline,
+              displayPictureUrl: user.displayPictureUrl,
+            }
+          : undefined
+      );
+    }
+  }, [user, setAuthUser]);
 
   return (
     <UserContext.Provider value={{ user: user, setUser: setUser }}>

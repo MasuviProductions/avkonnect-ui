@@ -46,21 +46,6 @@ export const USER_IMAGE_SELECTOR_ATTRIBUTES: Record<
 
 export const SKILL_ELLIPSE_LIMIT = 3;
 export const MAX_SKILL_LIMIT = 10;
-export const SKILLS_LIST = [
-  "Actor",
-  "Director",
-  "Script Writer",
-  "Art Director",
-  "Line Producer",
-  "Associate Producer",
-  "Executive Producer",
-  "Producer",
-  " Assistant Director",
-  "VFX Director",
-  "Editor",
-  "Assistant Editor",
-  "M Colorist",
-];
 
 export const PROJECTS_ELLIPSE_LIMIT = 2;
 export const MAX_PROJECTS_LIMIT = 8;
@@ -75,6 +60,10 @@ export const MAX_DATE = 8640000000000000;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
 
-export const URL_MATCH_REGEX = new RegExp(
+export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
   /(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
+);
+
+export const URL_MATCH_REGEX_WITHOUT_PROTOCOL = new RegExp(
+  /^(!https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
 );
