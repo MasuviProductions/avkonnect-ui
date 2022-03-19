@@ -23,21 +23,29 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
         <AboutCard />
       </Grid>
 
-      <Grid item xs={12}>
-        <SkillsCard />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12}>
+          <SkillsCard />
+        </Grid>
+      )}
 
-      <Grid item xs={12}>
-        <ExperiencesCard />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12}>
+          <ExperiencesCard />
+        </Grid>
+      )}
 
-      <Grid item xs={12}>
-        <ProjectsCard />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12}>
+          <ProjectsCard />
+        </Grid>
+      )}
 
-      <Grid item xs={12}>
-        <CertificationsCard />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12}>
+          <CertificationsCard />
+        </Grid>
+      )}
     </Grid>
   );
 };

@@ -14,10 +14,11 @@ import CustomButton from "../../../components/CustomButton";
 import ModalLayout, {
   IModal,
 } from "../../../components/ModalLayout/ModalLayout";
-import { MAX_SKILL_LIMIT, SKILLS_LIST } from "../../../constants/app";
+import { MAX_SKILL_LIMIT } from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import { IUserSkillSetApiModel } from "../../../interfaces/api/external";
 import cloneDeep from "lodash.clonedeep";
+import { SKILLS_LIST } from "../../../constants/skills";
 
 interface IAddSkillsProps extends IModal {
   skillsets: IUserSkillSetApiModel[];

@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import API_ENDPOINTS from "../../../constants/api";
-import { CERTIFICATIONS_ELLIPSE_LIMIT } from "../../../constants/app";
+import {
+  CERTIFICATIONS_ELLIPSE_LIMIT,
+  URL_MATCH_REGEX_WITHOUT_PROTOCOL,
+} from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
@@ -98,6 +101,14 @@ const CertificationsCard: React.FC = () => {
     const certifications: IUserCertificationApiModel[] = cloneDeep(
       userCertifications as IUserCertificationApiModel[]
     );
+
+    if (certification.link) {
+      certification.link = certification.link.replaceAll(
+        URL_MATCH_REGEX_WITHOUT_PROTOCOL,
+        `https://$&`
+      );
+    }
+
     if (selectedCertificationIndex < 0) {
       certifications.push(certification);
     } else {
