@@ -5,7 +5,9 @@ import { CITIES } from "./indian-cities";
 
 type IUserInfoTextFields = "name" | "headline" | "gender" | "location";
 
-const GENDER_FIELDS = ["Male", "Female", "Others"];
+export type IGender = "Male" | "Female" | "Others";
+
+const GENDER_FIELDS: IGender[] = ["Male", "Female", "Others"];
 
 const CITY_FIELDS = CITIES;
 
