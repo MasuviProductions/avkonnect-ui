@@ -1,4 +1,4 @@
-import { MouseEvent, useCallback } from "react";
+import { MouseEvent } from "react";
 import {
   Avatar,
   Box,
@@ -11,6 +11,10 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SubtitlesIcon from "@mui/icons-material/Subtitles";
+import GenderIcon from "../../../components/GenderIcon";
+import CakeIcon from "@mui/icons-material/Cake";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
 import LayoutCard from "../../../components/LayoutCard";
@@ -24,6 +28,8 @@ import { useUserContext } from "../../../contexts/UserContext";
 import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
+import dayjs from "dayjs";
+import { IGender } from "../../../constants/forms/user-info/user-info";
 
 interface IUserCardProps {}
 
@@ -35,7 +41,10 @@ const UserCard: React.FC<IUserCardProps> = () => {
       backgroundImageUrl,
       name,
       headline,
+      dateOfBirth,
+      gender,
       email,
+      location,
       aboutUser,
     },
   } = useUserContext();
@@ -166,12 +175,18 @@ const UserCard: React.FC<IUserCardProps> = () => {
                     <Grid item xs={12}>
                       <Grid container justifyContent="space-between">
                         <Grid item>
-                          <Grid container>
+                          <Grid container alignItems="center" spacing={1}>
                             <Grid item>
                               <Typography variant="h5">{name}</Typography>
                             </Grid>
 
-                            <Grid item px={1}>
+                            {gender && (
+                              <Grid item>
+                                <GenderIcon gender={gender as IGender} />
+                              </Grid>
+                            )}
+
+                            <Grid item>
                               <ShareButton title={name} />
                             </Grid>
                           </Grid>
@@ -189,8 +204,49 @@ const UserCard: React.FC<IUserCardProps> = () => {
                         </Grid>
                       </Grid>
                     </Grid>
+
+                    {headline && (
+                      <Grid item xs={12}>
+                        <Grid container alignItems="flex-start" spacing={1}>
+                          <Grid item>
+                            <SubtitlesIcon fontSize="small" />
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              {headline}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )}
+
+                    {dateOfBirth && (
+                      <Grid item xs={12}>
+                        <Grid container alignItems="center" spacing={1}>
+                          <Grid item>
+                            <CakeIcon fontSize="small" />
+                          </Grid>
+
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              {dayjs(dateOfBirth).format("D MMM YYYY")}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )}
+
+                    {location && (
+                      <Grid item xs={12}>
+                        <Grid container alignItems="flex-start" spacing={1}>
+                          <Grid item>
+                            <LocationOnIcon fontSize="small" />
+                          </Grid>
+                          <Grid item>{location}</Grid>
+                        </Grid>
+                      </Grid>
+                    )}
                   </Grid>
-                  <Typography variant="body1">{headline}</Typography>
                 </Grid>
               </Grid>
             </Grid>
