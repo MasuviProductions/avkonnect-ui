@@ -16,7 +16,7 @@ export interface IUser {
   name: string;
   currentPosition: string;
   headline: string;
-  dateOfBirth: number;
+  dateOfBirth?: number;
   aboutUser: string;
   isAuthUser: boolean;
   gender: string;
