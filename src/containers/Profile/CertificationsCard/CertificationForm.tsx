@@ -30,7 +30,7 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
-import { formatUrlMessage } from "../../../utils/generic";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface ICertificationFormProps {
   certification?: IUserCertificationApiModel;
@@ -104,7 +104,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
-    const urlFormattedDescription: string = formatUrlMessage(
+    const urlFormattedDescription: string = getURLFormattedMessage(
       textFields.description.value
     );
     const updatedCertification: IUserCertificationApiModel = {

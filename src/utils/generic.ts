@@ -66,7 +66,7 @@ export const getEllipsedText = (text: string, len: number): string => {
   return `${text.substring(0, len)}...`;
 };
 
-export const formatUrlMessage = (message: string): string => {
+export const getURLFormattedMessage = (message: string): string => {
   const urlFormattedMessage = message.replaceAll(
     URL_MATCH_REGEX_WITHOUT_PROTOCOL,
     `https://$&`

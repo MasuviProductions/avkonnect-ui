@@ -97,7 +97,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       id: response.data.id,
       name: response.data.name,
       email: response.data.email,
-      dateOfBirth: response.data.dateOfBirth || 0,
+      dateOfBirth: response.data.dateOfBirth,
       displayPictureUrl: response.data.displayPictureUrl,
       backgroundImageUrl: response.data.backgroundImageUrl,
       aboutUser: response.data.aboutUser,

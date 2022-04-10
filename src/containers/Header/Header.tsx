@@ -92,10 +92,10 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               <Box>
                 <Hidden mdUp>
                   <Link href={APP_ROUTES.ROOT.route} passHref>
-                    <Box sx={hoverPointer}>
+                    <Box sx={logoContainerSx}>
                       <Image
                         src={PNG.AvkMobLogo}
-                        alt=""
+                        alt={`${LABELS.TITLE} Logo`}
                         width={80}
                         height={80}
                       />
@@ -104,10 +104,10 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Hidden>
                 <Hidden mdDown>
                   <Link href={APP_ROUTES.ROOT.route} passHref>
-                    <Box sx={hoverPointer}>
+                    <Box sx={logoContainerSx}>
                       <Image
                         src={PNG.AvkDeskLogo}
-                        alt=""
+                        alt={`${LABELS.TITLE} Logo`}
                         width={130}
                         height={50}
                       />
@@ -202,12 +202,7 @@ const userDropdown: SxProps<Theme> = (theme: Theme) => ({
   right: 0,
 });
 
-// const LogoStyle: SxProps<Theme> = {
-//   width: "auto",
-//   height: "80px",
-// };
-
-const hoverPointer: SxProps<Theme> = {
+const logoContainerSx: SxProps<Theme> = {
   width: "fit-content",
   ":hover": {
     cursor: "pointer",

@@ -31,7 +31,7 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
-import { formatUrlMessage } from "../../../utils/generic";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface IProjectFormProps {
   project?: IUserProjectApiModel;
@@ -97,7 +97,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   };
 
   const handleSaveProject = () => {
-    const urlFormattedDescription: string = formatUrlMessage(
+    const urlFormattedDescription: string = getURLFormattedMessage(
       textFields.description.value
     );
     const updatedProject: IUserProjectApiModel = {

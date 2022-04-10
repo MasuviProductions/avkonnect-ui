@@ -14,8 +14,6 @@ a {
 
 
 /* Material UI Components Hard Overrides */
-.css-7kykdr-MuiButtonBase-root-MuiIconButton-root,
-.css-1wgcwo1-MuiButtonBase-root-MuiIconButton-root,
-.css-nfrs8p-MuiButtonBase-root-MuiIconButton-root {
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall {
   color: #777 !important;
 }

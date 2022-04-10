@@ -12,7 +12,7 @@ import { IUserProfilePatchApiRequest } from "../../../interfaces/api/external";
 import { useUserContext } from "../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import CustomButton from "../../../components/CustomButton";
-import { formatUrlMessage } from "../../../utils/generic";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface IEditAboutUserProps extends IModal {}
 
@@ -43,7 +43,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
   };
 
   const handleAboutSave = () => {
-    const urlFormattedAboutUser = formatUrlMessage(aboutUser);
+    const urlFormattedAboutUser = getURLFormattedMessage(aboutUser);
     const patchUserReqBody: IUserProfilePatchApiRequest = {
       aboutUser: urlFormattedAboutUser,
     };
