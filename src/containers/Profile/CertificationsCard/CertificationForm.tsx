@@ -30,6 +30,7 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface ICertificationFormProps {
   certification?: IUserCertificationApiModel;
@@ -103,11 +104,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
+    const urlFormattedDescription: string = getURLFormattedMessage(
+      textFields.description.value
+    );
     const updatedCertification: IUserCertificationApiModel = {
       issuerName: textFields.issuerName.value as string,
       name: textFields.name.value as string,
       link: textFields.link.value as string,
-      description: textFields.description.value as string,
+      description: urlFormattedDescription,
       expiresAt: dateValues.to.value?.valueOf() as number,
       industry: textFields.industry.value,
       issuedAt: dateValues.from.value?.valueOf() as number,
@@ -135,8 +139,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={(event) => onFieldValueChange(event, "name")}
-            onBlur={(event) => onFieldValueBlur(event, "name")}
+            onChange={event => onFieldValueChange(event, "name")}
+            onBlur={event => onFieldValueBlur(event, "name")}
             sx={textField}
           />
         </Grid>
@@ -149,8 +153,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
           <TextField
             value={textFields.issuerName.value}
             label={textFields.issuerName.label}
-            onChange={(event) => onFieldValueChange(event, "issuerName")}
-            onBlur={(event) => onFieldValueBlur(event, "issuerName")}
+            onChange={event => onFieldValueChange(event, "issuerName")}
+            onBlur={event => onFieldValueBlur(event, "issuerName")}
             sx={textField}
           />
         </Grid>
@@ -161,7 +165,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.industry.value}
             options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.industry.message}
                 error={!!(textFields.industry.messageType === "error")}
@@ -183,8 +187,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={dateValues.from.value}
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
-            onChange={(date) => onDateValueChange(date, "from")}
-            renderInput={(params) => (
+            onChange={date => onDateValueChange(date, "from")}
+            renderInput={params => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -198,8 +202,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
               value={dateValues.to.value}
               minDate={dateValues.to.minDate}
               maxDate={dateValues.to.maxDate}
-              onChange={(date) => onDateValueChange(date, "to")}
-              renderInput={(params) => (
+              onChange={date => onDateValueChange(date, "to")}
+              renderInput={params => (
                 <TextField sx={textField} {...params} helperText={null} />
               )}
             />
@@ -229,8 +233,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             rows={3}
             value={textFields.description.value}
             label={textFields.description.label}
-            onChange={(event) => onFieldValueChange(event, "description")}
-            onBlur={(event) => onFieldValueBlur(event, "description")}
+            onChange={event => onFieldValueChange(event, "description")}
+            onBlur={event => onFieldValueBlur(event, "description")}
             sx={textField}
           />
         </Grid>
@@ -239,8 +243,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
           <TextField
             value={textFields.link.value}
             label={textFields.link.label}
-            onChange={(event) => onFieldValueChange(event, "link")}
-            onBlur={(event) => onFieldValueBlur(event, "link")}
+            onChange={event => onFieldValueChange(event, "link")}
+            onBlur={event => onFieldValueBlur(event, "link")}
             sx={textField}
           />
         </Grid>

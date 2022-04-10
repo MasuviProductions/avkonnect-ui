@@ -98,7 +98,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
-      setUser((prev) => ({
+      setUser(prev => ({
         ...prev,
         name: patchUserData?.data?.name as string,
         headline: patchUserData?.data?.headline as string,
@@ -124,8 +124,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={(event) => onFieldValueChange(event, "name")}
-            onBlur={(event) => onFieldValueBlur(event, "name")}
+            onChange={event => onFieldValueChange(event, "name")}
+            onBlur={event => onFieldValueBlur(event, "name")}
             sx={textField}
           />
         </Grid>
@@ -140,7 +140,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.gender.value}
             options={textFields.gender.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.gender.message}
                 error={!!(textFields.gender.messageType === "error")}
@@ -162,8 +162,9 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={dateFields.dateOfBirth.value}
             minDate={dateFields.dateOfBirth.minDate}
             maxDate={dateFields.dateOfBirth.maxDate}
-            onChange={(date) => onDateValueChange(date, "dateOfBirth")}
-            renderInput={(params) => (
+            inputFormat="DD/MM/YYYY"
+            onChange={date => onDateValueChange(date, "dateOfBirth")}
+            renderInput={params => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -173,8 +174,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.headline.value}
             label={textFields.headline.label}
-            onChange={(event) => onFieldValueChange(event, "headline")}
-            onBlur={(event) => onFieldValueBlur(event, "headline")}
+            onChange={event => onFieldValueChange(event, "headline")}
+            onBlur={event => onFieldValueBlur(event, "headline")}
             sx={textField}
           />
         </Grid>
@@ -185,7 +186,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.location.value}
             options={textFields.location.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.location.message}
                 error={!!(textFields.location.messageType === "error")}
