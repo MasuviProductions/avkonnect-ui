@@ -9,12 +9,14 @@ import {
   Typography,
   Theme,
   Box,
+  Hidden,
   ClickAwayListener,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import React, { useCallback, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
+import Image from "next/image";
 import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
@@ -24,6 +26,7 @@ import SearchBar from "./SearchBar";
 import ProfileDropdown from "./ProfileDropdown";
 import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
+import { PNG } from "../../assets/PNG";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -86,9 +89,32 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 textTransform: "none",
               }}
             >
-              <Link href={APP_ROUTES.ROOT.route} passHref>
-                {LABELS.TITLE}
-              </Link>
+              <Box>
+                <Hidden mdUp>
+                  <Link href={APP_ROUTES.ROOT.route} passHref>
+                    <Box sx={logoContainerSx}>
+                      <Image
+                        src={PNG.AvkMobLogo}
+                        alt={`${LABELS.TITLE} Logo`}
+                        width={80}
+                        height={80}
+                      />
+                    </Box>
+                  </Link>
+                </Hidden>
+                <Hidden mdDown>
+                  <Link href={APP_ROUTES.ROOT.route} passHref>
+                    <Box sx={logoContainerSx}>
+                      <Image
+                        src={PNG.AvkDeskLogo}
+                        alt={`${LABELS.TITLE} Logo`}
+                        width={130}
+                        height={50}
+                      />
+                    </Box>
+                  </Link>
+                </Hidden>
+              </Box>
             </Typography>
 
             {/** TODO: Remove authUser check  */}
@@ -117,7 +143,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               open={Boolean(themeAnchorEl)}
               onClose={handleThemeClose}
             >
-              {THEMES_LIST.map((theme) => (
+              {THEMES_LIST.map(theme => (
                 <MenuItem
                   key={theme.key}
                   onClick={() => handleThemeSelect(theme.themeOption)}
@@ -175,5 +201,14 @@ const userDropdown: SxProps<Theme> = (theme: Theme) => ({
   top: "48px",
   right: 0,
 });
+
+const logoContainerSx: SxProps<Theme> = {
+  width: "fit-content",
+  ":hover": {
+    cursor: "pointer",
+    transform: "scale(1.05)",
+    transitionDuration: "0.2s",
+  },
+};
 
 export default Header;

@@ -14,6 +14,7 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useUserContext } from "../../../contexts/UserContext";
 import { MAX_DATE } from "../../../constants/app";
+import { getLinkedTextIfURLIsPresent } from "../../../utils/generic";
 
 interface ICertificationItemProps {
   certification: IUserCertificationApiModel;
@@ -91,7 +92,12 @@ const CertificationItem: React.FC<ICertificationItemProps> = ({
         )}
 
         <Grid item xs={12} pt={2}>
-          <Typography variant="body2">{certification.description}</Typography>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{
+              __html: getLinkedTextIfURLIsPresent(certification.description),
+            }}
+          />
         </Grid>
 
         <Grid item xs={12} py={2}>

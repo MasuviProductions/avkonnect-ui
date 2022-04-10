@@ -220,7 +220,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
                       </Grid>
                     )}
 
-                    {dateOfBirth && (
+                    {dateOfBirth ?? (
                       <Grid item xs={12}>
                         <Grid container alignItems="center" spacing={1}>
                           <Grid item>

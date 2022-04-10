@@ -31,6 +31,7 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface IProjectFormProps {
   project?: IUserProjectApiModel;
@@ -96,10 +97,13 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   };
 
   const handleSaveProject = () => {
+    const urlFormattedDescription: string = getURLFormattedMessage(
+      textFields.description.value
+    );
     const updatedProject: IUserProjectApiModel = {
       companyName: textFields.companyName.value as string,
       collaboratorsRefs: [],
-      description: textFields.description.value as string,
+      description: urlFormattedDescription,
       employmentType: textFields.employmentType.value,
       endDate: dateValues.to.value?.valueOf() as number,
       industry: textFields.industry.value,
@@ -129,8 +133,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={(event) => onFieldValueChange(event, "name")}
-            onBlur={(event) => onFieldValueBlur(event, "name")}
+            onChange={event => onFieldValueChange(event, "name")}
+            onBlur={event => onFieldValueBlur(event, "name")}
             sx={textField}
           />
         </Grid>
@@ -143,8 +147,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.companyName.value}
             label={textFields.companyName.label}
-            onChange={(event) => onFieldValueChange(event, "companyName")}
-            onBlur={(event) => onFieldValueBlur(event, "companyName")}
+            onChange={event => onFieldValueChange(event, "companyName")}
+            onBlur={event => onFieldValueBlur(event, "companyName")}
             sx={textField}
           />
         </Grid>
@@ -155,7 +159,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.industry.value}
             options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.industry.message}
                 error={!!(textFields.industry.messageType === "error")}
@@ -174,8 +178,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.role.value}
             label={textFields.role.label}
-            onChange={(event) => onFieldValueChange(event, "role")}
-            onBlur={(event) => onFieldValueBlur(event, "role")}
+            onChange={event => onFieldValueChange(event, "role")}
+            onBlur={event => onFieldValueBlur(event, "role")}
             sx={textField}
           />
         </Grid>
@@ -186,7 +190,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.employmentType.value}
             options={textFields.employmentType.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.employmentType.message}
                 error={!!(textFields.employmentType.messageType === "error")}
@@ -208,8 +212,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={dateValues.from.value}
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
-            onChange={(date) => onDateValueChange(date, "from")}
-            renderInput={(params) => (
+            onChange={date => onDateValueChange(date, "from")}
+            renderInput={params => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -223,8 +227,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
               value={dateValues.to.value}
               minDate={dateValues.to.minDate}
               maxDate={dateValues.to.maxDate}
-              onChange={(date) => onDateValueChange(date, "to")}
-              renderInput={(params) => (
+              onChange={date => onDateValueChange(date, "to")}
+              renderInput={params => (
                 <TextField sx={textField} {...params} helperText={null} />
               )}
             />
@@ -252,8 +256,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             rows={3}
             value={textFields.description.value}
             label={textFields.description.label}
-            onChange={(event) => onFieldValueChange(event, "description")}
-            onBlur={(event) => onFieldValueBlur(event, "description")}
+            onChange={event => onFieldValueChange(event, "description")}
+            onBlur={event => onFieldValueBlur(event, "description")}
             sx={textField}
           />
         </Grid>

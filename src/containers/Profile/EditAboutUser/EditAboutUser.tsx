@@ -12,7 +12,7 @@ import { IUserProfilePatchApiRequest } from "../../../interfaces/api/external";
 import { useUserContext } from "../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import CustomButton from "../../../components/CustomButton";
-import { URL_MATCH_REGEX_WITHOUT_PROTOCOL } from "../../../constants/app";
+import { getURLFormattedMessage } from "../../../utils/generic";
 
 interface IEditAboutUserProps extends IModal {}
 
@@ -43,10 +43,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
   };
 
   const handleAboutSave = () => {
-    const urlFormattedAboutUser = aboutUser.replaceAll(
-      URL_MATCH_REGEX_WITHOUT_PROTOCOL,
-      `https://$&`
-    );
+    const urlFormattedAboutUser = getURLFormattedMessage(aboutUser);
     const patchUserReqBody: IUserProfilePatchApiRequest = {
       aboutUser: urlFormattedAboutUser,
     };
@@ -59,7 +56,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
-      setUser((prev) => ({
+      setUser(prev => ({
         ...prev,
         aboutUser: patchUserData?.data?.aboutUser as string,
       }));

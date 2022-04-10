@@ -23,7 +23,7 @@ interface IProfilePageData {
   name: string;
   currentPosition: string;
   headline: string;
-  dateOfBirth: number;
+  dateOfBirth?: number;
   aboutUser: string;
   location: string;
   gender: string;
