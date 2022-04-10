@@ -50,7 +50,7 @@ const USER_INFO_DATE_FIELDS_CONFIG: Record<
     value: null,
     views: ["day", "month", "year"],
     label: LABELS.USER_INFO_DOB,
-    minDate: dayjs(new Date(0)),
+    minDate: dayjs(new Date(new Date(new Date(new Date().setFullYear(new Date().getFullYear() - 110)).setMonth(1)).setDate(1))),
     maxDate: dayjs(new Date(Date.now())),
   },
 };

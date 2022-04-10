@@ -11,3 +11,11 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+
+/* Material UI Components Hard Overrides */
+.css-7kykdr-MuiButtonBase-root-MuiIconButton-root,
+.css-1wgcwo1-MuiButtonBase-root-MuiIconButton-root,
+.css-nfrs8p-MuiButtonBase-root-MuiIconButton-root {
+  color: #777 !important;
+}

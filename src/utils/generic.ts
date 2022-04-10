@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { URLSearchParams } from "url";
 import { APP_ROUTES } from "../constants/app";
+import { URL_MATCH_REGEX_WITH_PROTOCOL, URL_MATCH_REGEX_WITHOUT_PROTOCOL } from "../constants/app";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -63,4 +64,26 @@ export const getEllipsedText = (text: string, len: number): string => {
     return text;
   }
   return `${text.substring(0, len)}...`;
+};
+
+export const formatUrlMessage = (message: string): string => {
+  const urlFormattedMessage = message.replaceAll(
+    URL_MATCH_REGEX_WITHOUT_PROTOCOL,
+    `https://$&`
+  );
+  return urlFormattedMessage
+};
+
+export const getLinkedTextIfURLIsPresent = (para: string) => {
+  return para.replaceAll(
+    URL_MATCH_REGEX_WITH_PROTOCOL,
+    `<a href="$&"
+        target="_blank"
+        rel="noopener"
+        style="text-decoration: underline">
+        <strong>
+          $&
+        </strong>
+    </a>`
+  );
 };

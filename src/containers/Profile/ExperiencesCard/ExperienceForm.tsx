@@ -31,6 +31,7 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
+import { formatUrlMessage } from "../../../utils/generic";
 
 interface IExperienceFormProps {
   experience?: IUserExperienceApiModel;
@@ -98,9 +99,12 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
   };
 
   const handleSaveExperience = () => {
+    const urlFormattedDescription = formatUrlMessage(
+      textFields.description.value
+    );
     const updatedExperience: IUserExperienceApiModel = {
       companyName: textFields.companyName.value as string,
-      description: textFields.description.value as string,
+      description: urlFormattedDescription,
       employmentType: textFields.employmentType.value,
       endDate: dateValues.to.value?.valueOf() as number,
       industry: textFields.industry.value,
@@ -129,8 +133,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
           <TextField
             value={textFields.companyName.value}
             label={textFields.companyName.label}
-            onChange={(event) => onFieldValueChange(event, "companyName")}
-            onBlur={(event) => onFieldValueBlur(event, "companyName")}
+            onChange={event => onFieldValueChange(event, "companyName")}
+            onBlur={event => onFieldValueBlur(event, "companyName")}
             sx={textField}
           />
         </Grid>
@@ -141,7 +145,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.industry.value}
             options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.industry.message}
                 error={!!(textFields.industry.messageType === "error")}
@@ -160,8 +164,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
           <TextField
             value={textFields.role.value}
             label={textFields.role.label}
-            onChange={(event) => onFieldValueChange(event, "role")}
-            onBlur={(event) => onFieldValueBlur(event, "role")}
+            onChange={event => onFieldValueChange(event, "role")}
+            onBlur={event => onFieldValueBlur(event, "role")}
             sx={textField}
           />
         </Grid>
@@ -172,7 +176,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.employmentType.value}
             options={textFields.employmentType.options as Readonly<string[]>}
             sx={textField}
-            renderInput={(params) => (
+            renderInput={params => (
               <TextField
                 helperText={textFields.employmentType.message}
                 error={!!(textFields.employmentType.messageType === "error")}
@@ -194,8 +198,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={dateValues.from.value}
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
-            onChange={(date) => onDateValueChange(date, "from")}
-            renderInput={(params) => (
+            onChange={date => onDateValueChange(date, "from")}
+            renderInput={params => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -209,8 +213,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
               value={dateValues.to.value}
               minDate={dateValues.to.minDate}
               maxDate={dateValues.to.maxDate}
-              onChange={(date) => onDateValueChange(date, "to")}
-              renderInput={(params) => (
+              onChange={date => onDateValueChange(date, "to")}
+              renderInput={params => (
                 <TextField sx={textField} {...params} helperText={null} />
               )}
             />
@@ -240,8 +244,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             rows={3}
             value={textFields.description.value}
             label={textFields.description.label}
-            onChange={(event) => onFieldValueChange(event, "description")}
-            onBlur={(event) => onFieldValueBlur(event, "description")}
+            onChange={event => onFieldValueChange(event, "description")}
+            onBlur={event => onFieldValueBlur(event, "description")}
             sx={textField}
           />
         </Grid>
