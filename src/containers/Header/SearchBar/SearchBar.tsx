@@ -47,7 +47,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
     isFetching,
     refetch: triggerGetUsersApi,
   } = useQuery(
-    `dropdown-${API_ENDPOINTS.USER_SKILLS.key}`,
+    `dropdown-${API_ENDPOINTS.USERS_SEARCH.key}`,
     () =>
       getUsersSearch(
         accessToken as string,
@@ -186,7 +186,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
             <Box sx={searchDropdownContainer}>
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {userSearchData.map(user => (
+                  {userSearchData.map((user) => (
                     <Grid item xs={12} key={user.id} p={1}>
                       <SearchedUserItem
                         id={user.id}

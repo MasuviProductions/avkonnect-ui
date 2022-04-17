@@ -164,6 +164,15 @@ const ExperiencesCard: React.FC = () => {
   }, [putUserExperiencesStatus, setSnackbar]);
 
   useEffect(() => {
+    if (putUserExperiencesError) {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
+    }
+  }, [putUserExperiencesError, setSnackbar]);
+
+  useEffect(() => {
     if (userExperiences) {
       if (isShowMoreExperiencesApplicable) {
         if (showMoreExperiences) {

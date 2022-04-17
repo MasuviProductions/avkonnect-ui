@@ -181,6 +181,15 @@ const CertificationsCard: React.FC = () => {
   }, [putUserCertificationsStatus, setSnackbar]);
 
   useEffect(() => {
+    if (putUserCertificationsError) {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
+    }
+  }, [putUserCertificationsError, setSnackbar]);
+
+  useEffect(() => {
     if (userCertifications) {
       if (isShowMoreCertificationsApplicable) {
         if (showMoreCertifications) {

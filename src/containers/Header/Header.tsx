@@ -80,103 +80,105 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
         </Head>
 
         <Container maxWidth="lg" sx={{ padding: 0 }}>
-          <Toolbar>
-            <Typography
-              variant="h5"
-              sx={{
-                flexGrow: 1,
-                color: "navbar.contrastText",
-                textTransform: "none",
-              }}
-            >
-              <Box>
-                <Hidden mdUp>
-                  <Link href={APP_ROUTES.ROOT.route} passHref>
-                    <Box sx={logoContainerSx}>
-                      <Image
-                        src={PNG.AvkMobLogo}
-                        alt={`${LABELS.TITLE} Logo`}
-                        width={80}
-                        height={80}
-                      />
-                    </Box>
-                  </Link>
-                </Hidden>
-                <Hidden mdDown>
-                  <Link href={APP_ROUTES.ROOT.route} passHref>
-                    <Box sx={logoContainerSx}>
-                      <Image
-                        src={PNG.AvkDeskLogo}
-                        alt={`${LABELS.TITLE} Logo`}
-                        width={130}
-                        height={50}
-                      />
-                    </Box>
-                  </Link>
-                </Hidden>
-              </Box>
-            </Typography>
+          <>
+            <Toolbar>
+              <Typography
+                variant="h5"
+                sx={{
+                  flexGrow: 1,
+                  color: "navbar.contrastText",
+                  textTransform: "none",
+                }}
+              >
+                <>
+                  <Hidden mdUp>
+                    <Link href={APP_ROUTES.ROOT.route} passHref>
+                      <Box sx={logoContainerSx}>
+                        <Image
+                          src={PNG.AvkMobLogo}
+                          alt={`${LABELS.TITLE} Logo`}
+                          width={80}
+                          height={80}
+                        />
+                      </Box>
+                    </Link>
+                  </Hidden>
+                  <Hidden mdDown>
+                    <Link href={APP_ROUTES.ROOT.route} passHref>
+                      <Box sx={logoContainerSx}>
+                        <Image
+                          src={PNG.AvkDeskLogo}
+                          alt={`${LABELS.TITLE} Logo`}
+                          width={130}
+                          height={50}
+                        />
+                      </Box>
+                    </Link>
+                  </Hidden>
+                </>
+              </Typography>
 
-            {/** TODO: Remove authUser check  */}
-            {authUser && (
-              <Box px={1}>
-                <SearchBar />
-              </Box>
-            )}
-
-            <IconButton
-              onClick={handleThemeOpen}
-              aria-label="open drawer"
-              aria-haspopup="true"
-              sx={{ paddingX: 2 }}
-            >
-              <ColorLensIcon
-                fontSize="large"
-                sx={{ color: "navbar.contrastText" }}
-              />
-            </IconButton>
-
-            <Menu
-              id="theme-selector"
-              anchorEl={themeAnchorEl}
-              keepMounted
-              open={Boolean(themeAnchorEl)}
-              onClose={handleThemeClose}
-            >
-              {THEMES_LIST.map(theme => (
-                <MenuItem
-                  key={theme.key}
-                  onClick={() => handleThemeSelect(theme.themeOption)}
-                >
-                  {theme.name}
-                </MenuItem>
-              ))}
-            </Menu>
-
-            {authUser && (
-              <ClickAwayListener onClickAway={handleProfileDropdownClose}>
-                <Box sx={userDropdownContainer}>
-                  <UserMiniCard
-                    id={authUser.id}
-                    name={authUser.name}
-                    headline={authUser.email}
-                    displayPictureUrl={authUser.displayPictureUrl}
-                    onlyThumbnail
-                    onCardClick={handleProfileDropdownOpen}
-                  />
-
-                  {showProfileDropdown && (
-                    <Box sx={userDropdown}>
-                      <ProfileDropdown
-                        onClick={handleProfileDropdownClose}
-                        onFeedbackClick={handleFeedbackModalOpen}
-                      />
-                    </Box>
-                  )}
+              {/** TODO: Remove authUser check  */}
+              {authUser && (
+                <Box px={1}>
+                  <SearchBar />
                 </Box>
-              </ClickAwayListener>
-            )}
-          </Toolbar>
+              )}
+
+              <IconButton
+                onClick={handleThemeOpen}
+                aria-label="open drawer"
+                aria-haspopup="true"
+                sx={{ paddingX: 2 }}
+              >
+                <ColorLensIcon
+                  fontSize="large"
+                  sx={{ color: "navbar.contrastText" }}
+                />
+              </IconButton>
+
+              <Menu
+                id="theme-selector"
+                anchorEl={themeAnchorEl}
+                keepMounted
+                open={Boolean(themeAnchorEl)}
+                onClose={handleThemeClose}
+              >
+                {THEMES_LIST.map((theme) => (
+                  <MenuItem
+                    key={theme.key}
+                    onClick={() => handleThemeSelect(theme.themeOption)}
+                  >
+                    {theme.name}
+                  </MenuItem>
+                ))}
+              </Menu>
+
+              {authUser && (
+                <ClickAwayListener onClickAway={handleProfileDropdownClose}>
+                  <Box sx={userDropdownContainer}>
+                    <UserMiniCard
+                      id={authUser.id}
+                      name={authUser.name}
+                      headline={authUser.email}
+                      displayPictureUrl={authUser.displayPictureUrl}
+                      onlyThumbnail
+                      onCardClick={handleProfileDropdownOpen}
+                    />
+
+                    {showProfileDropdown && (
+                      <Box sx={userDropdown}>
+                        <ProfileDropdown
+                          onClick={handleProfileDropdownClose}
+                          onFeedbackClick={handleFeedbackModalOpen}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                </ClickAwayListener>
+              )}
+            </Toolbar>
+          </>
         </Container>
       </AppBar>
 
@@ -192,15 +194,15 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   );
 };
 
-const userDropdownContainer: SxProps<Theme> = (theme: Theme) => ({
+const userDropdownContainer: SxProps<Theme> = {
   position: "relative",
-});
+};
 
-const userDropdown: SxProps<Theme> = (theme: Theme) => ({
+const userDropdown: SxProps<Theme> = {
   position: "absolute",
   top: "48px",
   right: 0,
-});
+};
 
 const logoContainerSx: SxProps<Theme> = {
   width: "fit-content",

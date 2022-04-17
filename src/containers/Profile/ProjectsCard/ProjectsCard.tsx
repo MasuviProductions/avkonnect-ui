@@ -152,6 +152,15 @@ const ProjectsCard: React.FC = () => {
   }, [putUserProjectsStatus, setSnackbar]);
 
   useEffect(() => {
+    if (putUserProjectsError) {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
+    }
+  }, [putUserProjectsError, setSnackbar]);
+
+  useEffect(() => {
     if (userProjects) {
       if (isShowMoreProjectsApplicable) {
         if (showMoreProjects) {

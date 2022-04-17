@@ -6,7 +6,7 @@ import ENV from "../../../constants/env";
 
 const refreshAccessToken = async (token: JWT): Promise<JWT> => {
   try {
-    if (!token.refreshToken) return Promise.resolve(token);
+    if (!token.refreshToken) throw Error();
 
     const formPayload: Record<string, string> = {
       grant_type: "refresh_token",
@@ -80,7 +80,7 @@ export default NextAuth({
         return Promise.resolve({
           accessToken: params.account.access_token,
           refreshToken: params.account.refresh_token,
-          accessTokenExpiresAt: params.account.expires_at! * 1000 - 10000,
+          accessTokenExpiresAt: params.account.expires_at! * 1000,
         });
       }
 
@@ -94,6 +94,10 @@ export default NextAuth({
     },
     session: async (params): Promise<Session> => {
       params.session.accessToken = params.token.accessToken;
+      params.session.refreshtoken = params.token.refreshToken;
+      params.session.refreshTokenExpiresAt =
+        (params.token.exp as number) * 1000;
+      params.session.error = params.token.error;
       return params.session;
     },
   },
