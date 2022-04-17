@@ -24,7 +24,7 @@ const ProjectsCard: React.FC = () => {
   const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, editModalType } = useUserProfileModalContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreProjects, setShowMoreProjects] = useState<boolean>(false);
   const [isShowMoreProjectsApplicable, setIsShowMoreProjectsApplicable] =
@@ -67,12 +67,12 @@ const ProjectsCard: React.FC = () => {
 
   const handleAddProjectModalOpen = () => {
     setSelectedProjectIndex(-1);
-    editModalType("projectsCardModal", true);
+    showModal("projectsCardModal", true);
   };
 
   const handleAddProjectModalClose = useCallback(() => {
-    editModalType("projectsCardModal", false);
-  }, [editModalType]);
+    showModal("projectsCardModal", false);
+  }, [showModal]);
 
   const handleEditProjectModalOpen = (projectIndex: number) => {
     setSelectedProjectIndex(projectIndex);

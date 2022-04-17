@@ -30,7 +30,7 @@ const CertificationsCard: React.FC = () => {
   const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, editModalType } = useUserProfileModalContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreCertifications, setShowMoreCertifications] =
     useState<boolean>(false);
@@ -79,12 +79,12 @@ const CertificationsCard: React.FC = () => {
 
   const handleAddCertificationModalOpen = () => {
     setSelectedCertificationIndex(-1);
-    editModalType("certificatesCardModal", true);
+    showModal("certificatesCardModal", true);
   };
 
   const handleAddCertificationModalClose = useCallback(() => {
-    editModalType("certificatesCardModal", false);
-  }, [editModalType]);
+    showModal("certificatesCardModal", false);
+  }, [showModal]);
 
   const handleEditCertificationModalOpen = (certificationIndex: number) => {
     setSelectedCertificationIndex(certificationIndex);

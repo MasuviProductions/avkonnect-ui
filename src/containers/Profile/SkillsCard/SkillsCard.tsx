@@ -25,7 +25,7 @@ const SkillsCard: React.FC = () => {
   const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, editModalType } = useUserProfileModalContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreSkills, setShowMoreSkills] = useState<boolean>(false);
   const [isShowMoreSkillsApplicable, setIsShowMoreSkillsApplicable] =
@@ -66,12 +66,12 @@ const SkillsCard: React.FC = () => {
   );
 
   const handleAddSkillsModalOpen = () => {
-    editModalType("skillsCardModal", true);
+    showModal("skillsCardModal", true);
   };
 
   const handleAddSkillsModalClose = useCallback(() => {
-    editModalType("skillsCardModal", false);
-  }, [editModalType]);
+    showModal("skillsCardModal", false);
+  }, [showModal]);
 
   const handleEditSkillsModalOpen = () => {
     setShowEditSkillsModal(true);

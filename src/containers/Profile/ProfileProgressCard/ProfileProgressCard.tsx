@@ -31,11 +31,11 @@ const ProfileProgressCard: ReactFCWithSkeleton<IProfileProgressCardProps> =
 
     const { profileProgressSteps, profileProgressCompleted } =
       useProfileProgressSteps();
-    const { editModalType } = useUserProfileModalContext();
+    const { showModal } = useUserProfileModalContext();
 
     const handleActiveProfileProgressClick = (index: number) => () => {
       setCurrentProfileProgressStep(index);
-      editModalType(profileProgressSteps[index].userProgressModal, true);
+      showModal(profileProgressSteps[index].userProgressModal, true);
     };
     if (authUser?.id !== user.id) {
       return <></>;

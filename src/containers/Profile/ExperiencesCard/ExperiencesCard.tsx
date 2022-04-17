@@ -24,7 +24,7 @@ const ExperiencesCard: React.FC = () => {
   const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, editModalType } = useUserProfileModalContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreExperiences, setShowMoreExperiences] =
     useState<boolean>(false);
@@ -70,12 +70,12 @@ const ExperiencesCard: React.FC = () => {
 
   const handleAddExperienceModalOpen = () => {
     setSelectedExperienceIndex(-1);
-    editModalType("experiencesCardModal", true);
+    showModal("experiencesCardModal", true);
   };
 
   const handleAddExperienceModalClose = useCallback(() => {
-    editModalType("experiencesCardModal", false);
-  }, [editModalType]);
+    showModal("experiencesCardModal", false);
+  }, [showModal]);
 
   const handleEditExperienceModalOpen = (experienceIndex: number) => {
     setSelectedExperienceIndex(experienceIndex);

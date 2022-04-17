@@ -25,7 +25,7 @@ export type IUserProfileModalTypes =
 
 interface IUserProfileModalContext {
   profileModals: IUserProfileModal;
-  editModalType: (
+  showModal: (
     modalNameType: IUserProfileModalTypes,
     modalViewValue: boolean
   ) => void;
@@ -42,7 +42,7 @@ const defaultUserProfileModalValues: IUserProfileModal = {
 
 const UserProfileModalContext = createContext<IUserProfileModalContext>({
   profileModals: defaultUserProfileModalValues,
-  editModalType: () => {},
+  showModal: () => {},
 });
 
 const useUserProfileModalContext = (): IUserProfileModalContext => {
@@ -60,7 +60,7 @@ const UserProfileModalContextProvider: React.FC = ({ children }) => {
     certificatesCardModal: false,
   });
 
-  const editModalType = useCallback(
+  const showModal = useCallback(
     (modalNameType: IUserProfileModalTypes, modalViewValue: boolean) => {
       setProfileModals(prev => ({
         ...prev,
@@ -72,7 +72,7 @@ const UserProfileModalContextProvider: React.FC = ({ children }) => {
 
   return (
     <UserProfileModalContext.Provider
-      value={{ profileModals: profileModals, editModalType: editModalType }}
+      value={{ profileModals: profileModals, showModal: showModal }}
     >
       {children}
     </UserProfileModalContext.Provider>

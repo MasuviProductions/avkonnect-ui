@@ -52,7 +52,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
       aboutUser,
     },
   } = useUserContext();
-  const { profileModals, editModalType } = useUserProfileModalContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const { profileProgressCompleted } = useProfileProgressSteps();
 
@@ -101,11 +101,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleAboutModalOpen = () => {
-    editModalType("aboutCardModal", true);
+    showModal("aboutCardModal", true);
   };
 
   const handleAboutModalClose = () => {
-    editModalType("aboutCardModal", false);
+    showModal("aboutCardModal", false);
   };
 
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
@@ -122,11 +122,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleEditUserModalOpen = () => {
-    editModalType("userProfileInfoCardModal", true);
+    showModal("userProfileInfoCardModal", true);
   };
 
   const handleEditUserModalClose = () => {
-    editModalType("userProfileInfoCardModal", false);
+    showModal("userProfileInfoCardModal", false);
   };
 
   return (
@@ -428,7 +428,7 @@ const userCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
 
 const profileCompletedBadgeSx: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.primary.light,
-  marginLeft: "0.5rem",
+  marginLeft: "8px",
 });
 
 export default UserCard;

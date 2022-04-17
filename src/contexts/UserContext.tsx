@@ -136,19 +136,19 @@ const UserContextProvider: React.FC<IUser> = ({
     setProfileStatus(prev => ({
       ...prev,
       isAboutUserAddComplete: !!user.aboutUser,
-    }));
-  }, [user.aboutUser]);
-
-  useEffect(() => {
-    setProfileStatus(prev => ({
-      ...prev,
       isUserProfileDetailsComplete:
         !!user.gender &&
         !!user.dateOfBirth &&
         !!user.headline &&
         !!user.location,
     }));
-  }, [user.dateOfBirth, user.gender, user.headline, user.location]);
+  }, [
+    user.aboutUser,
+    user.dateOfBirth,
+    user.gender,
+    user.headline,
+    user.location,
+  ]);
 
   return (
     <UserContext.Provider
