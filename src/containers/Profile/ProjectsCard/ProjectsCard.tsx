@@ -3,7 +3,7 @@ import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import API_ENDPOINTS from "../../../constants/api";
@@ -18,16 +18,16 @@ import AddProject from "./AddProject";
 import EditProject from "./EditProject";
 import ProjectItem from "./ProjectItem";
 import cloneDeep from "lodash.clonedeep";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 
 const ProjectsCard: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const { profileModals, toggleModal } = useUserProfileModalContext();
 
   const [showMoreProjects, setShowMoreProjects] = useState<boolean>(false);
   const [isShowMoreProjectsApplicable, setIsShowMoreProjectsApplicable] =
-    useState<boolean>(false);
-  const [showAddProjectModal, setShowAddProjectModal] =
     useState<boolean>(false);
   const [showEditProjectModal, setShowEditProjectModal] =
     useState<boolean>(false);
@@ -67,12 +67,12 @@ const ProjectsCard: React.FC = () => {
 
   const handleAddProjectModalOpen = () => {
     setSelectedProjectIndex(-1);
-    setShowAddProjectModal(true);
+    toggleModal("projectsCardModal");
   };
 
-  const handleAddProjectModalClose = () => {
-    setShowAddProjectModal(false);
-  };
+  const handleAddProjectModalClose = useCallback(() => {
+    toggleModal("projectsCardModal");
+  }, [toggleModal]);
 
   const handleEditProjectModalOpen = (projectIndex: number) => {
     setSelectedProjectIndex(projectIndex);
@@ -125,7 +125,13 @@ const ProjectsCard: React.FC = () => {
         () => getUserProjectsData.data?.projects as IUserProjectApiModel[]
       );
     }
-  }, [getUserProjectsData?.data]);
+    if ((getUserProjectsData?.data?.projects.length || 0) > 0) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: { ...prev.profileStatus, isProjectAddComplete: true },
+      }));
+    }
+  }, [getUserProjectsData, setUser]);
 
   useEffect(() => {
     if (putUserProjectsReq) {
@@ -135,12 +141,16 @@ const ProjectsCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserProjectsData?.data) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: { ...prev.profileStatus, isProjectAddComplete: true },
+      }));
       setUserProjects(putUserProjectsData.data.projects);
       setProjectRemoving(false);
       handleAddProjectModalClose();
       handleEditProjectModalClose();
     }
-  }, [putUserProjectsData?.data]);
+  }, [handleAddProjectModalClose, putUserProjectsData, setUser]);
 
   useEffect(() => {
     if (putUserProjectsStatus === "success") {
@@ -222,9 +232,9 @@ const ProjectsCard: React.FC = () => {
           </>
         )}
 
-        {showAddProjectModal && (
+        {profileModals.projectsCardModal && (
           <AddProject
-            showModal={showAddProjectModal}
+            showModal={profileModals.projectsCardModal}
             onModalClose={handleAddProjectModalClose}
             saveLoading={putUserProjectsFetching}
             onSaveProject={handleProjectSave}

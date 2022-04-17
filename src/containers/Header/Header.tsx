@@ -117,7 +117,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               open={Boolean(themeAnchorEl)}
               onClose={handleThemeClose}
             >
-              {THEMES_LIST.map((theme) => (
+              {THEMES_LIST.map(theme => (
                 <MenuItem
                   key={theme.key}
                   onClick={() => handleThemeSelect(theme.themeOption)}

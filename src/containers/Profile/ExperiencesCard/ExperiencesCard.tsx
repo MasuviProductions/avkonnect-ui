@@ -3,7 +3,7 @@ import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import API_ENDPOINTS from "../../../constants/api";
@@ -12,6 +12,7 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import { IUserExperienceApiModel } from "../../../interfaces/api/external";
 import { getUserExperiences, putUserExperiences } from "../../../utils/api";
 import AddExperience from "./AddExperience";
@@ -20,15 +21,14 @@ import ExperienceItem from "./ExperienceItem";
 import cloneDeep from "lodash.clonedeep";
 
 const ExperiencesCard: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const { profileModals, toggleModal } = useUserProfileModalContext();
 
   const [showMoreExperiences, setShowMoreExperiences] =
     useState<boolean>(false);
   const [isShowMoreExperiencesApplicable, setIsShowMoreExperiencesApplicable] =
-    useState<boolean>(false);
-  const [showAddExperienceModal, setShowAddExperienceModal] =
     useState<boolean>(false);
   const [showEditExperienceModal, setShowEditExperienceModal] =
     useState<boolean>(false);
@@ -70,12 +70,12 @@ const ExperiencesCard: React.FC = () => {
 
   const handleAddExperienceModalOpen = () => {
     setSelectedExperienceIndex(-1);
-    setShowAddExperienceModal(true);
+    toggleModal("experiencesCardModal");
   };
 
-  const handleAddExperienceModalClose = () => {
-    setShowAddExperienceModal(false);
-  };
+  const handleAddExperienceModalClose = useCallback(() => {
+    toggleModal("experiencesCardModal");
+  }, [toggleModal]);
 
   const handleEditExperienceModalOpen = (experienceIndex: number) => {
     setSelectedExperienceIndex(experienceIndex);
@@ -131,7 +131,13 @@ const ExperiencesCard: React.FC = () => {
           getUserExperiencesData.data?.experiences as IUserExperienceApiModel[]
       );
     }
-  }, [getUserExperiencesData?.data]);
+    if ((getUserExperiencesData?.data?.experiences.length || 0) > 0) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: { ...prev.profileStatus, isExperienceAddComplete: true },
+      }));
+    }
+  }, [getUserExperiencesData?.data, setUser]);
 
   useEffect(() => {
     if (putUserExperiencesReq) {
@@ -141,12 +147,16 @@ const ExperiencesCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserExperiencesData?.data) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: { ...prev.profileStatus, isExperienceAddComplete: true },
+      }));
       setUserExperiences(putUserExperiencesData.data.experiences);
       setExperienceRemoving(false);
       handleAddExperienceModalClose();
       handleEditExperienceModalClose();
     }
-  }, [putUserExperiencesData?.data]);
+  }, [handleAddExperienceModalClose, putUserExperiencesData?.data, setUser]);
 
   useEffect(() => {
     if (putUserExperiencesStatus === "success") {
@@ -234,9 +244,9 @@ const ExperiencesCard: React.FC = () => {
           </>
         )}
 
-        {showAddExperienceModal && (
+        {profileModals.experiencesCardModal && (
           <AddExperience
-            showModal={showAddExperienceModal}
+            showModal={profileModals.experiencesCardModal}
             onModalClose={handleAddExperienceModalClose}
             saveLoading={putUserExperiencesFetching}
             onSaveExperience={handleExperienceSave}
@@ -282,3 +292,6 @@ const experiencesLayoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
 });
 
 export default ExperiencesCard;
+function setUser() {
+  throw new Error("Function not implemented.");
+}

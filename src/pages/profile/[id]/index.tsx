@@ -53,6 +53,14 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       isAuthUser={false}
       location={data.location}
       gender={data.gender}
+      profileStatus={{
+        isUserProfileDetailsComplete: false,
+        isAboutUserAddComplete: false,
+        isProjectAddComplete: false,
+        isSkillAddComplete: false,
+        isExperienceAddComplete: false,
+        isCertificationAddComplete: false,
+      }}
     >
       <Profile />
     </UserContextProvider>
@@ -97,7 +105,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       id: response.data.id,
       name: response.data.name,
       email: response.data.email,
-      dateOfBirth: response.data.dateOfBirth,
+      dateOfBirth: response.data.dateOfBirth || 0,
       displayPictureUrl: response.data.displayPictureUrl,
       backgroundImageUrl: response.data.backgroundImageUrl,
       aboutUser: response.data.aboutUser,

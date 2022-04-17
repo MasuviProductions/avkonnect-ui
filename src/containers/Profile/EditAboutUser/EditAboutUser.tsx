@@ -59,13 +59,19 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
-      setUser((prev) => ({
+      setUser(prev => ({
         ...prev,
         aboutUser: patchUserData?.data?.aboutUser as string,
+        profileStatus: {
+          ...prev.profileStatus,
+          isAboutUserAddComplete:
+            patchUserData?.data?.aboutUser !== "" ? true : false,
+        },
       }));
       onModalClose?.();
     }
   }, [
+    aboutUser,
     onModalClose,
     patchUserData?.data?.aboutUser,
     patchUserStatus,

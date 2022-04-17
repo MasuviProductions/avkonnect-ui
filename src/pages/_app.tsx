@@ -16,6 +16,7 @@ import Header from "../containers/Header";
 import createEmotionCache from "../createEmotionCache";
 import APIQueryClient from "../contexts/APIQueryClient";
 import AuthContextProvider from "../contexts/AuthContext";
+import UserProfileModalContextProvider from "../contexts/UserProfileModalContext";
 import { SessionProvider } from "next-auth/react";
 import WithPageSkeleton from "../components/WithPageSkeleton/WithPageSkeleton";
 import SnackbarProvider from "../contexts/SnackbarContext";
@@ -48,14 +49,16 @@ const MyApp = ({
           <SessionProvider session={pageProps.session}>
             <AuthContextProvider>
               <SnackbarProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Header onThemeSelect={onThemeSelect} />
-                  <Container maxWidth="lg" sx={containerSx}>
-                    <WithPageSkeleton>
-                      <Component {...pageProps} />
-                    </WithPageSkeleton>
-                  </Container>
-                </LocalizationProvider>
+                <UserProfileModalContextProvider>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Header onThemeSelect={onThemeSelect} />
+                    <Container maxWidth="lg" sx={containerSx}>
+                      <WithPageSkeleton>
+                        <Component {...pageProps} />
+                      </WithPageSkeleton>
+                    </Container>
+                  </LocalizationProvider>
+                </UserProfileModalContextProvider>
               </SnackbarProvider>
             </AuthContextProvider>
           </SessionProvider>

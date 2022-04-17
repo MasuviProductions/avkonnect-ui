@@ -55,6 +55,35 @@ export const LABELS = {
   USER_INFO_GENDER: "Gender",
   USER_INFO_LOCATION: "Location",
 
+  // Profile Progress Labels
+  USER_PROFILE_PROGRESS_INCOMPLETE:
+    "Your Profile is Incomplete. Let's work on it",
+  USER_PROFILE_PROGRESS_COMPLETE: "Your Profile looks Good!",
+  USER_PROFILE_BUTTON_GO: "Go",
+  USER_PROFILE_BUTTON_SKIP: "Skip",
+  USER_PROFILE_PROGRESS_INCOMPLETE_HELPER:
+    "Let us make your Profile meaningful by filling it out. This increases your chance of standing out and also to generates relevant connections with people.",
+  USER_PROFILE_PROGRESS_COMPLETE_TEXT:
+    "You can continue to add more of your Work, Achievements and Projects to enhance your Profile further!",
+  USER_PROFILE_PROGRESS_STEP_COMPLETED: "Step Complete!",
+  USER_PROFILE_PROGRESS_PROFILE_STEP_LABEL: "Fill Profile Information",
+  USER_PROFILE_PROGRESS_PROFILE_STEP_INFO:
+    "Fill your Profile with Basic Details like your Name, Gender, Date of Birth, etc.",
+  USER_PROFILE_PROGRESS_ABOUT_STEP_LABEL: "Write About Yourself",
+  USER_PROFILE_PROGRESS_ABOUT_STEP_INFO: "Write Something that makes you, you!",
+  USER_PROFILE_PROGRESS_SKILL_STEP_LABEL: "Fill your Skill",
+  USER_PROFILE_PROGRESS_SKILL_STEP_INFO:
+    "Choose which category you have proficiency in!",
+  USER_PROFILE_PROGRESS_EXPERIENCE_STEP_LABEL: "Your Experiences",
+  USER_PROFILE_PROGRESS_EXPERIENCE_STEP_INFO:
+    "Write somethings on where you have worked, for how long, etc. This can help others understand your work.",
+  USER_PROFILE_PROGRESS_PROJECT_STEP_LABEL: "Your Project Involvements",
+  USER_PROFILE_PROGRESS_PROJECT_STEP_INFO:
+    "Tell us the Projects you were involved in and what roles you played there.",
+  USER_PROFILE_PROGRESS_CERTIFICATE_STEP_LABEL: "Your Certificates",
+  USER_PROFILE_PROGRESS_CERTIFICATE_STEP_INFO:
+    "An Issued Certificate increases credibility of your work. Let us register a Certificate of yours.",
+
   // About User labels
   ADD_SUMMARY: "Add Summary",
   ABOUT_FIELD_LABEL: "About",

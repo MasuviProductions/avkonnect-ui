@@ -25,6 +25,7 @@ import { usernameToColor } from "../../../utils/generic";
 import EditAboutUser from "../EditAboutUser";
 import { LABELS } from "../../../constants/labels";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
@@ -48,9 +49,8 @@ const UserCard: React.FC<IUserCardProps> = () => {
       aboutUser,
     },
   } = useUserContext();
+  const { profileModals, toggleModal } = useUserProfileModalContext();
 
-  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
-  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
     useState<boolean>(false);
@@ -96,11 +96,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleAboutModalOpen = () => {
-    setShowAboutModal(true);
+    toggleModal("aboutCardModal");
   };
 
   const handleAboutModalClose = () => {
-    setShowAboutModal(false);
+    toggleModal("aboutCardModal");
   };
 
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
@@ -117,11 +117,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleEditUserModalOpen = () => {
-    setShowEditUserModal(true);
+    toggleModal("userProfileInfoCardModal");
   };
 
   const handleEditUserModalClose = () => {
-    setShowEditUserModal(false);
+    toggleModal("userProfileInfoCardModal");
   };
 
   return (
@@ -293,9 +293,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
 
-        {showEditUserModal && (
+        {profileModals.userProfileInfoCardModal && (
           <ModalLayout
-            showModal={showEditUserModal}
+            showModal={profileModals.userProfileInfoCardModal}
             onModalClose={handleEditUserModalClose}
             title={LABELS.USER_INFO_TITLE}
           >
@@ -331,9 +331,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
 
-        {showAboutModal && (
+        {profileModals.aboutCardModal && (
           <EditAboutUser
-            showModal={showAboutModal}
+            showModal={profileModals.aboutCardModal}
             onModalClose={handleAboutModalClose}
           />
         )}

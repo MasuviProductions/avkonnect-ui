@@ -3,7 +3,7 @@ import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import API_ENDPOINTS from "../../../constants/api";
@@ -15,6 +15,7 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import { IUserCertificationApiModel } from "../../../interfaces/api/external";
 import {
   getUserCertifications,
@@ -26,9 +27,10 @@ import CertificationItem from "./CertificationItem";
 import cloneDeep from "lodash.clonedeep";
 
 const CertificationsCard: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const { profileModals, toggleModal } = useUserProfileModalContext();
 
   const [showMoreCertifications, setShowMoreCertifications] =
     useState<boolean>(false);
@@ -36,8 +38,6 @@ const CertificationsCard: React.FC = () => {
     isShowMoreCertificationsApplicable,
     setIsShowMoreCertificationsApplicable,
   ] = useState<boolean>(false);
-  const [showAddCertificationModal, setShowAddCertificationModal] =
-    useState<boolean>(false);
   const [showEditCertificationModal, setShowEditCertificationModal] =
     useState<boolean>(false);
   const [userCertificationsEllpised, setUserCertificationsEllpised] =
@@ -79,12 +79,12 @@ const CertificationsCard: React.FC = () => {
 
   const handleAddCertificationModalOpen = () => {
     setSelectedCertificationIndex(-1);
-    setShowAddCertificationModal(true);
+    toggleModal("certificatesCardModal");
   };
 
-  const handleAddCertificationModalClose = () => {
-    setShowAddCertificationModal(false);
-  };
+  const handleAddCertificationModalClose = useCallback(() => {
+    toggleModal("certificatesCardModal");
+  }, [toggleModal]);
 
   const handleEditCertificationModalOpen = (certificationIndex: number) => {
     setSelectedCertificationIndex(certificationIndex);
@@ -153,8 +153,17 @@ const CertificationsCard: React.FC = () => {
           getUserCertificationsData.data
             ?.certifications as IUserCertificationApiModel[]
       );
+      if (getUserCertificationsData?.data?.certifications?.length > 0) {
+        setUser(prev => ({
+          ...prev,
+          profileStatus: {
+            ...prev.profileStatus,
+            isCertificationAddComplete: true,
+          },
+        }));
+      }
     }
-  }, [getUserCertificationsData?.data]);
+  }, [getUserCertificationsData?.data, setUser]);
 
   useEffect(() => {
     if (putUserCertificationsReq) {
@@ -164,12 +173,23 @@ const CertificationsCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserCertificationsData?.data) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: {
+          ...prev.profileStatus,
+          isCertificationAddComplete: true,
+        },
+      }));
       setUserCertifications(putUserCertificationsData.data.certifications);
       setCertificationRemoving(false);
       handleAddCertificationModalClose();
       handleEditCertificationModalClose();
     }
-  }, [putUserCertificationsData?.data]);
+  }, [
+    handleAddCertificationModalClose,
+    putUserCertificationsData?.data,
+    setUser,
+  ]);
 
   useEffect(() => {
     if (putUserCertificationsStatus === "success") {
@@ -261,9 +281,9 @@ const CertificationsCard: React.FC = () => {
           </>
         )}
 
-        {showAddCertificationModal && (
+        {profileModals.certificatesCardModal && (
           <AddCertification
-            showModal={showAddCertificationModal}
+            showModal={profileModals.certificatesCardModal}
             onModalClose={handleAddCertificationModalClose}
             saveLoading={putUserCertificationsFetching}
             onSaveCertification={handleCertificationSave}
