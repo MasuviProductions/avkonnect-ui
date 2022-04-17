@@ -3,7 +3,10 @@ import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { URLSearchParams } from "url";
 import { APP_ROUTES } from "../constants/app";
-import { URL_MATCH_REGEX_WITH_PROTOCOL, URL_MATCH_REGEX_WITHOUT_PROTOCOL } from "../constants/app";
+import {
+  URL_MATCH_REGEX_WITH_PROTOCOL,
+  URL_MATCH_REGEX_WITHOUT_PROTOCOL,
+} from "../constants/app";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -19,7 +22,7 @@ export const handleServerSideAuthenticationRedirect = async <T>(
   const session = await getSession(context);
   const encodedResolvedRedirectRoute = encodeURI(context.resolvedUrl);
 
-  if (!session)
+  if (!session || session.error)
     return {
       redirect: {
         destination: `${APP_ROUTES.SIGN_IN.route}?encodedResolvedRedirectRoute=${encodedResolvedRedirectRoute}`,
@@ -71,7 +74,7 @@ export const getURLFormattedMessage = (message: string): string => {
     URL_MATCH_REGEX_WITHOUT_PROTOCOL,
     `https://$&`
   );
-  return urlFormattedMessage
+  return urlFormattedMessage;
 };
 
 export const getLinkedTextIfURLIsPresent = (para: string) => {

@@ -3,28 +3,31 @@ import { IImageSelectorAttrib } from "../interfaces/app";
 import Home from "../pages";
 import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
+import SignInPage from "../pages/sign-in";
 import { LABELS } from "./labels";
+
+export const SESSION_REFETCH_INTERVAL = 5 * 60;
 
 export const APP_ROUTES = {
   ROOT: {
     route: "/",
     key: "home",
-    skeleton: <Home.Skeleton />,
+    skeleton: Home.Skeleton,
   },
   PROFILE: {
     route: "/profile/:id",
     key: "profile",
-    skeleton: <Profile.Skeleton />,
+    skeleton: Profile.Skeleton,
   },
   SIGN_IN: {
     route: "/sign-in",
     key: "sign-in",
-    skeleton: <></>,
+    skeleton: SignInPage.Skeleton,
   },
   SEARCH: {
     route: "/search\\?key=:key",
     key: "search",
-    skeleton: <Search.Skeleton />,
+    skeleton: Search.Skeleton,
   },
 };
 

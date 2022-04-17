@@ -21,6 +21,7 @@ import WithPageSkeleton from "../components/WithPageSkeleton/WithPageSkeleton";
 import SnackbarProvider from "../contexts/SnackbarContext";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
+import { SESSION_REFETCH_INTERVAL } from "../constants/app";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -45,7 +46,10 @@ const MyApp = ({
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={createTheme(theme)}>
         <APIQueryClient>
-          <SessionProvider session={pageProps.session}>
+          <SessionProvider
+            session={pageProps.session}
+            refetchInterval={SESSION_REFETCH_INTERVAL}
+          >
             <AuthContextProvider>
               <SnackbarProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

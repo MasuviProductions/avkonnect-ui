@@ -24,7 +24,8 @@ const WithPageSkeleton: React.FC<any> = ({ children }) => {
     for (let index = 0; index < routes.length; index += 1) {
       const regexp = pathToRegexp(routes[index].route);
       if (regexp.exec(routeDestination)) {
-        return routes[index].skeleton;
+        const Skeleton = routes[index].skeleton;
+        return <Skeleton />;
       }
     }
     return <>Loading..</>;

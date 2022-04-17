@@ -35,7 +35,7 @@ const SkillsCard: React.FC = () => {
   const [userSkillsetsEllpised, setUserSkillsetsEllpised] =
     useState<IUserSkillSetApiModel[]>();
   const [userSkillsets, setUserSkillsets] = useState<IUserSkillSetApiModel[]>();
-  const [patchUserSkillReq, setPatchUserSkillReq] =
+  const [putUserSkillReq, setPutUserSkillReq] =
     useState<IUserSkillSetApiModel[]>();
 
   const {
@@ -48,18 +48,18 @@ const SkillsCard: React.FC = () => {
   );
 
   const {
-    data: patchUserSkillsData,
-    error: patchUserSkillsError,
-    status: patchUserSkillsStatus,
-    isFetching: patchUserSkillFetching,
-    refetch: triggerPatchUserSkillsApi,
+    data: putUserSkillsData,
+    error: putUserSkillsError,
+    status: putUserSkillsStatus,
+    isFetching: putUserSkillFetching,
+    refetch: triggerPutUserSkillsApi,
   } = useQuery(
-    `${API_ENDPOINTS.USER_SKILLS.key}${user.id}`,
+    `${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`,
     () =>
       putUserSkills(
         accessToken as string,
         user?.id as string,
-        patchUserSkillReq as IUserSkillSetApiModel[]
+        putUserSkillReq as IUserSkillSetApiModel[]
       ),
     { enabled: false, cacheTime: 0 }
   );
@@ -99,7 +99,7 @@ const SkillsCard: React.FC = () => {
       }
       return true;
     });
-    setPatchUserSkillReq(updatedSkillsets);
+    setPutUserSkillReq(updatedSkillsets);
   };
 
   const handleUnendorseUserSkill = (customKey: string, skillName: string) => {
@@ -119,15 +119,15 @@ const SkillsCard: React.FC = () => {
       }
       return true;
     });
-    setPatchUserSkillReq(updatedSkillsets);
+    setPutUserSkillReq(updatedSkillsets);
   };
 
   const handleAddSkillSave = (skillsets: IUserSkillSetApiModel[]) => {
-    setPatchUserSkillReq(skillsets);
+    setPutUserSkillReq(skillsets);
   };
 
   const handleEditSkillsSave = (skillsets: IUserSkillSetApiModel[]) => {
-    setPatchUserSkillReq(skillsets);
+    setPutUserSkillReq(skillsets);
   };
 
   const handleShowLess = () => {
@@ -153,27 +153,36 @@ const SkillsCard: React.FC = () => {
   }, [getUserSkillsData?.data]);
 
   useEffect(() => {
-    if (patchUserSkillReq) {
-      triggerPatchUserSkillsApi();
+    if (putUserSkillReq) {
+      triggerPutUserSkillsApi();
     }
-  }, [patchUserSkillReq, triggerPatchUserSkillsApi]);
+  }, [putUserSkillReq, triggerPutUserSkillsApi]);
 
   useEffect(() => {
-    if (patchUserSkillsData?.data) {
-      setUserSkillsets(patchUserSkillsData.data.skillSets);
+    if (putUserSkillsData?.data) {
+      setUserSkillsets(putUserSkillsData.data.skillSets);
       handleAddSkillsModalClose();
       handleEditSkillsModalClose();
     }
-  }, [patchUserSkillsData?.data]);
+  }, [putUserSkillsData?.data]);
 
   useEffect(() => {
-    if (patchUserSkillsStatus === "success") {
+    if (putUserSkillsStatus === "success") {
       setSnackbar?.(() => ({
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
     }
-  }, [patchUserSkillsStatus, setSnackbar]);
+  }, [putUserSkillsStatus, setSnackbar]);
+
+  useEffect(() => {
+    if (putUserSkillsError) {
+      setSnackbar?.(() => ({
+        message: LABELS.SAVE_FAILED,
+        messageType: "error",
+      }));
+    }
+  }, [putUserSkillsError, setSnackbar]);
 
   useEffect(() => {
     if (userSkillsets) {
@@ -224,7 +233,7 @@ const SkillsCard: React.FC = () => {
               customKey={skillset.name}
               skillset={skillset}
               loading={
-                patchUserSkillFetching && skillUnderUpdate === skillset.name
+                putUserSkillFetching && skillUnderUpdate === skillset.name
               }
               onAddEndorsement={handleEndorseUserSkill}
               onRemoveEndorsement={handleUnendorseUserSkill}
@@ -260,7 +269,7 @@ const SkillsCard: React.FC = () => {
             onModalClose={handleAddSkillsModalClose}
             skillsets={userSkillsets as IUserSkillSetApiModel[]}
             onSave={handleAddSkillSave}
-            loading={patchUserSkillFetching}
+            loading={putUserSkillFetching}
           />
         )}
 
@@ -269,7 +278,7 @@ const SkillsCard: React.FC = () => {
             skillsets={userSkillsets as IUserSkillSetApiModel[]}
             showModal={showEditSkillsModal}
             onSave={handleEditSkillsSave}
-            loading={patchUserSkillFetching}
+            loading={putUserSkillFetching}
             onModalClose={handleEditSkillsModalClose}
           />
         )}
