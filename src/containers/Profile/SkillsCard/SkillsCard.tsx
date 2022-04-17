@@ -43,7 +43,7 @@ const SkillsCard: React.FC = () => {
     error: getUserSkillsError,
     status: getUserSkillsStatus,
     refetch: triggerGetUserSkillsApi,
-  } = useQuery(`${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`, () =>
+  } = useQuery(`GET: ${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`, () =>
     getUserSkills(accessToken as string, user?.id as string)
   );
 
@@ -54,7 +54,7 @@ const SkillsCard: React.FC = () => {
     isFetching: putUserSkillFetching,
     refetch: triggerPutUserSkillsApi,
   } = useQuery(
-    `${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`,
+    `PUT: ${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`,
     () =>
       putUserSkills(
         accessToken as string,
