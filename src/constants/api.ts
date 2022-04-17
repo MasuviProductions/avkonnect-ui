@@ -27,7 +27,7 @@ const API_ENDPOINTS = {
   USER_SKILLS: {
     key: "user-skills",
     url: (userId: string): string =>
-      `${AVCONNECT_URL.USERS()}/${userId}/skills`,
+      `${AVCONNECT_URL.USERS()}/${userId}1/skills`,
   },
   USER_PROJECTS: {
     key: "user-projects",

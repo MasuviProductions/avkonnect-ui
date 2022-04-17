@@ -11,6 +11,7 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import ProfileDropdownItem from "./ProfileDropdownItem";
 import Link from "next/link";
 import { compile } from "path-to-regexp";
+import { grey } from "@mui/material/colors";
 
 interface IProfileDropdownProps {
   onClick?: () => void;
@@ -89,17 +90,17 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
   );
 };
 
-const viewProfileButton: SxProps<Theme> = (theme: Theme) => ({
+const viewProfileButton: SxProps<Theme> = {
   width: "100%",
-});
+};
 
-const profileDropdownContainer: SxProps<Theme> = (theme: Theme) => ({
+const profileDropdownContainer: SxProps<Theme> = {
   width: "350px",
-});
+};
 
-const profileFeedbackItem: SxProps<Theme> = (theme: Theme) => ({
-  borderTop: `2px solid ${theme.palette.grey[700]}`,
-  borderBottom: `2px solid ${theme.palette.grey[700]}`,
-});
+const profileFeedbackItem: SxProps<Theme> = {
+  borderTop: `2px solid ${grey[700]}`,
+  borderBottom: `2px solid ${grey[700]}`,
+};
 
 export default ProfileDropdown;

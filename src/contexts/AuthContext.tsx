@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import {
   createContext,
@@ -11,12 +11,15 @@ import {
 import API_ENDPOINTS from "../constants/api";
 import { fetchAuthUser } from "../utils/api";
 import { IAuthUserApiResponse } from "../interfaces/api/external";
+import { APP_ROUTES, SESSION_REFETCH_INTERVAL } from "../constants/app";
 
 interface IAuthContextProps {
   authUser?: IAuthUserApiResponse;
   accessToken?: string;
   setAuthUser?: Dispatch<SetStateAction<IAuthUserApiResponse | undefined>>;
   setAccessToken?: Dispatch<SetStateAction<string | undefined>>;
+  authError?: boolean;
+  authLoading?: boolean;
 }
 
 const AuthContext = createContext<IAuthContextProps>({});
@@ -26,21 +29,31 @@ const useAuthContext = (): IAuthContextProps => {
 };
 
 const AuthContextProvider: React.FC = ({ children }) => {
+  const [authUser, setAuthUser] = useState<IAuthUserApiResponse>();
+  const [accessToken, setAccessToken] = useState<string>();
+  const [authError, setAuthError] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const { data: sessionData, status: sessionStatus } = useSession();
   const { data: authUserData, error: authUserError } = useQuery(
     API_ENDPOINTS.AUTH_USER.key,
     () => fetchAuthUser(sessionData?.accessToken as string),
     {
-      // Cache API response for upto 3 minutes
       cacheTime: 1000 * 60 * 3,
-      retry: 2,
-      retryDelay: 1000,
       enabled: Boolean(sessionData) && sessionStatus !== "loading",
     }
   );
 
-  const [authUser, setAuthUser] = useState<IAuthUserApiResponse>();
-  const [accessToken, setAccessToken] = useState<string>();
+  useEffect(() => {
+    if (
+      sessionData?.refreshTokenExpiresAt &&
+      (sessionData.refreshTokenExpiresAt as number) - Date.now() <
+        SESSION_REFETCH_INTERVAL
+    ) {
+      signOut({
+        callbackUrl: `${window.location.origin}${APP_ROUTES.SIGN_IN.route}`,
+      });
+    }
+  }, [sessionData]);
 
   useEffect(() => {
     if (authUserData) {
@@ -50,13 +63,33 @@ const AuthContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (sessionData) {
-      setAccessToken(sessionData?.accessToken as string);
+      setAuthError(!!sessionData.error);
+      setAccessToken(
+        !sessionData.error ? (sessionData?.accessToken as string) : ""
+      );
     }
   }, [sessionData]);
 
+  useEffect(() => {
+    setAuthLoading(sessionStatus === "loading");
+  }, [sessionStatus]);
+
+  useEffect(() => {
+    if (authUserError) {
+      setAuthError(!!authUserError);
+    }
+  }, [authUserError]);
+
   return (
     <AuthContext.Provider
-      value={{ authUser, setAuthUser, accessToken, setAccessToken }}
+      value={{
+        authUser,
+        setAuthUser,
+        accessToken,
+        setAccessToken,
+        authError,
+        authLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

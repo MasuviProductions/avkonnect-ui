@@ -8,8 +8,7 @@ export interface IComponentSkeleton {
   Skeleton: React.FC;
 }
 
-export type ReactFCWithSkeleton<T = undefined> = React.FC<T> &
-  IComponentSkeleton;
+export type ReactFCWithSkeleton<T = unknown> = React.FC<T> & IComponentSkeleton;
 
 export type NextPageWithSkeleton<T = undefined> = NextPage<T> &
   IComponentSkeleton;

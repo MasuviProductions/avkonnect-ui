@@ -49,18 +49,16 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
   );
 };
 
-const profileItemContainer: SxProps<Theme> = (theme: Theme) => ({
+const profileItemContainer: SxProps<Theme> = {
   cursor: "pointer",
   padding: 1,
-  color: theme.palette.text.primary,
+  color: "text.primary",
 
   "&:hover": {
-    backgroundColor: theme.palette.grey[800],
-    color: theme.palette.text.secondary,
+    backgroundColor: "grey[800]",
+    color: "text.secondary",
   },
-  [theme.breakpoints.up("sm")]: {
-    borderRadius: "0.4rem",
-  },
-});
+  borderRadius: { xs: "0.4rem" },
+};
 
 export default ProfileDropdownItem;
