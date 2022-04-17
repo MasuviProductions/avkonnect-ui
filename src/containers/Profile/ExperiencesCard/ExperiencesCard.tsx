@@ -107,6 +107,16 @@ const ExperiencesCard: React.FC = () => {
       (_, index) => index != selectedExperienceIndex
     );
     setExperienceRemoving(true);
+    console.log("experiences: ", experiences.length);
+    if (experiences.length === 0) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: {
+          ...prev.profileStatus,
+          isExperienceAddComplete: false,
+        },
+      }));
+    }
     setPatchUserExperiencesReq(experiences);
   };
 

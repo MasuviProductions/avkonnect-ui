@@ -102,6 +102,15 @@ const ProjectsCard: React.FC = () => {
     );
     projects = projects.filter((_, index) => index != selectedProjectIndex);
     setProjectRemoving(true);
+    if (projects.length === 0) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: {
+          ...prev.profileStatus,
+          isProjectAddComplete: false,
+        },
+      }));
+    }
     setPatchUserProjectsReq(projects);
   };
 

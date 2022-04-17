@@ -62,7 +62,7 @@ export const LABELS = {
   USER_PROFILE_BUTTON_GO: "Go",
   USER_PROFILE_BUTTON_SKIP: "Skip",
   USER_PROFILE_PROGRESS_INCOMPLETE_HELPER:
-    "Let us make your Profile meaningful by filling it out. This increases your chance of standing out and also to generates relevant connections with people.",
+    "Let us make your Profile meaningful by filling it out. This increases your chance of standing out and also to generate relevant connections with people.",
   USER_PROFILE_PROGRESS_COMPLETE_TEXT:
     "You can continue to add more of your Work, Achievements and Projects to enhance your Profile further!",
   USER_PROFILE_PROGRESS_STEP_COMPLETED: "Step Complete!",

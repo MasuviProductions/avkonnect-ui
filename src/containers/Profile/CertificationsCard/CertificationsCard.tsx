@@ -126,6 +126,15 @@ const CertificationsCard: React.FC = () => {
       (_, index) => index != selectedCertificationIndex
     );
     setCertificationRemoving(true);
+    if (certifications.length === 0) {
+      setUser(prev => ({
+        ...prev,
+        profileStatus: {
+          ...prev.profileStatus,
+          isCertificationAddComplete: false,
+        },
+      }));
+    }
     setPatchUserCertificationsReq(certifications);
   };
 

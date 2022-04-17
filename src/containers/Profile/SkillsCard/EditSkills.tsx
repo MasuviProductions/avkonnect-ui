@@ -10,6 +10,7 @@ import { IUserSkillSetApiModel } from "../../../interfaces/api/external";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import cloneDeep from "lodash.clonedeep";
+import { useUserContext } from "../../../contexts/UserContext";
 
 interface IEditSkillsProps extends IModal {
   skillsets: IUserSkillSetApiModel[];
@@ -28,14 +29,22 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
     IUserSkillSetApiModel[]
   >([]);
 
+  const { setUser } = useUserContext();
+
   const handleSkillDelete = (event: React.MouseEvent, skillName: string) => {
     const matchedSkillIndex = updatedSkillsets.findIndex(
-      (skillset) => skillset.name === skillName
+      skillset => skillset.name === skillName
     );
     if (matchedSkillIndex >= 0) {
       const newSkillsets = cloneDeep(updatedSkillsets);
       newSkillsets[matchedSkillIndex] = newSkillsets[newSkillsets.length - 1];
       newSkillsets.pop();
+      if (newSkillsets.length === 0) {
+        setUser(prev => ({
+          ...prev,
+          profileStatus: { ...prev.profileStatus, isSkillAddComplete: false },
+        }));
+      }
       setUpdatedSkillsets(newSkillsets);
     }
   };
@@ -59,7 +68,7 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
         <Grid container justifyContent="flex-end" p={3}>
           <Grid item xs={12}>
             <Grid container>
-              {updatedSkillsets.map((skill) => (
+              {updatedSkillsets.map(skill => (
                 <Grid item xs={12} key={skill.name}>
                   <Grid
                     container
@@ -72,9 +81,7 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
 
                     <Grid item>
                       <IconButton
-                        onClick={(event) =>
-                          handleSkillDelete(event, skill.name)
-                        }
+                        onClick={event => handleSkillDelete(event, skill.name)}
                       >
                         <DeleteForeverIcon
                           sx={skillsDeleteBtn}
