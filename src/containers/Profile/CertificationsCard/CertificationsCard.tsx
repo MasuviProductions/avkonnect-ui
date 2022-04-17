@@ -3,7 +3,7 @@ import { SxProps } from "@mui/system";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import API_ENDPOINTS from "../../../constants/api";
@@ -15,6 +15,7 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import { IUserCertificationApiModel } from "../../../interfaces/api/external";
 import {
   getUserCertifications,
@@ -26,9 +27,10 @@ import CertificationItem from "./CertificationItem";
 import cloneDeep from "lodash.clonedeep";
 
 const CertificationsCard: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreCertifications, setShowMoreCertifications] =
     useState<boolean>(false);
@@ -36,8 +38,6 @@ const CertificationsCard: React.FC = () => {
     isShowMoreCertificationsApplicable,
     setIsShowMoreCertificationsApplicable,
   ] = useState<boolean>(false);
-  const [showAddCertificationModal, setShowAddCertificationModal] =
-    useState<boolean>(false);
   const [showEditCertificationModal, setShowEditCertificationModal] =
     useState<boolean>(false);
   const [userCertificationsEllpised, setUserCertificationsEllpised] =
@@ -79,12 +79,12 @@ const CertificationsCard: React.FC = () => {
 
   const handleAddCertificationModalOpen = () => {
     setSelectedCertificationIndex(-1);
-    setShowAddCertificationModal(true);
+    showModal("certificatesCardModal", true);
   };
 
-  const handleAddCertificationModalClose = () => {
-    setShowAddCertificationModal(false);
-  };
+  const handleAddCertificationModalClose = useCallback(() => {
+    showModal("certificatesCardModal", false);
+  }, [showModal]);
 
   const handleEditCertificationModalOpen = (certificationIndex: number) => {
     setSelectedCertificationIndex(certificationIndex);
@@ -169,7 +169,7 @@ const CertificationsCard: React.FC = () => {
       handleAddCertificationModalClose();
       handleEditCertificationModalClose();
     }
-  }, [putUserCertificationsData?.data]);
+  }, [handleAddCertificationModalClose, putUserCertificationsData?.data]);
 
   useEffect(() => {
     if (putUserCertificationsStatus === "success") {
@@ -208,6 +208,14 @@ const CertificationsCard: React.FC = () => {
     showMoreCertifications,
     userCertifications,
   ]);
+
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isCertificationAddComplete:
+        !!userCertifications && userCertifications.length > 0,
+    }));
+  }, [setProfileStatus, userCertifications]);
 
   if (
     authUser?.id !== user.id &&
@@ -270,9 +278,9 @@ const CertificationsCard: React.FC = () => {
           </>
         )}
 
-        {showAddCertificationModal && (
+        {profileModals.certificatesCardModal && (
           <AddCertification
-            showModal={showAddCertificationModal}
+            showModal={profileModals.certificatesCardModal}
             onModalClose={handleAddCertificationModalClose}
             saveLoading={putUserCertificationsFetching}
             onSaveCertification={handleCertificationSave}

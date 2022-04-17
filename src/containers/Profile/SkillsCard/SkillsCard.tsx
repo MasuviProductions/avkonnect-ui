@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Box, Button, Container, IconButton, Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
@@ -17,19 +17,20 @@ import { IUserSkillSetApiModel } from "../../../interfaces/api/external";
 import cloneDeep from "lodash.clonedeep";
 import AddSkills from "./AddSkills";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import EditSkills from "./EditSkills";
 import { SKILL_ELLIPSE_LIMIT } from "../../../constants/app";
 
 const SkillsCard: React.FC = () => {
-  const { user } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const [showMoreSkills, setShowMoreSkills] = useState<boolean>(false);
   const [isShowMoreSkillsApplicable, setIsShowMoreSkillsApplicable] =
     useState<boolean>(false);
   const [skillUnderUpdate, setSkillUnderUpdate] = useState<string>("");
-  const [showAddSkillsModal, setShowAddSkillsModal] = useState<boolean>(false);
   const [showEditSkillsModal, setShowEditSkillsModal] =
     useState<boolean>(false);
   const [userSkillsetsEllpised, setUserSkillsetsEllpised] =
@@ -43,7 +44,7 @@ const SkillsCard: React.FC = () => {
     error: getUserSkillsError,
     status: getUserSkillsStatus,
     refetch: triggerGetUserSkillsApi,
-  } = useQuery(`${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`, () =>
+  } = useQuery(`GET: ${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`, () =>
     getUserSkills(accessToken as string, user?.id as string)
   );
 
@@ -54,7 +55,7 @@ const SkillsCard: React.FC = () => {
     isFetching: putUserSkillFetching,
     refetch: triggerPutUserSkillsApi,
   } = useQuery(
-    `${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`,
+    `PUT: ${API_ENDPOINTS.USER_SKILLS.key}:${user.id}`,
     () =>
       putUserSkills(
         accessToken as string,
@@ -65,12 +66,12 @@ const SkillsCard: React.FC = () => {
   );
 
   const handleAddSkillsModalOpen = () => {
-    setShowAddSkillsModal(true);
+    showModal("skillsCardModal", true);
   };
 
-  const handleAddSkillsModalClose = () => {
-    setShowAddSkillsModal(false);
-  };
+  const handleAddSkillsModalClose = useCallback(() => {
+    showModal("skillsCardModal", false);
+  }, [showModal]);
 
   const handleEditSkillsModalOpen = () => {
     setShowEditSkillsModal(true);
@@ -88,7 +89,7 @@ const SkillsCard: React.FC = () => {
   ) => {
     setSkillUnderUpdate(customKey);
     const updatedSkillsets = cloneDeep(userSkillsets);
-    updatedSkillsets?.every((skillset) => {
+    updatedSkillsets?.every(skillset => {
       if (skillset.name === skillName) {
         skillset.endorsers.push({
           endorserId: authUser?.id as string,
@@ -105,7 +106,7 @@ const SkillsCard: React.FC = () => {
   const handleUnendorseUserSkill = (customKey: string, skillName: string) => {
     setSkillUnderUpdate(customKey);
     const updatedSkillsets = cloneDeep(userSkillsets);
-    updatedSkillsets?.every((skillset) => {
+    updatedSkillsets?.every(skillset => {
       if (skillset.name === skillName) {
         for (let i = 0; i <= skillset.endorsers.length; i += 1) {
           if ((skillset.endorsers[i].endorserId = user.id)) {
@@ -164,7 +165,7 @@ const SkillsCard: React.FC = () => {
       handleAddSkillsModalClose();
       handleEditSkillsModalClose();
     }
-  }, [putUserSkillsData?.data]);
+  }, [handleAddSkillsModalClose, putUserSkillsData?.data]);
 
   useEffect(() => {
     if (putUserSkillsStatus === "success") {
@@ -198,6 +199,13 @@ const SkillsCard: React.FC = () => {
     }
   }, [isShowMoreSkillsApplicable, showMoreSkills, userSkillsets]);
 
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isSkillAddComplete: !!userSkillsets && userSkillsets.length > 0,
+    }));
+  }, [setProfileStatus, userSkillsets]);
+
   if (authUser?.id !== user.id && userSkillsets && userSkillsets.length <= 0) {
     return <></>;
   }
@@ -227,7 +235,7 @@ const SkillsCard: React.FC = () => {
           )}
         </LayoutCard.Header>
         <Container sx={skillsLayoutCardContainer}>
-          {userSkillsetsEllpised?.map((skillset) => (
+          {userSkillsetsEllpised?.map(skillset => (
             <SkillItem
               key={skillset.name}
               customKey={skillset.name}
@@ -263,9 +271,9 @@ const SkillsCard: React.FC = () => {
           </>
         )}
 
-        {showAddSkillsModal && (
+        {profileModals.skillsCardModal && (
           <AddSkills
-            showModal={showAddSkillsModal}
+            showModal={profileModals.skillsCardModal}
             onModalClose={handleAddSkillsModalClose}
             skillsets={userSkillsets as IUserSkillSetApiModel[]}
             onSave={handleAddSkillSave}
