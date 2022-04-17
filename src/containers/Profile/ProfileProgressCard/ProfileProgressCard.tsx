@@ -16,43 +16,46 @@ import LayoutCardHeader from "../../../components/LayoutCard/LayoutCardHeader";
 import { SxProps } from "@mui/system";
 import useProfileProgressSteps from "../../../hooks/useProfileProgressSteps";
 import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
+import { useUserContext } from "../../../contexts/UserContext";
+import { useAuthContext } from "../../../contexts/AuthContext";
 
 interface IProfileProgressCardProps {}
 
 const ProfileProgressCard: ReactFCWithSkeleton<IProfileProgressCardProps> =
   () => {
+    const { user } = useUserContext();
+    const { authUser } = useAuthContext();
+
     const [currentProfileProgressStep, setCurrentProfileProgressStep] =
       useState<number>(0);
 
     const { profileProgressSteps, profileProgressCompleted } =
       useProfileProgressSteps();
-    const { toggleModal } = useUserProfileModalContext();
+    const { editModalType } = useUserProfileModalContext();
 
     const handleActiveProfileProgressClick = (index: number) => () => {
       setCurrentProfileProgressStep(index);
-      toggleModal(profileProgressSteps[index].userProgressModal);
+      editModalType(profileProgressSteps[index].userProgressModal, true);
     };
+    if (authUser?.id !== user.id) {
+      return <></>;
+    }
 
     return (
-      <Box my={1}>
-        <LayoutCard>
-          {profileProgressCompleted ? (
-            <Box>
-              <LayoutCardHeader
-                title={LABELS.USER_PROFILE_PROGRESS_COMPLETE}
-              ></LayoutCardHeader>
-              <Box py={2} px={3}>
-                <Typography>
-                  {LABELS.USER_PROFILE_PROGRESS_COMPLETE_TEXT}
-                </Typography>
-              </Box>
-            </Box>
-          ) : (
-            <Box>
+      <Box>
+        {profileProgressCompleted ? (
+          <></>
+        ) : (
+          <LayoutCard>
+            <Box my={1}>
               <LayoutCardHeader
                 title={LABELS.USER_PROFILE_PROGRESS_INCOMPLETE}
-                helperText={LABELS.USER_PROFILE_PROGRESS_INCOMPLETE_HELPER}
               ></LayoutCardHeader>
+              <Box mx={2} pl={1}>
+                <Typography variant="subtitle2">
+                  {LABELS.USER_PROFILE_PROGRESS_INCOMPLETE_INFO}
+                </Typography>
+              </Box>
               <Hidden mdUp>
                 <Box py={2} sx={profileStepperVertBoxSx}>
                   <Stepper
@@ -100,8 +103,8 @@ const ProfileProgressCard: ReactFCWithSkeleton<IProfileProgressCardProps> =
                 </Box>
               </Hidden>
             </Box>
-          )}
-        </LayoutCard>
+          </LayoutCard>
+        )}
       </Box>
     );
   };
@@ -115,13 +118,13 @@ const profileStepperHorizBoxSx: SxProps<Theme> = () => ({
 });
 
 const profileStepperVertBoxSx: SxProps<Theme> = () => ({
-  marginLeft: "1rem",
+  paddingX: "16px",
 });
 
-const profileProgressStepperSx: SxProps<Theme> = () => ({
+const profileProgressStepperSx: SxProps<Theme> = (theme: Theme) => ({
   ".MuiStep-horizontal > .MuiStepLabel-horizontal > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root > text, .MuiStep-vertical > .MuiStepLabel-vertical > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root > text":
     {
-      fill: "#777 !important",
+      fill: `${theme.palette.text.primary}`,
     },
 });
 

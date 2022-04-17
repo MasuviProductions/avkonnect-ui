@@ -25,7 +25,10 @@ export type IUserProfileModalTypes =
 
 interface IUserProfileModalContext {
   profileModals: IUserProfileModal;
-  toggleModal: (modalNameType: IUserProfileModalTypes) => void;
+  editModalType: (
+    modalNameType: IUserProfileModalTypes,
+    modalViewValue: boolean
+  ) => void;
 }
 
 const defaultUserProfileModalValues: IUserProfileModal = {
@@ -39,7 +42,7 @@ const defaultUserProfileModalValues: IUserProfileModal = {
 
 const UserProfileModalContext = createContext<IUserProfileModalContext>({
   profileModals: defaultUserProfileModalValues,
-  toggleModal: () => {},
+  editModalType: () => {},
 });
 
 const useUserProfileModalContext = (): IUserProfileModalContext => {
@@ -57,16 +60,19 @@ const UserProfileModalContextProvider: React.FC = ({ children }) => {
     certificatesCardModal: false,
   });
 
-  const toggleModal = useCallback((modalNameType: IUserProfileModalTypes) => {
-    setProfileModals(prev => ({
-      ...prev,
-      [modalNameType]: !prev[modalNameType],
-    }));
-  }, []);
+  const editModalType = useCallback(
+    (modalNameType: IUserProfileModalTypes, modalViewValue: boolean) => {
+      setProfileModals(prev => ({
+        ...prev,
+        [modalNameType]: modalViewValue,
+      }));
+    },
+    []
+  );
 
   return (
     <UserProfileModalContext.Provider
-      value={{ profileModals: profileModals, toggleModal: toggleModal }}
+      value={{ profileModals: profileModals, editModalType: editModalType }}
     >
       {children}
     </UserProfileModalContext.Provider>

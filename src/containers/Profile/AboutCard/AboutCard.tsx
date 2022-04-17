@@ -15,14 +15,14 @@ interface IAboutCartProps {}
 
 const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   const { user } = useUserContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
 
   const handleAboutModalOpen = () => {
-    toggleModal("aboutCardModal");
+    editModalType("aboutCardModal", true);
   };
 
   const handleAboutModalClose = () => {
-    toggleModal("aboutCardModal");
+    editModalType("aboutCardModal", false);
   };
 
   if (!user.aboutUser) {

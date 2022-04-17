@@ -53,14 +53,6 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       isAuthUser={false}
       location={data.location}
       gender={data.gender}
-      profileStatus={{
-        isUserProfileDetailsComplete: false,
-        isAboutUserAddComplete: false,
-        isProjectAddComplete: false,
-        isSkillAddComplete: false,
-        isExperienceAddComplete: false,
-        isCertificationAddComplete: false,
-      }}
     >
       <Profile />
     </UserContextProvider>

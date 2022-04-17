@@ -22,10 +22,10 @@ import EditSkills from "./EditSkills";
 import { SKILL_ELLIPSE_LIMIT } from "../../../constants/app";
 
 const SkillsCard: React.FC = () => {
-  const { user, setUser } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
 
   const [showMoreSkills, setShowMoreSkills] = useState<boolean>(false);
   const [isShowMoreSkillsApplicable, setIsShowMoreSkillsApplicable] =
@@ -66,12 +66,12 @@ const SkillsCard: React.FC = () => {
   );
 
   const handleAddSkillsModalOpen = () => {
-    toggleModal("skillsCardModal");
+    editModalType("skillsCardModal", true);
   };
 
   const handleAddSkillsModalClose = useCallback(() => {
-    toggleModal("skillsCardModal");
-  }, [toggleModal]);
+    editModalType("skillsCardModal", false);
+  }, [editModalType]);
 
   const handleEditSkillsModalOpen = () => {
     setShowEditSkillsModal(true);
@@ -151,13 +151,7 @@ const SkillsCard: React.FC = () => {
         () => getUserSkillsData.data?.skillSets as IUserSkillSetApiModel[]
       );
     }
-    if ((getUserSkillsData?.data?.skillSets.length || 0) > 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isSkillAddComplete: true },
-      }));
-    }
-  }, [getUserSkillsData?.data, setUser]);
+  }, [getUserSkillsData?.data]);
 
   useEffect(() => {
     if (patchUserSkillReq) {
@@ -167,15 +161,11 @@ const SkillsCard: React.FC = () => {
 
   useEffect(() => {
     if (patchUserSkillsData?.data) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isSkillAddComplete: true },
-      }));
       setUserSkillsets(patchUserSkillsData.data.skillSets);
       handleAddSkillsModalClose();
       handleEditSkillsModalClose();
     }
-  }, [handleAddSkillsModalClose, patchUserSkillsData?.data, setUser]);
+  }, [handleAddSkillsModalClose, patchUserSkillsData?.data]);
 
   useEffect(() => {
     if (patchUserSkillsStatus === "success") {
@@ -199,6 +189,13 @@ const SkillsCard: React.FC = () => {
       }
     }
   }, [isShowMoreSkillsApplicable, showMoreSkills, userSkillsets]);
+
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isSkillAddComplete: !!userSkillsets && userSkillsets.length > 0,
+    }));
+  }, [setProfileStatus, userSkillsets]);
 
   if (authUser?.id !== user.id && userSkillsets && userSkillsets.length <= 0) {
     return <></>;

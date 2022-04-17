@@ -21,10 +21,10 @@ import cloneDeep from "lodash.clonedeep";
 import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 
 const ProjectsCard: React.FC = () => {
-  const { user, setUser } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
 
   const [showMoreProjects, setShowMoreProjects] = useState<boolean>(false);
   const [isShowMoreProjectsApplicable, setIsShowMoreProjectsApplicable] =
@@ -67,12 +67,12 @@ const ProjectsCard: React.FC = () => {
 
   const handleAddProjectModalOpen = () => {
     setSelectedProjectIndex(-1);
-    toggleModal("projectsCardModal");
+    editModalType("projectsCardModal", true);
   };
 
   const handleAddProjectModalClose = useCallback(() => {
-    toggleModal("projectsCardModal");
-  }, [toggleModal]);
+    editModalType("projectsCardModal", false);
+  }, [editModalType]);
 
   const handleEditProjectModalOpen = (projectIndex: number) => {
     setSelectedProjectIndex(projectIndex);
@@ -102,15 +102,6 @@ const ProjectsCard: React.FC = () => {
     );
     projects = projects.filter((_, index) => index != selectedProjectIndex);
     setProjectRemoving(true);
-    if (projects.length === 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: {
-          ...prev.profileStatus,
-          isProjectAddComplete: false,
-        },
-      }));
-    }
     setPatchUserProjectsReq(projects);
   };
 
@@ -134,13 +125,7 @@ const ProjectsCard: React.FC = () => {
         () => getUserProjectsData.data?.projects as IUserProjectApiModel[]
       );
     }
-    if ((getUserProjectsData?.data?.projects.length || 0) > 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isProjectAddComplete: true },
-      }));
-    }
-  }, [getUserProjectsData, setUser]);
+  }, [getUserProjectsData]);
 
   useEffect(() => {
     if (putUserProjectsReq) {
@@ -150,16 +135,12 @@ const ProjectsCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserProjectsData?.data) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isProjectAddComplete: true },
-      }));
       setUserProjects(putUserProjectsData.data.projects);
       setProjectRemoving(false);
       handleAddProjectModalClose();
       handleEditProjectModalClose();
     }
-  }, [handleAddProjectModalClose, putUserProjectsData, setUser]);
+  }, [handleAddProjectModalClose, putUserProjectsData]);
 
   useEffect(() => {
     if (putUserProjectsStatus === "success") {
@@ -185,6 +166,13 @@ const ProjectsCard: React.FC = () => {
       }
     }
   }, [isShowMoreProjectsApplicable, showMoreProjects, userProjects]);
+
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isProjectAddComplete: !!userProjects && userProjects.length > 0,
+    }));
+  }, [setProfileStatus, userProjects]);
 
   if (authUser?.id !== user.id && userProjects && userProjects.length <= 0) {
     return <></>;

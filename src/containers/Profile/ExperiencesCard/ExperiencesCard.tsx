@@ -21,10 +21,10 @@ import ExperienceItem from "./ExperienceItem";
 import cloneDeep from "lodash.clonedeep";
 
 const ExperiencesCard: React.FC = () => {
-  const { user, setUser } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
 
   const [showMoreExperiences, setShowMoreExperiences] =
     useState<boolean>(false);
@@ -70,12 +70,12 @@ const ExperiencesCard: React.FC = () => {
 
   const handleAddExperienceModalOpen = () => {
     setSelectedExperienceIndex(-1);
-    toggleModal("experiencesCardModal");
+    editModalType("experiencesCardModal", true);
   };
 
   const handleAddExperienceModalClose = useCallback(() => {
-    toggleModal("experiencesCardModal");
-  }, [toggleModal]);
+    editModalType("experiencesCardModal", false);
+  }, [editModalType]);
 
   const handleEditExperienceModalOpen = (experienceIndex: number) => {
     setSelectedExperienceIndex(experienceIndex);
@@ -95,7 +95,6 @@ const ExperiencesCard: React.FC = () => {
     } else {
       experiences[selectedExperienceIndex] = experience;
     }
-
     setPatchUserExperiencesReq(experiences);
   };
 
@@ -107,16 +106,6 @@ const ExperiencesCard: React.FC = () => {
       (_, index) => index != selectedExperienceIndex
     );
     setExperienceRemoving(true);
-    console.log("experiences: ", experiences.length);
-    if (experiences.length === 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: {
-          ...prev.profileStatus,
-          isExperienceAddComplete: false,
-        },
-      }));
-    }
     setPatchUserExperiencesReq(experiences);
   };
 
@@ -141,13 +130,7 @@ const ExperiencesCard: React.FC = () => {
           getUserExperiencesData.data?.experiences as IUserExperienceApiModel[]
       );
     }
-    if ((getUserExperiencesData?.data?.experiences.length || 0) > 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isExperienceAddComplete: true },
-      }));
-    }
-  }, [getUserExperiencesData?.data, setUser]);
+  }, [getUserExperiencesData?.data]);
 
   useEffect(() => {
     if (putUserExperiencesReq) {
@@ -157,16 +140,19 @@ const ExperiencesCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserExperiencesData?.data) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isExperienceAddComplete: true },
-      }));
       setUserExperiences(putUserExperiencesData.data.experiences);
       setExperienceRemoving(false);
       handleAddExperienceModalClose();
       handleEditExperienceModalClose();
     }
-  }, [handleAddExperienceModalClose, putUserExperiencesData?.data, setUser]);
+  }, [handleAddExperienceModalClose, putUserExperiencesData?.data]);
+
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isExperienceAddComplete: !!userExperiences && userExperiences.length > 0,
+    }));
+  }, [setProfileStatus, userExperiences]);
 
   useEffect(() => {
     if (putUserExperiencesStatus === "success") {
@@ -302,6 +288,3 @@ const experiencesLayoutCardContainer: SxProps<Theme> = (theme: Theme) => ({
 });
 
 export default ExperiencesCard;
-function setUser() {
-  throw new Error("Function not implemented.");
-}

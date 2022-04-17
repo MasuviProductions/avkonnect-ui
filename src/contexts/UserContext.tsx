@@ -30,12 +30,13 @@ export interface IUser {
   isAuthUser: boolean;
   gender: string;
   location: string;
-  profileStatus: IUserProfileStatus;
 }
 
 interface IUserContext {
   user: IUser;
+  profileStatus: IUserProfileStatus;
   setUser: Dispatch<SetStateAction<IUser>>;
+  setProfileStatus: Dispatch<SetStateAction<IUserProfileStatus>>;
 }
 
 const defaultUserValues: IUser = {
@@ -51,19 +52,22 @@ const defaultUserValues: IUser = {
   isAuthUser: false,
   gender: "",
   location: "",
-  profileStatus: {
-    isUserProfileDetailsComplete: false,
-    isAboutUserAddComplete: false,
-    isProjectAddComplete: false,
-    isSkillAddComplete: false,
-    isExperienceAddComplete: false,
-    isCertificationAddComplete: false,
-  },
+};
+
+const defaultUserProfileStatus: IUserProfileStatus = {
+  isUserProfileDetailsComplete: false,
+  isAboutUserAddComplete: false,
+  isProjectAddComplete: false,
+  isSkillAddComplete: false,
+  isExperienceAddComplete: false,
+  isCertificationAddComplete: false,
 };
 
 const UserContext = createContext<IUserContext>({
   user: defaultUserValues,
+  profileStatus: defaultUserProfileStatus,
   setUser: () => {},
+  setProfileStatus: () => {},
 });
 
 const UserContextProvider: React.FC<IUser> = ({
@@ -80,7 +84,6 @@ const UserContextProvider: React.FC<IUser> = ({
   isAuthUser,
   location,
   gender,
-  profileStatus,
 }) => {
   const [user, setUser] = useState<IUser>({
     id,
@@ -95,7 +98,15 @@ const UserContextProvider: React.FC<IUser> = ({
     isAuthUser,
     location,
     gender,
-    profileStatus,
+  });
+
+  const [profileStatus, setProfileStatus] = useState<IUserProfileStatus>({
+    isUserProfileDetailsComplete: false,
+    isAboutUserAddComplete: false,
+    isProjectAddComplete: false,
+    isSkillAddComplete: false,
+    isExperienceAddComplete: false,
+    isCertificationAddComplete: false,
   });
 
   const { authUser, setAuthUser } = useAuthContext();
@@ -122,33 +133,32 @@ const UserContextProvider: React.FC<IUser> = ({
   }, [user, setAuthUser]);
 
   useEffect(() => {
-    if (user.aboutUser !== "") {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: { ...prev.profileStatus, isAboutUserAddComplete: true },
-      }));
-    }
+    setProfileStatus(prev => ({
+      ...prev,
+      isAboutUserAddComplete: !!user.aboutUser,
+    }));
   }, [user.aboutUser]);
 
   useEffect(() => {
-    if (
-      user.gender !== "" &&
-      user.dateOfBirth !== 0 &&
-      user.headline !== "" &&
-      user.location !== ""
-    ) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: {
-          ...prev.profileStatus,
-          isUserProfileDetailsComplete: true,
-        },
-      }));
-    }
+    setProfileStatus(prev => ({
+      ...prev,
+      isUserProfileDetailsComplete:
+        !!user.gender &&
+        !!user.dateOfBirth &&
+        !!user.headline &&
+        !!user.location,
+    }));
   }, [user.dateOfBirth, user.gender, user.headline, user.location]);
 
   return (
-    <UserContext.Provider value={{ user: user, setUser: setUser }}>
+    <UserContext.Provider
+      value={{
+        user: user,
+        profileStatus: profileStatus,
+        setUser: setUser,
+        setProfileStatus: setProfileStatus,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

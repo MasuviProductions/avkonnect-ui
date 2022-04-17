@@ -56,12 +56,9 @@ export const LABELS = {
   USER_INFO_LOCATION: "Location",
 
   // Profile Progress Labels
-  USER_PROFILE_PROGRESS_INCOMPLETE:
-    "Your Profile is Incomplete. Let's work on it",
-  USER_PROFILE_PROGRESS_COMPLETE: "Your Profile looks Good!",
-  USER_PROFILE_BUTTON_GO: "Go",
-  USER_PROFILE_BUTTON_SKIP: "Skip",
-  USER_PROFILE_PROGRESS_INCOMPLETE_HELPER:
+  USER_PROFILE_PROGRESS_INCOMPLETE: "Your Profile is Incomplete!",
+  USER_PROFILE_PROGRESS_COMPLETED_BADGE: "Basic Profile Achieved!",
+  USER_PROFILE_PROGRESS_INCOMPLETE_INFO:
     "Let us make your Profile meaningful by filling it out. This increases your chance of standing out and also to generate relevant connections with people.",
   USER_PROFILE_PROGRESS_COMPLETE_TEXT:
     "You can continue to add more of your Work, Achievements and Projects to enhance your Profile further!",

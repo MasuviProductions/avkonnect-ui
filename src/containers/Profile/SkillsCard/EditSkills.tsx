@@ -10,7 +10,6 @@ import { IUserSkillSetApiModel } from "../../../interfaces/api/external";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import cloneDeep from "lodash.clonedeep";
-import { useUserContext } from "../../../contexts/UserContext";
 
 interface IEditSkillsProps extends IModal {
   skillsets: IUserSkillSetApiModel[];
@@ -29,8 +28,6 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
     IUserSkillSetApiModel[]
   >([]);
 
-  const { setUser } = useUserContext();
-
   const handleSkillDelete = (event: React.MouseEvent, skillName: string) => {
     const matchedSkillIndex = updatedSkillsets.findIndex(
       skillset => skillset.name === skillName
@@ -39,12 +36,6 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
       const newSkillsets = cloneDeep(updatedSkillsets);
       newSkillsets[matchedSkillIndex] = newSkillsets[newSkillsets.length - 1];
       newSkillsets.pop();
-      if (newSkillsets.length === 0) {
-        setUser(prev => ({
-          ...prev,
-          profileStatus: { ...prev.profileStatus, isSkillAddComplete: false },
-        }));
-      }
       setUpdatedSkillsets(newSkillsets);
     }
   };

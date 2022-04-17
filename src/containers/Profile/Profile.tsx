@@ -20,9 +20,11 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
         <UserCard />
       </Grid>
 
-      <Grid item xs={12}>
-        <ProfileProgressCard />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12}>
+          <ProfileProgressCard />
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <AboutCard />

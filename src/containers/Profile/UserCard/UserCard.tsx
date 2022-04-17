@@ -8,12 +8,14 @@ import {
   IconButton,
   Theme,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SubtitlesIcon from "@mui/icons-material/Subtitles";
 import GenderIcon from "../../../components/GenderIcon";
+import BadgeIcon from "@mui/icons-material/Badge";
 import CakeIcon from "@mui/icons-material/Cake";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
@@ -31,6 +33,7 @@ import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
 import dayjs from "dayjs";
 import { IGender } from "../../../constants/forms/user-info/user-info";
+import useProfileProgressSteps from "../../../hooks/useProfileProgressSteps";
 
 interface IUserCardProps {}
 
@@ -49,7 +52,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
       aboutUser,
     },
   } = useUserContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
+
+  const { profileProgressCompleted } = useProfileProgressSteps();
 
   const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
@@ -96,11 +101,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleAboutModalOpen = () => {
-    toggleModal("aboutCardModal");
+    editModalType("aboutCardModal", true);
   };
 
   const handleAboutModalClose = () => {
-    toggleModal("aboutCardModal");
+    editModalType("aboutCardModal", false);
   };
 
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
@@ -117,11 +122,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleEditUserModalOpen = () => {
-    toggleModal("userProfileInfoCardModal");
+    editModalType("userProfileInfoCardModal", true);
   };
 
   const handleEditUserModalClose = () => {
-    toggleModal("userProfileInfoCardModal");
+    editModalType("userProfileInfoCardModal", false);
   };
 
   return (
@@ -184,6 +189,19 @@ const UserCard: React.FC<IUserCardProps> = () => {
                               <Grid item>
                                 <GenderIcon gender={gender as IGender} />
                               </Grid>
+                            )}
+
+                            {profileProgressCompleted && isAuthUser && (
+                              <Tooltip
+                                title={
+                                  LABELS.USER_PROFILE_PROGRESS_COMPLETED_BADGE
+                                }
+                              >
+                                <BadgeIcon
+                                  sx={profileCompletedBadgeSx}
+                                  fontSize={"medium"}
+                                />
+                              </Tooltip>
                             )}
 
                             <Grid item>
@@ -406,6 +424,11 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
 const userCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.text.primary,
   marginLeft: 2,
+});
+
+const profileCompletedBadgeSx: SxProps<Theme> = (theme: Theme) => ({
+  color: theme.palette.primary.light,
+  marginLeft: "0.5rem",
 });
 
 export default UserCard;

@@ -27,10 +27,10 @@ import CertificationItem from "./CertificationItem";
 import cloneDeep from "lodash.clonedeep";
 
 const CertificationsCard: React.FC = () => {
-  const { user, setUser } = useUserContext();
+  const { user, setProfileStatus } = useUserContext();
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
-  const { profileModals, toggleModal } = useUserProfileModalContext();
+  const { profileModals, editModalType } = useUserProfileModalContext();
 
   const [showMoreCertifications, setShowMoreCertifications] =
     useState<boolean>(false);
@@ -79,12 +79,12 @@ const CertificationsCard: React.FC = () => {
 
   const handleAddCertificationModalOpen = () => {
     setSelectedCertificationIndex(-1);
-    toggleModal("certificatesCardModal");
+    editModalType("certificatesCardModal", true);
   };
 
   const handleAddCertificationModalClose = useCallback(() => {
-    toggleModal("certificatesCardModal");
-  }, [toggleModal]);
+    editModalType("certificatesCardModal", false);
+  }, [editModalType]);
 
   const handleEditCertificationModalOpen = (certificationIndex: number) => {
     setSelectedCertificationIndex(certificationIndex);
@@ -126,15 +126,6 @@ const CertificationsCard: React.FC = () => {
       (_, index) => index != selectedCertificationIndex
     );
     setCertificationRemoving(true);
-    if (certifications.length === 0) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: {
-          ...prev.profileStatus,
-          isCertificationAddComplete: false,
-        },
-      }));
-    }
     setPatchUserCertificationsReq(certifications);
   };
 
@@ -162,17 +153,8 @@ const CertificationsCard: React.FC = () => {
           getUserCertificationsData.data
             ?.certifications as IUserCertificationApiModel[]
       );
-      if (getUserCertificationsData?.data?.certifications?.length > 0) {
-        setUser(prev => ({
-          ...prev,
-          profileStatus: {
-            ...prev.profileStatus,
-            isCertificationAddComplete: true,
-          },
-        }));
-      }
     }
-  }, [getUserCertificationsData?.data, setUser]);
+  }, [getUserCertificationsData?.data]);
 
   useEffect(() => {
     if (putUserCertificationsReq) {
@@ -182,23 +164,12 @@ const CertificationsCard: React.FC = () => {
 
   useEffect(() => {
     if (putUserCertificationsData?.data) {
-      setUser(prev => ({
-        ...prev,
-        profileStatus: {
-          ...prev.profileStatus,
-          isCertificationAddComplete: true,
-        },
-      }));
       setUserCertifications(putUserCertificationsData.data.certifications);
       setCertificationRemoving(false);
       handleAddCertificationModalClose();
       handleEditCertificationModalClose();
     }
-  }, [
-    handleAddCertificationModalClose,
-    putUserCertificationsData?.data,
-    setUser,
-  ]);
+  }, [handleAddCertificationModalClose, putUserCertificationsData?.data]);
 
   useEffect(() => {
     if (putUserCertificationsStatus === "success") {
@@ -228,6 +199,14 @@ const CertificationsCard: React.FC = () => {
     showMoreCertifications,
     userCertifications,
   ]);
+
+  useEffect(() => {
+    setProfileStatus(prev => ({
+      ...prev,
+      isCertificationAddComplete:
+        !!userCertifications && userCertifications.length > 0,
+    }));
+  }, [setProfileStatus, userCertifications]);
 
   if (
     authUser?.id !== user.id &&

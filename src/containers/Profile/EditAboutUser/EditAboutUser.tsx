@@ -22,7 +22,7 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
 }) => {
   const { setSnackbar } = useSnackbarContext();
   const { accessToken, authUser } = useAuthContext();
-  const { user, setUser } = useUserContext();
+  const { user, setUser, setProfileStatus } = useUserContext();
   const [aboutUser, setAboutUser] = useState(user.aboutUser);
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
@@ -59,19 +59,19 @@ const EditAboutUser: React.FC<IEditAboutUserProps> = ({
       setUser(prev => ({
         ...prev,
         aboutUser: patchUserData?.data?.aboutUser as string,
-        profileStatus: {
-          ...prev.profileStatus,
-          isAboutUserAddComplete:
-            patchUserData?.data?.aboutUser !== "" ? true : false,
-        },
+      }));
+      setProfileStatus(prev => ({
+        ...prev,
+        isAboutUserAddComplete:
+          patchUserData?.data?.aboutUser !== "" ? true : false,
       }));
       onModalClose?.();
     }
   }, [
-    aboutUser,
     onModalClose,
     patchUserData?.data?.aboutUser,
     patchUserStatus,
+    setProfileStatus,
     setSnackbar,
     setUser,
   ]);
