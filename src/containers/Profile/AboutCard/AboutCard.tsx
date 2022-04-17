@@ -9,19 +9,20 @@ import { useUserContext } from "../../../contexts/UserContext";
 import ReadMore from "../../../components/ReadMore/ReadMore";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
 import AboutCardSkeleton from "./AboutCardSkeleton";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 
 interface IAboutCartProps {}
 
 const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   const { user } = useUserContext();
-  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
+  const { profileModals, showModal } = useUserProfileModalContext();
 
   const handleAboutModalOpen = () => {
-    setShowAboutModal(true);
+    showModal("aboutCardModal", true);
   };
 
   const handleAboutModalClose = () => {
-    setShowAboutModal(false);
+    showModal("aboutCardModal", false);
   };
 
   if (!user.aboutUser) {
@@ -49,9 +50,9 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
           </Grid>
         </Container>
 
-        {showAboutModal && (
+        {profileModals.aboutCardModal && (
           <EditAboutUser
-            showModal={showAboutModal}
+            showModal={profileModals.aboutCardModal}
             onModalClose={handleAboutModalClose}
           />
         )}
