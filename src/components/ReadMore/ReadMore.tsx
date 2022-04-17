@@ -2,22 +2,11 @@ import { Grid, IconButton, Link, Theme, Typography } from "@mui/material";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import { SxProps } from "@mui/system";
 import { useEffect, useState } from "react";
-import { getEllipsedText } from "../../utils/generic";
+import {
+  getEllipsedText,
+  getLinkedTextIfURLIsPresent,
+} from "../../utils/generic";
 import { URL_MATCH_REGEX_WITH_PROTOCOL } from "../../constants/app";
-
-const getLinkedTextIfURLIsPresent = (para: string) => {
-  return para.replaceAll(
-    URL_MATCH_REGEX_WITH_PROTOCOL,
-    `<a href="$&"
-        target="_blank"
-        rel="noopener"
-        style="text-decoration: underline">
-        <strong>
-          $&
-        </strong>
-    </a>`
-  );
-};
 
 interface IReadMoreProps {
   text: string;

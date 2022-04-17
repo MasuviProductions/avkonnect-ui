@@ -544,6 +544,7 @@ export const CITIES = [
   "Bangalore, Karnataka",
   "Belgaum, Karnataka",
   "Bellary, Karnataka",
+  "Bengaluru, Karnataka",
   "Chamrajnagar, Karnataka",
   "Chikkaballapur, Karnataka",
   "Chintamani, Karnataka",

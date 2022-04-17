@@ -8,6 +8,7 @@ import UserMiniCard from "../../../components/UserMiniCard";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useUserContext } from "../../../contexts/UserContext";
 import { MAX_DATE } from "../../../constants/app";
+import { getLinkedTextIfURLIsPresent } from "../../../utils/generic";
 
 interface IProjectItemProps {
   project: IUserProjectApiModel;
@@ -82,7 +83,12 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
         </Grid>
 
         <Grid item xs={12} pt={2}>
-          <Typography variant="body2">{project.description}</Typography>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{
+              __html: getLinkedTextIfURLIsPresent(project.description),
+            }}
+          />
         </Grid>
 
         {project.collaborators && project.collaborators.length > 0 && (
@@ -94,7 +100,7 @@ const ProjectItem: React.FC<IProjectItemProps> = ({
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={1}>
-                {project.collaborators.map((collaborator) => (
+                {project.collaborators.map(collaborator => (
                   <Grid item key={collaborator.id} py={1}>
                     <UserMiniCard
                       id={collaborator.id}

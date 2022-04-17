@@ -78,7 +78,7 @@ const PROJECT_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.PROJECT_START_DATE,
-    minDate: dayjs(new Date(0)),
+    minDate: dayjs("01-01-1910"),
     maxDate: dayjs(new Date(Date.now())),
   },
   to: {
@@ -86,7 +86,7 @@ const PROJECT_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.PROJECT_END_DATE,
-    minDate: dayjs(new Date(0)),
+    minDate: dayjs("01-01-1910"),
     maxDate: dayjs(new Date(Date.now())),
   },
 };

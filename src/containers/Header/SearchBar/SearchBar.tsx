@@ -89,9 +89,15 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
       const searchRoute = compile(APP_ROUTES.SEARCH.route)({
         key: encodeURI(searchText),
       });
+      handleSearchTextFieldClose();
       router.push(searchRoute);
     }
-  }, [handleSearchDropdownClose, router, searchText]);
+  }, [
+    handleSearchDropdownClose,
+    router,
+    searchText,
+    handleSearchTextFieldClose,
+  ]);
 
   const handleSearchKeyDown = useCallback(
     (event: any) => {
@@ -105,6 +111,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
 
   const handleSearchItemClick = () => {
     setShowSearchDropdown(false);
+    handleSearchTextFieldClose();
   };
 
   useEffect(() => {
@@ -179,7 +186,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
             <Box sx={searchDropdownContainer}>
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {userSearchData.map((user) => (
+                  {userSearchData.map(user => (
                     <Grid item xs={12} key={user.id} p={1}>
                       <SearchedUserItem
                         id={user.id}

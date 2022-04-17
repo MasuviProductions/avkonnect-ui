@@ -11,3 +11,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+
+/* Material UI Components Hard Overrides */
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall {
+  color: #777 !important;
+}

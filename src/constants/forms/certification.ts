@@ -64,7 +64,7 @@ const CERTIFICATION_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.CERTIFICATION_ISSUE_DATE,
-    minDate: dayjs(new Date(0)),
+    minDate: dayjs("01-01-1910"),
     maxDate: dayjs(new Date(Date.now())),
   },
   to: {
@@ -72,7 +72,7 @@ const CERTIFICATION_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.CERTIFICATION_EXPIRY_DATE,
-    minDate: dayjs(new Date(0)),
+    minDate: dayjs("01-01-1910"),
     maxDate: dayjs(new Date(Date.now())),
   },
 };
