@@ -126,6 +126,10 @@ const profileProgressStepperSx: SxProps<Theme> = (theme: Theme) => ({
     {
       fill: `${theme.palette.text.primary}`,
     },
+  ".MuiStep-horizontal > .MuiStepLabel-horizontal > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root.Mui-active > text, .MuiStep-vertical > .MuiStepLabel-vertical > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root > text":
+    {
+      fill: `${theme.palette.background.default}`,
+    },
 });
 
 export default ProfileProgressCard;
