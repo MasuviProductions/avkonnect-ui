@@ -141,7 +141,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
           >
             <Image
               src={backgroundImageUrl || JPG.UserBGPlaceholder}
-              alt="backgroundPicture"
+              alt={LABELS.BACKGROUND_PICTURE}
               width={4}
               height={1}
               layout="responsive"
@@ -292,7 +292,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
             <Container sx={userBackgroundImagePreviewContainer}>
               <Image
                 src={backgroundImageUrl || JPG.UserBGPlaceholder}
-                alt="backgroundPicture"
+                alt={LABELS.BACKGROUND_PICTURE}
                 width={4}
                 height={1}
                 layout="responsive"
@@ -330,7 +330,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
             <Container sx={userDisplayPicturePreviewContainer}>
               <Image
                 src={displayPictureUrl || JPG.UserBGPlaceholder}
-                alt="displayPicture"
+                alt={LABELS.DISPLAY_PICTURE}
                 width={1}
                 height={1}
                 layout="responsive"

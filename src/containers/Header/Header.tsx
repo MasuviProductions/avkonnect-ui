@@ -96,7 +96,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                       <Box sx={logoContainerSx}>
                         <Image
                           src={PNG.AvkMobLogo}
-                          alt={`${LABELS.TITLE} Logo`}
+                          alt={LABELS.TITLE_LOGO}
                           width={50}
                           height={35}
                         />
@@ -108,7 +108,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                       <Box sx={logoContainerSx}>
                         <Image
                           src={PNG.AvkDeskLogo}
-                          alt={`${LABELS.TITLE} Logo`}
+                          alt={LABELS.TITLE_LOGO}
                           width={130}
                           height={50}
                         />
