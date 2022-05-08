@@ -17,8 +17,6 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignUpUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
-import { useRouter } from "next/router";
-import { APP_ROUTES } from "../../../constants/app";
 
 interface ISignUpFormProps {
   saveLoading?: boolean;
@@ -43,8 +41,6 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
   setActiveTabValue = () => {},
   onSignUp = () => {},
 }) => {
-  const router = useRouter();
-
   const signUpTextFieldsConfig = getInitialSignUpTextFieldValues();
 
   const { textFields, onFieldValueChange, onFieldValueBlur } =
@@ -125,20 +121,23 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
 };
 
 const signUpTextFieldSx: SxProps<Theme> = (theme: Theme) => ({
-  input: {
-    border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: "4px",
-    zIndex: 0,
-    ":focus": {
-      border: "none",
+  width: " 100%",
+  color: theme.palette.text.primary,
+  "& label.Mui-focused": {
+    color: theme.palette.text.primary,
+  },
+
+  ".MuiOutlinedInput-root": {
+    fieldset: {
+      borderColor: theme.palette.grey[500],
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: theme.palette.grey[500],
     },
   },
-  fieldset: {
-    legend: {
-      span: {
-        zIndex: 1,
-      },
-    },
+
+  ".MuiButtonBase-root": {
+    color: theme.palette.text.primary,
   },
 });
 

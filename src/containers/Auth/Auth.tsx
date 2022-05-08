@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Chip,
   Container,
   Divider,
   Grid,
@@ -16,7 +15,6 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import SignInForm from "./SignIn/SignInForm";
 import SignUpForm from "./SignUp/SignUpForm";
-import { Lock } from "@mui/icons-material";
 import { LABELS } from "../../constants/labels";
 import OAuthSignForm from "../../components/OAuthSignForm";
 import AuthSkeleton from "./AuthSkeleton";
@@ -24,6 +22,7 @@ import TabPanel from "../../components/TabPanel";
 import { SyntheticEvent, useState } from "react";
 import Image from "next/image";
 import { PNG } from "../../assets/PNG";
+import { APP_ROUTES } from "../../constants/app";
 
 interface IAuthProps {}
 
@@ -46,16 +45,13 @@ const Auth: ReactFCWithSkeleton<IAuthProps> = () => {
     <Box mt={5}>
       <Container maxWidth="xs">
         <Box pt={2} sx={signInBoxSx} textAlign="center">
-          <Box
-            mt={2}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Box display="flex" alignItems="center" justifyContent="center">
             <Avatar
+              variant="square"
               sx={(theme: Theme) => ({
                 backgroundColor: theme.palette.navbar.main,
                 margin: "4px",
+                borderRadius: "6px",
               })}
             >
               <Image src={PNG.AvkMobLogo} alt={LABELS.TITLE_LOGO} />
@@ -64,9 +60,13 @@ const Auth: ReactFCWithSkeleton<IAuthProps> = () => {
           <Grid container>
             <Grid item xs={12}>
               <Box p={2}>
-                <Tabs value={activeTabValue} onChange={handleChangeTabClick}>
-                  <Tab label={LABELS.SIGN_IN} sx={tabsSx} />
-                  <Tab label={LABELS.SIGN_UP} sx={tabsSx} />
+                <Tabs
+                  value={activeTabValue}
+                  onChange={handleChangeTabClick}
+                  variant="fullWidth"
+                >
+                  <Tab label={LABELS.SIGN_IN} />
+                  <Tab label={LABELS.SIGN_UP} />
                 </Tabs>
                 <TabPanel value={activeTabValue} index={0}>
                   <Box mt={2}>
@@ -110,10 +110,6 @@ const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   "::before, ::after": {
     borderColor: theme.palette.primary.main,
   },
-});
-
-const tabsSx: SxProps<Theme> = (theme: Theme) => ({
-  width: "50%",
 });
 
 export default Auth;

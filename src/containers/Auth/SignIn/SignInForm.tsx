@@ -9,8 +9,6 @@ import {
 } from "@mui/material";
 import { SxProps } from "@mui/system";
 import cloneDeep from "lodash.clonedeep";
-import { useRouter } from "next/router";
-import { APP_ROUTES } from "../../../constants/app";
 import {
   ISignInTextFields,
   SIGN_IN_FIELDS_CONFIG,
@@ -43,8 +41,6 @@ const SignInForm: React.FC<ISignInFormProps> = ({
   setActiveTabValue = () => {},
   onSignIn = () => {},
 }) => {
-  const router = useRouter();
-
   const signInTextFieldsConfig = getInitialSignInTextFieldValues();
 
   const { textFields, onFieldValueChange, onFieldValueBlur } =
@@ -108,12 +104,23 @@ const SignInForm: React.FC<ISignInFormProps> = ({
 };
 
 const signInTextFieldSx: SxProps<Theme> = (theme: Theme) => ({
-  input: {
-    border: `1px solid ${theme.palette.text.secondary}`,
-    borderRadius: "4px",
-    ":focus": {
-      border: "none",
+  width: " 100%",
+  color: theme.palette.text.primary,
+  "& label.Mui-focused": {
+    color: theme.palette.text.primary,
+  },
+
+  ".MuiOutlinedInput-root": {
+    fieldset: {
+      borderColor: theme.palette.grey[500],
     },
+    "&.Mui-focused fieldset": {
+      borderColor: theme.palette.grey[500],
+    },
+  },
+
+  ".MuiButtonBase-root": {
+    color: theme.palette.text.primary,
   },
 });
 
@@ -123,11 +130,6 @@ const linkSx: SxProps<Theme> = () => ({
     textDecoration: "underline",
   },
   textDecoration: "none",
-});
-
-const authBtnSx: SxProps<Theme> = () => ({
-  width: "75%",
-  marginTop: "8px",
 });
 
 export default SignInForm;
