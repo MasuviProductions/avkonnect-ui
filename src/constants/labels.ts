@@ -6,10 +6,16 @@ export const LABELS = {
   REMOVE: "Remove",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
-  LOGIN_OR_REGISTER: "Login or register",
+  LOGIN_OR_REGISTER: "SignUp or SignIn",
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+
+  // Pages
+  PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
+  PAGE_NOT_FOUND_SNOOP: "Were you snooping around?",
+  PAGE_NOT_FOUND_404: "404 - Page doesn't Exist...",
+  GO_HOME_BTN: "Go Home",
 
   // Home
   MADE_IN_INDIA: "Made In India",

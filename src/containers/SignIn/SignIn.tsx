@@ -1,12 +1,25 @@
-import { Button, Grid, Typography, Box } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Typography,
+  Box,
+  Container,
+  Theme,
+  Hidden,
+} from "@mui/material";
+import { SxProps } from "@mui/system";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import Image from "next/image";
 import { useEffect } from "react";
 import { useState } from "react";
 import { APP_ROUTES } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
+import AuthGrid from "./AuthGrid";
+import DescriptionGrid from "./DescriptionGrid";
+import { PNG } from "../../assets/PNG";
 import SignInSkeleton from "./SignInSkeleton";
 
 const SignIn: ReactFCWithSkeleton = () => {
@@ -38,27 +51,27 @@ const SignIn: ReactFCWithSkeleton = () => {
 
   if (!authUser)
     return (
-      <>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <Box py={20}>
-              <Button
-                onClick={handleSignIn}
-                variant="contained"
-                sx={{ textTransform: "none" }}
-              >
-                <Typography align="center" variant="h4">
-                  {LABELS.LOGIN_OR_REGISTER}
-                </Typography>
-              </Button>
-            </Box>
+      <Box sx={landingBoxSx}>
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item md={8} xs={12}>
+            <DescriptionGrid handleSignIn={handleSignIn} />
           </Grid>
+          <Hidden mdDown>
+            <Grid item md={4}>
+              <AuthGrid handleSignIn={handleSignIn} />
+            </Grid>
+          </Hidden>
         </Grid>
-      </>
+      </Box>
     );
   else return <></>;
 };
 
 SignIn.Skeleton = SignInSkeleton;
+
+const landingBoxSx: SxProps<Theme> = () => ({
+  marginTop: "16px",
+  paddingBottom: "16px",
+});
 
 export default SignIn;
