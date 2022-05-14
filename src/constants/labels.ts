@@ -11,6 +11,12 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Pages
+  PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
+  PAGE_NOT_FOUND_SNOOP: "Were you snooping around?",
+  PAGE_NOT_FOUND_404: "404 - Page doesn't Exist...",
+  GO_HOME_BTN: "Go Home",
+
   // Home
   MADE_IN_INDIA: "Made In India",
 
