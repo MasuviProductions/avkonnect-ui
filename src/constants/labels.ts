@@ -19,12 +19,30 @@ export const LABELS = {
 
   // Home
   MADE_IN_INDIA: "Made In India",
+  BACKGROUND_PICTURE: "Background Picture",
+  DISPLAY_PICTURE: "Display Picture",
 
   // Header
   LOGOUT: "Logout",
   FEEDBACK: "Feedback",
   FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
+
+  // Logos
+  TITLE_LOGO: "AVKonnect Logo",
+  GOOGLE_LOGO: "Google Logo",
+
+  // Auth Pages
+  EMAIL_ID: "Enter Email Id",
+  PASSWORD: "Enter Password",
+  FNAME: "Enter First Name",
+  LNAME: "Enter Last Name",
+  SIGN_IN: "Sign In",
+  SIGN_UP: "Sign up",
+  GOOGLE_SIGN: "Continue with Google",
+  ACCOUNT_PRESENT_SIGN_IN: "Have an account? Sign In!",
+  FORGOT_PASSWORD: "Forgot Password?",
+  NEW_SIGN_UP: "New? Sign up here",
 
   // Feedback Labels
   FEEDBACK_TYPE: "Feedback Type",
