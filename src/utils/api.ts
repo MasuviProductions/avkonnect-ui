@@ -1,6 +1,5 @@
 import {
   AVConnectApiResponse,
-  IAuthUserApiResponse,
   IUserUploadSignedUrlApiResponse,
   IUserImageType,
   IUserProfileApiResponse,
@@ -15,21 +14,23 @@ import {
   IUserCertificationsApiResponse,
   IUserCertificationApiModel,
   IUserFeedbackApiResponse,
+  IUserConnectionsApiResponse,
+  IUserConnectionApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
 
 export const fetchAuthUser = async (
   accessToken: string
-): Promise<IAuthUserApiResponse> => {
+): Promise<IUserProfileApiResponse> => {
   const userProfileResponse = await axios
-    .get<AVConnectApiResponse<IAuthUserApiResponse>>(
+    .get<AVConnectApiResponse<IUserProfileApiResponse>>(
       API_ENDPOINTS.AUTH_USER.url,
       {
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data?.data as IAuthUserApiResponse);
+    .then((res) => res.data?.data as IUserProfileApiResponse);
   return userProfileResponse;
 };
 
@@ -250,4 +251,91 @@ export const getUsersSearch = async (
     )
     .then((res) => res.data);
   return usersSearchResponse;
+};
+
+export const getUserConnections = async (
+  accessToken: string,
+  userId: string,
+  connectionType: "all" | "connected" | "pending" | "sent",
+  limit: number,
+  dDBAssistStartFromId?: string
+): Promise<AVConnectApiResponse<IUserConnectionsApiResponse>> => {
+  const queryString = `?connectionType=${connectionType}&limit=${limit}&dDBAssistStartFromId=${
+    dDBAssistStartFromId || ""
+  }`;
+  const userConnections = await axios
+    .get<AVConnectApiResponse<IUserConnectionsApiResponse>>(
+      API_ENDPOINTS.USER_CONNECTIONS.url(userId, queryString),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userConnections;
+};
+
+export const getUserConnection = async (
+  accessToken: string,
+  userId: string,
+  connecteeId: string
+): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+  const userConnection = await axios
+    .get<AVConnectApiResponse<IUserConnectionApiResponse>>(
+      API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userConnection;
+};
+
+export const postUserConnection = async (
+  accessToken: string,
+  userId: string,
+  connecteeId: string
+): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+  const userConnection = await axios
+    .post<AVConnectApiResponse<IUserConnectionApiResponse>>(
+      API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
+      undefined,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userConnection;
+};
+
+export const patchUserConnection = async (
+  accessToken: string,
+  userId: string,
+  connecteeId: string
+): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+  const userConnection = await axios
+    .patch<AVConnectApiResponse<IUserConnectionApiResponse>>(
+      API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
+      undefined,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userConnection;
+};
+
+export const deleteUserConnection = async (
+  accessToken: string,
+  userId: string,
+  connecteeId: string
+): Promise<AVConnectApiResponse> => {
+  const userConnection = await axios
+    .delete<AVConnectApiResponse>(
+      API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userConnection;
 };

@@ -21,6 +21,7 @@ interface IProfilePageData {
   backgroundImageUrl: string;
   email: string;
   name: string;
+  connectionCount: number;
   currentPosition: string;
   headline: string;
   dateOfBirth?: number;
@@ -46,6 +47,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       backgroundImageUrl={data.backgroundImageUrl}
       email={data.email}
       name={data.name}
+      connectionCount={data.connectionCount}
       currentPosition={data.currentPosition}
       headline={data.headline}
       dateOfBirth={data.dateOfBirth}
@@ -99,6 +101,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       email: response.data.email,
       dateOfBirth: response.data.dateOfBirth,
       displayPictureUrl: response.data.displayPictureUrl,
+      connectionCount: response.data.connectionCount,
       backgroundImageUrl: response.data.backgroundImageUrl,
       aboutUser: response.data.aboutUser,
       currentPosition: response.data.currentPosition,
