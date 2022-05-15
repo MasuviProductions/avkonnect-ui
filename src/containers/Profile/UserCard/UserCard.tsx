@@ -1,4 +1,5 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect } from "react";
+import Image from "next/image";
 import {
   Avatar,
   Box,
@@ -18,7 +19,6 @@ import GenderIcon from "../../../components/GenderIcon";
 import BadgeIcon from "@mui/icons-material/Badge";
 import CakeIcon from "@mui/icons-material/Cake";
 import { SxProps, SystemStyleObject } from "@mui/system";
-import Image from "next/image";
 import LayoutCard from "../../../components/LayoutCard";
 import { JPG } from "../../../assets/JPG";
 import UserImageSelector from "./UserImageSelector/UserImageSelector";
@@ -33,13 +33,24 @@ import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
 import dayjs from "dayjs";
 import { IGender } from "../../../constants/forms/user-info/user-info";
+import useConnection from "../../../hooks/useConnection";
+import { useAuthContext } from "../../../contexts/AuthContext";
+import WithdrawConnectionModal from "../../../components/Connections/WithdrawConnectionModal/WithdrawConnectionModal";
+import {
+  Done,
+  PersonAdd,
+  PersonAddDisabled,
+  PersonOff,
+} from "@mui/icons-material";
 import useProfileProgressSteps from "../../../hooks/useProfileProgressSteps";
 
 interface IUserCardProps {}
 
 const UserCard: React.FC<IUserCardProps> = () => {
+  const { authUser, accessToken } = useAuthContext();
   const {
     user: {
+      id: userId,
       isAuthUser,
       displayPictureUrl,
       backgroundImageUrl,
@@ -56,6 +67,18 @@ const UserCard: React.FC<IUserCardProps> = () => {
 
   const { profileProgressCompleted } = useProfileProgressSteps();
 
+  const {
+    userConnectionState,
+    fetchUserConnection,
+    createUserConnection,
+    rejectUserConnection,
+    acceptUserConnection,
+  } = useConnection(userId);
+
+  const [showWithdrawConnectionModal, setShowWithdrawConnectionModal] =
+    useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
+  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
     useState<boolean>(false);
@@ -121,6 +144,14 @@ const UserCard: React.FC<IUserCardProps> = () => {
     handleAboutModalOpen();
   };
 
+  const handleWithdrawConnectionModalOpen = () => {
+    setShowWithdrawConnectionModal(true);
+  };
+
+  const handleWithdrawConnectionModalClose = () => {
+    setShowWithdrawConnectionModal(false);
+  };
+
   const handleEditUserModalOpen = () => {
     showModal("userProfileInfoCardModal", true);
   };
@@ -129,8 +160,14 @@ const UserCard: React.FC<IUserCardProps> = () => {
     showModal("userProfileInfoCardModal", false);
   };
 
+  useEffect(() => {
+    if (!!accessToken && !!authUser && !(userId === authUser.id)) {
+      fetchUserConnection();
+    }
+  }, [accessToken, authUser, fetchUserConnection, userId]);
+
   return (
-    <Box my={1}>
+    <Box my={2}>
       <LayoutCard>
         <Grid container>
           <Grid
@@ -269,6 +306,96 @@ const UserCard: React.FC<IUserCardProps> = () => {
               </Grid>
             </Grid>
 
+            {!isAuthUser && (
+              <Grid item mt={3}>
+                <Grid container spacing={1}>
+                  {!userConnectionState.data && (
+                    <Grid item>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={createUserConnection}
+                        size="small"
+                      >
+                        <PersonAdd fontSize="small" sx={userCardButtonIcon} />
+                        {LABELS.CONNECTION_CONNECT}
+                      </Button>
+                    </Grid>
+                  )}
+
+                  {userConnectionState.data?.isConnected && (
+                    <Grid item>
+                      <Button
+                        color="error"
+                        variant="outlined"
+                        onClick={rejectUserConnection}
+                        size="small"
+                      >
+                        <PersonAddDisabled
+                          fontSize="small"
+                          sx={userCardButtonIcon}
+                        />
+                        {LABELS.CONNECTION_UNCONNECT}
+                      </Button>
+                    </Grid>
+                  )}
+
+                  {userConnectionState.data?.isConnected == false &&
+                    userConnectionState.data?.connectionInitiatedBy ==
+                      authUser?.id && (
+                      <Grid item>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          onClick={handleWithdrawConnectionModalOpen}
+                          size="small"
+                        >
+                          <Done fontSize="small" sx={userCardButtonIcon} />
+                          {LABELS.CONNECTION_PENDING}
+                        </Button>
+                      </Grid>
+                    )}
+
+                  {userConnectionState.data?.isConnected == false &&
+                    userConnectionState.data?.connectionInitiatedBy !=
+                      authUser?.id &&
+                    userConnectionState.data?.connecteeId == userId && (
+                      <>
+                        <Grid item>
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={acceptUserConnection}
+                            size="small"
+                          >
+                            <PersonAdd
+                              fontSize="small"
+                              sx={userCardButtonIcon}
+                            />
+                            {LABELS.CONNECTION_ACCEPT}
+                          </Button>
+                        </Grid>
+
+                        <Grid item>
+                          <Button
+                            color="error"
+                            variant="outlined"
+                            onClick={rejectUserConnection}
+                            size="small"
+                          >
+                            <PersonOff
+                              fontSize="small"
+                              sx={userCardButtonIcon}
+                            />
+                            {LABELS.CONNECTION_REJECT}
+                          </Button>
+                        </Grid>
+                      </>
+                    )}
+                </Grid>
+              </Grid>
+            )}
+
             {!aboutUser && isAuthUser && (
               <Grid item mt={3}>
                 <Button
@@ -308,6 +435,14 @@ const UserCard: React.FC<IUserCardProps> = () => {
             imageType="background_image"
             showModal={showBackgroundImageCropper}
             onModalClose={handleBackgroundImageCropperClose}
+          />
+        )}
+
+        {showWithdrawConnectionModal && (
+          <WithdrawConnectionModal
+            connectorId={userId}
+            showModal={showWithdrawConnectionModal}
+            onModalClose={handleWithdrawConnectionModalClose}
           />
         )}
 
@@ -425,6 +560,10 @@ const userCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.text.primary,
   marginLeft: 2,
 });
+
+const userCardButtonIcon: SystemStyleObject<Theme> = {
+  marginRight: "4px",
+};
 
 const profileCompletedBadgeSx: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.primary.light,

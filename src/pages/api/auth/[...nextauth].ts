@@ -72,6 +72,7 @@ export default NextAuth({
       clientId: ENV.COGNITO_CLIENT_ID,
       clientSecret: ENV.COGNITO_CLIENT_SECRET,
       issuer: ENV.COGNITO_ISSUER,
+      idToken: true,
     }),
   ],
   callbacks: {

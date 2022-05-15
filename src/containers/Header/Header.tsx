@@ -13,6 +13,7 @@ import {
   ClickAwayListener,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import PeopleIcon from "@mui/icons-material/People";
 import React, { useCallback, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
@@ -27,6 +28,7 @@ import ProfileDropdown from "./ProfileDropdown";
 import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
+import { compile } from "path-to-regexp";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -125,9 +127,18 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Box>
               )}
 
+              <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
+                <IconButton sx={{ paddingX: 2 }}>
+                  <PeopleIcon
+                    fontSize="large"
+                    sx={{ color: "navbar.contrastText" }}
+                  />
+                </IconButton>
+              </Link>
+
               <IconButton
                 onClick={handleThemeOpen}
-                aria-label="open drawer"
+                aria-label="change theme"
                 aria-haspopup="true"
                 sx={{ paddingX: 2 }}
               >

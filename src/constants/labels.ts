@@ -165,4 +165,22 @@ export const LABELS = {
   CERTIFICATION_EXPIRY_DATE: "Expiry Date",
   CERTIFICATION_HELPER:
     "Any honours, certifications or license earned by you can be showcased here.",
+
+  // Connection Labels
+  CONNECTION_CONNECT: "Connect",
+  CONNECTION_ACCEPT: "Accept",
+  CONNECTION_REJECT: "Reject",
+  CONNECTION_PENDING: "Pending",
+  CONNECTION_WITHDRAW: "Withdraw",
+  CONNECTION_CONNECTIONS: "Connections",
+  CONNECTION_SENT: "Sent",
+  CONNECTION_WITHDRAW_REQUEST:
+    "Are you sure you want to withdraw your connection request?",
+  CONNECTION_UNCONNECT: "Unconnect",
+  MANAGE_NETWORK: "Manage my network",
+  CONNECTION_FAILED: "Something went wrong while updating connection",
+  CONNECTION_NO_PENDING_REQUESTS: "You have no pending connection requests!",
+  CONNECTION_NO_CONNECTIONS:
+    "You 0 connections! You may search and connect with people using the search bar.",
+  CONNECTION_NO_SENT_CONNECTIONS: "You have no pending connection requests!",
 };

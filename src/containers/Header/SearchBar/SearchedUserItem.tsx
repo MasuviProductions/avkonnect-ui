@@ -1,8 +1,8 @@
 import { SearchOutlined } from "@mui/icons-material";
 import { SxProps, SystemStyleObject } from "@mui/system";
+import Link from "next/link";
 import { Avatar, Box, Grid, Hidden, Theme, Typography } from "@mui/material";
 import { getEllipsedText, usernameToColor } from "../../../utils/generic";
-import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../constants/app";
 
@@ -27,8 +27,8 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
   const searchedUser = `${name} \u2027 ${headline || "--"}`;
 
   return (
-    <Box onClick={onSearchItemClick} sx={searchItemContainer}>
-      <Link href={compile(APP_ROUTES.PROFILE.route)({ id: id })} passHref>
+    <Link href={compile(APP_ROUTES.PROFILE.route)({ id: id })} passHref>
+      <Box onClick={onSearchItemClick} sx={searchItemContainer}>
         <Grid
           container
           justifyContent="space-between"
@@ -63,8 +63,8 @@ const SearchedUserItem: React.FC<ISearchedUserItemProps> = ({
             </Avatar>
           </Grid>
         </Grid>
-      </Link>
-    </Box>
+      </Box>
+    </Link>
   );
 };
 

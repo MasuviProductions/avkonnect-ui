@@ -15,20 +15,12 @@ export interface AVConnectApiResponsePagination {
   count: number;
 }
 
-export interface AVConnectApiResponse<T> {
+export interface AVConnectApiResponse<T = undefined> {
   success: boolean;
   data?: T;
   error?: AVConnectApiResponseError;
   dDBPagination?: AVConnectApiResponseDDBPagination;
   pagination?: AVConnectApiResponsePagination;
-}
-
-export interface IAuthUserApiResponse {
-  id: string;
-  email: string;
-  name: string;
-  headline: string;
-  displayPictureUrl: string;
 }
 
 export interface IUserProfileApiResponse {
@@ -157,3 +149,17 @@ export interface IUserFeedbackApiResponse {
 }
 
 export type IUsersSearchApiResponse = IUserAvatarApiModel;
+
+interface IUserConnectionApiModel {
+  id: string;
+  connectorId: string;
+  connecteeId: string;
+  isConnected: boolean;
+  connectedAt?: number;
+  connectionInitiatedBy: string;
+  connecteeInfo?: Partial<IUserProfileApiResponse>;
+}
+
+export type IUserConnectionApiResponse = IUserConnectionApiModel;
+
+export type IUserConnectionsApiResponse = IUserConnectionApiModel[];

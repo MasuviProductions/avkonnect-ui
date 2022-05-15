@@ -1,7 +1,11 @@
-import { Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 
 const HomeSkeleton: React.FC = () => {
-  return <Skeleton variant="rectangular" width="100%" height={500} />;
+  return (
+    <Box my={2}>
+      <Skeleton variant="rectangular" width="100%" height={500} />
+    </Box>
+  );
 };
 
 export default HomeSkeleton;

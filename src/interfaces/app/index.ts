@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { Session } from "next-auth";
 import React from "react";
 import { Dayjs } from "dayjs";
-import { DatePickerView } from "@mui/lab/DatePicker/shared";
+import { CalendarPickerView } from "@mui/lab";
 
 export interface IComponentSkeleton {
   Skeleton: React.FC;
@@ -72,7 +72,7 @@ export interface IDateFieldConfig {
   value: Dayjs | null;
   minDate: Dayjs | null;
   maxDate: Dayjs | null;
-  views: Readonly<DatePickerView[]>;
+  views: Readonly<CalendarPickerView[]>;
 }
 
 export type IDateRangeType = "from" | "to";
@@ -80,10 +80,28 @@ export type IDateRangeType = "from" | "to";
 export interface IDateField {
   id: string;
   value: Dayjs | null;
-  views: Readonly<DatePickerView[]>;
+  views: Readonly<CalendarPickerView[]>;
   label: string;
   minDate: Dayjs | null;
   maxDate: Dayjs | null;
 }
 
 export type IDateRange = Record<IDateRangeType, IDateField>;
+
+export interface ITabMenuItem {
+  id: string;
+  title: string;
+  icon: JSX.Element;
+}
+
+export interface ITabMenuItemProps {
+  panelItem: ITabMenuItem;
+  isActive: boolean;
+  onItemSelect: (id: string) => void;
+}
+
+export interface IApiResponseState<T = unknown> {
+  data?: T;
+  loading: boolean;
+  error?: unknown;
+}
