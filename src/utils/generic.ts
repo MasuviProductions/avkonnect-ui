@@ -1,3 +1,5 @@
+import { Theme } from "@mui/material";
+import { SxProps } from "@mui/system";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -67,6 +69,20 @@ export const getEllipsedText = (text: string, len: number): string => {
     return text;
   }
   return `${text.substring(0, len)}...`;
+};
+
+export const getMUIElipsedSx = (
+  lines?: number,
+  fixedHeight?: number
+): SxProps<Theme> => {
+  return (_theme: Theme) => ({
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: lines,
+    WebkitBoxOrient: "vertical",
+    height: fixedHeight,
+  });
 };
 
 export const getURLFormattedMessage = (message: string): string => {
