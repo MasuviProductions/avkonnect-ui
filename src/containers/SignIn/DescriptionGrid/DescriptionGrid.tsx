@@ -1,4 +1,4 @@
-import { Box, Button, Hidden, Theme, Typography } from "@mui/material";
+import { Grid, Box, Button, Hidden, Theme, Typography } from "@mui/material";
 import { SxProps } from "@mui/system";
 import Image from "next/image";
 import { PNG } from "../../../assets/PNG";
@@ -14,8 +14,9 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
   handleSignIn,
 }) => {
   return (
-    <Box>
-      <Box>
+    <Grid container justifyContent="center" alignItems="center" p={1}>
+      <Grid item xs={12}>
+        {/* TODO: START DESCRIPTION HERE */}
         <Box p={1} sx={descriptionGridSx} textAlign="center">
           <Typography variant="h5" sx={{ marginTop: "8px" }}>
             AVKonnect Description
@@ -76,15 +77,16 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
             doloremque sequi?
           </Typography>
         </Box>
-      </Box>
-      <Hidden mdUp>
-        <Box textAlign="center" sx={floatingBtnSx}>
+        {/* TODO: END DESCRIPTION HERE */}
+      </Grid>
+      <Grid item sx={floatingBtnSx}>
+        <Hidden mdUp>
           <Button variant="contained" onClick={handleSignIn}>
-            {LABELS.LOGIN_OR_REGISTER}
+            {LABELS.SIGNUP_OR_SIGNIN}
           </Button>
-        </Box>
-      </Hidden>
-    </Box>
+        </Hidden>
+      </Grid>
+    </Grid>
   );
 };
 DescriptionGrid.Skeleton = DescriptionGridSkeleton;

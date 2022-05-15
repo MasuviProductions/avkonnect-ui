@@ -1,25 +1,14 @@
-import {
-  Button,
-  Grid,
-  Typography,
-  Box,
-  Container,
-  Theme,
-  Hidden,
-} from "@mui/material";
+import { Grid, Box, Theme, Hidden } from "@mui/material";
 import { SxProps } from "@mui/system";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
-import Image from "next/image";
 import { useEffect } from "react";
 import { useState } from "react";
 import { APP_ROUTES } from "../../constants/app";
-import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
-import AuthGrid from "./AuthGrid";
+import SignInGrid from "./SignInGrid";
 import DescriptionGrid from "./DescriptionGrid";
-import { PNG } from "../../assets/PNG";
 import SignInSkeleton from "./SignInSkeleton";
 
 const SignIn: ReactFCWithSkeleton = () => {
@@ -58,7 +47,7 @@ const SignIn: ReactFCWithSkeleton = () => {
           </Grid>
           <Hidden mdDown>
             <Grid item md={4}>
-              <AuthGrid handleSignIn={handleSignIn} />
+              <SignInGrid handleSignIn={handleSignIn} />
             </Grid>
           </Hidden>
         </Grid>
