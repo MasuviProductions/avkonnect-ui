@@ -127,14 +127,16 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Box>
               )}
 
-              <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
-                <IconButton sx={{ paddingX: 2 }}>
-                  <PeopleIcon
-                    fontSize="large"
-                    sx={{ color: "navbar.contrastText" }}
-                  />
-                </IconButton>
-              </Link>
+              {authUser && (
+                <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
+                  <IconButton sx={{ paddingX: 2 }}>
+                    <PeopleIcon
+                      fontSize="large"
+                      sx={{ color: "navbar.contrastText" }}
+                    />
+                  </IconButton>
+                </Link>
+              )}
 
               <IconButton
                 onClick={handleThemeOpen}
@@ -155,7 +157,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 open={Boolean(themeAnchorEl)}
                 onClose={handleThemeClose}
               >
-                {THEMES_LIST.map(theme => (
+                {THEMES_LIST.map((theme) => (
                   <MenuItem
                     key={theme.key}
                     onClick={() => handleThemeSelect(theme.themeOption)}
