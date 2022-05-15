@@ -10,16 +10,17 @@ import {
 } from "react";
 import API_ENDPOINTS from "../constants/api";
 import { fetchAuthUser } from "../utils/api";
-import { IAuthUserApiResponse } from "../interfaces/api/external";
 import { APP_ROUTES, SESSION_REFETCH_INTERVAL } from "../constants/app";
+import { IUserProfileApiResponse } from "../interfaces/api/external";
 
 interface IAuthContextProps {
-  authUser?: IAuthUserApiResponse;
+  authUser?: IUserProfileApiResponse;
   accessToken?: string;
-  setAuthUser?: Dispatch<SetStateAction<IAuthUserApiResponse | undefined>>;
+  setAuthUser?: Dispatch<SetStateAction<IUserProfileApiResponse | undefined>>;
   setAccessToken?: Dispatch<SetStateAction<string | undefined>>;
   authError?: boolean;
   authLoading?: boolean;
+  triggerAuthUserAPI?: () => void;
 }
 
 const AuthContext = createContext<IAuthContextProps>({});
@@ -29,12 +30,16 @@ const useAuthContext = (): IAuthContextProps => {
 };
 
 const AuthContextProvider: React.FC = ({ children }) => {
-  const [authUser, setAuthUser] = useState<IAuthUserApiResponse>();
+  const [authUser, setAuthUser] = useState<IUserProfileApiResponse>();
   const [accessToken, setAccessToken] = useState<string>();
   const [authError, setAuthError] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
   const { data: sessionData, status: sessionStatus } = useSession();
-  const { data: authUserData, error: authUserError } = useQuery(
+  const {
+    data: authUserData,
+    error: authUserError,
+    refetch: triggerAuthUserAPI,
+  } = useQuery(
     API_ENDPOINTS.AUTH_USER.key,
     () => fetchAuthUser(sessionData?.accessToken as string),
     {
@@ -89,6 +94,7 @@ const AuthContextProvider: React.FC = ({ children }) => {
         setAccessToken,
         authError,
         authLoading,
+        triggerAuthUserAPI,
       }}
     >
       {children}

@@ -23,6 +23,7 @@ export interface IUser {
   backgroundImageUrl: string;
   email: string;
   name: string;
+  connectionCount: number;
   currentPosition: string;
   headline: string;
   dateOfBirth?: number;
@@ -43,6 +44,7 @@ const defaultUserValues: IUser = {
   id: "",
   displayPictureUrl: "",
   backgroundImageUrl: "",
+  connectionCount: 0,
   email: "",
   name: "",
   currentPosition: "",
@@ -77,6 +79,7 @@ const UserContextProvider: React.FC<IUser> = ({
   backgroundImageUrl,
   email,
   name,
+  connectionCount,
   currentPosition,
   dateOfBirth,
   headline,
@@ -91,6 +94,7 @@ const UserContextProvider: React.FC<IUser> = ({
     backgroundImageUrl,
     email,
     name,
+    connectionCount,
     currentPosition,
     headline,
     dateOfBirth,
@@ -123,9 +127,7 @@ const UserContextProvider: React.FC<IUser> = ({
         prev
           ? {
               ...prev,
-              name: user.name,
-              headline: user.headline,
-              displayPictureUrl: user.displayPictureUrl,
+              ...user,
             }
           : undefined
       );
