@@ -3,6 +3,7 @@ import { IImageSelectorAttrib } from "../interfaces/app";
 import Home from "../pages";
 import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
+import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
 import { LABELS } from "./labels";
 
@@ -28,6 +29,11 @@ export const APP_ROUTES = {
     route: "/search\\?key=:key",
     key: "search",
     skeleton: Search.Skeleton,
+  },
+  MY_NETWORK: {
+    route: "/my-network",
+    key: "my-network",
+    skeleton: MyNetwork.Skeleton,
   },
 };
 

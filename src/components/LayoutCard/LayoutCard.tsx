@@ -1,5 +1,5 @@
-import { Container, Grid, Theme } from "@mui/material";
-import { SxProps, SystemStyleObject } from "@mui/system";
+import { Container, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import LayoutCardHeader, { ILayoutCartHeader } from "./LayoutCardHeader";
 
 interface ILayoutCardProps {

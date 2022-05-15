@@ -15,7 +15,7 @@ export interface AVConnectApiResponsePagination {
   count: number;
 }
 
-export interface AVConnectApiResponse<T> {
+export interface AVConnectApiResponse<T = undefined> {
   success: boolean;
   data?: T;
   error?: AVConnectApiResponseError;
@@ -169,3 +169,17 @@ export interface IUserFeedbackApiResponse {
 }
 
 export type IUsersSearchApiResponse = IUserAvatarApiModel;
+
+interface IUserConnectionApiModel {
+  id: string;
+  connectorId: string;
+  connecteeId: string;
+  isConnected: boolean;
+  connectedAt?: number;
+  connectionInitiatedBy: string;
+  connecteeInfo?: Partial<IUserProfileApiResponse>;
+}
+
+export type IUserConnectionApiResponse = IUserConnectionApiModel;
+
+export type IUserConnectionsApiResponse = IUserConnectionApiModel[];
