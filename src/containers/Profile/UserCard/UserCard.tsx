@@ -9,13 +9,15 @@ import {
   IconButton,
   Theme,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SubtitlesIcon from "@mui/icons-material/Subtitles";
-import CakeIcon from "@mui/icons-material/Cake";
 import GenderIcon from "../../../components/GenderIcon";
+import BadgeIcon from "@mui/icons-material/Badge";
+import CakeIcon from "@mui/icons-material/Cake";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import LayoutCard from "../../../components/LayoutCard";
 import { JPG } from "../../../assets/JPG";
@@ -25,6 +27,7 @@ import { usernameToColor } from "../../../utils/generic";
 import EditAboutUser from "../EditAboutUser";
 import { LABELS } from "../../../constants/labels";
 import { useUserContext } from "../../../contexts/UserContext";
+import { useUserProfileModalContext } from "../../../contexts/UserProfileModalContext";
 import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
@@ -39,6 +42,7 @@ import {
   PersonAddDisabled,
   PersonOff,
 } from "@mui/icons-material";
+import useProfileProgressSteps from "../../../hooks/useProfileProgressSteps";
 
 interface IUserCardProps {}
 
@@ -59,6 +63,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
       aboutUser,
     },
   } = useUserContext();
+  const { profileModals, showModal } = useUserProfileModalContext();
+
+  const { profileProgressCompleted } = useProfileProgressSteps();
 
   const {
     userConnectionState,
@@ -117,11 +124,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleAboutModalOpen = () => {
-    setShowAboutModal(true);
+    showModal("aboutCardModal", true);
   };
 
   const handleAboutModalClose = () => {
-    setShowAboutModal(false);
+    showModal("aboutCardModal", false);
   };
 
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
@@ -146,11 +153,11 @@ const UserCard: React.FC<IUserCardProps> = () => {
   };
 
   const handleEditUserModalOpen = () => {
-    setShowEditUserModal(true);
+    showModal("userProfileInfoCardModal", true);
   };
 
   const handleEditUserModalClose = () => {
-    setShowEditUserModal(false);
+    showModal("userProfileInfoCardModal", false);
   };
 
   useEffect(() => {
@@ -219,6 +226,19 @@ const UserCard: React.FC<IUserCardProps> = () => {
                               <Grid item>
                                 <GenderIcon gender={gender as IGender} />
                               </Grid>
+                            )}
+
+                            {profileProgressCompleted && isAuthUser && (
+                              <Tooltip
+                                title={
+                                  LABELS.USER_PROFILE_PROGRESS_COMPLETED_BADGE
+                                }
+                              >
+                                <BadgeIcon
+                                  sx={profileCompletedBadgeSx}
+                                  fontSize={"medium"}
+                                />
+                              </Tooltip>
                             )}
 
                             <Grid item>
@@ -426,9 +446,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
 
-        {showEditUserModal && (
+        {profileModals.userProfileInfoCardModal && (
           <ModalLayout
-            showModal={showEditUserModal}
+            showModal={profileModals.userProfileInfoCardModal}
             onModalClose={handleEditUserModalClose}
             title={LABELS.USER_INFO_TITLE}
           >
@@ -464,9 +484,9 @@ const UserCard: React.FC<IUserCardProps> = () => {
           />
         )}
 
-        {showAboutModal && (
+        {profileModals.aboutCardModal && (
           <EditAboutUser
-            showModal={showAboutModal}
+            showModal={profileModals.aboutCardModal}
             onModalClose={handleAboutModalClose}
           />
         )}
@@ -544,5 +564,10 @@ const userCardEditBtn: SxProps<Theme> = (theme: Theme) => ({
 const userCardButtonIcon: SystemStyleObject<Theme> = {
   marginRight: "4px",
 };
+
+const profileCompletedBadgeSx: SxProps<Theme> = (theme: Theme) => ({
+  color: theme.palette.primary.light,
+  marginLeft: "8px",
+});
 
 export default UserCard;

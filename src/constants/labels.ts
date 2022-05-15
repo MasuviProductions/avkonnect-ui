@@ -11,6 +11,12 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Pages
+  PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
+  PAGE_NOT_FOUND_SNOOP: "Were you snooping around?",
+  PAGE_NOT_FOUND_404: "404 - Page doesn't Exist...",
+  GO_HOME_BTN: "Go Home",
+
   // Home
   MADE_IN_INDIA: "Made In India",
 
@@ -54,6 +60,32 @@ export const LABELS = {
   USER_INFO_DOB: "Date of Birth",
   USER_INFO_GENDER: "Gender",
   USER_INFO_LOCATION: "Location",
+
+  // Profile Progress Labels
+  USER_PROFILE_PROGRESS_INCOMPLETE: "Your Profile is Incomplete!",
+  USER_PROFILE_PROGRESS_COMPLETED_BADGE: "Basic Profile Achieved!",
+  USER_PROFILE_PROGRESS_INCOMPLETE_INFO:
+    "Let us make your Profile meaningful by filling it out. This increases your chance of standing out and also to generate relevant connections with people.",
+  USER_PROFILE_PROGRESS_COMPLETE_TEXT:
+    "You can continue to add more of your Work, Achievements and Projects to enhance your Profile further!",
+  USER_PROFILE_PROGRESS_STEP_COMPLETED: "Step Complete!",
+  USER_PROFILE_PROGRESS_PROFILE_STEP_LABEL: "Fill Profile Information",
+  USER_PROFILE_PROGRESS_PROFILE_STEP_INFO:
+    "Fill your Profile with Basic Details like your Name, Gender, Date of Birth, etc.",
+  USER_PROFILE_PROGRESS_ABOUT_STEP_LABEL: "Write About Yourself",
+  USER_PROFILE_PROGRESS_ABOUT_STEP_INFO: "Write Something that makes you, you!",
+  USER_PROFILE_PROGRESS_SKILL_STEP_LABEL: "Fill your Skill",
+  USER_PROFILE_PROGRESS_SKILL_STEP_INFO:
+    "Choose which category you have proficiency in!",
+  USER_PROFILE_PROGRESS_EXPERIENCE_STEP_LABEL: "Your Experiences",
+  USER_PROFILE_PROGRESS_EXPERIENCE_STEP_INFO:
+    "Write somethings on where you have worked, for how long, etc. This can help others understand your work.",
+  USER_PROFILE_PROGRESS_PROJECT_STEP_LABEL: "Your Project Involvements",
+  USER_PROFILE_PROGRESS_PROJECT_STEP_INFO:
+    "Tell us the Projects you were involved in and what roles you played there.",
+  USER_PROFILE_PROGRESS_CERTIFICATE_STEP_LABEL: "Your Certificates",
+  USER_PROFILE_PROGRESS_CERTIFICATE_STEP_INFO:
+    "An Issued Certificate increases credibility of your work. Let us register a Certificate of yours.",
 
   // About User labels
   ADD_SUMMARY: "Add Summary",

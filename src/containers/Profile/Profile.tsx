@@ -4,6 +4,7 @@ import ProfileSkeleton from "./ProfileSkeleton";
 import UserCard from "./UserCard";
 import AboutCard from "./AboutCard";
 import SkillsCard from "./SkillsCard";
+import ProfileProgressCard from "./ProfileProgressCard";
 import { useAuthContext } from "../../contexts/AuthContext";
 import ProjectsCard from "./ProjectsCard";
 import ExperiencesCard from "./ExperiencesCard";
@@ -18,6 +19,12 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
       <Grid item xs={12}>
         <UserCard />
       </Grid>
+
+      {authUser && (
+        <Grid item xs={12}>
+          <ProfileProgressCard />
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <AboutCard />

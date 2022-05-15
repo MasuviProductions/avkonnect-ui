@@ -30,7 +30,7 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
 
   const handleSkillDelete = (event: React.MouseEvent, skillName: string) => {
     const matchedSkillIndex = updatedSkillsets.findIndex(
-      (skillset) => skillset.name === skillName
+      skillset => skillset.name === skillName
     );
     if (matchedSkillIndex >= 0) {
       const newSkillsets = cloneDeep(updatedSkillsets);
@@ -59,7 +59,7 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
         <Grid container justifyContent="flex-end" p={3}>
           <Grid item xs={12}>
             <Grid container>
-              {updatedSkillsets.map((skill) => (
+              {updatedSkillsets.map(skill => (
                 <Grid item xs={12} key={skill.name}>
                   <Grid
                     container
@@ -72,9 +72,7 @@ const EditSkills: React.FC<IEditSkillsProps> = ({
 
                     <Grid item>
                       <IconButton
-                        onClick={(event) =>
-                          handleSkillDelete(event, skill.name)
-                        }
+                        onClick={event => handleSkillDelete(event, skill.name)}
                       >
                         <DeleteForeverIcon
                           sx={skillsDeleteBtn}

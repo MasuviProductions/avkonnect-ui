@@ -99,8 +99,8 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                         <Image
                           src={PNG.AvkMobLogo}
                           alt={`${LABELS.TITLE} Logo`}
-                          width={80}
-                          height={80}
+                          width={50}
+                          height={35}
                         />
                       </Box>
                     </Link>
@@ -155,7 +155,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 open={Boolean(themeAnchorEl)}
                 onClose={handleThemeClose}
               >
-                {THEMES_LIST.map((theme) => (
+                {THEMES_LIST.map(theme => (
                   <MenuItem
                     key={theme.key}
                     onClick={() => handleThemeSelect(theme.themeOption)}
@@ -217,6 +217,7 @@ const userDropdown: SxProps<Theme> = {
 
 const logoContainerSx: SxProps<Theme> = {
   width: "fit-content",
+  marginTop: "4px",
   ":hover": {
     cursor: "pointer",
     transform: "scale(1.05)",
