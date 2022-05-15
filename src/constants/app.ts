@@ -4,7 +4,6 @@ import Home from "../pages";
 import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
 import SignInPage from "../pages/sign-in";
-import AuthPage from "../pages/_auth";
 import { LABELS } from "./labels";
 
 export const SESSION_REFETCH_INTERVAL = 5 * 60;
@@ -29,11 +28,6 @@ export const APP_ROUTES = {
     route: "/search\\?key=:key",
     key: "search",
     skeleton: Search.Skeleton,
-  },
-  AUTH: {
-    route: "/auth",
-    key: "auth",
-    skeleton: AuthPage.Skeleton,
   },
 };
 

@@ -1,18 +1,18 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
-import Auth from "../../containers/Auth";
+import SignInV2 from "../../containers/SignInV2";
 import { NextPageWithSkeleton, SessionProps } from "../../interfaces/app";
 import { handleServerSideAuthenticationRedirect } from "../../utils/generic";
 
-const AuthPage: NextPageWithSkeleton = () => {
+const SignInV2Page: NextPageWithSkeleton = () => {
   return (
     <>
-      <Auth />
+      <SignInV2 />
     </>
   );
 };
 
-AuthPage.Skeleton = Auth.Skeleton;
+SignInV2Page.Skeleton = SignInV2.Skeleton;
 
 interface IAuthPageProps extends SessionProps {}
 
@@ -28,4 +28,4 @@ export const getServerSideProps: GetServerSideProps<IAuthPageProps> = async (
   return await handleServerSideAuthenticationRedirect(context, handleSSRProps);
 };
 
-export default AuthPage;
+export default SignInV2Page;

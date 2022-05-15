@@ -16,8 +16,8 @@ import { ReactFCWithSkeleton } from "../../interfaces/app";
 import SignInForm from "./SignIn/SignInForm";
 import SignUpForm from "./SignUp/SignUpForm";
 import { LABELS } from "../../constants/labels";
-import OAuthSignForm from "../../components/OAuthSignForm";
-import AuthSkeleton from "./AuthSkeleton";
+import OAuthSignForm from "./OAuthSign/OAuthSignForm";
+import SignInV2Skeleton from "./SignInV2Skeleton";
 import TabPanel from "../../components/TabPanel";
 import { SyntheticEvent, useState } from "react";
 import Image from "next/image";
@@ -26,7 +26,7 @@ import { APP_ROUTES } from "../../constants/app";
 
 interface IAuthProps {}
 
-const Auth: ReactFCWithSkeleton<IAuthProps> = () => {
+const SignInV2: ReactFCWithSkeleton<IAuthProps> = () => {
   const router = useRouter();
 
   const { authUser, authError, authLoading } = useAuthContext();
@@ -39,21 +39,14 @@ const Auth: ReactFCWithSkeleton<IAuthProps> = () => {
 
   if (authLoading) return <></>;
 
-  // if (!authError && authUser) router.push(APP_ROUTES.ROOT.route);
+  if (!authError && authUser) router.push(APP_ROUTES.ROOT.route);
 
   return (
     <Box mt={5}>
       <Container maxWidth="xs">
         <Box pt={2} sx={signInBoxSx} textAlign="center">
           <Box display="flex" alignItems="center" justifyContent="center">
-            <Avatar
-              variant="square"
-              sx={(theme: Theme) => ({
-                backgroundColor: theme.palette.navbar.main,
-                margin: "4px",
-                borderRadius: "6px",
-              })}
-            >
+            <Avatar variant="square" sx={avatarSx}>
               <Image src={PNG.AvkMobLogo} alt={LABELS.TITLE_LOGO} />
             </Avatar>
           </Box>
@@ -98,7 +91,7 @@ const Auth: ReactFCWithSkeleton<IAuthProps> = () => {
     </Box>
   );
 };
-Auth.Skeleton = AuthSkeleton;
+SignInV2.Skeleton = SignInV2Skeleton;
 
 const signInBoxSx: SxProps<Theme> = (theme: Theme) => ({
   margin: "20px 10px",
@@ -112,4 +105,10 @@ const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
-export default Auth;
+const avatarSx: SxProps<Theme> = (theme: Theme) => ({
+  backgroundColor: theme.palette.navbar.main,
+  margin: "4px",
+  borderRadius: "6px",
+});
+
+export default SignInV2;

@@ -108,7 +108,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <Box m={1} display="flex" alignItems="center" justifyContent="center">
+        <Box m={1}>
           <Link sx={linkSx} onClick={handleSignInRedirect}>
             <Typography variant="body2">
               {LABELS.ACCOUNT_PRESENT_SIGN_IN}

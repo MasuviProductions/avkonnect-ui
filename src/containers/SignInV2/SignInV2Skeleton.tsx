@@ -1,6 +1,6 @@
 import { Box, Skeleton } from "@mui/material";
 
-const AuthSkeleton: React.FC = () => {
+const SignInV2Skeleton: React.FC = () => {
   return (
     <Box mt={5} display="flex" alignItems="center" justifyContent="center">
       <Skeleton variant="rectangular" width={500} height={500} />
@@ -8,4 +8,4 @@ const AuthSkeleton: React.FC = () => {
   );
 };
 
-export default AuthSkeleton;
+export default SignInV2Skeleton;

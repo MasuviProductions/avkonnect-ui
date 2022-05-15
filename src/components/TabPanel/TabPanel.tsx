@@ -9,7 +9,7 @@ export interface ITabPanelProps {
 
 const TabPanel: React.FC<ITabPanelProps> = ({ children, index, value }) => {
   return (
-    <Box hidden={value !== index} id={`auth-tabpanel-${index}`}>
+    <Box hidden={value !== index} id={`tabpanel-${index}`}>
       {value === index && <Box>{children}</Box>}
     </Box>
   );
