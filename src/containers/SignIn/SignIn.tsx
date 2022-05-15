@@ -34,7 +34,7 @@ const SignIn: ReactFCWithSkeleton = () => {
 
   if (authLoading) return <></>;
 
-  if (!authError && authUser) router.push(APP_ROUTES.ROOT.route);
+  // if (!authError && authUser) router.push(APP_ROUTES.ROOT.route);
 
   if (!authUser)
     return (

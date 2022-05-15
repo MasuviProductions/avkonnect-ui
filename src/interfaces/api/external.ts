@@ -23,6 +23,26 @@ export interface AVConnectApiResponse<T = undefined> {
   pagination?: AVConnectApiResponsePagination;
 }
 
+export interface ISignInUserApiModel {
+  emailId: string;
+  password: string;
+}
+
+export interface ISignUpUserApiModel {
+  fname: string;
+  lname: string;
+  emailId: string;
+  password: string;
+}
+
+export interface IAuthUserApiResponse {
+  id: string;
+  email: string;
+  name: string;
+  headline: string;
+  displayPictureUrl: string;
+}
+
 export interface IUserProfileApiResponse {
   aboutUser: string;
   followeeCount: number;
