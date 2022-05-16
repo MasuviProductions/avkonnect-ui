@@ -208,6 +208,7 @@ const useConnection = (
 
   useEffect(() => {
     if (getUserConnectionStatus === "error") {
+      setLastAction("fetch");
       setUserConnectionState((prev) => ({
         ...prev,
         data: undefined,
