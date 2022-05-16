@@ -52,6 +52,7 @@ const useConnection = (
         connecteeId
       ),
     {
+      retry: false,
       enabled: false,
     }
   );
@@ -179,6 +180,13 @@ const useConnection = (
     deleteUserConnectionDataUpdatedAt,
     triggerAuthUserAPI,
   ]);
+
+  useEffect(() => {
+    setUserConnectionState((prev) => ({
+      ...prev,
+      loading: getUserConnectionStatus === "loading",
+    }));
+  }, [getUserConnectionStatus]);
 
   useEffect(() => {
     if (postUserConnectionStatus === "error") {
