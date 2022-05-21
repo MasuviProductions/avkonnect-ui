@@ -30,7 +30,7 @@ export const fetchAuthUser = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data?.data as IUserProfileApiResponse);
+    .then(res => res.data?.data as IUserProfileApiResponse);
   return userProfileResponse;
 };
 
@@ -45,7 +45,7 @@ export const fetchUserProfile = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProfileResponse;
 };
 
@@ -61,7 +61,7 @@ export const patchUserProfile = async (
     >(API_ENDPOINTS.USER_PROFILE.url(userId), reqBody, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProfileResponse;
 };
 
@@ -77,7 +77,7 @@ export const fetchUserImageSignedUrl = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProfileResponse;
 };
 
@@ -89,7 +89,7 @@ export const putUserImageToS3 = async (
     .put<any, AxiosResponse<any>>(signedUrl, file, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProfileResponse;
 };
 
@@ -104,7 +104,7 @@ export const getUserSkills = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userSkillsResponse;
 };
 
@@ -120,7 +120,7 @@ export const putUserSkills = async (
     >(API_ENDPOINTS.USER_SKILLS.url(userId), skills, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userSkillsResponse;
 };
 
@@ -135,7 +135,7 @@ export const getUserProjects = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProjectsResponse;
 };
 
@@ -151,7 +151,7 @@ export const putUserProjects = async (
     >(API_ENDPOINTS.USER_PROJECTS.url(userId), projects, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userProjectsResponse;
 };
 
@@ -166,7 +166,7 @@ export const getUserExperiences = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userExperiencesResponse;
 };
 
@@ -182,7 +182,7 @@ export const putUserExperiences = async (
     >(API_ENDPOINTS.USER_EXPERIENCES.url(userId), experiences, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userExperiencesResponse;
 };
 
@@ -197,7 +197,7 @@ export const getUserCertifications = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userCertificationsResponse;
 };
 
@@ -213,7 +213,7 @@ export const putUserCertifications = async (
     >(API_ENDPOINTS.USER_CERTIFICATIONS.url(userId), certifications, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userCertificationsResponse;
 };
 
@@ -229,7 +229,7 @@ export const postUserFeedback = async (
     >(API_ENDPOINTS.USER_FEEDBACK.url(userId), feedback, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then((res) => res.data);
+    .then(res => res.data);
   return userFeedbackResponse;
 };
 
@@ -249,7 +249,8 @@ export const getUsersSearch = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
+  console.log(JSON.stringify(usersSearchResponse));
   return usersSearchResponse;
 };
 
@@ -270,7 +271,7 @@ export const getUserConnections = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userConnections;
 };
 
@@ -286,7 +287,7 @@ export const getUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userConnection;
 };
 
@@ -303,7 +304,7 @@ export const postUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userConnection;
 };
 
@@ -320,7 +321,7 @@ export const patchUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userConnection;
 };
 
@@ -336,6 +337,69 @@ export const deleteUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then((res) => res.data);
+    .then(res => res.data);
   return userConnection;
+};
+
+export const getUserNotifications = async (
+  accessToken: string,
+  userId: string
+) => {
+  const userNotifications =
+    [
+      {
+        id: "a4afdd67-dbb4-45f7-ac05-6e22010de0e4",
+        createdAt: 1653149260561,
+        expiresAt: 1e38,
+        read: false,
+        userName: "Abhay S V",
+        resourceType: "connectionRequest",
+      },
+      {
+        id: "3aec89d5-b2d8-4478-9e3f-dc56706bd76f",
+        createdAt: 1653099260421,
+        expiresAt: 1e38,
+        read: true,
+        userName: "Deborah Jovo",
+        resourceType: "connectionRequest",
+      },
+      {
+        id: "e83f1e48-7178-4b1a-b6bb-f6adf916af5b",
+        createdAt: 1653140160820,
+        expiresAt: 1e38,
+        read: true,
+        userName: "Albert Eisenhover",
+        resourceType: "connectionConfirmation",
+      },
+      {
+        id: "5a5f3f2c-f82c-4139-b5c2-0fe40551c863",
+        createdAt: 1653149160637,
+        expiresAt: 1e38,
+        read: false,
+        userName: "Ramakrishna V Hiremath",
+        resourceType: "connectionRequest",
+      },
+      {
+        id: "39061145-ebcd-4a81-ad40-f9cf1d37d11c",
+        createdAt: 1653149100457,
+        expiresAt: 1e38,
+        read: true,
+        userName: "Bhavani M Horatti",
+        resourceType: "connectionConfirmation",
+      },
+      {
+        id: "57caaf18-29c7-4a49-870a-e5250b526b3f",
+        createdAt: 1653149240245,
+        expiresAt: 1e38,
+        read: false,
+        userName: "Raju Desai",
+        resourceType: "connectionConfirmation",
+      },
+    ] ||
+    (await axios
+      .get<AVConnectApiResponse>(API_ENDPOINTS.USER_NOTIFICATIONS.url(userId), {
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
+      .then(res => res.data));
+  return userNotifications;
 };

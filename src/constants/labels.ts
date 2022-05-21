@@ -201,4 +201,13 @@ export const LABELS = {
   CONNECTION_NO_CONNECTIONS:
     "You 0 connections! You may search and connect with people using the search bar.",
   CONNECTION_NO_SENT_CONNECTIONS: "You have no pending connection requests!",
+
+  // Notifications Labels
+  NOTIFICATIONS_HEADER: "Your Notifications",
+  NOTIFICATION_LOAD_FAIL: "Notifications could not be fetched",
+  NOTIFICATION_CONNECTION_REQUEST: (userName: string): string =>
+    `You have a connection request from ${userName}. Accept to expand your network!`,
+  NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
+    `Your request to connect with ${userName} was accepted!`,
+  NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
 };

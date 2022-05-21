@@ -11,9 +11,11 @@ import {
   Box,
   Hidden,
   ClickAwayListener,
+  Badge,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import React, { useCallback, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
@@ -138,6 +140,19 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Link>
               )}
 
+              {authUser && (
+                <Link href={APP_ROUTES.NOTIFICATIONS.route} passHref>
+                  <IconButton sx={{ paddingX: 1 }}>
+                    <Badge color="primary" badgeContent={10} max={5}>
+                      <NotificationsNoneIcon
+                        fontSize="large"
+                        sx={{ color: "navbar.contrastText" }}
+                      />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              )}
+
               <IconButton
                 onClick={handleThemeOpen}
                 aria-label="change theme"
@@ -157,7 +172,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 open={Boolean(themeAnchorEl)}
                 onClose={handleThemeClose}
               >
-                {THEMES_LIST.map((theme) => (
+                {THEMES_LIST.map(theme => (
                   <MenuItem
                     key={theme.key}
                     onClick={() => handleThemeSelect(theme.themeOption)}

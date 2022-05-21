@@ -64,6 +64,10 @@ const API_ENDPOINTS = {
     url: (userId: string, queryString: string): string =>
       `${AVCONNECT_URL.USERS()}/${userId}/connections${queryString}`,
   },
+  USER_NOTIFICATIONS: {
+    key: "user-notifications",
+    url: (userId: string) => `${AVCONNECT_URL.USERS()}/${userId}`,
+  },
 };
 
 export enum API_QUERY_KEYS {

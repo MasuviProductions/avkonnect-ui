@@ -1,5 +1,6 @@
 import { Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
+import moment from "moment";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -9,6 +10,7 @@ import {
   URL_MATCH_REGEX_WITH_PROTOCOL,
   URL_MATCH_REGEX_WITHOUT_PROTOCOL,
 } from "../constants/app";
+import { LABELS } from "../constants/labels";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -105,4 +107,22 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
         </strong>
     </a>`
   );
+};
+
+export const generateNotificationMessage = (
+  resourceType: string,
+  userName: string
+) => {
+  switch (resourceType) {
+    case "connectionRequest":
+      return LABELS.NOTIFICATION_CONNECTION_REQUEST(userName);
+    case "connectionConfirmation":
+      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(userName);
+    default:
+      return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
+  }
+};
+
+export const getTimeAgo = (unixTime: number): string => {
+  return moment(unixTime).fromNow();
 };
