@@ -10,6 +10,7 @@ import {
   Theme,
   Typography,
   Tooltip,
+  Skeleton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
@@ -68,6 +69,7 @@ const UserCard: React.FC<IUserCardProps> = () => {
   const { profileProgressCompleted } = useProfileProgressSteps();
 
   const {
+    lastAction: lastUserConnectionAction,
     userConnectionState,
     fetchUserConnection,
     createUserConnection,
@@ -77,8 +79,6 @@ const UserCard: React.FC<IUserCardProps> = () => {
 
   const [showWithdrawConnectionModal, setShowWithdrawConnectionModal] =
     useState(false);
-  const [showEditUserModal, setShowEditUserModal] = useState<boolean>(false);
-  const [showAboutModal, setShowAboutModal] = useState<boolean>(false);
   const [showBackgroundImage, setShowBackgroundImage] = useState(false);
   const [showBackgroundImageCropper, setShowBackgroundImageCropper] =
     useState<boolean>(false);
@@ -308,91 +308,111 @@ const UserCard: React.FC<IUserCardProps> = () => {
 
             {!isAuthUser && (
               <Grid item mt={3}>
-                <Grid container spacing={1}>
-                  {!userConnectionState.data && (
-                    <Grid item>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={createUserConnection}
-                        size="small"
-                      >
-                        <PersonAdd fontSize="small" sx={userCardButtonIcon} />
-                        {LABELS.CONNECTION_CONNECT}
-                      </Button>
-                    </Grid>
-                  )}
-
-                  {userConnectionState.data?.isConnected && (
-                    <Grid item>
-                      <Button
-                        color="error"
-                        variant="outlined"
-                        onClick={rejectUserConnection}
-                        size="small"
-                      >
-                        <PersonAddDisabled
-                          fontSize="small"
-                          sx={userCardButtonIcon}
-                        />
-                        {LABELS.CONNECTION_UNCONNECT}
-                      </Button>
-                    </Grid>
-                  )}
-
-                  {userConnectionState.data?.isConnected == false &&
-                    userConnectionState.data?.connectionInitiatedBy ==
-                      authUser?.id && (
-                      <Grid item>
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          onClick={handleWithdrawConnectionModalOpen}
-                          size="small"
-                        >
-                          <Done fontSize="small" sx={userCardButtonIcon} />
-                          {LABELS.CONNECTION_PENDING}
-                        </Button>
-                      </Grid>
-                    )}
-
-                  {userConnectionState.data?.isConnected == false &&
-                    userConnectionState.data?.connectionInitiatedBy !=
-                      authUser?.id &&
-                    userConnectionState.data?.connecteeId == userId && (
+                {lastUserConnectionAction && (
+                  <Grid container spacing={1}>
+                    {userConnectionState.loading ? (
                       <>
-                        <Grid item>
-                          <Button
-                            color="primary"
-                            variant="contained"
-                            onClick={acceptUserConnection}
-                            size="small"
-                          >
-                            <PersonAdd
-                              fontSize="small"
-                              sx={userCardButtonIcon}
-                            />
-                            {LABELS.CONNECTION_ACCEPT}
-                          </Button>
-                        </Grid>
+                        <Skeleton
+                          variant="rectangular"
+                          width={40}
+                          height={20}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {!userConnectionState.data && (
+                          <Grid item>
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              onClick={createUserConnection}
+                              size="small"
+                            >
+                              <PersonAdd
+                                fontSize="small"
+                                sx={userCardButtonIcon}
+                              />
+                              {LABELS.CONNECTION_CONNECT}
+                            </Button>
+                          </Grid>
+                        )}
 
-                        <Grid item>
-                          <Button
-                            color="error"
-                            variant="outlined"
-                            onClick={rejectUserConnection}
-                            size="small"
-                          >
-                            <PersonOff
-                              fontSize="small"
-                              sx={userCardButtonIcon}
-                            />
-                            {LABELS.CONNECTION_REJECT}
-                          </Button>
-                        </Grid>
+                        {userConnectionState.data?.isConnected && (
+                          <Grid item>
+                            <Button
+                              color="error"
+                              variant="outlined"
+                              onClick={rejectUserConnection}
+                              size="small"
+                            >
+                              <PersonAddDisabled
+                                fontSize="small"
+                                sx={userCardButtonIcon}
+                              />
+                              {LABELS.CONNECTION_UNCONNECT}
+                            </Button>
+                          </Grid>
+                        )}
+
+                        {userConnectionState.data?.isConnected == false &&
+                          userConnectionState.data?.connectionInitiatedBy ==
+                            authUser?.id && (
+                            <Grid item>
+                              <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={handleWithdrawConnectionModalOpen}
+                                size="small"
+                              >
+                                <Done
+                                  fontSize="small"
+                                  sx={userCardButtonIcon}
+                                />
+                                {LABELS.CONNECTION_PENDING}
+                              </Button>
+                            </Grid>
+                          )}
+
+                        {userConnectionState.data?.isConnected == false &&
+                          userConnectionState.data?.connectionInitiatedBy !=
+                            authUser?.id &&
+                          userConnectionState.data?.connecteeId == userId && (
+                            <>
+                              <Grid item>
+                                <Button
+                                  color="primary"
+                                  variant="contained"
+                                  onClick={acceptUserConnection}
+                                  size="small"
+                                >
+                                  <PersonAdd
+                                    fontSize="small"
+                                    sx={userCardButtonIcon}
+                                  />
+                                  {LABELS.CONNECTION_ACCEPT}
+                                </Button>
+                              </Grid>
+
+                              <Grid item>
+                                <Button
+                                  color="error"
+                                  variant="outlined"
+                                  onClick={rejectUserConnection}
+                                  size="small"
+                                >
+                                  <PersonOff
+                                    fontSize="small"
+                                    sx={userCardButtonIcon}
+                                  />
+                                  {LABELS.CONNECTION_REJECT}
+                                </Button>
+                              </Grid>
+                            </>
+                          )}
                       </>
                     )}
-                </Grid>
+                  </Grid>
+                )}
               </Grid>
             )}
 
