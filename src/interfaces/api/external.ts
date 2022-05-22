@@ -183,3 +183,22 @@ interface IUserConnectionApiModel {
 export type IUserConnectionApiResponse = IUserConnectionApiModel;
 
 export type IUserConnectionsApiResponse = IUserConnectionApiModel[];
+
+export type IUserNotificationResourceType =
+  | "connectionRequest"
+  | "connectionConfirmation";
+
+interface IUserNotificationsApiModel {
+  resourceRef: string;
+  createdAt: number;
+  id: string;
+  read: boolean;
+  expiresAt: number;
+  resourceType: IUserNotificationResourceType;
+}
+
+export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
+
+export interface IUserNotificationCountApiResponse {
+  unreadNotificationCount: number;
+}

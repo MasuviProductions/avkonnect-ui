@@ -16,7 +16,7 @@ import {
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,24 +24,40 @@ import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Head from "next/head";
-import { APP_ROUTES } from "../../constants/app";
+import { APP_ROUTES, MAX_NOTIFICATION_BADGE_LIMIT } from "../../constants/app";
 import SearchBar from "./SearchBar";
 import ProfileDropdown from "./ProfileDropdown";
 import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
+import { useQuery } from "react-query";
+import API_ENDPOINTS from "../../constants/api";
+import { getUserNotificationCount } from "../../utils/api";
+import { useSnackbarContext } from "../../contexts/SnackbarContext";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
 }
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
-  const { authUser } = useAuthContext();
+  const { authUser, accessToken } = useAuthContext();
+  const { setSnackbar } = useSnackbarContext();
+
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
   const [showProfileDropdown, setShowProfileDropdown] =
     useState<boolean>(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
+  const [userNotificationCount, setUserNotificationCount] = useState<number>(0);
+
+  const {
+    data: getUserNotificationCountData,
+    error: getUserNotificationCountError,
+    status: getUserNotificationCountStatus,
+    refetch: triggerGetUserNotificationCountApi,
+  } = useQuery(`${API_ENDPOINTS.USER_CERTIFICATIONS.key}:${authUser?.id}`, () =>
+    getUserNotificationCount(accessToken as string, authUser?.id as string)
+  );
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
     handleThemeClose();
@@ -73,6 +89,29 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
     () => setShowFeedbackModal(false),
     []
   );
+
+  useEffect(() => {
+    if (authUser?.id) {
+      triggerGetUserNotificationCountApi();
+    }
+  }, [authUser?.id, triggerGetUserNotificationCountApi]);
+
+  useEffect(() => {
+    if (getUserNotificationCountError) {
+      setSnackbar?.(() => ({
+        message: LABELS.NOTIFICATION_COUNT_LOAD_FAIL,
+        messageType: "error",
+      }));
+    }
+  }, [getUserNotificationCountError, setSnackbar]);
+
+  useEffect(() => {
+    if (getUserNotificationCountData?.data) {
+      setUserNotificationCount(
+        getUserNotificationCountData?.data?.unreadNotificationCount
+      );
+    }
+  }, [getUserNotificationCountData?.data]);
 
   return (
     <>
@@ -143,7 +182,12 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               {authUser && (
                 <Link href={APP_ROUTES.NOTIFICATIONS.route} passHref>
                   <IconButton sx={{ paddingX: 1 }}>
-                    <Badge color="primary" badgeContent={10} max={5}>
+                    <Badge
+                      color="error"
+                      badgeContent={userNotificationCount}
+                      max={MAX_NOTIFICATION_BADGE_LIMIT}
+                      sx={notificationBadgeSx}
+                    >
                       <NotificationsNoneIcon
                         fontSize="large"
                         sx={{ color: "navbar.contrastText" }}
@@ -239,6 +283,14 @@ const logoContainerSx: SxProps<Theme> = {
     cursor: "pointer",
     transform: "scale(1.05)",
     transitionDuration: "0.2s",
+  },
+};
+
+const notificationBadgeSx: SxProps<Theme> = {
+  "& .MuiBadge-badge": {
+    right: -5,
+    top: 10,
+    padding: "0 4px",
   },
 };
 

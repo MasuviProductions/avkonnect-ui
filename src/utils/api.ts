@@ -16,6 +16,8 @@ import {
   IUserFeedbackApiResponse,
   IUserConnectionsApiResponse,
   IUserConnectionApiResponse,
+  IUserNotificationsApiResponse,
+  IUserNotificationCountApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -250,7 +252,6 @@ export const getUsersSearch = async (
       }
     )
     .then(res => res.data);
-  console.log(JSON.stringify(usersSearchResponse));
   return usersSearchResponse;
 };
 
@@ -344,62 +345,37 @@ export const deleteUserConnection = async (
 export const getUserNotifications = async (
   accessToken: string,
   userId: string
-) => {
-  const userNotifications =
-    [
+): Promise<AVConnectApiResponse<IUserNotificationsApiResponse>> => {
+  const userNotifications = await axios
+    .get<AVConnectApiResponse<IUserNotificationsApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS.url(userId),
       {
-        id: "a4afdd67-dbb4-45f7-ac05-6e22010de0e4",
-        createdAt: 1653149260561,
-        expiresAt: 1e38,
-        read: false,
-        userName: "Abhay S V",
-        resourceType: "connectionRequest",
-      },
-      {
-        id: "3aec89d5-b2d8-4478-9e3f-dc56706bd76f",
-        createdAt: 1653099260421,
-        expiresAt: 1e38,
-        read: true,
-        userName: "Deborah Jovo",
-        resourceType: "connectionRequest",
-      },
-      {
-        id: "e83f1e48-7178-4b1a-b6bb-f6adf916af5b",
-        createdAt: 1653140160820,
-        expiresAt: 1e38,
-        read: true,
-        userName: "Albert Eisenhover",
-        resourceType: "connectionConfirmation",
-      },
-      {
-        id: "5a5f3f2c-f82c-4139-b5c2-0fe40551c863",
-        createdAt: 1653149160637,
-        expiresAt: 1e38,
-        read: false,
-        userName: "Ramakrishna V Hiremath",
-        resourceType: "connectionRequest",
-      },
-      {
-        id: "39061145-ebcd-4a81-ad40-f9cf1d37d11c",
-        createdAt: 1653149100457,
-        expiresAt: 1e38,
-        read: true,
-        userName: "Bhavani M Horatti",
-        resourceType: "connectionConfirmation",
-      },
-      {
-        id: "57caaf18-29c7-4a49-870a-e5250b526b3f",
-        createdAt: 1653149240245,
-        expiresAt: 1e38,
-        read: false,
-        userName: "Raju Desai",
-        resourceType: "connectionConfirmation",
-      },
-    ] ||
-    (await axios
-      .get<AVConnectApiResponse>(API_ENDPOINTS.USER_NOTIFICATIONS.url(userId), {
         headers: { authorization: `Bearer ${accessToken}` },
-      })
-      .then(res => res.data));
+      }
+    )
+    .then(res => res.data);
   return userNotifications;
+};
+
+export const getUserNotificationCount = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+  // Remove this after Proper Endpoint
+  const unreadNotification: IUserNotificationCountApiResponse = {
+    unreadNotificationCount: 5,
+  };
+  let typeCaster: AVConnectApiResponse<IUserNotificationCountApiResponse> = {
+    success: true,
+  };
+  typeCaster.data = unreadNotification;
+  const usernotifications =
+    typeCaster ||
+    (await axios
+      .get<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+        API_ENDPOINTS.USER_NOTIFICATIONS.url(userId),
+        { headers: { authorization: `Bearer ${accessToken}` } }
+      )
+      .then(res => res.data));
+  return usernotifications;
 };

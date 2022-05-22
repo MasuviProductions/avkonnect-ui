@@ -11,6 +11,7 @@ import {
   URL_MATCH_REGEX_WITHOUT_PROTOCOL,
 } from "../constants/app";
 import { LABELS } from "../constants/labels";
+import { IUserNotificationResourceType } from "../interfaces/api/external";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -125,4 +126,17 @@ export const generateNotificationMessage = (
 
 export const getTimeAgo = (unixTime: number): string => {
   return moment(unixTime).fromNow();
+};
+
+export const getNotificationTypeBasedLink = (
+  notificationType: IUserNotificationResourceType
+): string => {
+  switch (notificationType) {
+    case "connectionRequest":
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+    case "connectionConfirmation":
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+    default:
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+  }
 };

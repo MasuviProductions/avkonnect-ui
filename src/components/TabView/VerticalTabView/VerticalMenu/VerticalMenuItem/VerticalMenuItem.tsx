@@ -40,7 +40,7 @@ const VerticalMenuItem: React.FC<ITabMenuItemProps> = ({
 };
 
 const panelItemHighlight = (theme: Theme): SystemStyleObject<Theme> => ({
-  backgroundColor: theme.palette.grey[800],
+  backgroundColor: theme.palette.background.highlighted,
   color: theme.palette.text.secondary,
 });
 

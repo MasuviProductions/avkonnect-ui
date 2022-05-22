@@ -31,7 +31,9 @@ const layoutCardContainer = (
   borderRadius: "0.4rem",
   backgroundColor: theme.palette.background.paper,
   position: "relative",
-  border: isBorder ? `1px solid ${theme.palette.grey[800]}` : undefined,
+  border: isBorder
+    ? `1px solid ${theme.palette.background.highlighted}`
+    : undefined,
   [theme.breakpoints.down("sm")]: {
     borderRadius: "0",
   },

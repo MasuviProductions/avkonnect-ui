@@ -75,6 +75,8 @@ export const MAX_DATE = 8640000000000000;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
 
+export const MAX_NOTIFICATION_BADGE_LIMIT = 99;
+
 export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
   /(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
 );

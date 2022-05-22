@@ -204,6 +204,7 @@ export const LABELS = {
 
   // Notifications Labels
   NOTIFICATIONS_HEADER: "Your Notifications",
+  NOTIFICATION_COUNT_LOAD_FAIL: "Notifications count could not be fetched",
   NOTIFICATION_LOAD_FAIL: "Notifications could not be fetched",
   NOTIFICATION_CONNECTION_REQUEST: (userName: string): string =>
     `You have a connection request from ${userName}. Accept to expand your network!`,
