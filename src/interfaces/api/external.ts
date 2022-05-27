@@ -4,7 +4,7 @@ export interface AVConnectApiResponseError {
 }
 
 export interface AVConnectApiResponseDDBPagination {
-  nextSearchStartFromId?: string;
+  nextSearchStartFromKey?: Record<string, unknown>;
   count: number;
 }
 
