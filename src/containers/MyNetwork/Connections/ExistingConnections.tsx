@@ -22,7 +22,8 @@ const ExistingConnections: React.FC = () => {
   const [upToDateUserConnections, setUpToDateUserUserConnections] =
     useState<IUserConnectionsApiResponse>([]);
 
-  const [nextConnectionId, setNextConnectionId] = useState<string>();
+  const [nextConnectionSearchKey, setNextConnectionSearchKey] =
+    useState<Record<string, unknown>>();
 
   const {
     data: getUserConnectionsData,
@@ -38,7 +39,7 @@ const ExistingConnections: React.FC = () => {
         authUser?.id as string,
         "connected",
         20,
-        nextConnectionId
+        encodeURI(JSON.stringify(nextConnectionSearchKey))
       ),
     {
       enabled: false,
@@ -47,14 +48,14 @@ const ExistingConnections: React.FC = () => {
   );
 
   const infiniteLoadCallback = useCallback(() => {
-    if (upToDateUserConnections.length > 0 && nextConnectionId) {
+    if (upToDateUserConnections.length > 0 && nextConnectionSearchKey) {
       if (authUser) {
         triggerGetUserConnectionsApi();
       }
     }
   }, [
     authUser,
-    nextConnectionId,
+    nextConnectionSearchKey,
     triggerGetUserConnectionsApi,
     upToDateUserConnections.length,
   ]);
@@ -89,8 +90,8 @@ const ExistingConnections: React.FC = () => {
           ...(getUserConnectionsData?.data as IUserConnectionsApiResponse),
         ];
       });
-      setNextConnectionId(
-        getUserConnectionsData.dDBPagination?.nextSearchStartFromId
+      setNextConnectionSearchKey(
+        getUserConnectionsData.dDBPagination?.nextSearchStartFromKey
       );
     }
   }, [getUserConnectionsData, getUserConnectionsDataUpdatedAt]);
