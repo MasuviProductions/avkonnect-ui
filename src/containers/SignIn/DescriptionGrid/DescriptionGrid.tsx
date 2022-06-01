@@ -19,62 +19,49 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         {/* TODO: START DESCRIPTION HERE */}
         <Box p={1} sx={descriptionGridSx} textAlign="center">
           <Typography variant="h5" sx={{ marginTop: "8px" }}>
-            AVKonnect Description
+            AVKonnect
           </Typography>
         </Box>
         <Box my={2}>
           <Typography variant="button">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-            porro deleniti itaque, voluptas, pariatur mollitia officiis magnam
-            voluptatibus laudantium enim aut.
+            Welcome to AVKonnect, the social media platform that helps media
+            professionals network and conduct business. Users of the platform
+            have diverse backgrounds in the media industry, including film,
+            news, music, and event management. We assist in obtaining the
+            necessary connection from our platform.
           </Typography>
         </Box>
         <Box>
           <Image
-            src={PNG.PlaceHolder}
+            src={PNG.avkonnectPost1}
             alt="1080p placeholder"
-            width="1368"
+            width="720"
             height="720"
           />
         </Box>
         <Box my={1}>
           <Typography variant="body2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-            voluptatem, ratione magni perferendis natus, ex numquam quisquam
-            officiis illum quas fugiat. Error, in amet omnis aperiam unde
-            consectetur expedita illo, blanditiis odit autem corporis facere
-            maxime repellat veritatis atque culpa aliquam quisquam tenetur rerum
-            ipsum neque ut libero! Qui tempora nemo non labore unde, placeat ex
-            explicabo ullam, esse voluptate vitae inventore nulla assumenda?
-            Dolor officiis deleniti labore ducimus neque numquam tempore
-            repellendus rerum hic eum! Cupiditate magnam dolores optio ad quae!
-            Id nobis voluptate provident est atque? Pariatur consectetur
-            asperiores architecto voluptates voluptas non corrupti totam hic
-            doloremque sequi?
+            Our features allow us to better understand you as a user and
+            recommend you to a potential match. A director looking for an actor
+            for his next project, a news editor looking for a good journalist to
+            cover a story, or a singer looking for a music producer are just a
+            few examples, but there are endless opportunities available through
+            the platform.
           </Typography>
         </Box>
         <Box>
           <Image
-            src={PNG.PlaceHolder}
+            src={PNG.avkonnectPost2}
             alt="1080p placeholder"
-            width="1368"
+            width="720"
             height="720"
           />
         </Box>
         <Box my={1}>
           <Typography variant="body2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-            voluptatem, ratione magni perferendis natus, ex numquam quisquam
-            officiis illum quas fugiat. Error, in amet omnis aperiam unde
-            consectetur expedita illo, blanditiis odit autem corporis facere
-            maxime repellat veritatis atque culpa aliquam quisquam tenetur rerum
-            ipsum neque ut libero! Qui tempora nemo non labore unde, placeat ex
-            explicabo ullam, esse voluptate vitae inventore nulla assumenda?
-            Dolor officiis deleniti labore ducimus neque numquam tempore
-            repellendus rerum hic eum! Cupiditate magnam dolores optio ad quae!
-            Id nobis voluptate provident est atque? Pariatur consectetur
-            asperiores architecto voluptates voluptas non corrupti totam hic
-            doloremque sequi?
+            We contribute to the development of your media career through the
+            various features we offer, which enable you to communicate with many
+            media executives and staff from all aspects of media channels.
           </Typography>
         </Box>
         {/* TODO: END DESCRIPTION HERE */}
