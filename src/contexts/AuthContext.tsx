@@ -50,8 +50,8 @@ const AuthContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (
-      sessionData?.refreshTokenExpiresAt &&
-      (sessionData.refreshTokenExpiresAt as number) - Date.now() <
+      sessionData?.expires &&
+      new Date(sessionData.expires).getTime() - Date.now() <
         SESSION_REFETCH_INTERVAL
     ) {
       signOut({
