@@ -56,7 +56,7 @@ export interface IUserProfileApiResponse {
   updatedAt: string;
   currentPosition: string;
   headline: string;
-  dateOfBirth: number;
+  dateOfBirth?: number;
   skillsRefId: string;
   projectsRefId: string;
   id: string;
