@@ -38,7 +38,9 @@ const SentConnections: React.FC = () => {
         authUser?.id as string,
         "sent",
         20,
-        encodeURI(JSON.stringify(nextConnectionSearchKey))
+        nextConnectionSearchKey
+          ? encodeURI(JSON.stringify(nextConnectionSearchKey))
+          : undefined
       ),
     {
       enabled: false,
