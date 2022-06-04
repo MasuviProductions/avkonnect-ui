@@ -38,7 +38,9 @@ const PendingConnections: React.FC = () => {
         authUser?.id as string,
         "pending",
         20,
-        encodeURI(JSON.stringify(nextConnectionSearchKey))
+        nextConnectionSearchKey
+          ? encodeURI(JSON.stringify(nextConnectionSearchKey))
+          : undefined
       ),
     {
       enabled: false,
