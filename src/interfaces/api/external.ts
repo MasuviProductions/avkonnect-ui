@@ -68,9 +68,9 @@ export type IUserProfilePatchApiRequest = Partial<
   Omit<
     IUserProfileApiResponse,
     | "id"
-    | "following"
-    | "followers"
-    | "connections"
+    | "followeeCount"
+    | "followerCount"
+    | "connectionCount"
     | "createdAt"
     | "email"
     | "updatedAt"
@@ -188,8 +188,14 @@ export type IUserNotificationResourceType =
   | "connectionRequest"
   | "connectionConfirmation";
 
+type IUserNotificationRelastedUsersApiResponse = Pick<
+  IUserProfileApiResponse,
+  "name" | "backgroundImageUrl" | "displayPictureUrl" | "id" | "currentPosition"
+>;
+
 interface IUserNotificationsApiModel {
-  resourceRef: string;
+  resourceId: string;
+  relatedUsersInfo: IUserNotificationRelastedUsersApiResponse[];
   createdAt: number;
   id: string;
   read: boolean;
