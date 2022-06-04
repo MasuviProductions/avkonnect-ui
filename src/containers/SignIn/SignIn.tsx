@@ -11,7 +11,7 @@ import SignInSkeleton from "./SignInSkeleton";
 
 const SignIn: ReactFCWithSkeleton = () => {
   const router = useRouter();
-  const { authUser, authError, authLoading } = useAuthContext();
+  const { authUser, authLoading } = useAuthContext();
   const [redirectRoute, setRedirectRoute] = useState<string>();
 
   const handleSignIn = () => {
@@ -33,8 +33,6 @@ const SignIn: ReactFCWithSkeleton = () => {
   }, [router.query.encodedResolvedRedirectRoute]);
 
   if (authLoading) return <></>;
-
-  // if (!authError && authUser) router.push(APP_ROUTES.ROOT.route);
 
   if (!authUser)
     return (
