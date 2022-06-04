@@ -5,7 +5,9 @@ const useInfiniteLoading = (loading: boolean, triggerCallback: () => void) => {
 
   const infiniteLoadRef = useCallback(
     (node) => {
-      if (loading) return;
+      if (loading) {
+        return;
+      }
       if (observer.current) {
         observer.current.disconnect();
       }
@@ -14,7 +16,9 @@ const useInfiniteLoading = (loading: boolean, triggerCallback: () => void) => {
           triggerCallback();
         }
       });
-      if (node) observer.current.observe(node);
+      if (node) {
+        observer.current.observe(node);
+      }
     },
     [loading, triggerCallback]
   );

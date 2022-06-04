@@ -260,10 +260,10 @@ export const getUserConnections = async (
   userId: string,
   connectionType: "all" | "connected" | "pending" | "sent",
   limit: number,
-  dDBAssistStartFromKey?: string
+  nextSearchStartFromKey?: string
 ): Promise<AVConnectApiResponse<IUserConnectionsApiResponse>> => {
-  const queryString = `?connectionType=${connectionType}&limit=${limit}&dDBAssistStartFromId=${
-    dDBAssistStartFromKey || ""
+  const queryString = `?connectionType=${connectionType}&limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
   }`;
   const userConnections = await axios
     .get<AVConnectApiResponse<IUserConnectionsApiResponse>>(

@@ -48,17 +48,28 @@ const AuthContextProvider: React.FC = ({ children }) => {
     }
   );
 
+  const signOutUser = () => {
+    signOut({
+      callbackUrl: `${window.location.origin}${APP_ROUTES.SIGN_IN.route}`,
+    });
+  };
+
   useEffect(() => {
     if (
       sessionData?.expires &&
       new Date(sessionData.expires).getTime() - Date.now() <
         SESSION_REFETCH_INTERVAL
     ) {
-      signOut({
-        callbackUrl: `${window.location.origin}${APP_ROUTES.SIGN_IN.route}`,
-      });
+      signOutUser();
     }
-  }, [sessionData]);
+  }, [sessionData, authError]);
+
+  useEffect(() => {
+    if (authError) {
+      setAuthUser(undefined);
+      signOutUser();
+    }
+  }, [authError]);
 
   useEffect(() => {
     if (authUserData) {
