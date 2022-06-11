@@ -344,11 +344,16 @@ export const deleteUserConnection = async (
 
 export const getUserNotifications = async (
   accessToken: string,
-  userId: string
+  userId: string,
+  limit: number,
+  nextSearchStartFromKey?: string
 ): Promise<AVConnectApiResponse<IUserNotificationsApiResponse>> => {
+  const queryString = `?limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
+  }`;
   const userNotifications = await axios
     .get<AVConnectApiResponse<IUserNotificationsApiResponse>>(
-      API_ENDPOINTS.USER_NOTIFICATIONS.url(userId),
+      API_ENDPOINTS.USER_NOTIFICATIONS.url(userId, queryString),
       {
         headers: { authorization: `Bearer ${accessToken}` },
       }
@@ -357,25 +362,28 @@ export const getUserNotifications = async (
   return userNotifications;
 };
 
-export const getUserNotificationCount = async (
+export const getUserNotificationsUnseenCount = async (
   accessToken: string,
   userId: string
 ): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
-  // Remove this after Proper Endpoint
-  const unreadNotification: IUserNotificationCountApiResponse = {
-    unreadNotificationCount: 5,
-  };
-  let typeCaster: AVConnectApiResponse<IUserNotificationCountApiResponse> = {
-    success: true,
-  };
-  typeCaster.data = unreadNotification;
-  const usernotifications =
-    typeCaster ||
-    (await axios
-      .get<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
-        API_ENDPOINTS.USER_NOTIFICATIONS.url(userId),
-        { headers: { authorization: `Bearer ${accessToken}` } }
-      )
-      .then(res => res.data));
-  return usernotifications;
+  const userNotifications = await axios
+    .get<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
+      { headers: { authorization: `Bearer ${accessToken}` } }
+    )
+    .then(res => res.data);
+  return userNotifications;
+};
+
+export const deleteUserNotificationsUnseenCount = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+  const userNotificationCount = await axios
+    .delete<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
+      { headers: { authorization: `Bearer ${accessToken}` } }
+    )
+    .then(res => res.data);
+  return userNotificationCount;
 };

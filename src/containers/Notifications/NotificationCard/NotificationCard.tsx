@@ -1,4 +1,4 @@
-import { Box, Grid, Theme, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Theme, Typography } from "@mui/material";
 import { SxProps } from "@mui/system";
 import {
   getNotificationTypeBasedLink,
@@ -7,44 +7,49 @@ import {
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Link from "next/link";
-import { IUserNotificationResourceType } from "../../../interfaces/api/external";
+import {
+  IUserNotificationRelatedUsersType,
+  IUserNotificationResourceType,
+} from "../../../interfaces/api/external";
 
 export interface INotificationCard {
-  key: string;
   isRead: boolean;
   notificationMessage: string;
   notificationType: IUserNotificationResourceType;
   notificationTime: number;
+  relatedUsers: IUserNotificationRelatedUsersType[];
 }
 
 const NotificationCard: React.FC<INotificationCard> = ({
-  key,
   isRead,
   notificationMessage,
   notificationType,
   notificationTime,
+  relatedUsers,
 }) => {
   return (
-    <Box
-      key={key}
-      sx={isRead ? notificationReadBoxSx : notificationUnReadBoxSx}
-    >
+    <Box sx={isRead ? notificationReadBoxSx : notificationUnReadBoxSx}>
       <Link href={getNotificationTypeBasedLink(notificationType)} passHref>
         <Grid container alignItems="center" px={1}>
-          <Grid item sm={1} xs={2}>
-            {isRead ? (
-              <NotificationsIcon sx={{ fontSize: "40px" }} />
+          <Grid item md={1} sm={2} xs={3}>
+            {notificationType === "connectionConfirmation" ||
+            "connectionRequest" ? (
+              <Avatar
+                src={relatedUsers[0].displayPictureUrl}
+                alt={`${relatedUsers[0].name}'s Profile`}
+                sx={notificationAvatarSx}
+              />
             ) : (
-              <NotificationsActiveIcon sx={{ fontSize: "40px" }} />
+              <NotificationsIcon sx={{ fontSize: "40px" }} />
             )}
           </Grid>
-          <Grid item sm={11} xs={10}>
+          <Grid item md={11} sm={10} xs={9}>
             <Grid container flexDirection="column" my={1}>
               <Grid item xs={12}>
-                <Typography variant="h6">{notificationMessage}</Typography>
+                <Typography variant="body1">{notificationMessage}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body1">
+                <Typography variant="body2">
                   {getTimeAgo(notificationTime)}
                 </Typography>
               </Grid>
@@ -58,7 +63,6 @@ const NotificationCard: React.FC<INotificationCard> = ({
 
 const notificationReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
   padding: "8px",
-  margin: "4px",
   border: `1px solid ${theme.palette.background.paper}`,
   borderRadius: "12px",
   width: "100%",
@@ -70,7 +74,7 @@ const notificationReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
 
 const notificationUnReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
   padding: "8px",
-  margin: "4px",
+  margin: "4px 0px",
   width: "100%",
   backgroundColor: theme.palette.background.highlighted,
   border: `1px solid ${theme.palette.background.highlighted}`,
@@ -79,6 +83,11 @@ const notificationUnReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
     borderColor: theme.palette.primary.main,
     cursor: "pointer",
   },
+});
+
+const notificationAvatarSx: SxProps<Theme> = () => ({
+  width: "60px",
+  height: "60px",
 });
 
 export default NotificationCard;

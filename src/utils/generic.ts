@@ -11,7 +11,10 @@ import {
   URL_MATCH_REGEX_WITHOUT_PROTOCOL,
 } from "../constants/app";
 import { LABELS } from "../constants/labels";
-import { IUserNotificationResourceType } from "../interfaces/api/external";
+import {
+  IUserNotificationRelatedUsersType,
+  IUserNotificationResourceType,
+} from "../interfaces/api/external";
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -112,13 +115,13 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
 
 export const generateNotificationMessage = (
   resourceType: string,
-  userName: string
+  relatedUsers: IUserNotificationRelatedUsersType[]
 ) => {
   switch (resourceType) {
     case "connectionRequest":
-      return LABELS.NOTIFICATION_CONNECTION_REQUEST(userName);
+      return LABELS.NOTIFICATION_CONNECTION_REQUEST(relatedUsers[0].name);
     case "connectionConfirmation":
-      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(userName);
+      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(relatedUsers[0].name);
     default:
       return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
   }

@@ -31,33 +31,20 @@ import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
-import { useQuery } from "react-query";
-import API_ENDPOINTS from "../../constants/api";
-import { getUserNotificationCount } from "../../utils/api";
-import { useSnackbarContext } from "../../contexts/SnackbarContext";
+import { useUserNotificationsContext } from "../../contexts/UserNotificatonsContext";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
 }
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
-  const { authUser, accessToken } = useAuthContext();
-  const { setSnackbar } = useSnackbarContext();
+  const { userNotificationsCount } = useUserNotificationsContext();
+  const { authUser } = useAuthContext();
 
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
   const [showProfileDropdown, setShowProfileDropdown] =
     useState<boolean>(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
-  const [userNotificationCount, setUserNotificationCount] = useState<number>(0);
-
-  const {
-    data: getUserNotificationCountData,
-    error: getUserNotificationCountError,
-    status: getUserNotificationCountStatus,
-    refetch: triggerGetUserNotificationCountApi,
-  } = useQuery(`${API_ENDPOINTS.USER_CERTIFICATIONS.key}:${authUser?.id}`, () =>
-    getUserNotificationCount(accessToken as string, authUser?.id as string)
-  );
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
     handleThemeClose();
@@ -89,29 +76,6 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
     () => setShowFeedbackModal(false),
     []
   );
-
-  useEffect(() => {
-    if (authUser?.id) {
-      triggerGetUserNotificationCountApi();
-    }
-  }, [authUser?.id, triggerGetUserNotificationCountApi]);
-
-  useEffect(() => {
-    if (getUserNotificationCountError) {
-      setSnackbar?.(() => ({
-        message: LABELS.NOTIFICATION_COUNT_LOAD_FAIL,
-        messageType: "error",
-      }));
-    }
-  }, [getUserNotificationCountError, setSnackbar]);
-
-  useEffect(() => {
-    if (getUserNotificationCountData?.data) {
-      setUserNotificationCount(
-        getUserNotificationCountData?.data?.unreadNotificationCount
-      );
-    }
-  }, [getUserNotificationCountData?.data]);
 
   return (
     <>
@@ -184,7 +148,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                   <IconButton sx={{ paddingX: 1 }}>
                     <Badge
                       color="error"
-                      badgeContent={userNotificationCount}
+                      badgeContent={userNotificationsCount}
                       max={MAX_NOTIFICATION_BADGE_LIMIT}
                       sx={notificationBadgeSx}
                     >

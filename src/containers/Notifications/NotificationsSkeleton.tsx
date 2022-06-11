@@ -8,20 +8,20 @@ const NotificationsSkeleton: React.FC = () => {
         <Grid item xs={12}>
           <LayoutSection>
             <Grid item xs={12} my={1}>
-              <Skeleton variant="rectangular" width="50%" height="50px" />
+              <Skeleton variant="rectangular" width="50%" height="60px" />
             </Grid>
             <Grid container justifyContent="center" pb={2}>
               <Grid item xs={12} my={1}>
-                <Skeleton variant="rectangular" width="100%" height="100px" />
+                <Skeleton variant="rectangular" width="100%" height="60px" />
               </Grid>
               <Grid item xs={12} my={1}>
-                <Skeleton variant="rectangular" width="100%" height="100px" />
+                <Skeleton variant="rectangular" width="100%" height="60px" />
               </Grid>
               <Grid item xs={12} my={1}>
-                <Skeleton variant="rectangular" width="100%" height="100px" />
+                <Skeleton variant="rectangular" width="100%" height="60px" />
               </Grid>
               <Grid item xs={12} my={1}>
-                <Skeleton variant="rectangular" width="100%" height="100px" />
+                <Skeleton variant="rectangular" width="100%" height="60px" />
               </Grid>
             </Grid>
           </LayoutSection>

@@ -1,11 +1,12 @@
 import ENV from "./env";
 
 const AVCONNECT_URL = {
-  BASE: ENV.AVCONNECT_BACKEND_URL,
-  NOTIFICATIONS:
-    "https://zlx74pg57d.execute-api.ap-south-1.amazonaws.com/dev/api/v1/notifications",
+  BASE: ENV.AVCONNECT_CORE_URL,
+  NOTIFICATIONS_BASE: ENV.AVCONNECT_NOTIFICATIONS_URL,
   AUTH: (): string => `${AVCONNECT_URL.BASE}/api/v1/auth`,
   USERS: (): string => `${AVCONNECT_URL.BASE}/api/v1/users`,
+  NOTIFICATIONS: (): string =>
+    `${AVCONNECT_URL.NOTIFICATIONS_BASE}/api/v1/notifications`,
 };
 
 const API_ENDPOINTS = {
@@ -68,7 +69,13 @@ const API_ENDPOINTS = {
   },
   USER_NOTIFICATIONS: {
     key: "user-notifications",
-    url: (userId: string) => `${AVCONNECT_URL.NOTIFICATIONS}/users/${userId}`,
+    url: (userId: string, queryString: string) =>
+      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}${queryString}`,
+  },
+  USER_NOTIFICATIONS_COUNT: {
+    key: "user-notifications-count",
+    url: (userId: string) =>
+      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}/unseen`,
   },
 };
 

@@ -188,23 +188,24 @@ export type IUserNotificationResourceType =
   | "connectionRequest"
   | "connectionConfirmation";
 
-type IUserNotificationRelastedUsersApiResponse = Pick<
+export type IUserNotificationRelatedUsersType = Pick<
   IUserProfileApiResponse,
   "name" | "backgroundImageUrl" | "displayPictureUrl" | "id" | "currentPosition"
 >;
 
 interface IUserNotificationsApiModel {
-  resourceId: string;
-  relatedUsersInfo: IUserNotificationRelastedUsersApiResponse[];
-  createdAt: number;
   id: string;
-  read: boolean;
-  expiresAt: number;
   resourceType: IUserNotificationResourceType;
+  read: boolean;
+  resourceId: string;
+  relatedUserIds: string[];
+  relatedUsers: IUserNotificationRelatedUsersType[];
+  createdAt: number;
+  expiresAt: number;
 }
 
 export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
 
 export interface IUserNotificationCountApiResponse {
-  unreadNotificationCount: number;
+  pendingNotificationCount: number;
 }
