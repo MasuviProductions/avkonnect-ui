@@ -23,6 +23,7 @@ import SnackbarProvider from "../contexts/SnackbarContext";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import { SESSION_REFETCH_INTERVAL } from "../constants/app";
+import UserNotificationsContextProvider from "../contexts/UserNotificationsContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -53,16 +54,18 @@ const MyApp = ({
           >
             <AuthContextProvider>
               <SnackbarProvider>
-                <UserProfileModalContextProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Header onThemeSelect={onThemeSelect} />
-                    <Container maxWidth="lg" sx={containerSx}>
-                      <WithPageSkeleton>
-                        <Component {...pageProps} />
-                      </WithPageSkeleton>
-                    </Container>
-                  </LocalizationProvider>
-                </UserProfileModalContextProvider>
+                <UserNotificationsContextProvider>
+                  <UserProfileModalContextProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <Header onThemeSelect={onThemeSelect} />
+                      <Container maxWidth="lg" sx={containerSx}>
+                        <WithPageSkeleton>
+                          <Component {...pageProps} />
+                        </WithPageSkeleton>
+                      </Container>
+                    </LocalizationProvider>
+                  </UserProfileModalContextProvider>
+                </UserNotificationsContextProvider>
               </SnackbarProvider>
             </AuthContextProvider>
           </SessionProvider>

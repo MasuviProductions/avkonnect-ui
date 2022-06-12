@@ -44,7 +44,6 @@ const PendingConnections: React.FC = () => {
       ),
     {
       enabled: false,
-      cacheTime: 0,
     }
   );
 
@@ -71,21 +70,21 @@ const PendingConnections: React.FC = () => {
     connection?: IUserConnectionApiResponse
   ) => {
     if (!connection || connection.isConnected) {
-      setUpToDateUserUserConnections((prev) =>
-        prev.filter((conn) => conn.id != connectionId)
+      setUpToDateUserUserConnections(prev =>
+        prev.filter(conn => conn.id != connectionId)
       );
     }
   };
 
   useEffect(() => {
-    if (authUser) {
+    if (authUser?.id) {
       triggerGetUserConnectionsApi();
     }
-  }, [authUser, triggerGetUserConnectionsApi]);
+  }, [authUser?.id, triggerGetUserConnectionsApi]);
 
   useEffect(() => {
     if (getUserConnectionsData) {
-      setUpToDateUserUserConnections((prev) => {
+      setUpToDateUserUserConnections(prev => {
         return [
           ...prev,
           ...(getUserConnectionsData?.data as IUserConnectionsApiResponse),

@@ -44,7 +44,7 @@ const spinnerSx = (
 ): SystemStyleObject<Theme> => ({
   marginRight: "4px",
   color: disabled
-    ? theme.palette.getContrastText(theme.palette.grey[800])
+    ? theme.palette.getContrastText(theme.palette.background.highlighted)
     : `${theme.palette.primary.contrastText}`,
   opacity: disabled ? 0.5 : 1,
 });
@@ -56,8 +56,8 @@ const loadingBtnSx = (
   paddingX: loading ? "12px" : "22px",
   opacity: 1,
   "&.MuiButtonBase-root:disabled": {
-    backgroundColor: theme.palette.grey[800],
-    color: theme.palette.getContrastText(theme.palette.grey[800]),
+    backgroundColor: theme.palette.background.highlighted,
+    color: theme.palette.getContrastText(theme.palette.background.highlighted),
     opacity: 0.5,
   },
 });

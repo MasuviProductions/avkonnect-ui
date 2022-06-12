@@ -1,8 +1,11 @@
 import { Avatar, Button, Grid, Theme, Typography } from "@mui/material";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { compile } from "path-to-regexp";
 import { useEffect, useState } from "react";
 import { JPG } from "../../../assets/JPG";
+import { APP_ROUTES } from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import useConnection from "../../../hooks/useConnection";
 import { IUserConnectionApiResponse } from "../../../interfaces/api/external";
@@ -42,6 +45,8 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
   connectionsUpdatedAt,
   onConnectionUpdate,
 }) => {
+  const router = useRouter();
+
   const {
     userConnectionState,
     lastAction,
@@ -69,6 +74,12 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
 
   const handleWithdrawConnectionModalClose = () => {
     setShowWithdrawConnectionModal(false);
+  };
+
+  const handleProfileClick = () => {
+    router.push(
+      compile(APP_ROUTES.PROFILE.route)({ id: connection.connecteeId })
+    );
   };
 
   useEffect(() => {
@@ -110,7 +121,7 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
               sx={userDetailContainerSx}
               px={1}
             >
-              <Grid item>
+              <Grid item onClick={handleProfileClick}>
                 <Avatar
                   alt={name}
                   src={displayPictureUrl}
@@ -119,7 +130,13 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
                   {name[0]}
                 </Avatar>
               </Grid>
-              <Grid item xs={12} pt={1}>
+              <Grid
+                item
+                xs={12}
+                pt={1}
+                onClick={handleProfileClick}
+                sx={hoverPointerSx}
+              >
                 <Typography
                   variant="body1"
                   textAlign="center"
@@ -129,7 +146,13 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
                   {name}
                 </Typography>
               </Grid>
-              <Grid item xs={12} px={2}>
+              <Grid
+                item
+                xs={12}
+                px={2}
+                onClick={handleProfileClick}
+                sx={hoverPointerSx}
+              >
                 <Typography
                   variant="body2"
                   color="text.secondary"
@@ -259,6 +282,12 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
     color: theme.palette.getContrastText(color),
     cursor: "pointer",
   };
+};
+
+const hoverPointerSx: SxProps<Theme> = {
+  ":hover": {
+    cursor: "pointer",
+  },
 };
 
 export default UserConnectionCard;
