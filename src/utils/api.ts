@@ -387,3 +387,19 @@ export const deleteUserNotificationsUnseenCount = async (
     .then(res => res.data);
   return userNotificationCount;
 };
+
+export const patchReadUserNotification = async (
+  accessToken: string,
+  userId: string,
+  notificationId: string
+): Promise<AVConnectApiResponse> => {
+  const updatedUserNotificationAsRead = await axios
+    .patch<AVConnectApiResponse>(
+      API_ENDPOINTS.USER_NOTIFICATION_READ.url(userId, notificationId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then(res => res.data);
+  return updatedUserNotificationAsRead;
+};

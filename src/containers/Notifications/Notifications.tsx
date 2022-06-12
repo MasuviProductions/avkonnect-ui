@@ -11,7 +11,10 @@ import useInfiniteLoading from "../../hooks/useInfiniteLoading";
 import useRemountKey from "../../hooks/useRemountKey";
 import { IUserNotificationsApiResponse } from "../../interfaces/api/external";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
-import { getUserNotifications } from "../../utils/api";
+import {
+  getUserNotifications,
+  patchReadUserNotification,
+} from "../../utils/api";
 import { generateNotificationMessage } from "../../utils/generic";
 import NotificationCard from "./NotificationCard/NotificationCard";
 import NotificationsSkeleton from "./NotificationsSkeleton";
@@ -30,6 +33,8 @@ const Notifications: ReactFCWithSkeleton = () => {
 
   const [nextNotificationsSearchKey, setNextNotificationsSearchKey] =
     useState<Record<string, unknown>>();
+
+  const [notificationReadId, setNotificationReadId] = useState<string>();
 
   const {
     data: getUserNotificationsData,
@@ -51,6 +56,21 @@ const Notifications: ReactFCWithSkeleton = () => {
     { enabled: false }
   );
 
+  const { refetch: triggerPatchReadUserNotificationApi } = useQuery(
+    `${API_ENDPOINTS.USER_NOTIFICATION_READ.key}:${authUser?.id}`,
+    () =>
+      patchReadUserNotification(
+        accessToken as string,
+        authUser?.id as string,
+        notificationReadId as string
+      ),
+    { enabled: false, cacheTime: 0, refetchInterval: 0 }
+  );
+
+  const onReadNotification = (notificationId: string) => {
+    setNotificationReadId(notificationId);
+  };
+
   const infiniteLoadCallback = useCallback(() => {
     if (uptoDateUserNotifications.length > 0 && nextNotificationsSearchKey) {
       if (authUser) {
@@ -68,6 +88,12 @@ const Notifications: ReactFCWithSkeleton = () => {
     getUserNotificationsFetching,
     infiniteLoadCallback
   );
+
+  useEffect(() => {
+    if (notificationReadId) {
+      triggerPatchReadUserNotificationApi();
+    }
+  }, [notificationReadId, triggerPatchReadUserNotificationApi]);
 
   useEffect(() => {
     if (authUser?.id) {
@@ -137,9 +163,11 @@ const Notifications: ReactFCWithSkeleton = () => {
                   userNotification?.resourceType,
                   userNotification?.relatedUsers
                 )}
+                notificationId={userNotification?.id}
                 notificationTime={userNotification?.createdAt}
                 notificationType={userNotification?.resourceType}
                 relatedUsers={userNotification?.relatedUsers}
+                onReadNotification={onReadNotification}
               />
             </Grid>
           ))}

@@ -1,34 +1,53 @@
-import { Avatar, Box, Grid, Theme, Typography } from "@mui/material";
-import { SxProps } from "@mui/system";
+import { Avatar, Box, Grid, Theme, Typography, useTheme } from "@mui/material";
+import { SxProps, SystemStyleObject } from "@mui/system";
 import {
   getNotificationTypeBasedLink,
   getTimeAgo,
 } from "../../../utils/generic";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Link from "next/link";
 import {
   IUserNotificationRelatedUsersType,
   IUserNotificationResourceType,
 } from "../../../interfaces/api/external";
+import { LABELS } from "../../../constants/labels";
 
 export interface INotificationCard {
   isRead: boolean;
   notificationMessage: string;
+  notificationId: string;
   notificationType: IUserNotificationResourceType;
   notificationTime: number;
   relatedUsers: IUserNotificationRelatedUsersType[];
+  onReadNotification: (notificationId: string) => void;
 }
 
 const NotificationCard: React.FC<INotificationCard> = ({
   isRead,
   notificationMessage,
+  notificationId,
   notificationType,
   notificationTime,
   relatedUsers,
+  onReadNotification,
 }) => {
+  const theme = useTheme();
+
+  const handleReadNotificationClick = () => {
+    onReadNotification(notificationId);
+  };
   return (
-    <Box sx={isRead ? notificationReadBoxSx : notificationUnReadBoxSx}>
+    <Box
+      sx={
+        {
+          ...parentNotificationBoxSx(theme),
+          ...(isRead
+            ? notificationReadBoxSx(theme)
+            : notificationUnReadBoxSx(theme)),
+        } as SystemStyleObject<Theme>
+      }
+      onClick={handleReadNotificationClick}
+    >
       <Link href={getNotificationTypeBasedLink(notificationType)} passHref>
         <Grid container alignItems="center" px={1}>
           <Grid item md={1} sm={2} xs={3}>
@@ -36,7 +55,7 @@ const NotificationCard: React.FC<INotificationCard> = ({
             "connectionRequest" ? (
               <Avatar
                 src={relatedUsers[0].displayPictureUrl}
-                alt={`${relatedUsers[0].name}'s Profile`}
+                alt={`${relatedUsers[0].name}${LABELS.NOTIFICATION_PROFILE_ALT}`}
                 sx={notificationAvatarSx}
               />
             ) : (
@@ -61,28 +80,24 @@ const NotificationCard: React.FC<INotificationCard> = ({
   );
 };
 
-const notificationReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
-  padding: "8px",
-  border: `1px solid ${theme.palette.background.paper}`,
-  borderRadius: "12px",
+const parentNotificationBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
   width: "100%",
+  padding: "8px",
+  borderRadius: "12px",
+  margin: "4px 0px",
   ":hover": {
     borderColor: theme.palette.primary.main,
     cursor: "pointer",
   },
 });
 
-const notificationUnReadBoxSx: SxProps<Theme> = (theme: Theme) => ({
-  padding: "8px",
-  margin: "4px 0px",
-  width: "100%",
+const notificationReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  border: `1px solid ${theme.palette.background.paper}`,
+});
+
+const notificationUnReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
   backgroundColor: theme.palette.background.highlighted,
   border: `1px solid ${theme.palette.background.highlighted}`,
-  borderRadius: "12px",
-  ":hover": {
-    borderColor: theme.palette.primary.main,
-    cursor: "pointer",
-  },
 });
 
 const notificationAvatarSx: SxProps<Theme> = () => ({

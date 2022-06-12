@@ -6,7 +6,7 @@ const AVCONNECT_URL = {
   AUTH: (): string => `${AVCONNECT_URL.BASE}/api/v1/auth`,
   USERS: (): string => `${AVCONNECT_URL.BASE}/api/v1/users`,
   NOTIFICATIONS: (): string =>
-    `${AVCONNECT_URL.NOTIFICATIONS_BASE}/api/v1/notifications`,
+    `${AVCONNECT_URL.NOTIFICATIONS_BASE}/api/notifications/v1`,
 };
 
 const API_ENDPOINTS = {
@@ -70,12 +70,17 @@ const API_ENDPOINTS = {
   USER_NOTIFICATIONS: {
     key: "user-notifications",
     url: (userId: string, queryString: string) =>
-      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}${queryString}`,
+      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}/notifications${queryString}`,
   },
   USER_NOTIFICATIONS_COUNT: {
     key: "user-notifications-count",
     url: (userId: string) =>
-      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}/unseen`,
+      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}/notifications/unseen`,
+  },
+  USER_NOTIFICATION_READ: {
+    key: "user-notification-read",
+    url: (userId: string, notificationId: string) =>
+      `${AVCONNECT_URL.NOTIFICATIONS()}/users/${userId}/notifications/${notificationId}/read`,
   },
 };
 
