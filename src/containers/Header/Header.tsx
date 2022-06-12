@@ -31,7 +31,7 @@ import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
-import { useUserNotificationsContext } from "../../contexts/UserNotificatonsContext";
+import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -145,7 +145,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
 
               {authUser && (
                 <Link href={APP_ROUTES.NOTIFICATIONS.route} passHref>
-                  <IconButton sx={{ paddingX: 1 }}>
+                  <IconButton sx={iconBtnSx}>
                     <Badge
                       color="error"
                       badgeContent={userNotificationsCount}
@@ -154,7 +154,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                     >
                       <NotificationsNoneIcon
                         fontSize="large"
-                        sx={{ color: "navbar.contrastText" }}
+                        sx={contrastIconSx}
                       />
                     </Badge>
                   </IconButton>
@@ -167,10 +167,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 aria-haspopup="true"
                 sx={{ paddingX: 2 }}
               >
-                <ColorLensIcon
-                  fontSize="large"
-                  sx={{ color: "navbar.contrastText" }}
-                />
+                <ColorLensIcon fontSize="large" sx={contrastIconSx} />
               </IconButton>
 
               <Menu
@@ -257,5 +254,9 @@ const notificationBadgeSx: SxProps<Theme> = {
     padding: "0 4px",
   },
 };
+
+const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
+
+const contrastIconSx: SxProps<Theme> = { color: "navbar.contrastText" };
 
 export default Header;

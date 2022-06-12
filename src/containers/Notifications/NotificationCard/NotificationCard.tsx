@@ -59,7 +59,7 @@ const NotificationCard: React.FC<INotificationCard> = ({
                 sx={notificationAvatarSx}
               />
             ) : (
-              <NotificationsIcon sx={{ fontSize: "40px" }} />
+              <NotificationsIcon sx={notificationIconSx} />
             )}
           </Grid>
           <Grid item md={11} sm={10} xs={9}>
@@ -104,5 +104,9 @@ const notificationAvatarSx: SxProps<Theme> = () => ({
   width: "60px",
   height: "60px",
 });
+
+const notificationIconSx: SxProps<Theme> = {
+  fontSize: "40px",
+};
 
 export default NotificationCard;

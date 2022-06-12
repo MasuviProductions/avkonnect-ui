@@ -6,7 +6,7 @@ import API_ENDPOINTS from "../../constants/api";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useSnackbarContext } from "../../contexts/SnackbarContext";
-import { useUserNotificationsContext } from "../../contexts/UserNotificatonsContext";
+import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
 import useInfiniteLoading from "../../hooks/useInfiniteLoading";
 import useRemountKey from "../../hooks/useRemountKey";
 import { IUserNotificationsApiResponse } from "../../interfaces/api/external";
@@ -177,7 +177,5 @@ const Notifications: ReactFCWithSkeleton = () => {
   );
 };
 Notifications.Skeleton = NotificationsSkeleton;
-
-// const Notifications = NotificationsSkeleton;
 
 export default Notifications;
