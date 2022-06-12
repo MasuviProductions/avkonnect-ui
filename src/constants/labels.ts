@@ -213,5 +213,4 @@ export const LABELS = {
   NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
     `Your request to connect with ${userName} was accepted!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
-  NOTIFICATION_PROFILE_ALT: "'s Profile",
 };

@@ -1,6 +1,5 @@
 import { Avatar, SxProps, Theme } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { LABELS } from "../../../constants/labels";
 import { IUserNotificationRelatedUsersType } from "../../../interfaces/api/external";
 import { usernameToColor } from "../../../utils/generic";
 import { SystemStyleObject } from "@mui/system";
