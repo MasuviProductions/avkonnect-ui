@@ -1,28 +1,27 @@
-import { Avatar, Box, Grid, Theme, Typography, useTheme } from "@mui/material";
-import { SxProps, SystemStyleObject } from "@mui/system";
+import { Box, Grid, Theme, Typography, useTheme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import {
   getNotificationTypeBasedLink,
   getTimeAgo,
 } from "../../../utils/generic";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import Link from "next/link";
 import {
   IUserNotificationRelatedUsersType,
   IUserNotificationResourceType,
 } from "../../../interfaces/api/external";
-import { LABELS } from "../../../constants/labels";
+import NotificationIcon from "../NotificationIcon/NotificationIcon";
 
-export interface INotificationCard {
+export interface INotificationCardProps {
   isRead: boolean;
   notificationMessage: string;
   notificationId: string;
   notificationType: IUserNotificationResourceType;
-  notificationTime: number;
+  notificationTime: Date;
   relatedUsers: IUserNotificationRelatedUsersType[];
   onReadNotification: (notificationId: string) => void;
 }
 
-const NotificationCard: React.FC<INotificationCard> = ({
+const NotificationCard: React.FC<INotificationCardProps> = ({
   isRead,
   notificationMessage,
   notificationId,
@@ -51,16 +50,10 @@ const NotificationCard: React.FC<INotificationCard> = ({
       <Link href={getNotificationTypeBasedLink(notificationType)} passHref>
         <Grid container alignItems="center" px={1}>
           <Grid item md={1} sm={2} xs={3}>
-            {notificationType === "connectionConfirmation" ||
-            "connectionRequest" ? (
-              <Avatar
-                src={relatedUsers[0].displayPictureUrl}
-                alt={`${relatedUsers[0].name}${LABELS.NOTIFICATION_PROFILE_ALT}`}
-                sx={notificationAvatarSx}
-              />
-            ) : (
-              <NotificationsIcon sx={notificationIconSx} />
-            )}
+            <NotificationIcon
+              notificationType={notificationType}
+              relatedUsers={relatedUsers}
+            />
           </Grid>
           <Grid item md={11} sm={10} xs={9}>
             <Grid container flexDirection="column" my={1}>
@@ -99,14 +92,5 @@ const notificationUnReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
   backgroundColor: theme.palette.background.highlighted,
   border: `1px solid ${theme.palette.background.highlighted}`,
 });
-
-const notificationAvatarSx: SxProps<Theme> = () => ({
-  width: "60px",
-  height: "60px",
-});
-
-const notificationIconSx: SxProps<Theme> = {
-  fontSize: "40px",
-};
 
 export default NotificationCard;

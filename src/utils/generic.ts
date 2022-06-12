@@ -1,6 +1,7 @@
 import { Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -15,6 +16,8 @@ import {
   IUserNotificationRelatedUsersType,
   IUserNotificationResourceType,
 } from "../interfaces/api/external";
+
+dayjs.extend(relativeTime);
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -127,8 +130,8 @@ export const generateNotificationMessage = (
   }
 };
 
-export const getTimeAgo = (unixTime: number): string => {
-  return moment(unixTime).fromNow();
+export const getTimeAgo = (unixTime: Date): string => {
+  return dayjs(unixTime).fromNow();
 };
 
 export const getNotificationTypeBasedLink = (

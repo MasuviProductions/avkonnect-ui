@@ -200,8 +200,8 @@ interface IUserNotificationsApiModel {
   resourceId: string;
   relatedUserIds: string[];
   relatedUsers: IUserNotificationRelatedUsersType[];
-  createdAt: number;
-  expiresAt: number;
+  createdAt: Date;
+  expiresAt: Date;
 }
 
 export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
