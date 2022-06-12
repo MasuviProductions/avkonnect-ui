@@ -55,7 +55,7 @@ const profileItemContainer: SxProps<Theme> = {
   color: "text.primary",
 
   "&:hover": {
-    backgroundColor: "grey[800]",
+    backgroundColor: "background.highlighted",
     color: "text.secondary",
   },
   borderRadius: { xs: "0.4rem" },

@@ -21,6 +21,7 @@ export const THEMES_LIST: ITheme[] = [
         background: {
           default: "#000",
           paper: "#1d2222",
+          highlighted: "#444",
         },
         text: {
           primary: "#cacaca",
@@ -47,6 +48,7 @@ export const THEMES_LIST: ITheme[] = [
         background: {
           default: "#f2f2f2",
           paper: "#fefefe",
+          highlighted: "#dadada",
         },
         text: {
           primary: "#222",
