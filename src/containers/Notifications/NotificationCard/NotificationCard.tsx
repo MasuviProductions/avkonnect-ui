@@ -33,8 +33,11 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
   const theme = useTheme();
 
   const handleReadNotificationClick = () => {
-    onReadNotification(notificationId);
+    if (!isRead) {
+      onReadNotification(notificationId);
+    }
   };
+
   return (
     <Box
       sx={
