@@ -26,13 +26,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
           />
         </Box>
         <Box my={2}>
-          <Typography variant="h6">
-            Welcome to AVKonnect, the social media platform that helps media
-            professionals network and conduct business. Users of the platform
-            have diverse backgrounds in the media industry, including film,
-            news, music, and event management. We assist in obtaining the
-            necessary connection from our platform.
-          </Typography>
+          <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
         </Box>
         <Box>
           <Image
@@ -44,12 +38,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         </Box>
         <Box my={1}>
           <Typography variant="inherit">
-            Our features allow us to better understand you as a user and
-            recommend you to a potential match. A director looking for an actor
-            for his next project, a news editor looking for a good journalist to
-            cover a story, or a singer looking for a music producer are just a
-            few examples, but there are endless opportunities available through
-            the platform.
+            {LABELS.DESCRIPTION_PARAGRAPH_1}
           </Typography>
         </Box>
         <Box>
@@ -62,9 +51,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         </Box>
         <Box my={1}>
           <Typography variant="inherit">
-            We contribute to the development of your media career through the
-            various features we offer, which enable you to communicate with many
-            media executives and staff from all aspects of media channels.
+            {LABELS.DESCRIPTION_PARAGRAPH_2}
           </Typography>
         </Box>
         {/* TODO: END DESCRIPTION HERE */}
