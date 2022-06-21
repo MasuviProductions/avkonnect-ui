@@ -18,63 +18,40 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
       <Grid item xs={12}>
         {/* TODO: START DESCRIPTION HERE */}
         <Box p={1} sx={descriptionGridSx} textAlign="center">
-          <Typography variant="h5" sx={{ marginTop: "8px" }}>
-            AVKonnect Description
-          </Typography>
+          <Image
+            src={PNG.AvkDeskLogo}
+            alt="1080p placeholder"
+            width="208"
+            height="78"
+          />
         </Box>
         <Box my={2}>
-          <Typography variant="button">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-            porro deleniti itaque, voluptas, pariatur mollitia officiis magnam
-            voluptatibus laudantium enim aut.
-          </Typography>
+          <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
         </Box>
         <Box>
           <Image
-            src={PNG.PlaceHolder}
+            src={PNG.avkonnectPost1}
             alt="1080p placeholder"
-            width="1368"
+            width="720"
             height="720"
           />
         </Box>
         <Box my={1}>
-          <Typography variant="body2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-            voluptatem, ratione magni perferendis natus, ex numquam quisquam
-            officiis illum quas fugiat. Error, in amet omnis aperiam unde
-            consectetur expedita illo, blanditiis odit autem corporis facere
-            maxime repellat veritatis atque culpa aliquam quisquam tenetur rerum
-            ipsum neque ut libero! Qui tempora nemo non labore unde, placeat ex
-            explicabo ullam, esse voluptate vitae inventore nulla assumenda?
-            Dolor officiis deleniti labore ducimus neque numquam tempore
-            repellendus rerum hic eum! Cupiditate magnam dolores optio ad quae!
-            Id nobis voluptate provident est atque? Pariatur consectetur
-            asperiores architecto voluptates voluptas non corrupti totam hic
-            doloremque sequi?
+          <Typography variant="inherit">
+            {LABELS.DESCRIPTION_PARAGRAPH_1}
           </Typography>
         </Box>
         <Box>
           <Image
-            src={PNG.PlaceHolder}
+            src={PNG.avkonnectPost2}
             alt="1080p placeholder"
-            width="1368"
+            width="720"
             height="720"
           />
         </Box>
         <Box my={1}>
-          <Typography variant="body2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-            voluptatem, ratione magni perferendis natus, ex numquam quisquam
-            officiis illum quas fugiat. Error, in amet omnis aperiam unde
-            consectetur expedita illo, blanditiis odit autem corporis facere
-            maxime repellat veritatis atque culpa aliquam quisquam tenetur rerum
-            ipsum neque ut libero! Qui tempora nemo non labore unde, placeat ex
-            explicabo ullam, esse voluptate vitae inventore nulla assumenda?
-            Dolor officiis deleniti labore ducimus neque numquam tempore
-            repellendus rerum hic eum! Cupiditate magnam dolores optio ad quae!
-            Id nobis voluptate provident est atque? Pariatur consectetur
-            asperiores architecto voluptates voluptas non corrupti totam hic
-            doloremque sequi?
+          <Typography variant="inherit">
+            {LABELS.DESCRIPTION_PARAGRAPH_2}
           </Typography>
         </Box>
         {/* TODO: END DESCRIPTION HERE */}

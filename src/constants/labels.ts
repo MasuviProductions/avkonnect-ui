@@ -136,6 +136,13 @@ export const LABELS = {
   EXPERIENCE_HELPER:
     "Your relevant career experiences can be highlighted here. They may be professional or personal experiences.",
 
+  // Landing page Labels
+  DESCRIPTION_INTRO:
+    "Welcome to AVKonnect, the social media platform that helps media professionals network and conduct business. Users of the platform have diverse backgrounds in the media industry, including film, news, music, and event management. We assist in obtaining the necessary connection from our platform.",
+  DESCRIPTION_PARAGRAPH_1:
+    " Our features allow us to better understand you as a user and recommend you to a potential match. A director looking for an actor for his next project, a news editor looking for a good journalist to cover a story, or a singer looking for a music producer are just a few examples, but there are endless opportunities available through the platform.",
+  DESCRIPTION_PARAGRAPH_2:
+    "We contribute to the development of your media career through the various features we offer, which enable you to communicate with many media executives and staff from all aspects of media channels.",
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
