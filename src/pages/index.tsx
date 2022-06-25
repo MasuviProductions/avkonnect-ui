@@ -30,4 +30,4 @@ export const getServerSideProps: GetServerSideProps<IHomePageProps> = async (
   return await handleServerSideAuthenticationRedirect(context, handlerSSRProps);
 };
 
-export default Home;
+export default HomePage;

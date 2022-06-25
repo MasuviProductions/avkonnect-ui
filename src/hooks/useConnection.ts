@@ -52,6 +52,7 @@ const useConnection = (
         connecteeId
       ),
     {
+      retry: false,
       enabled: false,
     }
   );
@@ -181,6 +182,13 @@ const useConnection = (
   ]);
 
   useEffect(() => {
+    setUserConnectionState((prev) => ({
+      ...prev,
+      loading: getUserConnectionStatus === "loading",
+    }));
+  }, [getUserConnectionStatus]);
+
+  useEffect(() => {
     if (postUserConnectionStatus === "error") {
       handleErrorConnection();
     }
@@ -200,6 +208,7 @@ const useConnection = (
 
   useEffect(() => {
     if (getUserConnectionStatus === "error") {
+      setLastAction("fetch");
       setUserConnectionState((prev) => ({
         ...prev,
         data: undefined,

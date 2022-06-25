@@ -22,7 +22,8 @@ const ExistingConnections: React.FC = () => {
   const [upToDateUserConnections, setUpToDateUserUserConnections] =
     useState<IUserConnectionsApiResponse>([]);
 
-  const [nextConnectionId, setNextConnectionId] = useState<string>();
+  const [nextConnectionSearchKey, setNextConnectionSearchKey] =
+    useState<Record<string, unknown>>();
 
   const {
     data: getUserConnectionsData,
@@ -38,23 +39,24 @@ const ExistingConnections: React.FC = () => {
         authUser?.id as string,
         "connected",
         20,
-        nextConnectionId
+        nextConnectionSearchKey
+          ? encodeURI(JSON.stringify(nextConnectionSearchKey))
+          : undefined
       ),
     {
       enabled: false,
-      cacheTime: 0,
     }
   );
 
   const infiniteLoadCallback = useCallback(() => {
-    if (upToDateUserConnections.length > 0 && nextConnectionId) {
+    if (upToDateUserConnections.length > 0 && nextConnectionSearchKey) {
       if (authUser) {
         triggerGetUserConnectionsApi();
       }
     }
   }, [
     authUser,
-    nextConnectionId,
+    nextConnectionSearchKey,
     triggerGetUserConnectionsApi,
     upToDateUserConnections.length,
   ]);
@@ -69,31 +71,31 @@ const ExistingConnections: React.FC = () => {
     connection?: IUserConnectionApiResponse
   ) => {
     if (!connection?.isConnected) {
-      setUpToDateUserUserConnections((prev) =>
-        prev.filter((conn) => conn.id != connectionId)
+      setUpToDateUserUserConnections(prev =>
+        prev.filter(conn => conn.id != connectionId)
       );
     }
   };
 
   useEffect(() => {
-    if (authUser) {
+    if (authUser?.id) {
       triggerGetUserConnectionsApi();
     }
-  }, [authUser, triggerGetUserConnectionsApi]);
+  }, [authUser?.id, triggerGetUserConnectionsApi]);
 
   useEffect(() => {
     if (getUserConnectionsData) {
-      setUpToDateUserUserConnections((prev) => {
+      setUpToDateUserUserConnections(prev => {
         return [
           ...prev,
           ...(getUserConnectionsData?.data as IUserConnectionsApiResponse),
         ];
       });
-      setNextConnectionId(
-        getUserConnectionsData.dDBPagination?.nextSearchStartFromId
+      setNextConnectionSearchKey(
+        getUserConnectionsData.dDBPagination?.nextSearchStartFromKey
       );
     }
-  }, [getUserConnectionsData, getUserConnectionsDataUpdatedAt]);
+  }, [getUserConnectionsData]);
 
   if (getUserConnectionsStatus === "loading") {
     return <ConnectionsSkeleton />;

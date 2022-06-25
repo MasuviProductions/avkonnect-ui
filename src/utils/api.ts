@@ -16,6 +16,8 @@ import {
   IUserFeedbackApiResponse,
   IUserConnectionsApiResponse,
   IUserConnectionApiResponse,
+  IUserNotificationsApiResponse,
+  IUserNotificationCountApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -258,10 +260,10 @@ export const getUserConnections = async (
   userId: string,
   connectionType: "all" | "connected" | "pending" | "sent",
   limit: number,
-  dDBAssistStartFromId?: string
+  nextSearchStartFromKey?: string
 ): Promise<AVConnectApiResponse<IUserConnectionsApiResponse>> => {
-  const queryString = `?connectionType=${connectionType}&limit=${limit}&dDBAssistStartFromId=${
-    dDBAssistStartFromId || ""
+  const queryString = `?connectionType=${connectionType}&limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
   }`;
   const userConnections = await axios
     .get<AVConnectApiResponse<IUserConnectionsApiResponse>>(
@@ -338,4 +340,67 @@ export const deleteUserConnection = async (
     )
     .then((res) => res.data);
   return userConnection;
+};
+
+export const getUserNotifications = async (
+  accessToken: string,
+  userId: string,
+  limit: number,
+  nextSearchStartFromKey?: string
+): Promise<AVConnectApiResponse<IUserNotificationsApiResponse>> => {
+  const queryString = `?limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
+  }`;
+  const userNotifications = await axios
+    .get<AVConnectApiResponse<IUserNotificationsApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS.url(userId, queryString),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userNotifications;
+};
+
+export const getUserNotificationsUnseenCount = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+  const userNotifications = await axios
+    .get<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
+      { headers: { authorization: `Bearer ${accessToken}` } }
+    )
+    .then((res) => res.data);
+  return userNotifications;
+};
+
+export const deleteUserNotificationsUnseenCount = async (
+  accessToken: string,
+  userId: string
+): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+  const userNotificationCount = await axios
+    .delete<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+      API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
+      { headers: { authorization: `Bearer ${accessToken}` } }
+    )
+    .then((res) => res.data);
+  return userNotificationCount;
+};
+
+export const patchReadUserNotification = async (
+  accessToken: string,
+  userId: string,
+  notificationId: string
+): Promise<AVConnectApiResponse> => {
+  const updatedUserNotificationAsRead = await axios
+    .patch<AVConnectApiResponse>(
+      API_ENDPOINTS.USER_NOTIFICATION_READ.url(userId, notificationId),
+      undefined,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return updatedUserNotificationAsRead;
 };

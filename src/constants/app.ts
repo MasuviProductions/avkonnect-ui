@@ -5,6 +5,7 @@ import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
 import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
+import NotificationsPage from "../pages/notifications";
 import { LABELS } from "./labels";
 
 export const SESSION_REFETCH_INTERVAL = 5 * 60;
@@ -34,6 +35,11 @@ export const APP_ROUTES = {
     route: "/my-network",
     key: "my-network",
     skeleton: MyNetwork.Skeleton,
+  },
+  NOTIFICATIONS: {
+    route: "/notifications",
+    key: "notifications",
+    skeleton: NotificationsPage.Skeleton,
   },
 };
 
@@ -68,6 +74,8 @@ export const MAX_CERTIFICATIONS_LIMIT = 8;
 export const MAX_DATE = 8640000000000000;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
+
+export const MAX_NOTIFICATION_BADGE_LIMIT = 99;
 
 export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
   /(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g

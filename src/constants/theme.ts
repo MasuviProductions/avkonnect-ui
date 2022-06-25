@@ -16,7 +16,8 @@ export const THEMES_LIST: ITheme[] = [
           main: "#ffcc22",
         },
         secondary: {
-          main: "#ff1",
+          dark: "#383838",
+          main: "#444",
         },
         background: {
           default: "#000",
@@ -42,7 +43,8 @@ export const THEMES_LIST: ITheme[] = [
           main: "#222",
         },
         secondary: {
-          main: "#222",
+          dark: "#cacaca",
+          main: "#dadada",
         },
         background: {
           default: "#f2f2f2",
