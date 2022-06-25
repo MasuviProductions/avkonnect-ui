@@ -18,12 +18,15 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
       <Grid item xs={12}>
         {/* TODO: START DESCRIPTION HERE */}
         <Box p={1} sx={descriptionGridSx} textAlign="center">
-          <Image
+          <Typography sx={deskLogoTextSx} color="primary">
+            avkonnect.
+          </Typography>
+          {/* <Image
             src={PNG.AvkDeskLogo}
             alt="1080p placeholder"
             width="208"
             height="78"
-          />
+          /> */}
         </Box>
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
@@ -80,5 +83,11 @@ const floatingBtnSx: SxProps<Theme> = (theme: Theme) => ({
     boxShadow: `0px 0px 10px ${theme.palette.primary.dark}`,
   },
 });
+
+const deskLogoTextSx: SxProps<Theme> = {
+  fontFamily: "'Quicksand' !important",
+  fontSize: "34px",
+  fontWeight: "600",
+};
 
 export default DescriptionGrid;

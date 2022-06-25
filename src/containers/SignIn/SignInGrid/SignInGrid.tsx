@@ -12,7 +12,7 @@ interface IAuthGridProps {
 const SignInGrid: ReactFCWithSkeleton<IAuthGridProps> = ({ handleSignIn }) => {
   return (
     <Box sx={stickyBoxSx}>
-      <LayoutCard withBorder>
+      <LayoutCard withBoxShadow>
         <Grid
           container
           p={4}
