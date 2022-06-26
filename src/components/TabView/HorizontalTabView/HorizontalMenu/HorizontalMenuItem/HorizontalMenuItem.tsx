@@ -42,8 +42,7 @@ const HorizontalMenuItem: React.FC<ITabMenuItemProps> = ({
 };
 
 const panelItemHighlight = (theme: Theme): SystemStyleObject<Theme> => ({
-  backgroundColor: theme.palette.background.highlighted,
-  color: theme.palette.getContrastText(theme.palette.background.highlighted),
+  backgroundColor: theme.palette.secondary.main,
 });
 
 const panelItemContainer = (theme: Theme): SystemStyleObject<Theme> => ({
