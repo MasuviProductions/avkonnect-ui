@@ -63,7 +63,7 @@ const useConnection = (
     refetch: triggerPostUserConnectionApi,
     dataUpdatedAt: postUserConnectionDataUpdatedAt,
   } = useQuery(
-    `POST- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}`,
+    `POST- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}:${remountKey}`,
     () =>
       postUserConnection(
         accessToken as string,
@@ -81,7 +81,7 @@ const useConnection = (
     refetch: triggerPatchUserConnectionApi,
     dataUpdatedAt: patchUserConnectionDataUpdatedAt,
   } = useQuery(
-    `PATCH- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}`,
+    `PATCH- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}:${remountKey}`,
     () =>
       patchUserConnection(
         accessToken as string,
@@ -97,7 +97,7 @@ const useConnection = (
     refetch: triggerDeleteUserConnectionApi,
     dataUpdatedAt: deleteUserConnectionDataUpdatedAt,
   } = useQuery(
-    `DELETE- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}`,
+    `DELETE- ${API_ENDPOINTS.USER_CONNECTION.key}:${authUser?.id}:${remountKey}`,
     () =>
       deleteUserConnection(
         accessToken as string,

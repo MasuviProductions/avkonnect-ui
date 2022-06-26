@@ -90,8 +90,7 @@ const searchItemContainer: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.text.primary,
 
   "&:hover": {
-    backgroundColor: theme.palette.background.highlighted,
-    color: theme.palette.getContrastText(theme.palette.background.highlighted),
+    backgroundColor: theme.palette.secondary.main,
   },
 
   [theme.breakpoints.up("sm")]: {
