@@ -52,13 +52,13 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
     >
       <Link href={getNotificationTypeBasedLink(notificationType)} passHref>
         <Grid container alignItems="center" px={1}>
-          <Grid item md={1} sm={2} xs={3}>
+          <Grid item md={1} sm={2} xs={2}>
             <NotificationIcon
               notificationType={notificationType}
               relatedUsers={relatedUsers}
             />
           </Grid>
-          <Grid item md={11} sm={10} xs={9}>
+          <Grid item md={10} sm={9} xs={9} ml={1}>
             <Grid container flexDirection="column" my={1}>
               <Grid item xs={12}>
                 <Typography variant="body1">{notificationMessage}</Typography>
@@ -79,21 +79,18 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
 const parentNotificationBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
   width: "100%",
   padding: "8px",
-  borderRadius: "12px",
+  borderRadius: "6px",
   margin: "4px 0px",
   ":hover": {
-    borderColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.secondary.dark,
     cursor: "pointer",
   },
 });
 
-const notificationReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  border: `1px solid ${theme.palette.background.paper}`,
-});
+const notificationReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({});
 
 const notificationUnReadBoxSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  backgroundColor: theme.palette.background.highlighted,
-  border: `1px solid ${theme.palette.background.highlighted}`,
+  backgroundColor: theme.palette.secondary.main,
 });
 
 export default NotificationCard;
