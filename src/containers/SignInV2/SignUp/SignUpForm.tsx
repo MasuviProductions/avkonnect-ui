@@ -129,10 +129,10 @@ const signUpTextFieldSx: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

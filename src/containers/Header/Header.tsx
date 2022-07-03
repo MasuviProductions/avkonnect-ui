@@ -113,13 +113,12 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                   <Hidden mdDown>
                     <Link href={APP_ROUTES.ROOT.route} passHref>
                       <Box sx={logoContainerSx}>
-                        <Typography sx={deskLogoTextSx}>avkonnect.</Typography>
-                        {/* <Image
+                        <Image
                           src={PNG.AvkDeskLogo}
                           alt={LABELS.TITLE_LOGO}
                           width={130}
                           height={50}
-                        /> */}
+                        />
                       </Box>
                     </Link>
                   </Hidden>

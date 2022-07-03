@@ -95,12 +95,12 @@ const viewProfileButton: SxProps<Theme> = {
 };
 
 const profileDropdownContainer: SxProps<Theme> = {
-  width: "350px",
+  width: "280px",
 };
 
-const profileFeedbackItem: SxProps<Theme> = {
-  borderTop: `2px solid ${grey[700]}`,
-  borderBottom: `2px solid ${grey[700]}`,
-};
+const profileFeedbackItem: SxProps<Theme> = (theme: Theme) => ({
+  borderTop: `2px solid ${theme.palette.secondary.dark}`,
+  borderBottom: `2px solid ${theme.palette.secondary.dark}`,
+});
 
 export default ProfileDropdown;
