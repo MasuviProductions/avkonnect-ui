@@ -138,7 +138,7 @@ export const LABELS = {
 
   // Landing page Labels
   DESCRIPTION_INTRO:
-    "Welcome to AVKonnect, the social media platform that helps media professionals network and conduct business. Users of the platform have diverse backgrounds in the media industry, including film, news, music, and event management. We assist in obtaining the necessary connection from our platform.",
+    "Welcome to AVKonnect, the social media platform that helps media professionals network and conduct business. login for free to explore the world of media",
   DESCRIPTION_PARAGRAPH_1:
     " Our features allow us to better understand you as a user and recommend you to a potential match. A director looking for an actor for his next project, a news editor looking for a good journalist to cover a story, or a singer looking for a music producer are just a few examples, but there are endless opportunities available through the platform.",
   DESCRIPTION_PARAGRAPH_2:

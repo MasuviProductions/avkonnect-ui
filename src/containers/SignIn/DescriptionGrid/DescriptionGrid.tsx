@@ -13,6 +13,19 @@ interface IDescriptionGridProps {
 const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
   handleSignIn,
 }) => {
+  // const imageTheme =(theme:Theme): SystemStyleObject<Theme>=>{
+
+  //     if (theme.palette.background.default) {
+  //     return{
+  //       PNG.AvkDeskLogo
+  //     }
+  //     } else {
+  //       return{
+  //         PNG.AvkDeskLogoInverted
+  //       }
+  //     }
+
+  // }
   return (
     <Grid container justifyContent="center" alignItems="center" p={1}>
       <Grid item xs={12}>
