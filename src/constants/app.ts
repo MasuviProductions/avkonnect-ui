@@ -5,6 +5,7 @@ import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
 import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
+import About from "../pages/about-us";
 import { LABELS } from "./labels";
 
 export const SESSION_REFETCH_INTERVAL = 5 * 60;
@@ -29,6 +30,11 @@ export const APP_ROUTES = {
     route: "/search\\?key=:key",
     key: "search",
     skeleton: Search.Skeleton,
+  },
+  ABOUT: {
+    route: "/about-us",
+    key: "about",
+    skeleton: About.Skeleton,
   },
   MY_NETWORK: {
     route: "/my-network",
