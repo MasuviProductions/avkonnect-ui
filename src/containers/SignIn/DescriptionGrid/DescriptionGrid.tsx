@@ -1,10 +1,20 @@
-import { Grid, Box, Button, Hidden, Theme, Typography } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Button,
+  Hidden,
+  Theme,
+  Typography,
+  Link,
+} from "@mui/material";
 import { SxProps } from "@mui/system";
 import Image from "next/image";
 import { PNG } from "../../../assets/PNG";
+import { APP_ROUTES } from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
 import DescriptionGridSkeleton from "./DescriptionGridSkeleton";
+import { compile } from "path-to-regexp";
 
 interface IDescriptionGridProps {
   handleSignIn: () => void;
@@ -13,19 +23,6 @@ interface IDescriptionGridProps {
 const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
   handleSignIn,
 }) => {
-  // const imageTheme =(theme:Theme): SystemStyleObject<Theme>=>{
-
-  //     if (theme.palette.background.default) {
-  //     return{
-  //       PNG.AvkDeskLogo
-  //     }
-  //     } else {
-  //       return{
-  //         PNG.AvkDeskLogoInverted
-  //       }
-  //     }
-
-  // }
   return (
     <Grid container justifyContent="center" alignItems="center" p={1}>
       <Grid item xs={12}>
@@ -40,6 +37,10 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         </Box>
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
+          <Typography variant="h6">
+            {LABELS.DESCRIPTION_INTRO_2}
+            <Link href={APP_ROUTES.ABOUT.route}>{LABELS.ABOUT_US}</Link>
+          </Typography>
         </Box>
         <Box>
           <Image

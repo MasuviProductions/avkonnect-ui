@@ -33,7 +33,7 @@ export const APP_ROUTES = {
   },
   ABOUT: {
     route: "/about-us",
-    key: "about",
+    key: "about-us",
     skeleton: About.Skeleton,
   },
   MY_NETWORK: {
