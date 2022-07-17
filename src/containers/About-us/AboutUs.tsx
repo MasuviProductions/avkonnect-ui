@@ -25,7 +25,7 @@ const AboutUs: ReactFCWithSkeleton<IAboutUsProps> = () => {
           </Typography>
         </Grid>
         <Grid item xs={8} sm={10} mt={3}>
-          <Typography color="text.primary" textAlign="center">
+          <Typography variant="h6" color="text.primary" textAlign="center">
             {LABELS.ABOUT_US_INTRO}
             <Link
               href={compile(APP_ROUTES.PROFILE.route)({
@@ -33,7 +33,9 @@ const AboutUs: ReactFCWithSkeleton<IAboutUsProps> = () => {
               })}
               passHref
             >
-              {LABELS.VISHVESHWARA}
+              <Button color="primary" variant="text" size="large">
+                {LABELS.VISHVESHWARA}
+              </Button>
             </Link>
             {LABELS.ABOUT_INTRO_2}
           </Typography>
