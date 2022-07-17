@@ -1,8 +1,8 @@
 import AboutUs from "../../containers/About-us/AboutUs";
 import { NextPageWithSkeleton } from "../../interfaces/app";
-const About: NextPageWithSkeleton = () => {
+const AboutUsPage: NextPageWithSkeleton = () => {
   return <AboutUs />;
 };
-About.Skeleton = AboutUs.Skeleton;
+AboutUsPage.Skeleton = AboutUs.Skeleton;
 
-export default About;
+export default AboutUsPage;
