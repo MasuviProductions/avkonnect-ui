@@ -21,12 +21,30 @@ export const LABELS = {
 
   // Home
   MADE_IN_INDIA: "Made In India",
+  BACKGROUND_PICTURE: "Background Picture",
+  DISPLAY_PICTURE: "Display Picture",
 
   // Header
   LOGOUT: "Logout",
   FEEDBACK: "Feedback",
   FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
+
+  // Logos
+  TITLE_LOGO: "AVKonnect Logo",
+  GOOGLE_LOGO: "Google Logo",
+
+  // Auth Pages
+  EMAIL_ID: "Enter Email Id",
+  PASSWORD: "Enter Password",
+  FNAME: "Enter First Name",
+  LNAME: "Enter Last Name",
+  SIGN_IN: "Sign In",
+  SIGN_UP: "Sign up",
+  GOOGLE_SIGN: "Continue with Google",
+  ACCOUNT_PRESENT_SIGN_IN: "Have an account? Sign In!",
+  FORGOT_PASSWORD: "Forgot Password?",
+  NEW_SIGN_UP: "New? Sign up here",
 
   // Feedback Labels
   FEEDBACK_TYPE: "Feedback Type",
@@ -211,4 +229,16 @@ export const LABELS = {
   CONNECTION_NO_CONNECTIONS:
     "You 0 connections! You may search and connect with people using the search bar.",
   CONNECTION_NO_SENT_CONNECTIONS: "You have no pending connection requests!",
+
+  // Notifications Labels
+  NOTIFICATIONS_HEADER: "Your Notifications",
+  NOTIFICATION_COUNT_LOAD_FAIL: "Notifications count could not be fetched",
+  NOTIFICATION_COUNT_DELETE_FAIL:
+    "Seen Notifications count could not be erased",
+  NOTIFICATION_LOAD_FAIL: "Notifications could not be fetched",
+  NOTIFICATION_CONNECTION_REQUEST: (userName: string): string =>
+    `You have a connection request from ${userName}. Accept to expand your network!`,
+  NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
+    `Your request to connect with ${userName} was accepted!`,
+  NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
 };

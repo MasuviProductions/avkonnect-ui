@@ -95,4 +95,10 @@ const floatingBtnSx: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
+const deskLogoTextSx: SxProps<Theme> = {
+  fontFamily: "'Quicksand' !important",
+  fontSize: "34px",
+  fontWeight: "600",
+};
+
 export default DescriptionGrid;

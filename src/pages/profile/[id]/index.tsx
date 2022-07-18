@@ -24,7 +24,7 @@ interface IProfilePageData {
   connectionCount: number;
   currentPosition: string;
   headline: string;
-  dateOfBirth?: number;
+  dateOfBirth: number | null;
   aboutUser: string;
   location: string;
   gender: string;
@@ -50,7 +50,7 @@ const ProfilePage: NextPageWithSkeleton<IProfilePageProps> = ({
       connectionCount={data.connectionCount}
       currentPosition={data.currentPosition}
       headline={data.headline}
-      dateOfBirth={data.dateOfBirth}
+      dateOfBirth={data.dateOfBirth ?? undefined}
       aboutUser={data.aboutUser}
       isAuthUser={false}
       location={data.location}
@@ -99,7 +99,7 @@ const transformUserProfileResponsetoIProtectedPageProps = (
       id: response.data.id,
       name: response.data.name,
       email: response.data.email,
-      dateOfBirth: response.data.dateOfBirth,
+      dateOfBirth: response.data.dateOfBirth || null,
       displayPictureUrl: response.data.displayPictureUrl,
       connectionCount: response.data.connectionCount,
       backgroundImageUrl: response.data.backgroundImageUrl,

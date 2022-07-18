@@ -1,5 +1,7 @@
 import { Theme } from "@mui/material";
 import { SxProps } from "@mui/system";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
@@ -9,6 +11,13 @@ import {
   URL_MATCH_REGEX_WITH_PROTOCOL,
   URL_MATCH_REGEX_WITHOUT_PROTOCOL,
 } from "../constants/app";
+import { LABELS } from "../constants/labels";
+import {
+  IUserNotificationRelatedUsersType,
+  IUserNotificationResourceType,
+} from "../interfaces/api/external";
+
+dayjs.extend(relativeTime);
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -105,4 +114,39 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
         </strong>
     </a>`
   );
+};
+
+export const generateNotificationMessage = (
+  resourceType: string,
+  relatedUsers: IUserNotificationRelatedUsersType[]
+) => {
+  switch (resourceType) {
+    case "connectionRequest":
+      return LABELS.NOTIFICATION_CONNECTION_REQUEST(relatedUsers[0].name);
+    case "connectionConfirmation":
+      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(relatedUsers[0].name);
+    default:
+      return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
+  }
+};
+
+export const getTimeAgo = (unixTime: Date): string => {
+  return dayjs(unixTime).fromNow();
+};
+
+export const getCurrentYear = (): number => {
+  return new Date().getFullYear();
+};
+
+export const getNotificationTypeBasedLink = (
+  notificationType: IUserNotificationResourceType
+): string => {
+  switch (notificationType) {
+    case "connectionRequest":
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+    case "connectionConfirmation":
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+    default:
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+  }
 };

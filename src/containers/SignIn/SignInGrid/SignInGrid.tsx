@@ -1,8 +1,10 @@
 import { Box, Button, Theme, Typography, Grid } from "@mui/material";
 import { SxProps } from "@mui/system";
+import Link from "next/link";
 import LayoutCard from "../../../components/LayoutCard";
 import { LABELS } from "../../../constants/labels";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
+import { getCurrentYear } from "../../../utils/generic";
 import SignInGridSkeleton from "./SignInGridSkeleton";
 
 interface IAuthGridProps {
@@ -12,7 +14,7 @@ interface IAuthGridProps {
 const SignInGrid: ReactFCWithSkeleton<IAuthGridProps> = ({ handleSignIn }) => {
   return (
     <Box sx={stickyBoxSx}>
-      <LayoutCard withBorder>
+      <LayoutCard withBoxShadow>
         <Grid
           container
           p={4}
@@ -42,25 +44,55 @@ const SignInGrid: ReactFCWithSkeleton<IAuthGridProps> = ({ handleSignIn }) => {
           </Grid>
         </Grid>
       </LayoutCard>
+      <Grid container mt={2} justifyContent="center" textAlign="center">
+        <Grid item mr={2}>
+          <Link href="/" passHref>
+            <Typography sx={linkSx}>Privacy Policy</Typography>
+          </Link>
+        </Grid>
+        <Grid item mr={2}>
+          <Link href="/" passHref>
+            <Typography sx={linkSx}>Data Policy</Typography>
+          </Link>
+        </Grid>
+        <Grid item mr={2}>
+          <Link href="/" passHref>
+            <Typography sx={linkSx}>About Us</Typography>
+          </Link>
+        </Grid>
+        <Grid item mr={2}>
+          <Link href="/" passHref>
+            <Typography sx={linkSx}>Contact Us</Typography>
+          </Link>
+        </Grid>
+        <Grid item xs={12} ml={1} mt={1}>
+          <Typography sx={copyrightSx}>
+            AVKonnect. &copy; {getCurrentYear()}
+          </Typography>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
 SignInGrid.Skeleton = SignInGridSkeleton;
 
-const authGridSx: SxProps<Theme> = (theme: Theme) => ({
-  backgroundColor: theme.palette.background.paper,
-  padding: "16px",
-  borderRadius: "12px",
-  height: "400px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
-const stickyBoxSx: SxProps<Theme> = (theme: Theme) => ({
+const stickyBoxSx: SxProps<Theme> = {
   position: "sticky",
   top: "140px",
+};
+
+const linkSx: SxProps<Theme> = (theme: Theme) => ({
+  fontSize: "12px",
+  color: theme.palette.text.primary,
+  ":hover": {
+    cursor: "pointer",
+    textShadow: `0px 0px 1px ${theme.palette.text.primary}`,
+  },
+});
+
+const copyrightSx: SxProps<Theme> = (theme: Theme) => ({
+  fontSize: "13px",
+  color: theme.palette.text.primary,
 });
 
 export default SignInGrid;

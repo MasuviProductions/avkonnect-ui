@@ -72,7 +72,6 @@ export default NextAuth({
       clientId: ENV.COGNITO_CLIENT_ID,
       clientSecret: ENV.COGNITO_CLIENT_SECRET,
       issuer: ENV.COGNITO_ISSUER,
-      idToken: true,
     }),
   ],
   callbacks: {
@@ -96,8 +95,6 @@ export default NextAuth({
     session: async (params): Promise<Session> => {
       params.session.accessToken = params.token.accessToken;
       params.session.refreshtoken = params.token.refreshToken;
-      params.session.refreshTokenExpiresAt =
-        (params.token.exp as number) * 1000;
       params.session.error = params.token.error;
       return params.session;
     },

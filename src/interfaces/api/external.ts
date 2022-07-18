@@ -4,7 +4,7 @@ export interface AVConnectApiResponseError {
 }
 
 export interface AVConnectApiResponseDDBPagination {
-  nextSearchStartFromId?: string;
+  nextSearchStartFromKey?: Record<string, unknown>;
   count: number;
 }
 
@@ -23,6 +23,26 @@ export interface AVConnectApiResponse<T = undefined> {
   pagination?: AVConnectApiResponsePagination;
 }
 
+export interface ISignInUserApiModel {
+  emailId: string;
+  password: string;
+}
+
+export interface ISignUpUserApiModel {
+  fname: string;
+  lname: string;
+  emailId: string;
+  password: string;
+}
+
+export interface IAuthUserApiResponse {
+  id: string;
+  email: string;
+  name: string;
+  headline: string;
+  displayPictureUrl: string;
+}
+
 export interface IUserProfileApiResponse {
   aboutUser: string;
   followeeCount: number;
@@ -36,7 +56,7 @@ export interface IUserProfileApiResponse {
   updatedAt: string;
   currentPosition: string;
   headline: string;
-  dateOfBirth: number;
+  dateOfBirth?: number;
   skillsRefId: string;
   projectsRefId: string;
   id: string;
@@ -48,9 +68,9 @@ export type IUserProfilePatchApiRequest = Partial<
   Omit<
     IUserProfileApiResponse,
     | "id"
-    | "following"
-    | "followers"
-    | "connections"
+    | "followeeCount"
+    | "followerCount"
+    | "connectionCount"
     | "createdAt"
     | "email"
     | "updatedAt"
@@ -163,3 +183,29 @@ interface IUserConnectionApiModel {
 export type IUserConnectionApiResponse = IUserConnectionApiModel;
 
 export type IUserConnectionsApiResponse = IUserConnectionApiModel[];
+
+export type IUserNotificationResourceType =
+  | "connectionRequest"
+  | "connectionConfirmation";
+
+export type IUserNotificationRelatedUsersType = Pick<
+  IUserProfileApiResponse,
+  "name" | "backgroundImageUrl" | "displayPictureUrl" | "id" | "currentPosition"
+>;
+
+interface IUserNotificationsApiModel {
+  id: string;
+  resourceType: IUserNotificationResourceType;
+  read: boolean;
+  resourceId: string;
+  relatedUserIds: string[];
+  relatedUsers: IUserNotificationRelatedUsersType[];
+  createdAt: Date;
+  expiresAt: Date;
+}
+
+export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
+
+export interface IUserNotificationCountApiResponse {
+  pendingNotificationCount: number;
+}

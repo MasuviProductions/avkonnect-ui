@@ -11,9 +11,11 @@ import {
   Box,
   Hidden,
   ClickAwayListener,
+  Badge,
 } from "@mui/material";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import React, { useCallback, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
@@ -22,20 +24,23 @@ import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Head from "next/head";
-import { APP_ROUTES } from "../../constants/app";
+import { APP_ROUTES, MAX_NOTIFICATION_BADGE_LIMIT } from "../../constants/app";
 import SearchBar from "./SearchBar";
 import ProfileDropdown from "./ProfileDropdown";
 import UserMiniCard from "../../components/UserMiniCard";
 import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
+import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
 }
 
 const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
+  const { userNotificationsCount } = useUserNotificationsContext();
   const { authUser } = useAuthContext();
+
   const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
   const [showProfileDropdown, setShowProfileDropdown] =
     useState<boolean>(false);
@@ -98,7 +103,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                       <Box sx={logoContainerSx}>
                         <Image
                           src={PNG.AvkMobLogo}
-                          alt={`${LABELS.TITLE} Logo`}
+                          alt={LABELS.TITLE_LOGO}
                           width={50}
                           height={35}
                         />
@@ -110,7 +115,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                       <Box sx={logoContainerSx}>
                         <Image
                           src={PNG.AvkDeskLogo}
-                          alt={`${LABELS.TITLE} Logo`}
+                          alt={LABELS.TITLE_LOGO}
                           width={130}
                           height={50}
                         />
@@ -138,16 +143,31 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Link>
               )}
 
+              {authUser && (
+                <Link href={APP_ROUTES.NOTIFICATIONS.route} passHref>
+                  <IconButton sx={iconBtnSx}>
+                    <Badge
+                      color="error"
+                      badgeContent={userNotificationsCount}
+                      max={MAX_NOTIFICATION_BADGE_LIMIT}
+                      sx={notificationBadgeSx}
+                    >
+                      <NotificationsNoneIcon
+                        fontSize="large"
+                        sx={contrastIconSx}
+                      />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              )}
+
               <IconButton
                 onClick={handleThemeOpen}
                 aria-label="change theme"
                 aria-haspopup="true"
                 sx={{ paddingX: 2 }}
               >
-                <ColorLensIcon
-                  fontSize="large"
-                  sx={{ color: "navbar.contrastText" }}
-                />
+                <ColorLensIcon fontSize="large" sx={contrastIconSx} />
               </IconButton>
 
               <Menu
@@ -157,7 +177,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 open={Boolean(themeAnchorEl)}
                 onClose={handleThemeClose}
               >
-                {THEMES_LIST.map((theme) => (
+                {THEMES_LIST.map(theme => (
                   <MenuItem
                     key={theme.key}
                     onClick={() => handleThemeSelect(theme.themeOption)}
@@ -225,6 +245,24 @@ const logoContainerSx: SxProps<Theme> = {
     transform: "scale(1.05)",
     transitionDuration: "0.2s",
   },
+};
+
+const notificationBadgeSx: SxProps<Theme> = {
+  "& .MuiBadge-badge": {
+    right: -5,
+    top: 10,
+    padding: "0 4px",
+  },
+};
+
+const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
+
+const contrastIconSx: SxProps<Theme> = { color: "navbar.contrastText" };
+
+const deskLogoTextSx: SxProps<Theme> = {
+  fontFamily: "'Quicksand' !important",
+  fontSize: "34px",
+  fontWeight: "600",
 };
 
 export default Header;

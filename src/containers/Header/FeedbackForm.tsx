@@ -84,8 +84,8 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
               <TextField
                 value={textFields.subject.value}
                 label={textFields.subject.label}
-                onChange={(event) => onFieldValueChange(event, "subject")}
-                onBlur={(event) => onFieldValueBlur(event, "subject")}
+                onChange={event => onFieldValueChange(event, "subject")}
+                onBlur={event => onFieldValueBlur(event, "subject")}
                 sx={textField}
               />
             </Grid>
@@ -96,7 +96,7 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 value={textFields.feedbackType.value}
                 options={textFields.feedbackType.options as Readonly<string[]>}
                 sx={textField}
-                renderInput={(params) => (
+                renderInput={params => (
                   <TextField
                     helperText={textFields.feedbackType.message}
                     error={!!(textFields.feedbackType.messageType === "error")}
@@ -117,8 +117,8 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 rows={3}
                 value={textFields.description.value}
                 label={textFields.description.label}
-                onChange={(event) => onFieldValueChange(event, "description")}
-                onBlur={(event) => onFieldValueBlur(event, "description")}
+                onChange={event => onFieldValueChange(event, "description")}
+                onBlur={event => onFieldValueBlur(event, "description")}
                 sx={textField}
               />
             </Grid>
@@ -152,10 +152,10 @@ const textField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

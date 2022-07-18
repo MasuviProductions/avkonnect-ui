@@ -8,32 +8,6 @@ interface ITheme {
 
 export const THEMES_LIST: ITheme[] = [
   {
-    name: "Dark",
-    key: "dark",
-    themeOption: {
-      palette: {
-        primary: {
-          main: "#ffcc22",
-        },
-        secondary: {
-          main: "#ff1",
-        },
-        background: {
-          default: "#000",
-          paper: "#1d2222",
-        },
-        text: {
-          primary: "#cacaca",
-          secondary: "#888888",
-        },
-        navbar: {
-          main: "#282828",
-          contrastText: "#b2b2b2",
-        },
-      },
-    },
-  },
-  {
     name: "Light",
     key: "light",
     themeOption: {
@@ -42,7 +16,8 @@ export const THEMES_LIST: ITheme[] = [
           main: "#222",
         },
         secondary: {
-          main: "#222",
+          dark: "#cacaca",
+          main: "#dadada",
         },
         background: {
           default: "#f2f2f2",
@@ -54,6 +29,33 @@ export const THEMES_LIST: ITheme[] = [
         },
         navbar: {
           main: "#222",
+          contrastText: "#b2b2b2",
+        },
+      },
+    },
+  },
+  {
+    name: "Dark",
+    key: "dark",
+    themeOption: {
+      palette: {
+        primary: {
+          main: "#ffcc22",
+        },
+        secondary: {
+          dark: "#383838",
+          main: "#444",
+        },
+        background: {
+          default: "#000",
+          paper: "#1d2222",
+        },
+        text: {
+          primary: "#cacaca",
+          secondary: "#888888",
+        },
+        navbar: {
+          main: "#282828",
           contrastText: "#b2b2b2",
         },
       },
