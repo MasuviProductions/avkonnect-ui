@@ -5,6 +5,7 @@ import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
 import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
+import AboutUsPage from "../pages/about-us";
 import NotificationsPage from "../pages/notifications";
 import { LABELS } from "./labels";
 
@@ -30,6 +31,11 @@ export const APP_ROUTES = {
     route: "/search\\?key=:key",
     key: "search",
     skeleton: Search.Skeleton,
+  },
+  ABOUT: {
+    route: "/about-us",
+    key: "about-us",
+    skeleton: AboutUsPage.Skeleton,
   },
   MY_NETWORK: {
     route: "/my-network",
