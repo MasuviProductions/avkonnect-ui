@@ -56,7 +56,7 @@ const SignInGrid: ReactFCWithSkeleton<IAuthGridProps> = ({ handleSignIn }) => {
           </Link>
         </Grid>
         <Grid item mr={2}>
-          <Link href="/" passHref>
+          <Link href="/about-us" passHref>
             <Typography sx={linkSx}>About Us</Typography>
           </Link>
         </Grid>
