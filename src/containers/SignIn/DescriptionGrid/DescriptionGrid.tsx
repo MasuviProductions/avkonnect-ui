@@ -27,14 +27,6 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
     <Grid container justifyContent="center" alignItems="center" p={1}>
       <Grid item xs={12}>
         {/* TODO: START DESCRIPTION HERE */}
-        <Box p={1} sx={descriptionGridSx} textAlign="center">
-          <Image
-            src={PNG.AvkDeskLogo}
-            alt="1080p placeholder"
-            width="208"
-            height="78"
-          />
-        </Box>
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
           <Typography variant="h6">
