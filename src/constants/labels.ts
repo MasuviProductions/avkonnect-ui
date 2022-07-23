@@ -130,7 +130,7 @@ export const LABELS = {
     "Build economic opportunities for every member in the media industry and enhance the coherence at every stage of production. ",
   OUR_MISSION: "Our Mission ",
   OUR_MISSION_1:
-    "1. Collaborate with relevant stakeholders Frequently to increase footprints in the media of fraternity. ",
+    "1. Collaborate with relevant stakeholders Frequently to increase footprints in the media fraternity. ",
   OUR_MISSION_2:
     "2. Provide employment opportunities without any logistical barriers. ",
   OUR_MISSION_3:
