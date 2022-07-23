@@ -1,5 +1,6 @@
 export const LABELS = {
   TITLE: "AVKonnect",
+  COMPANY_EMAIL: "masuviproductions@gmail.com",
   SUBMIT: "Submit",
   SKIP: "Skip",
   SAVE: "Save",
@@ -241,4 +242,8 @@ export const LABELS = {
   NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
     `Your request to connect with ${userName} was accepted!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
+
+  // Legal Pages
+  PRIVACY_POLICY_TITLE: "Privacy Policy",
+  PRIVACY_POLICY_LAST_UPDATED: "Last Updated on 3ʳᵈ July, 2022",
 };

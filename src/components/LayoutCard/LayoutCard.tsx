@@ -35,7 +35,7 @@ const layoutCardContainer = (
   position: "relative",
   border: isBorder ? `1px solid ${theme.palette.secondary.main}` : undefined,
   boxShadow: isBoxShadow
-    ? `0px 0px 6px ${theme.palette.primary.dark}`
+    ? "0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%)"
     : undefined,
   [theme.breakpoints.down("sm")]: {
     borderRadius: "0",

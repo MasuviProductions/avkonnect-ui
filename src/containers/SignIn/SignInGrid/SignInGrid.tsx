@@ -46,13 +46,13 @@ const SignInGrid: ReactFCWithSkeleton<IAuthGridProps> = ({ handleSignIn }) => {
       </LayoutCard>
       <Grid container mt={2} justifyContent="center" textAlign="center">
         <Grid item mr={2}>
-          <Link href="/" passHref>
+          <Link href="/legal/privacy-policy" passHref>
             <Typography sx={linkSx}>Privacy Policy</Typography>
           </Link>
         </Grid>
         <Grid item mr={2}>
           <Link href="/" passHref>
-            <Typography sx={linkSx}>Data Policy</Typography>
+            <Typography sx={linkSx}>Terms of Service</Typography>
           </Link>
         </Grid>
         <Grid item mr={2}>
