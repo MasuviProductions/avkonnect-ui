@@ -134,7 +134,7 @@ const aboutField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 });

@@ -134,6 +134,10 @@ export const getTimeAgo = (unixTime: Date): string => {
   return dayjs(unixTime).fromNow();
 };
 
+export const getCurrentYear = (): number => {
+  return new Date().getFullYear();
+};
+
 export const getNotificationTypeBasedLink = (
   notificationType: IUserNotificationResourceType
 ): string => {

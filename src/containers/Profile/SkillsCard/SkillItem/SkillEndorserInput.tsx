@@ -97,7 +97,7 @@ const SkillEndorserInput: React.FC<ISkillEndorserInputProps> = ({
                     textFields.relationship.options as Readonly<string[]>
                   }
                   sx={textField}
-                  renderInput={(params) => (
+                  renderInput={params => (
                     <TextField
                       helperText={textFields.relationship.message}
                       error={
@@ -148,10 +148,10 @@ const textField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 
