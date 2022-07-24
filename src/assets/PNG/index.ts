@@ -1,17 +1,15 @@
 import MadeInIndia from "./made-in-india.png";
-import AvkMobLogo from "./AvkonnectMobileLogo.png";
-import AvkDeskLogo from "./AvkonnectDesktopLogo.png";
-import AvkDeskHalfLogo from "./AvkonnectHalfDesktop.png";
-import PlaceHolder from "./PlaceHolder.png";
-import avkonnectPost1 from "./AvkonnectPost1.png";
-import avkonnectPost2 from "./AvkonnectPost2.png";
+import AvkMobLogo from "./avkonnect-mobile-logo.png";
+import AvkDeskLogo from "./avkonnect-desktop-logo.png";
+import PlaceHolder from "./placeholder.png";
+import AvkonnectPost1 from "./avkonnect-post1.png";
+import AvkonnectPost2 from "./avkonnect-post2.png";
 
 export const PNG = {
   MadeInIndia,
   AvkMobLogo,
   AvkDeskLogo,
-  AvkDeskHalfLogo,
   PlaceHolder,
-  avkonnectPost1,
-  avkonnectPost2,
+  AvkonnectPost1,
+  AvkonnectPost2,
 };

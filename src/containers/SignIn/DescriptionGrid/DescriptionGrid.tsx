@@ -36,7 +36,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         </Box>
         <Box>
           <Image
-            src={PNG.avkonnectPost1}
+            src={PNG.AvkonnectPost1}
             alt="1080p placeholder"
             width="720"
             height="720"
@@ -49,7 +49,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         </Box>
         <Box>
           <Image
-            src={PNG.avkonnectPost2}
+            src={PNG.AvkonnectPost2}
             alt="1080p placeholder"
             width="720"
             height="720"
