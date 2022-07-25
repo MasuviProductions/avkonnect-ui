@@ -53,7 +53,7 @@ const AddSkills: React.FC<IAddSkillsProps> = ({
 
   const handleAddSkillClick = () => {
     const updatedSkillsets = cloneDeep(skillsets);
-    selectedSkills.forEach((skill) => {
+    selectedSkills.forEach(skill => {
       updatedSkillsets?.push({
         name: skill,
         endorsers: [],
@@ -64,8 +64,8 @@ const AddSkills: React.FC<IAddSkillsProps> = ({
 
   useEffect(() => {
     const filteredSkills: string[] = [];
-    SKILLS_LIST.forEach((skillName) => {
-      const skill = skillsets.find((skillset) => skillset.name === skillName);
+    SKILLS_LIST.forEach(skillName => {
+      const skill = skillsets.find(skillset => skillset.name === skillName);
       if (!skill) {
         filteredSkills.push(skillName);
       }
@@ -90,7 +90,7 @@ const AddSkills: React.FC<IAddSkillsProps> = ({
               value={selectedSkills}
               options={dropdownSkills}
               sx={skillSelectorField}
-              renderInput={(params) => (
+              renderInput={params => (
                 <TextField
                   helperText={helperText}
                   error={!!helperText}
@@ -126,7 +126,7 @@ const skillSelectorField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 
