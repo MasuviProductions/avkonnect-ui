@@ -134,7 +134,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.companyName.value}
             label={textFields.companyName.label}
             onChange={event => onFieldValueChange(event, "companyName")}
-            onBlur={event => onFieldValueBlur(event, "companyName")}
+            onBlur={onFieldValueBlur("companyName")}
             sx={textField}
           />
         </Grid>
@@ -165,7 +165,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.role.value}
             label={textFields.role.label}
             onChange={event => onFieldValueChange(event, "role")}
-            onBlur={event => onFieldValueBlur(event, "role")}
+            onBlur={onFieldValueBlur("role")}
             sx={textField}
           />
         </Grid>
@@ -245,7 +245,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.description.value}
             label={textFields.description.label}
             onChange={event => onFieldValueChange(event, "description")}
-            onBlur={event => onFieldValueBlur(event, "description")}
+            onBlur={onFieldValueBlur("description")}
             sx={textField}
           />
         </Grid>

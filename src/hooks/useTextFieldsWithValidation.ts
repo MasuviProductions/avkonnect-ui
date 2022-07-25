@@ -1,4 +1,10 @@
-import { ChangeEvent, SyntheticEvent, useCallback, useState } from "react";
+import {
+  ChangeEvent,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { ITextField, ITextFieldConfig } from "../interfaces/app";
 import {
   getFieldValidity,
@@ -8,6 +14,8 @@ import {
 
 interface ITextFieldsWithValidation<T extends string> {
   textFields: Record<T, ITextField>;
+  isFormValid: boolean;
+  isFormInitialized: boolean;
   onFieldValueChange: (
     event:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -16,9 +24,9 @@ interface ITextFieldsWithValidation<T extends string> {
     optionValue?: string | null
   ) => void;
   onFieldValueBlur: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: T
-  ) => void;
+  ) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onValidateAllFields: () => boolean;
 }
 
 const useTextFieldsWithValidation = <T extends string>(
@@ -26,6 +34,29 @@ const useTextFieldsWithValidation = <T extends string>(
 ): ITextFieldsWithValidation<T> => {
   const [textFields, setTextFields] = useState<Record<T, ITextField>>(
     transformTextFieldConfigToFields<T>(fieldsConfig)
+  );
+  const [isFormInitialized, setIsFormInitialized] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+
+  const validateField = useCallback(
+    (value: string, field: T) => {
+      const fieldValidity = getFieldValidity(
+        fieldsConfig[field as T].validations || [],
+        value,
+        fieldsConfig[field as T].isRequired || false
+      );
+      setTextFields(prev => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          value: value,
+          message: fieldValidity.message,
+          messageType: fieldValidity.messageType,
+          isError: !fieldValidity.isValid,
+        },
+      }));
+    },
+    [fieldsConfig]
   );
 
   const onFieldValueChange = useCallback(
@@ -36,8 +67,9 @@ const useTextFieldsWithValidation = <T extends string>(
       field: T,
       optionValue?: string | null
     ) => {
+      setIsFormInitialized(true);
       if (fieldsConfig[field as T].options) {
-        setTextFields((prev) => ({
+        setTextFields(prev => ({
           ...prev,
           [field]: {
             ...prev[field],
@@ -52,7 +84,7 @@ const useTextFieldsWithValidation = <T extends string>(
               .target.value
           )
         ) {
-          setTextFields((prev) => ({
+          setTextFields(prev => ({
             ...prev,
             [field]: {
               ...prev[field],
@@ -69,25 +101,69 @@ const useTextFieldsWithValidation = <T extends string>(
   );
 
   const onFieldValueBlur = useCallback(
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: T) => {
-      const fieldValidity = getFieldValidity(
-        fieldsConfig[field as T].validations || [],
-        event.target.value
-      );
-      setTextFields((prev) => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          value: event.target.value,
-          message: fieldValidity.message,
-          messageType: fieldValidity.messageType,
-        },
-      }));
+    (field: T) => {
+      return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const fieldValidity = getFieldValidity(
+          fieldsConfig[field as T].validations || [],
+          event.target.value,
+          fieldsConfig[field as T].isRequired || false
+        );
+        setTextFields(prev => ({
+          ...prev,
+          [field]: {
+            ...prev[field],
+            value: event.target.value,
+            message: fieldValidity.message,
+            messageType: fieldValidity.messageType,
+            isError: !fieldValidity.isValid,
+          },
+        }));
+      };
     },
     [fieldsConfig]
   );
 
-  return { textFields, onFieldValueChange, onFieldValueBlur };
+  const onValidateAllFields = useCallback(() => {
+    let isValid = true;
+    (Object.entries(textFields) as [T, ITextField][]).forEach(
+      ([field, textField]) => {
+        const fieldValidity = getFieldValidity(
+          fieldsConfig[field as T].validations || [],
+          textField.value,
+          fieldsConfig[field as T].isRequired || false
+        );
+        setTextFields(prev => ({
+          ...prev,
+          [field]: {
+            ...prev[field],
+            value: textField.value,
+            message: fieldValidity.message,
+            messageType: fieldValidity.messageType,
+            isError: !fieldValidity.isValid,
+          },
+        }));
+        isValid = fieldValidity.isValid && isValid;
+      }
+    );
+    return isValid;
+  }, [fieldsConfig, textFields]);
+
+  useEffect(() => {
+    let isValid = true;
+    (Object.values(textFields) as ITextField[]).forEach(textField => {
+      isValid = !textField.isError && isValid;
+    });
+    setIsFormValid(isValid);
+  }, [textFields]);
+
+  return {
+    textFields,
+    isFormValid,
+    isFormInitialized,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  };
 };
 
 export default useTextFieldsWithValidation;

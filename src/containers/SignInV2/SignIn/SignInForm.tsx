@@ -58,7 +58,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             value={textFields.emailId.value}
             label={textFields.emailId.label}
             onChange={event => onFieldValueChange(event, "emailId")}
-            onBlur={event => onFieldValueBlur(event, "emailId")}
+            onBlur={onFieldValueBlur("emailId")}
             sx={signInTextFieldSx}
             fullWidth
           />
@@ -70,7 +70,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             value={textFields.password.value}
             label={textFields.password.label}
             onChange={event => onFieldValueChange(event, "password")}
-            onBlur={event => onFieldValueBlur(event, "password")}
+            onBlur={onFieldValueBlur("password")}
             sx={signInTextFieldSx}
             fullWidth
           />

@@ -58,7 +58,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             value={textFields.fname.value}
             label={textFields.fname.label}
             onChange={event => onFieldValueChange(event, "fname")}
-            onBlur={event => onFieldValueBlur(event, "fname")}
+            onBlur={onFieldValueBlur("fname")}
             sx={signUpTextFieldSx}
             fullWidth
           />
@@ -70,7 +70,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             value={textFields.lname.value}
             label={textFields.lname.label}
             onChange={event => onFieldValueChange(event, "lname")}
-            onBlur={event => onFieldValueBlur(event, "lname")}
+            onBlur={onFieldValueBlur("lname")}
             sx={signUpTextFieldSx}
             fullWidth
           />
@@ -82,7 +82,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             value={textFields.emailId.value}
             label={textFields.emailId.label}
             onChange={event => onFieldValueChange(event, "emailId")}
-            onBlur={event => onFieldValueBlur(event, "emailId")}
+            onBlur={onFieldValueBlur("emailId")}
             sx={signUpTextFieldSx}
             fullWidth
           />
@@ -94,7 +94,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             value={textFields.password.value}
             label={textFields.password.label}
             onChange={event => onFieldValueChange(event, "password")}
-            onBlur={event => onFieldValueBlur(event, "password")}
+            onBlur={onFieldValueBlur("password")}
             sx={signUpTextFieldSx}
             fullWidth
           />

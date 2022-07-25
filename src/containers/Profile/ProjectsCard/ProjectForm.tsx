@@ -79,8 +79,14 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
 
   const projectTextFieldsConfig = getInitialProjectTextFieldValues(project);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<IProjectTextFields>(projectTextFieldsConfig);
+  const {
+    textFields,
+    isFormValid,
+    isFormInitialized,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<IProjectTextFields>(projectTextFieldsConfig);
 
   const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
     projectDateRangeFieldsConfig
@@ -97,21 +103,23 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   };
 
   const handleSaveProject = () => {
-    const urlFormattedDescription: string = getURLFormattedMessage(
-      textFields.description.value
-    );
-    const updatedProject: IUserProjectApiModel = {
-      companyName: textFields.companyName.value as string,
-      collaboratorsRefs: [],
-      description: urlFormattedDescription,
-      employmentType: textFields.employmentType.value,
-      endDate: dateValues.to.value?.valueOf() as number,
-      industry: textFields.industry.value,
-      name: textFields.name.value as string,
-      role: textFields.role.value as string,
-      startDate: dateValues.from.value?.valueOf() as number,
-    };
-    onSaveProject?.(updatedProject);
+    if (onValidateAllFields()) {
+      const urlFormattedDescription: string = getURLFormattedMessage(
+        textFields.description.value
+      );
+      const updatedProject: IUserProjectApiModel = {
+        companyName: textFields.companyName.value as string,
+        collaboratorsRefs: [],
+        description: urlFormattedDescription,
+        employmentType: textFields.employmentType.value,
+        endDate: dateValues.to.value?.valueOf() as number,
+        industry: textFields.industry.value,
+        name: textFields.name.value as string,
+        role: textFields.role.value as string,
+        startDate: dateValues.from.value?.valueOf() as number,
+      };
+      onSaveProject?.(updatedProject);
+    }
   };
 
   const handleRemoveProject = () => {
@@ -134,8 +142,14 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.name.value}
             label={textFields.name.label}
             onChange={event => onFieldValueChange(event, "name")}
-            onBlur={event => onFieldValueBlur(event, "name")}
+            onBlur={onFieldValueBlur("name")}
             sx={textField}
+            required={textFields.name.isRequired}
+            error={textFields.name.isError || false}
+            color={
+              textFields.name.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.name.message}
           />
         </Grid>
 
@@ -148,8 +162,16 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.companyName.value}
             label={textFields.companyName.label}
             onChange={event => onFieldValueChange(event, "companyName")}
-            onBlur={event => onFieldValueBlur(event, "companyName")}
+            onBlur={onFieldValueBlur("companyName")}
             sx={textField}
+            required={textFields.companyName.isRequired}
+            error={textFields.companyName.isError || false}
+            color={
+              textFields.companyName.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.companyName.message}
           />
         </Grid>
 
@@ -162,8 +184,15 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             renderInput={params => (
               <TextField
                 helperText={textFields.industry.message}
-                error={!!(textFields.industry.messageType === "error")}
                 label={textFields.industry.label}
+                required={textFields.industry.isRequired}
+                error={textFields.industry.isError || false}
+                color={
+                  textFields.industry.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
             )}
@@ -179,8 +208,14 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.role.value}
             label={textFields.role.label}
             onChange={event => onFieldValueChange(event, "role")}
-            onBlur={event => onFieldValueBlur(event, "role")}
+            onBlur={onFieldValueBlur("role")}
             sx={textField}
+            required={textFields.role.isRequired}
+            error={textFields.role.isError || false}
+            color={
+              textFields.role.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.role.message}
           />
         </Grid>
 
@@ -193,8 +228,15 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             renderInput={params => (
               <TextField
                 helperText={textFields.employmentType.message}
-                error={!!(textFields.employmentType.messageType === "error")}
                 label={textFields.employmentType.label}
+                required={textFields.employmentType.isRequired}
+                error={textFields.employmentType.isError || false}
+                color={
+                  textFields.employmentType.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                onBlur={onFieldValueBlur("employmentType")}
                 {...params}
               />
             )}
@@ -213,9 +255,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
             onChange={date => onDateValueChange(date, "from")}
-            renderInput={params => (
-              <TextField sx={textField} {...params} helperText={null} />
-            )}
+            renderInput={params => <TextField sx={textField} {...params} />}
           />
         </Grid>
 
@@ -257,8 +297,16 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.description.value}
             label={textFields.description.label}
             onChange={event => onFieldValueChange(event, "description")}
-            onBlur={event => onFieldValueBlur(event, "description")}
+            onBlur={onFieldValueBlur("description")}
             sx={textField}
+            required={textFields.description.isRequired}
+            error={textFields.description.isError || false}
+            color={
+              textFields.description.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.description.message}
           />
         </Grid>
 
@@ -279,7 +327,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={saveLoading}
+                disabled={!isFormInitialized || !isFormValid || saveLoading}
                 onClick={handleSaveProject}
               >
                 {LABELS.SAVE}
@@ -301,10 +349,10 @@ const textField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

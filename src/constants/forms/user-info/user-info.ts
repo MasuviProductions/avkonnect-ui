@@ -19,12 +19,14 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
     label: LABELS.USER_INFO_NAME,
     id: "name",
     limitations: [{ regex: /^.{0,50}$/ }],
+    isRequired: true,
   },
   gender: {
     label: LABELS.USER_INFO_GENDER,
     id: "gender",
     limitations: [{ regex: /^.{0,25}$/ }],
     options: GENDER_FIELDS,
+    isRequired: true,
   },
   location: {
     label: LABELS.USER_INFO_LOCATION,

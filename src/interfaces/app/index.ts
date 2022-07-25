@@ -49,6 +49,7 @@ export interface ITextFieldConfig {
   limitations?: ITextFieldPattern[];
   options?: Readonly<string[]>;
   intialValue?: string;
+  isRequired?: boolean;
 }
 
 export interface ITextField {
@@ -57,11 +58,13 @@ export interface ITextField {
   message?: string;
   messageType?: string;
   options?: Readonly<string[]>;
+  isError: boolean;
+  isRequired: boolean;
 }
 
 export interface ITextFieldValidity {
-  message: string;
-  messageType: string;
+  message?: string;
+  messageType?: string;
   isValid: boolean;
 }
 

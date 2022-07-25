@@ -125,7 +125,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.name.value}
             label={textFields.name.label}
             onChange={event => onFieldValueChange(event, "name")}
-            onBlur={event => onFieldValueBlur(event, "name")}
+            onBlur={onFieldValueBlur("name")}
             sx={textField}
           />
         </Grid>
@@ -175,7 +175,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.headline.value}
             label={textFields.headline.label}
             onChange={event => onFieldValueChange(event, "headline")}
-            onBlur={event => onFieldValueBlur(event, "headline")}
+            onBlur={onFieldValueBlur("headline")}
             sx={textField}
           />
         </Grid>

@@ -1,3 +1,4 @@
+import { LABELS } from "../constants/labels";
 import {
   IDateField,
   IDateFieldConfig,
@@ -9,11 +10,20 @@ import {
 
 export const getFieldValidity = (
   validations: ITextFieldPattern[],
-  value: string
+  value: string,
+  isRequired: boolean
 ): ITextFieldValidity => {
+  if (isRequired && !value) {
+    const fieldValidity: ITextFieldValidity = {
+      message: LABELS.FORM_FIELD_MANDATORY_ERROR_MSG,
+      messageType: "error",
+      isValid: false,
+    };
+    return fieldValidity;
+  }
   for (let index = 0; index < validations.length; index += 1) {
     let regex = new RegExp(validations[index].regex, "i");
-    if (regex.test(value)) {
+    if (!regex.test(value)) {
       const fieldValidity: ITextFieldValidity = {
         message: validations[index].message || "",
         messageType: validations[index].messageType || "",
@@ -23,8 +33,6 @@ export const getFieldValidity = (
     }
   }
   const fieldValidity: ITextFieldValidity = {
-    message: "",
-    messageType: "",
     isValid: true,
   };
   return fieldValidity;
@@ -55,6 +63,8 @@ export const transformTextFieldConfigToFields = <T extends string>(
       messageType: "",
       label: fieldsConfig[field as T].label,
       options: fieldsConfig[field as T].options,
+      isError: false,
+      isRequired: fieldsConfig[field as T].isRequired || false,
     };
   });
 
