@@ -43,8 +43,13 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
 }) => {
   const signUpTextFieldsConfig = getInitialSignUpTextFieldValues();
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<ISignUpTextFields>(signUpTextFieldsConfig);
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+  } = useTextFieldsWithValidation<ISignUpTextFields>(signUpTextFieldsConfig);
 
   const handleSignInRedirect = () => {
     setActiveTabValue(0);
@@ -60,6 +65,12 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             onChange={event => onFieldValueChange(event, "fname")}
             onBlur={onFieldValueBlur("fname")}
             sx={signUpTextFieldSx}
+            required={textFields.fname.isRequired}
+            error={textFields.fname.isError || false}
+            color={
+              textFields.fname.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.fname.message}
             fullWidth
           />
         </Box>
@@ -72,6 +83,12 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             onChange={event => onFieldValueChange(event, "lname")}
             onBlur={onFieldValueBlur("lname")}
             sx={signUpTextFieldSx}
+            required={textFields.lname.isRequired}
+            error={textFields.lname.isError || false}
+            color={
+              textFields.lname.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.lname.message}
             fullWidth
           />
         </Box>
@@ -84,6 +101,14 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             onChange={event => onFieldValueChange(event, "emailId")}
             onBlur={onFieldValueBlur("emailId")}
             sx={signUpTextFieldSx}
+            required={textFields.emailId.isRequired}
+            error={textFields.emailId.isError || false}
+            color={
+              textFields.emailId.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.emailId.message}
             fullWidth
           />
         </Box>
@@ -96,13 +121,26 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             onChange={event => onFieldValueChange(event, "password")}
             onBlur={onFieldValueBlur("password")}
             sx={signUpTextFieldSx}
+            required={textFields.password.isRequired}
+            error={textFields.password.isError || false}
+            color={
+              textFields.password.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.password.message}
             fullWidth
           />
         </Box>
       </Grid>
       <Grid item xs={12}>
         <Box my={2} mx={1}>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button
+            variant="contained"
+            disabled={!isFormInitialized || !isFormValid}
+            color="primary"
+            fullWidth
+          >
             {LABELS.SIGN_UP}
           </Button>
         </Box>

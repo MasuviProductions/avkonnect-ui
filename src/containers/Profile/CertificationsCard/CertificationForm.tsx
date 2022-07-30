@@ -84,10 +84,16 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   const certificationTextFieldsConfig =
     getInitialCertificationTextFieldValues(certification);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<ICertificationTextFields>(
-      certificationTextFieldsConfig
-    );
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<ICertificationTextFields>(
+    certificationTextFieldsConfig
+  );
 
   const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
     certificationDateRangeFieldsConfig
@@ -104,20 +110,22 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
-    const urlFormattedDescription: string = getURLFormattedMessage(
-      textFields.description.value
-    );
-    const updatedCertification: IUserCertificationApiModel = {
-      issuerName: textFields.issuerName.value as string,
-      name: textFields.name.value as string,
-      link: textFields.link.value as string,
-      description: urlFormattedDescription,
-      expiresAt: dateValues.to.value?.valueOf() as number,
-      industry: textFields.industry.value,
-      issuedAt: dateValues.from.value?.valueOf() as number,
-      photoUrl: "",
-    };
-    onSaveCertification?.(updatedCertification);
+    if (onValidateAllFields()) {
+      const urlFormattedDescription: string = getURLFormattedMessage(
+        textFields.description.value
+      );
+      const updatedCertification: IUserCertificationApiModel = {
+        issuerName: textFields.issuerName.value as string,
+        name: textFields.name.value as string,
+        link: textFields.link.value as string,
+        description: urlFormattedDescription,
+        expiresAt: dateValues.to.value?.valueOf() as number,
+        industry: textFields.industry.value,
+        issuedAt: dateValues.from.value?.valueOf() as number,
+        photoUrl: "",
+      };
+      onSaveCertification?.(updatedCertification);
+    }
   };
 
   const handleRemoveCertification = () => {
@@ -140,8 +148,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.name.value}
             label={textFields.name.label}
             onChange={event => onFieldValueChange(event, "name")}
-            onBlur={event => onFieldValueBlur(event, "name")}
+            onBlur={onFieldValueBlur("name")}
             sx={textField}
+            required={textFields.name.isRequired}
+            error={textFields.name.isError || false}
+            color={
+              textFields.name.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.name.message}
           />
         </Grid>
 
@@ -154,8 +168,16 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.issuerName.value}
             label={textFields.issuerName.label}
             onChange={event => onFieldValueChange(event, "issuerName")}
-            onBlur={event => onFieldValueBlur(event, "issuerName")}
+            onBlur={onFieldValueBlur("issuerName")}
             sx={textField}
+            required={textFields.issuerName.isRequired}
+            error={textFields.issuerName.isError || false}
+            color={
+              textFields.issuerName.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.issuerName.message}
           />
         </Grid>
 
@@ -168,8 +190,15 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             renderInput={params => (
               <TextField
                 helperText={textFields.industry.message}
-                error={!!(textFields.industry.messageType === "error")}
                 label={textFields.industry.label}
+                required={textFields.industry.isRequired}
+                error={textFields.industry.isError || false}
+                color={
+                  textFields.industry.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
             )}
@@ -234,8 +263,16 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.description.value}
             label={textFields.description.label}
             onChange={event => onFieldValueChange(event, "description")}
-            onBlur={event => onFieldValueBlur(event, "description")}
+            onBlur={onFieldValueBlur("description")}
             sx={textField}
+            required={textFields.description.isRequired}
+            error={textFields.description.isError || false}
+            color={
+              textFields.description.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.description.message}
           />
         </Grid>
 
@@ -244,8 +281,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.link.value}
             label={textFields.link.label}
             onChange={event => onFieldValueChange(event, "link")}
-            onBlur={event => onFieldValueBlur(event, "link")}
+            onBlur={onFieldValueBlur("link")}
             sx={textField}
+            required={textFields.link.isRequired}
+            error={textFields.link.isError || false}
+            color={
+              textFields.link.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.link.message}
           />
         </Grid>
 
@@ -266,7 +309,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={saveLoading}
+                disabled={!isFormInitialized || !isFormValid || saveLoading}
                 onClick={handleSaveCertification}
               >
                 {LABELS.SAVE}

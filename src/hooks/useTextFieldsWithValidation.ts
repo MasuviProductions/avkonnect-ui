@@ -38,27 +38,6 @@ const useTextFieldsWithValidation = <T extends string>(
   const [isFormInitialized, setIsFormInitialized] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-  const validateField = useCallback(
-    (value: string, field: T) => {
-      const fieldValidity = getFieldValidity(
-        fieldsConfig[field as T].validations || [],
-        value,
-        fieldsConfig[field as T].isRequired || false
-      );
-      setTextFields(prev => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          value: value,
-          message: fieldValidity.message,
-          messageType: fieldValidity.messageType,
-          isError: !fieldValidity.isValid,
-        },
-      }));
-    },
-    [fieldsConfig]
-  );
-
   const onFieldValueChange = useCallback(
     (
       event:

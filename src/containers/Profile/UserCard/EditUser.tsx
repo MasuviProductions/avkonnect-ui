@@ -75,21 +75,31 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
   const userInfoDateFieldsConfig = getInitialUserInfoDateFieldValues(user);
   const userInfoTextFieldsConfig = getInitialUserInfoTextFieldValues(user);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<IUserInfoTextFields>(userInfoTextFieldsConfig);
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<IUserInfoTextFields>(
+    userInfoTextFieldsConfig
+  );
 
   const { dateFields, onDateValueChange } =
     useDateFieldsWithValidation<IUserInfoDateFields>(userInfoDateFieldsConfig);
 
   const handleSaveUserInfo = () => {
-    const updatedUserInfo: IUserProfilePatchApiRequest = {
-      name: textFields.name.value as string,
-      headline: textFields.headline.value as string,
-      dateOfBirth: dateFields.dateOfBirth.value?.valueOf() as number,
-      gender: textFields.gender.value as string,
-      location: textFields.location.value as string,
-    };
-    setPatchUserReq(updatedUserInfo);
+    if (onValidateAllFields()) {
+      const updatedUserInfo: IUserProfilePatchApiRequest = {
+        name: textFields.name.value as string,
+        headline: textFields.headline.value as string,
+        dateOfBirth: dateFields.dateOfBirth.value?.valueOf() as number,
+        gender: textFields.gender.value as string,
+        location: textFields.location.value as string,
+      };
+      setPatchUserReq(updatedUserInfo);
+    }
   };
 
   useEffect(() => {
@@ -127,6 +137,12 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             onChange={event => onFieldValueChange(event, "name")}
             onBlur={onFieldValueBlur("name")}
             sx={textField}
+            required={textFields.name.isRequired}
+            error={textFields.name.isError || false}
+            color={
+              textFields.name.messageType === "warning" ? "warning" : undefined
+            }
+            helperText={textFields.name.message}
           />
         </Grid>
 
@@ -142,9 +158,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             sx={textField}
             renderInput={params => (
               <TextField
-                helperText={textFields.gender.message}
-                error={!!(textFields.gender.messageType === "error")}
                 label={textFields.gender.label}
+                required={textFields.gender.isRequired}
+                error={textFields.gender.isError || false}
+                color={
+                  textFields.gender.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                helperText={textFields.gender.message}
                 {...params}
               />
             )}
@@ -177,6 +199,14 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             onChange={event => onFieldValueChange(event, "headline")}
             onBlur={onFieldValueBlur("headline")}
             sx={textField}
+            required={textFields.headline.isRequired}
+            error={textFields.headline.isError || false}
+            color={
+              textFields.headline.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.headline.message}
           />
         </Grid>
 
@@ -188,9 +218,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             sx={textField}
             renderInput={params => (
               <TextField
-                helperText={textFields.location.message}
-                error={!!(textFields.location.messageType === "error")}
                 label={textFields.location.label}
+                required={textFields.location.isRequired}
+                error={textFields.location.isError || false}
+                color={
+                  textFields.location.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                helperText={textFields.location.message}
                 {...params}
               />
             )}
@@ -206,7 +242,11 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             <Grid item>
               <CustomButton
                 loading={patchUserStatus === "loading"}
-                disabled={patchUserStatus === "loading"}
+                disabled={
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  patchUserStatus === "loading"
+                }
                 onClick={handleSaveUserInfo}
               >
                 {LABELS.SAVE}

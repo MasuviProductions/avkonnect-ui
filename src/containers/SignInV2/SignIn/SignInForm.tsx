@@ -43,8 +43,13 @@ const SignInForm: React.FC<ISignInFormProps> = ({
 }) => {
   const signInTextFieldsConfig = getInitialSignInTextFieldValues();
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<ISignInTextFields>(signInTextFieldsConfig);
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+  } = useTextFieldsWithValidation<ISignInTextFields>(signInTextFieldsConfig);
 
   const handleSignUpRedirect = () => {
     setActiveTabValue(1);
@@ -60,6 +65,14 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             onChange={event => onFieldValueChange(event, "emailId")}
             onBlur={onFieldValueBlur("emailId")}
             sx={signInTextFieldSx}
+            required={textFields.emailId.isRequired}
+            error={textFields.emailId.isError || false}
+            color={
+              textFields.emailId.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.emailId.message}
             fullWidth
           />
         </Box>
@@ -72,13 +85,26 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             onChange={event => onFieldValueChange(event, "password")}
             onBlur={onFieldValueBlur("password")}
             sx={signInTextFieldSx}
+            required={textFields.password.isRequired}
+            error={textFields.password.isError || false}
+            color={
+              textFields.password.messageType === "warning"
+                ? "warning"
+                : undefined
+            }
+            helperText={textFields.password.message}
             fullWidth
           />
         </Box>
       </Grid>
       <Grid item xs={12}>
         <Box m={2}>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!isFormInitialized || !isFormValid}
+            fullWidth
+          >
             {LABELS.SIGN_IN}
           </Button>
         </Box>

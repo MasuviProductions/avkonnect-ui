@@ -292,12 +292,16 @@ const UserCard: React.FC<IUserCardProps> = () => {
                     )}
 
                     {location && (
-                      <Grid item xs={12}>
+                      <Grid item xs={12} mt={0.5}>
                         <Grid container alignItems="flex-start" spacing={1}>
                           <Grid item>
                             <LocationOnIcon fontSize="small" />
                           </Grid>
-                          <Grid item>{location}</Grid>
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              {location}
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
                     )}
