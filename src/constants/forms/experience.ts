@@ -44,24 +44,24 @@ const EXPERIENCE_TEXT_FIELDS_CONFIG: Record<
   description: {
     label: LABELS.EXPERIENCE_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /.{0,1000}/ }],
+    limitations: [{ regex: /^.{0,1000}$/ }],
   },
   employmentType: {
     label: LABELS.EXPERIENCE_EMPLOYMENT_TYPE,
     id: "employmentType",
-    limitations: [{ regex: /.{0,15}/ }],
+    limitations: [{ regex: /^.{0,15}$/ }],
     options: EMPLOYMENT_TYPE_FIELDS,
   },
   industry: {
     label: LABELS.EXPERIENCE_INDUSTRY,
     id: "industry",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ regex: /^.{0,25}$/ }],
     options: INDUSTRY_FIELDS,
   },
   role: {
     label: LABELS.EXPERIENCE_ROLE,
     id: "role",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ regex: /^.{0,25}$/ }],
   },
 };
 

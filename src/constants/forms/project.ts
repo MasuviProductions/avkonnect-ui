@@ -43,29 +43,29 @@ const PROJECT_TEXT_FIELDS_CONFIG: Record<IProjectTextFields, ITextFieldConfig> =
     description: {
       label: LABELS.PROJECT_DESCRIPTION,
       id: "description",
-      limitations: [{ regex: /.{0,1000}/ }],
+      limitations: [{ regex: /^.{0,1000}$/ }],
     },
     employmentType: {
       label: LABELS.PROJECT_EMPLOYMENT_TYPE,
       id: "employmentType",
-      limitations: [{ regex: /.{0,15}/ }],
+      limitations: [{ regex: /^.{0,15}$/ }],
       options: EMPLOYMENT_TYPE_FIELDS,
     },
     industry: {
       label: LABELS.PROJECT_INDUSTRY,
       id: "industry",
-      limitations: [{ regex: /.{0,25}/ }],
+      limitations: [{ regex: /^.{0,25}$/ }],
       options: INDUSTRY_FIELDS,
     },
     name: {
       label: LABELS.PROJECT_NAME,
       id: "name",
-      limitations: [{ regex: /.{0,50}/ }],
+      limitations: [{ regex: /^.{0,50}$/ }],
     },
     role: {
       label: LABELS.PROJECT_ROLE,
       id: "role",
-      limitations: [{ regex: /.{0,25}/ }],
+      limitations: [{ regex: /^.{0,25}$/ }],
     },
   };
 

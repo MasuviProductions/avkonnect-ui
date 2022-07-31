@@ -35,23 +35,23 @@ const CERTIFICATION_TEXT_FIELDS_CONFIG: Record<
   description: {
     label: LABELS.CERTIFICATION_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /.{0,1000}/ }],
+    limitations: [{ regex: /^.{0,1000}$/ }],
   },
   industry: {
     label: LABELS.CERTIFICATION_INDUSTRY,
     id: "industry",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ regex: /^.{0,25}$/ }],
     options: INDUSTRY_FIELDS,
   },
   issuerName: {
     label: LABELS.CERTIFICATION_ISSUER_NAME,
     id: "issuer",
-    limitations: [{ regex: /.{0,50}/ }],
+    limitations: [{ regex: /^.{0,50}$/ }],
   },
   link: {
     label: LABELS.CERTIFICATION_LINK,
     id: "link",
-    limitations: [{ regex: /.{0,100}/ }],
+    limitations: [{ regex: /^.{0,100}$/ }],
   },
 };
 
