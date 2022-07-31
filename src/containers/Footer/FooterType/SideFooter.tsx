@@ -24,7 +24,9 @@ const SideFooter: React.FC = () => {
         </Grid>
         <Grid item mr={2}>
           <Link href={LABELS.COMPANY_WA_LINK} passHref>
-            <Typography sx={linkSx}>Whatsapp Us</Typography>
+            <a target="_blank" rel="noopener noreferrer">
+              <Typography sx={linkSx}>Whatsapp Us</Typography>
+            </a>
           </Link>
         </Grid>
         <Grid item xs={12} mt={1}>

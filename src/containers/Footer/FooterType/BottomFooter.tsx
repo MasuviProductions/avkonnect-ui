@@ -23,12 +23,14 @@ const BottomFooter: React.FC = () => {
       <Container maxWidth="lg">
         <Grid container alignItems="center" textAlign="center">
           <Grid item p={2} md={4} sm={4} xs={12} mt={1}>
-            <Image
-              src={PNG.AvkDeskLogo}
-              alt={LABELS.TITLE_LOGO}
-              width="150"
-              height="50"
-            />
+            <Link href={APP_ROUTES.ROOT.route} passHref>
+              <Image
+                src={PNG.AvkDeskLogo}
+                alt={LABELS.TITLE_LOGO}
+                width="150"
+                height="50"
+              />
+            </Link>
           </Grid>
           <Grid item md={4} sm={4} xs={12} mb={1}>
             <Grid container justifyContent="center">
@@ -49,7 +51,9 @@ const BottomFooter: React.FC = () => {
               </Grid>
               <Grid item mr={2}>
                 <Link href={LABELS.COMPANY_WA_LINK} passHref>
-                  <Typography sx={linkSx}>Message Us</Typography>
+                  <a target="_blank" rel="noopener noreferrer">
+                    <Typography sx={linkSx}>Message Us</Typography>
+                  </a>
                 </Link>
               </Grid>
             </Grid>

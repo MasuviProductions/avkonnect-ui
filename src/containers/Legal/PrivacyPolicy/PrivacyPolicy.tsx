@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { LABELS } from "../../../constants/labels";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
+import Footer from "../../Footer";
 import PrivacyPolicySkeleton from "./PrivacyPolicy.Skeleton";
 import {
   PrivacyPolicyIntro,
@@ -39,6 +40,7 @@ const PrivacyPolicy: ReactFCWithSkeleton = () => {
           <PrivacyPolicyContact />
         </Grid>
       </Grid>
+      <Footer footerType="bottom" />
     </Container>
   );
 };

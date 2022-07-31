@@ -7,6 +7,7 @@ import { LABELS } from "../../constants/labels";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import AboutUsSkeleton from "./AboutUsSkeleton";
 import { compile } from "path-to-regexp";
+import Footer from "../Footer";
 
 interface IAboutUsProps {}
 
@@ -86,6 +87,9 @@ const AboutUs: ReactFCWithSkeleton<IAboutUsProps> = () => {
           <Image src={PNG.MadeInIndia} alt={LABELS.MADE_IN_INDIA} />
         </Grid>
       </Grid>
+      <Box mt={1}>
+        <Footer footerType="bottom" />
+      </Box>
     </Container>
   );
 };
