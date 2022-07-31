@@ -32,6 +32,7 @@ import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsW
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
 import { getURLFormattedMessage } from "../../../utils/generic";
+import { getDateRangeValidity } from "../../../utils/form";
 
 interface IExperienceFormProps {
   experience?: IUserExperienceApiModel;
@@ -105,7 +106,10 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
   };
 
   const handleSaveExperience = () => {
-    if (onValidateAllFields()) {
+    if (
+      onValidateAllFields() &&
+      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
+    ) {
       const urlFormattedDescription = getURLFormattedMessage(
         textFields.description.value
       );

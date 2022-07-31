@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import { LABELS } from "../constants/labels";
 import {
   IDateField,
@@ -36,6 +37,20 @@ export const getFieldValidity = (
     isValid: true,
   };
   return fieldValidity;
+};
+
+export const getDateRangeValidity = (
+  fromDate: Dayjs | null,
+  toDate: Dayjs | null
+): boolean => {
+  let isValid = false;
+
+  if (toDate && fromDate) {
+    if (toDate >= fromDate) {
+      isValid = true;
+    }
+  }
+  return isValid;
 };
 
 export const isFieldValueLimited = (

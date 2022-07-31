@@ -31,6 +31,7 @@ import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsW
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
 import { getURLFormattedMessage } from "../../../utils/generic";
+import { getDateRangeValidity } from "../../../utils/form";
 
 interface ICertificationFormProps {
   certification?: IUserCertificationApiModel;
@@ -110,7 +111,10 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
-    if (onValidateAllFields()) {
+    if (
+      onValidateAllFields() &&
+      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
+    ) {
       const urlFormattedDescription: string = getURLFormattedMessage(
         textFields.description.value
       );
