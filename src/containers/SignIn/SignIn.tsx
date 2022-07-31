@@ -10,6 +10,7 @@ import { ReactFCWithSkeleton } from "../../interfaces/app";
 import SignInGrid from "./SignInGrid";
 import DescriptionGrid from "./DescriptionGrid";
 import SignInSkeleton from "./SignInSkeleton";
+import Footer from "../Footer";
 
 const SignIn: ReactFCWithSkeleton = () => {
   const router = useRouter();
@@ -38,17 +39,22 @@ const SignIn: ReactFCWithSkeleton = () => {
 
   if (!authUser)
     return (
-      <Box sx={landingBoxSx}>
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item md={8} xs={12}>
-            <DescriptionGrid handleSignIn={handleSignIn} />
-          </Grid>
-          <Hidden mdDown>
-            <Grid item md={4}>
-              <SignInGrid handleSignIn={handleSignIn} />
+      <Box>
+        <Box sx={landingBoxSx}>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item md={8} xs={12}>
+              <DescriptionGrid handleSignIn={handleSignIn} />
             </Grid>
-          </Hidden>
-        </Grid>
+            <Hidden mdDown>
+              <Grid item md={4}>
+                <SignInGrid handleSignIn={handleSignIn} />
+              </Grid>
+            </Hidden>
+          </Grid>
+        </Box>
+        <Hidden mdUp>
+          <Footer footerType="bottom" />
+        </Hidden>
       </Box>
     );
   else return <></>;

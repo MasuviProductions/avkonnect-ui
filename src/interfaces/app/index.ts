@@ -105,3 +105,5 @@ export interface IApiResponseState<T = unknown> {
   loading: boolean;
   error?: unknown;
 }
+
+export type IFooterType = "bottom" | "side";
