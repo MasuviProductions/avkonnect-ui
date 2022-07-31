@@ -91,9 +91,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
     experienceTextFieldsConfig
   );
 
-  const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
-    experienceDateRangeFieldsConfig
-  );
+  const { dateValues, isDateRangeValid, onDateValueChange } =
+    useDateRangeFieldsWithValidation(experienceDateRangeFieldsConfig);
 
   const [isPresentlyWorking, setIsPresentlyWorking] = useState(
     experience?.endDate === MAX_DATE
@@ -106,10 +105,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
   };
 
   const handleSaveExperience = () => {
-    if (
-      onValidateAllFields() &&
-      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
-    ) {
+    if (onValidateAllFields()) {
       const urlFormattedDescription = getURLFormattedMessage(
         textFields.description.value
       );
@@ -313,7 +309,12 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={!isFormInitialized || !isFormValid || saveLoading}
+                disabled={
+                  !isDateRangeValid ||
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  saveLoading
+                }
                 onClick={handleSaveExperience}
               >
                 {LABELS.SAVE}

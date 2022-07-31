@@ -96,9 +96,8 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
     certificationTextFieldsConfig
   );
 
-  const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
-    certificationDateRangeFieldsConfig
-  );
+  const { dateValues, isDateRangeValid, onDateValueChange } =
+    useDateRangeFieldsWithValidation(certificationDateRangeFieldsConfig);
 
   const [isPresentlyWorking, setIsPresentlyWorking] = useState(
     certification?.expiresAt === MAX_DATE
@@ -111,10 +110,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
-    if (
-      onValidateAllFields() &&
-      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
-    ) {
+    if (onValidateAllFields()) {
       const urlFormattedDescription: string = getURLFormattedMessage(
         textFields.description.value
       );
@@ -313,7 +309,12 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={!isFormInitialized || !isFormValid || saveLoading}
+                disabled={
+                  !isDateRangeValid ||
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  saveLoading
+                }
                 onClick={handleSaveCertification}
               >
                 {LABELS.SAVE}

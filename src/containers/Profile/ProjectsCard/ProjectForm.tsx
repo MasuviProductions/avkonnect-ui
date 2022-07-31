@@ -89,9 +89,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
     onValidateAllFields,
   } = useTextFieldsWithValidation<IProjectTextFields>(projectTextFieldsConfig);
 
-  const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
-    projectDateRangeFieldsConfig
-  );
+  const { dateValues, isDateRangeValid, onDateValueChange } =
+    useDateRangeFieldsWithValidation(projectDateRangeFieldsConfig);
 
   const [isPresentlyWorking, setIsPresentlyWorking] = useState(
     project?.endDate === MAX_DATE
@@ -104,10 +103,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
   };
 
   const handleSaveProject = () => {
-    if (
-      onValidateAllFields() &&
-      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
-    ) {
+    if (onValidateAllFields()) {
       const urlFormattedDescription: string = getURLFormattedMessage(
         textFields.description.value
       );
@@ -331,7 +327,12 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={!isFormInitialized || !isFormValid || saveLoading}
+                disabled={
+                  !isDateRangeValid ||
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  saveLoading
+                }
                 onClick={handleSaveProject}
               >
                 {LABELS.SAVE}
