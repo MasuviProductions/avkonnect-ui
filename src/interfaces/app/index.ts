@@ -40,6 +40,7 @@ export interface ITextFieldPattern {
   regex: RegExp;
   message?: string;
   messageType?: "warning" | "error";
+  maxCharacters?: number;
 }
 
 export interface ITextFieldConfig {

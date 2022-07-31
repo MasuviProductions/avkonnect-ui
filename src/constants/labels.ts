@@ -39,6 +39,11 @@ export const LABELS = {
   FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
 
+  // Footer
+  LINKS_HEADER: "Links",
+  WHATSAPP_US_TITLE: "WhatsApp Us",
+  FOLLOW_US_HEADER: "Follow Us",
+
   // Logos
   TITLE_LOGO: "AVKonnect Logo",
   GOOGLE_LOGO: "Google Logo",

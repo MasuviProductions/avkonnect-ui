@@ -7,12 +7,12 @@ const SIGN_IN_FIELDS_CONFIG: Record<ISignInTextFields, ITextFieldConfig> = {
   emailId: {
     label: LABELS.EMAIL_ID,
     id: "emailId",
-    limitations: [{ regex: /^.{0,75}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 75 }],
   },
   password: {
     label: LABELS.PASSWORD,
     id: "password",
-    limitations: [{ regex: /^.{0,20}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 20 }],
   },
 };
 

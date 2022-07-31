@@ -35,24 +35,28 @@ const BottomFooter: React.FC = () => {
           <Grid item md={4} sm={4} xs={12} mb={1}>
             <Grid container justifyContent="center">
               <Grid item xs={12}>
-                <Typography color="secondary" variant="subtitle2">
-                  Useful Links
+                <Typography sx={miniHeadingSx} variant="subtitle1">
+                  {LABELS.LINKS_HEADER}
                 </Typography>
               </Grid>
               <Grid item mr={2}>
                 <Link href={APP_ROUTES.LEGAL_PRIVACY_POLICY.route} passHref>
-                  <Typography sx={linkSx}>Privacy Policy</Typography>
+                  <Typography sx={linkSx}>
+                    {LABELS.PRIVACY_POLICY_TITLE}
+                  </Typography>
                 </Link>
               </Grid>
               <Grid item mr={2}>
                 <Link href={APP_ROUTES.ABOUT.route} passHref>
-                  <Typography sx={linkSx}>About Us</Typography>
+                  <Typography sx={linkSx}>{LABELS.ABOUT_US}</Typography>
                 </Link>
               </Grid>
               <Grid item mr={2}>
                 <Link href={LABELS.COMPANY_WA_LINK} passHref>
                   <a target="_blank" rel="noopener noreferrer">
-                    <Typography sx={linkSx}>Message Us</Typography>
+                    <Typography sx={linkSx}>
+                      {LABELS.WHATSAPP_US_TITLE}
+                    </Typography>
                   </a>
                 </Link>
               </Grid>
@@ -61,8 +65,8 @@ const BottomFooter: React.FC = () => {
           <Grid item md={4} sm={4} xs={12} mt={1}>
             <Grid container justifyContent="center">
               <Grid item xs={12}>
-                <Typography color="secondary" variant="subtitle2">
-                  Follow Us
+                <Typography sx={miniHeadingSx} variant="subtitle1">
+                  {LABELS.FOLLOW_US_HEADER}
                 </Typography>
               </Grid>
               <Grid item mr={2}>
@@ -97,7 +101,7 @@ const BottomFooter: React.FC = () => {
           </Grid>
           <Grid item xs={12} mb={1} mt={1}>
             <Typography sx={copyrightSx}>
-              AVKonnect. &copy; {getCurrentYear()}
+              {LABELS.TITLE}. &copy; {getCurrentYear()}
             </Typography>
           </Grid>
         </Grid>
@@ -120,6 +124,11 @@ const linkSx: SxProps<Theme> = (theme: Theme) => ({
     cursor: "pointer",
     textShadow: `0px 0px 2px ${theme.palette.text.secondary}`,
   },
+});
+
+const miniHeadingSx: SxProps<Theme> = (theme: Theme) => ({
+  color: theme.palette.navbar.contrastText,
+  fontWeight: "600",
 });
 
 const facebookIconSx: SxProps<Theme> = (theme: Theme) => ({
@@ -162,4 +171,3 @@ const copyrightSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 export default BottomFooter;
-2;

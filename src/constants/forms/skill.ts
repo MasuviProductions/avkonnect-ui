@@ -17,7 +17,7 @@ const SKILL_ENDORSE_TEXT_FIELDS_CONFIG: Record<
   relationship: {
     label: LABELS.ENDORSEMENT_RELATIONSHIP,
     id: "feedbackType",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 30 }],
     options: SKILL_ENDORSE_RELATION_TYPE_FIELDS,
   },
 };

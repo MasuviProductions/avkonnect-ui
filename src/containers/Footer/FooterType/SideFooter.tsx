@@ -14,18 +14,18 @@ const SideFooter: React.FC = () => {
       <Grid container mt={2} justifyContent="center" textAlign="center">
         <Grid item mr={2}>
           <Link href={APP_ROUTES.LEGAL_PRIVACY_POLICY.route} passHref>
-            <Typography sx={linkSx}>Privacy Policy</Typography>
+            <Typography sx={linkSx}>{LABELS.PRIVACY_POLICY_TITLE}</Typography>
           </Link>
         </Grid>
         <Grid item mr={2}>
           <Link href={APP_ROUTES.ABOUT.route} passHref>
-            <Typography sx={linkSx}>About Us</Typography>
+            <Typography sx={linkSx}>{LABELS.ABOUT_US}</Typography>
           </Link>
         </Grid>
         <Grid item mr={2}>
           <Link href={LABELS.COMPANY_WA_LINK} passHref>
             <a target="_blank" rel="noopener noreferrer">
-              <Typography sx={linkSx}>Whatsapp Us</Typography>
+              <Typography sx={linkSx}>{LABELS.WHATSAPP_US_TITLE}</Typography>
             </a>
           </Link>
         </Grid>
@@ -63,7 +63,7 @@ const SideFooter: React.FC = () => {
         </Grid>
         <Grid item xs={12} ml={1}>
           <Typography sx={copyrightSx}>
-            AVKonnect. &copy; {getCurrentYear()}
+            {LABELS.TITLE}. &copy; {getCurrentYear()}
           </Typography>
         </Grid>
       </Grid>

@@ -35,11 +35,19 @@ export const isFieldValueLimited = (
   value: string
 ): boolean => {
   for (let index = 0; index < limitations.length; index += 1) {
+    let isValid = true;
     // TODO: Check for regex
+    let maxCharacters = limitations[index].maxCharacters;
     let regex = new RegExp(limitations[index].regex, "i");
-    if (regex.test(value)) {
-      return true;
+    if (maxCharacters && value.length <= maxCharacters) {
+      isValid = isValid && true;
+    } else {
+      isValid = false;
     }
+    if (regex.test(value)) {
+      isValid = isValid && true;
+    }
+    return isValid;
   }
   return false;
 };

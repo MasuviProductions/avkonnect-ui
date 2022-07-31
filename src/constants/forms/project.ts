@@ -38,34 +38,34 @@ const PROJECT_TEXT_FIELDS_CONFIG: Record<IProjectTextFields, ITextFieldConfig> =
     companyName: {
       label: LABELS.PROJECT_COMPANY_NAME,
       id: "companyName",
-      limitations: [{ regex: /^.{0,50}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 50 }],
     },
     description: {
       label: LABELS.PROJECT_DESCRIPTION,
       id: "description",
-      limitations: [{ regex: /^.{0,1000}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 1000 }],
     },
     employmentType: {
       label: LABELS.PROJECT_EMPLOYMENT_TYPE,
       id: "employmentType",
-      limitations: [{ regex: /^.{0,15}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 30 }],
       options: EMPLOYMENT_TYPE_FIELDS,
     },
     industry: {
       label: LABELS.PROJECT_INDUSTRY,
       id: "industry",
-      limitations: [{ regex: /^.{0,25}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 30 }],
       options: INDUSTRY_FIELDS,
     },
     name: {
       label: LABELS.PROJECT_NAME,
       id: "name",
-      limitations: [{ regex: /^.{0,50}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 100 }],
     },
     role: {
       label: LABELS.PROJECT_ROLE,
       id: "role",
-      limitations: [{ regex: /^.{0,25}$/ }],
+      limitations: [{ regex: /.*/, maxCharacters: 50 }],
     },
   };
 

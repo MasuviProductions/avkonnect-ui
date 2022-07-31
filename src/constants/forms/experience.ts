@@ -39,29 +39,29 @@ const EXPERIENCE_TEXT_FIELDS_CONFIG: Record<
   companyName: {
     label: LABELS.EXPERIENCE_COMPANY_NAME,
     id: "companyName",
-    limitations: [{ regex: /^.{0,50}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 100 }],
   },
   description: {
     label: LABELS.EXPERIENCE_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /^.{0,1000}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 1000 }],
   },
   employmentType: {
     label: LABELS.EXPERIENCE_EMPLOYMENT_TYPE,
     id: "employmentType",
-    limitations: [{ regex: /^.{0,15}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 30 }],
     options: EMPLOYMENT_TYPE_FIELDS,
   },
   industry: {
     label: LABELS.EXPERIENCE_INDUSTRY,
     id: "industry",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 30 }],
     options: INDUSTRY_FIELDS,
   },
   role: {
     label: LABELS.EXPERIENCE_ROLE,
     id: "role",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ regex: /.*/, maxCharacters: 50 }],
   },
 };
 
