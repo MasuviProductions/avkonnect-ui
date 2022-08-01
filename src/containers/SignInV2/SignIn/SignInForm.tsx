@@ -17,6 +17,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignInUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
+import { setTextFieldColor } from "../../../utils/generic";
 
 interface ISignInFormProps {
   saveLoading?: boolean;
@@ -67,11 +68,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             sx={signInTextFieldSx}
             required={textFields.emailId.isRequired}
             error={textFields.emailId.isError || false}
-            color={
-              textFields.emailId.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.emailId.messageType)}
             helperText={textFields.emailId.message}
             fullWidth
           />
@@ -87,11 +84,7 @@ const SignInForm: React.FC<ISignInFormProps> = ({
             sx={signInTextFieldSx}
             required={textFields.password.isRequired}
             error={textFields.password.isError || false}
-            color={
-              textFields.password.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.password.messageType)}
             helperText={textFields.password.message}
             fullWidth
           />

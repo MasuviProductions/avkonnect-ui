@@ -30,7 +30,10 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
-import { getURLFormattedMessage } from "../../../utils/generic";
+import {
+  getURLFormattedMessage,
+  setTextFieldColor,
+} from "../../../utils/generic";
 import { getDateRangeValidity } from "../../../utils/form";
 
 interface ICertificationFormProps {
@@ -152,9 +155,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             sx={textField}
             required={textFields.name.isRequired}
             error={textFields.name.isError || false}
-            color={
-              textFields.name.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.name.messageType)}
             helperText={textFields.name.message}
           />
         </Grid>
@@ -172,11 +173,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             sx={textField}
             required={textFields.issuerName.isRequired}
             error={textFields.issuerName.isError || false}
-            color={
-              textFields.issuerName.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.issuerName.messageType)}
             helperText={textFields.issuerName.message}
           />
         </Grid>
@@ -193,11 +190,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
                 label={textFields.industry.label}
                 required={textFields.industry.isRequired}
                 error={textFields.industry.isError || false}
-                color={
-                  textFields.industry.messageType === "warning"
-                    ? "warning"
-                    : undefined
-                }
+                color={setTextFieldColor(textFields.industry.messageType)}
                 onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
@@ -267,11 +260,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             sx={textField}
             required={textFields.description.isRequired}
             error={textFields.description.isError || false}
-            color={
-              textFields.description.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.description.messageType)}
             helperText={textFields.description.message}
           />
         </Grid>
@@ -285,9 +274,7 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             sx={textField}
             required={textFields.link.isRequired}
             error={textFields.link.isError || false}
-            color={
-              textFields.link.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.link.messageType)}
             helperText={textFields.link.message}
           />
         </Grid>

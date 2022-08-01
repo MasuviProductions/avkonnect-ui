@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import cloneDeep from "lodash.clonedeep";
 import { useCallback, useEffect, useState } from "react";
+import { MIN_CALENDAR_DATE } from "../constants/app";
 import {
   IDateRange,
   IDateFieldConfig,
@@ -17,7 +18,7 @@ const useDateRangeFieldsWithValidation = (
       value: dateConfig.from.value,
       views: dateConfig.from.views,
       label: dateConfig.from.label,
-      minDate: dayjs(new Date("01-01-1910")),
+      minDate: dayjs(new Date(MIN_CALENDAR_DATE)),
       maxDate: dayjs(new Date(Date.now())),
     },
     to: {
@@ -25,7 +26,7 @@ const useDateRangeFieldsWithValidation = (
       value: dateConfig.to.value,
       views: dateConfig.to.views,
       label: dateConfig.to.label,
-      minDate: dayjs(new Date("01-01-1910")),
+      minDate: dayjs(new Date(MIN_CALENDAR_DATE)),
       maxDate: dayjs(new Date(Date.now())),
     },
   });

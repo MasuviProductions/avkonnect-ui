@@ -16,6 +16,7 @@ import {
   IUserNotificationRelatedUsersType,
   IUserNotificationResourceType,
 } from "../interfaces/api/external";
+import { ITextFieldMessageType } from "../interfaces/app";
 
 dayjs.extend(relativeTime);
 
@@ -136,6 +137,12 @@ export const getTimeAgo = (unixTime: Date): string => {
 
 export const getCurrentYear = (): number => {
   return new Date().getFullYear();
+};
+
+export const setTextFieldColor = (
+  messageType: string | undefined
+): ITextFieldMessageType | undefined => {
+  return messageType === "warning" ? "warning" : undefined;
 };
 
 export const getNotificationTypeBasedLink = (

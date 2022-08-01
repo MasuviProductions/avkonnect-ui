@@ -4,6 +4,7 @@ import {
   ITextFieldConfig,
   IDateRangeType,
 } from "../../interfaces/app";
+import { MIN_CALENDAR_DATE } from "../app";
 import { LABELS } from "../labels";
 
 type IExperienceTextFields =
@@ -79,7 +80,7 @@ const EXPERIENCE_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.EXPERIENCE_START_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
   to: {
@@ -87,7 +88,7 @@ const EXPERIENCE_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.EXPERIENCE_END_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
 };

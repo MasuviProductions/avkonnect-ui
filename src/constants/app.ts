@@ -85,6 +85,8 @@ export const MAX_CERTIFICATIONS_LIMIT = 8;
 
 export const MAX_DATE = 8640000000000000;
 
+export const MIN_CALENDAR_DATE = "01-01-1910";
+
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
 
 export const MAX_NOTIFICATION_BADGE_LIMIT = 99;

@@ -17,6 +17,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignUpUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
+import { setTextFieldColor } from "../../../utils/generic";
 
 interface ISignUpFormProps {
   saveLoading?: boolean;
@@ -67,9 +68,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             sx={signUpTextFieldSx}
             required={textFields.fname.isRequired}
             error={textFields.fname.isError || false}
-            color={
-              textFields.fname.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.fname.messageType)}
             helperText={textFields.fname.message}
             fullWidth
           />
@@ -85,9 +84,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             sx={signUpTextFieldSx}
             required={textFields.lname.isRequired}
             error={textFields.lname.isError || false}
-            color={
-              textFields.lname.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.lname.messageType)}
             helperText={textFields.lname.message}
             fullWidth
           />
@@ -103,11 +100,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             sx={signUpTextFieldSx}
             required={textFields.emailId.isRequired}
             error={textFields.emailId.isError || false}
-            color={
-              textFields.emailId.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.emailId.messageType)}
             helperText={textFields.emailId.message}
             fullWidth
           />
@@ -123,11 +116,7 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
             sx={signUpTextFieldSx}
             required={textFields.password.isRequired}
             error={textFields.password.isError || false}
-            color={
-              textFields.password.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.password.messageType)}
             helperText={textFields.password.message}
             fullWidth
           />

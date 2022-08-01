@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { IDateFieldConfig, ITextFieldConfig } from "../../../interfaces/app";
+import { MIN_CALENDAR_DATE } from "../../app";
 import { LABELS } from "../../labels";
 import { CITIES } from "./indian-cities";
 
@@ -52,7 +53,7 @@ const USER_INFO_DATE_FIELDS_CONFIG: Record<
     value: null,
     views: ["day", "month", "year"],
     label: LABELS.USER_INFO_DOB,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
 };

@@ -43,14 +43,12 @@ export const getDateRangeValidity = (
   fromDate: Dayjs | null,
   toDate: Dayjs | null
 ): boolean => {
-  let isValid = false;
-
   if (toDate && fromDate) {
     if (toDate >= fromDate) {
-      isValid = true;
+      return true;
     }
   }
-  return isValid;
+  return false;
 };
 
 export const isFieldValueLimited = (

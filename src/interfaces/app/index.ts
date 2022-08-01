@@ -35,11 +35,12 @@ export interface IImageSelectorAttrib {
 }
 
 // Text Field Interfaces
+export type ITextFieldMessageType = "warning" | "error";
 
 export interface ITextFieldPattern {
   regex: RegExp;
   message?: string;
-  messageType?: "warning" | "error";
+  messageType?: ITextFieldMessageType;
 }
 
 export interface ITextFieldConfig {

@@ -31,7 +31,10 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
-import { getURLFormattedMessage } from "../../../utils/generic";
+import {
+  getURLFormattedMessage,
+  setTextFieldColor,
+} from "../../../utils/generic";
 import { getDateRangeValidity } from "../../../utils/form";
 
 interface IProjectFormProps {
@@ -146,9 +149,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.name.isRequired}
             error={textFields.name.isError || false}
-            color={
-              textFields.name.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.name.messageType)}
             helperText={textFields.name.message}
           />
         </Grid>
@@ -166,11 +167,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.companyName.isRequired}
             error={textFields.companyName.isError || false}
-            color={
-              textFields.companyName.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.companyName.messageType)}
             helperText={textFields.companyName.message}
           />
         </Grid>
@@ -187,11 +184,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 label={textFields.industry.label}
                 required={textFields.industry.isRequired}
                 error={textFields.industry.isError || false}
-                color={
-                  textFields.industry.messageType === "warning"
-                    ? "warning"
-                    : undefined
-                }
+                color={setTextFieldColor(textFields.industry.messageType)}
                 onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
@@ -212,9 +205,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.role.isRequired}
             error={textFields.role.isError || false}
-            color={
-              textFields.role.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.role.messageType)}
             helperText={textFields.role.message}
           />
         </Grid>
@@ -231,11 +222,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 label={textFields.employmentType.label}
                 required={textFields.employmentType.isRequired}
                 error={textFields.employmentType.isError || false}
-                color={
-                  textFields.employmentType.messageType === "warning"
-                    ? "warning"
-                    : undefined
-                }
+                color={setTextFieldColor(textFields.employmentType.messageType)}
                 onBlur={onFieldValueBlur("employmentType")}
                 {...params}
               />
@@ -301,11 +288,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.description.isRequired}
             error={textFields.description.isError || false}
-            color={
-              textFields.description.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.description.messageType)}
             helperText={textFields.description.message}
           />
         </Grid>

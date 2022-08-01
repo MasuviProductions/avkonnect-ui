@@ -31,7 +31,10 @@ import {
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/app";
-import { getURLFormattedMessage } from "../../../utils/generic";
+import {
+  getURLFormattedMessage,
+  setTextFieldColor,
+} from "../../../utils/generic";
 import { getDateRangeValidity } from "../../../utils/form";
 
 interface IExperienceFormProps {
@@ -146,11 +149,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.companyName.isRequired}
             error={textFields.companyName.isError || false}
-            color={
-              textFields.companyName.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.companyName.messageType)}
             helperText={textFields.companyName.message}
           />
         </Grid>
@@ -166,11 +165,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
                 label={textFields.industry.label}
                 required={textFields.industry.isRequired}
                 error={textFields.industry.isError || false}
-                color={
-                  textFields.industry.messageType === "warning"
-                    ? "warning"
-                    : undefined
-                }
+                color={setTextFieldColor(textFields.industry.messageType)}
                 helperText={textFields.industry.message}
                 {...params}
               />
@@ -191,9 +186,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.role.isRequired}
             error={textFields.role.isError || false}
-            color={
-              textFields.role.messageType === "warning" ? "warning" : undefined
-            }
+            color={setTextFieldColor(textFields.role.messageType)}
             helperText={textFields.role.message}
           />
         </Grid>
@@ -209,11 +202,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
                 label={textFields.employmentType.label}
                 required={textFields.employmentType.isRequired}
                 error={textFields.employmentType.isError || false}
-                color={
-                  textFields.employmentType.messageType === "warning"
-                    ? "warning"
-                    : undefined
-                }
+                color={setTextFieldColor(textFields.employmentType.messageType)}
                 helperText={textFields.employmentType.message}
                 {...params}
               />
@@ -283,11 +272,7 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.description.isRequired}
             error={textFields.description.isError || false}
-            color={
-              textFields.description.messageType === "warning"
-                ? "warning"
-                : undefined
-            }
+            color={setTextFieldColor(textFields.description.messageType)}
             helperText={textFields.description.message}
           />
         </Grid>
