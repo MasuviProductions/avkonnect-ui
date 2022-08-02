@@ -259,4 +259,7 @@ export const LABELS = {
   // Legal Pages
   PRIVACY_POLICY_TITLE: "Privacy Policy",
   PRIVACY_POLICY_LAST_UPDATED: "Last Updated on 3ʳᵈ July, 2022",
+
+  // Form Fields Generic
+  FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
 };

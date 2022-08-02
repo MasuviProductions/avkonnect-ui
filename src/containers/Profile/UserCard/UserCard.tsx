@@ -33,7 +33,7 @@ import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
 import dayjs from "dayjs";
-import { IGender } from "../../../constants/forms/user-info/user-info";
+import { IGender } from "../../../constants/forms/user-info";
 import useConnection from "../../../hooks/useConnection";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import WithdrawConnectionModal from "../../../components/Connections/WithdrawConnectionModal/WithdrawConnectionModal";
@@ -292,12 +292,16 @@ const UserCard: React.FC<IUserCardProps> = () => {
                     )}
 
                     {location && (
-                      <Grid item xs={12}>
+                      <Grid item xs={12} mt={0.5}>
                         <Grid container alignItems="flex-start" spacing={1}>
                           <Grid item>
                             <LocationOnIcon fontSize="small" />
                           </Grid>
-                          <Grid item>{location}</Grid>
+                          <Grid item>
+                            <Typography variant="subtitle2">
+                              {location}
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
                     )}

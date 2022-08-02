@@ -1,11 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import cloneDeep from "lodash.clonedeep";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { MIN_CALENDAR_DATE } from "../constants/forms/generic";
 import {
   IDateRange,
   IDateFieldConfig,
   IDateRangeType,
 } from "../interfaces/app";
+import { getDateRangeValidity } from "../utils/form";
 
 const useDateRangeFieldsWithValidation = (
   dateConfig: Record<IDateRangeType, IDateFieldConfig>
@@ -16,7 +18,7 @@ const useDateRangeFieldsWithValidation = (
       value: dateConfig.from.value,
       views: dateConfig.from.views,
       label: dateConfig.from.label,
-      minDate: dayjs(new Date(0)),
+      minDate: dayjs(new Date(MIN_CALENDAR_DATE)),
       maxDate: dayjs(new Date(Date.now())),
     },
     to: {
@@ -24,10 +26,11 @@ const useDateRangeFieldsWithValidation = (
       value: dateConfig.to.value,
       views: dateConfig.to.views,
       label: dateConfig.to.label,
-      minDate: dayjs(new Date(0)),
+      minDate: dayjs(new Date(MIN_CALENDAR_DATE)),
       maxDate: dayjs(new Date(Date.now())),
     },
   });
+  const [isDateRangeValid, setIsDateRangeValid] = useState<boolean>(false);
 
   const onDateValueChange = useCallback(
     (date: Dayjs | null, dateType: IDateRangeType) => {
@@ -47,7 +50,13 @@ const useDateRangeFieldsWithValidation = (
     []
   );
 
-  return { dateValues, onDateValueChange };
+  useEffect(() => {
+    setIsDateRangeValid(
+      getDateRangeValidity(dateValues.from.value, dateValues.to.value)
+    );
+  }, [dateValues.from.value, dateValues.to.value]);
+
+  return { dateValues, isDateRangeValid, onDateValueChange };
 };
 
 export default useDateRangeFieldsWithValidation;

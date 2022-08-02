@@ -15,7 +15,7 @@ export interface AVConnectApiResponsePagination {
   count: number;
 }
 
-export interface AVConnectApiResponse<T = undefined> {
+export interface AVKonnectApiResponse<T = undefined> {
   success: boolean;
   data?: T;
   error?: AVConnectApiResponseError;

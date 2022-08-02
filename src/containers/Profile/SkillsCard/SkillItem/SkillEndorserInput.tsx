@@ -36,10 +36,15 @@ const SkillEndorserInput: React.FC<ISkillEndorserInputProps> = ({
 }) => {
   const { user } = useUserContext();
 
-  const { textFields, onFieldValueChange } =
-    useTextFieldsWithValidation<ISkillEndorseTextFields>(
-      SKILL_ENDORSE_TEXT_FIELDS_CONFIG
-    );
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<ISkillEndorseTextFields>(
+    SKILL_ENDORSE_TEXT_FIELDS_CONFIG
+  );
 
   const [rating, setRating] = useState<number>(3);
 
@@ -51,7 +56,9 @@ const SkillEndorserInput: React.FC<ISkillEndorserInputProps> = ({
   };
 
   const handleSubmitEndorsementDetails = () => {
-    onSave?.(rating, textFields.relationship.value);
+    if (onValidateAllFields()) {
+      onSave?.(rating, textFields.relationship.value);
+    }
   };
 
   const handleSkipEndorsementDetails = () => onSkip?.();
@@ -99,11 +106,15 @@ const SkillEndorserInput: React.FC<ISkillEndorserInputProps> = ({
                   sx={textField}
                   renderInput={params => (
                     <TextField
-                      helperText={textFields.relationship.message}
-                      error={
-                        !!(textFields.relationship.messageType === "error")
-                      }
                       label={textFields.relationship.label}
+                      required={textFields.relationship.isRequired}
+                      error={textFields.relationship.isError || false}
+                      color={
+                        textFields.relationship.messageType === "warning"
+                          ? "warning"
+                          : undefined
+                      }
+                      helperText={textFields.relationship.message}
                       {...params}
                     />
                   )}
@@ -127,7 +138,10 @@ const SkillEndorserInput: React.FC<ISkillEndorserInputProps> = ({
                 </Button>
               </Grid>
               <Grid item>
-                <CustomButton onClick={handleSubmitEndorsementDetails}>
+                <CustomButton
+                  disabled={!isFormInitialized || !isFormValid}
+                  onClick={handleSubmitEndorsementDetails}
+                >
                   {LABELS.SUBMIT}
                 </CustomButton>
               </Grid>

@@ -18,16 +18,19 @@ const FEEDBACK_TEXT_FIELDS_CONFIG: Record<
     id: "feedbackType",
     limitations: [{ regex: /.*/, maxCharacters: 30 }],
     options: FEEDBACK_TYPE_FIELDS,
+    isRequired: true,
   },
   description: {
     label: LABELS.FEEDBACK_DESCRIPTION,
     id: "description",
     limitations: [{ regex: /.*/, maxCharacters: 1000 }],
+    isRequired: true,
   },
   subject: {
     label: LABELS.FEEDBACK_SUBJECT,
     id: "subject",
     limitations: [{ regex: /.*/, maxCharacters: 15 }],
+    isRequired: true,
   },
 };
 

@@ -5,6 +5,7 @@ import {
   IDateRangeType,
 } from "../../interfaces/app";
 import { LABELS } from "../labels";
+import { MIN_CALENDAR_DATE } from "./generic";
 
 type IProjectTextFields =
   | "companyName"
@@ -39,33 +40,39 @@ const PROJECT_TEXT_FIELDS_CONFIG: Record<IProjectTextFields, ITextFieldConfig> =
       label: LABELS.PROJECT_COMPANY_NAME,
       id: "companyName",
       limitations: [{ regex: /.*/, maxCharacters: 50 }],
+      isRequired: true,
     },
     description: {
       label: LABELS.PROJECT_DESCRIPTION,
       id: "description",
       limitations: [{ regex: /.*/, maxCharacters: 1000 }],
+      isRequired: true,
     },
     employmentType: {
       label: LABELS.PROJECT_EMPLOYMENT_TYPE,
       id: "employmentType",
       limitations: [{ regex: /.*/, maxCharacters: 30 }],
       options: EMPLOYMENT_TYPE_FIELDS,
+      isRequired: true,
     },
     industry: {
       label: LABELS.PROJECT_INDUSTRY,
       id: "industry",
       limitations: [{ regex: /.*/, maxCharacters: 30 }],
       options: INDUSTRY_FIELDS,
+      isRequired: true,
     },
     name: {
       label: LABELS.PROJECT_NAME,
       id: "name",
       limitations: [{ regex: /.*/, maxCharacters: 100 }],
+      isRequired: true,
     },
     role: {
       label: LABELS.PROJECT_ROLE,
       id: "role",
       limitations: [{ regex: /.*/, maxCharacters: 50 }],
+      isRequired: true,
     },
   };
 
@@ -78,7 +85,7 @@ const PROJECT_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.PROJECT_START_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
   to: {
@@ -86,7 +93,7 @@ const PROJECT_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.PROJECT_END_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
 };
