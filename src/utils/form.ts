@@ -73,7 +73,7 @@ export const transformTextFieldConfigToFields = <T extends string>(
     fields[field as T] = {
       value: fieldsConfig[field as T].intialValue || "",
       message: "",
-      messageType: "",
+      messageType: undefined,
       label: fieldsConfig[field as T].label,
       options: fieldsConfig[field as T].options,
       isError: false,
