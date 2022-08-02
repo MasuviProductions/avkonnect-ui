@@ -33,7 +33,7 @@ import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/forms/generic";
 import {
   getURLFormattedMessage,
-  setTextFieldColor,
+  getTextFieldColorBasedOnMessageType,
 } from "../../../utils/generic";
 
 interface IProjectFormProps {
@@ -148,7 +148,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.name.isRequired}
             error={textFields.name.isError || false}
-            color={setTextFieldColor(textFields.name.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.name.messageType
+            )}
             helperText={textFields.name.message}
           />
         </Grid>
@@ -166,7 +168,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.companyName.isRequired}
             error={textFields.companyName.isError || false}
-            color={setTextFieldColor(textFields.companyName.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.companyName.messageType
+            )}
             helperText={textFields.companyName.message}
           />
         </Grid>
@@ -183,7 +187,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 label={textFields.industry.label}
                 required={textFields.industry.isRequired}
                 error={textFields.industry.isError || false}
-                color={setTextFieldColor(textFields.industry.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.industry.messageType
+                )}
                 onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
@@ -204,7 +210,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.role.isRequired}
             error={textFields.role.isError || false}
-            color={setTextFieldColor(textFields.role.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.role.messageType
+            )}
             helperText={textFields.role.message}
           />
         </Grid>
@@ -221,7 +229,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
                 label={textFields.employmentType.label}
                 required={textFields.employmentType.isRequired}
                 error={textFields.employmentType.isError || false}
-                color={setTextFieldColor(textFields.employmentType.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.employmentType.messageType
+                )}
                 onBlur={onFieldValueBlur("employmentType")}
                 {...params}
               />
@@ -287,7 +297,9 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             sx={textField}
             required={textFields.description.isRequired}
             error={textFields.description.isError || false}
-            color={setTextFieldColor(textFields.description.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.description.messageType
+            )}
             helperText={textFields.description.message}
           />
         </Grid>

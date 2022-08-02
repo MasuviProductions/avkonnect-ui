@@ -17,7 +17,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignInUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
-import { setTextFieldColor } from "../../../utils/generic";
+import { getTextFieldColorBasedOnMessageType } from "../../../utils/generic";
 
 interface ISignInFormProps {
   saveLoading?: boolean;
@@ -63,12 +63,14 @@ const SignInForm: React.FC<ISignInFormProps> = ({
           <TextField
             value={textFields.emailId.value}
             label={textFields.emailId.label}
-            onChange={event => onFieldValueChange(event, "emailId")}
+            onChange={(event) => onFieldValueChange(event, "emailId")}
             onBlur={onFieldValueBlur("emailId")}
             sx={signInTextFieldSx}
             required={textFields.emailId.isRequired}
             error={textFields.emailId.isError || false}
-            color={setTextFieldColor(textFields.emailId.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.emailId.messageType
+            )}
             helperText={textFields.emailId.message}
             fullWidth
           />
@@ -79,12 +81,14 @@ const SignInForm: React.FC<ISignInFormProps> = ({
           <TextField
             value={textFields.password.value}
             label={textFields.password.label}
-            onChange={event => onFieldValueChange(event, "password")}
+            onChange={(event) => onFieldValueChange(event, "password")}
             onBlur={onFieldValueBlur("password")}
             sx={signInTextFieldSx}
             required={textFields.password.isRequired}
             error={textFields.password.isError || false}
-            color={setTextFieldColor(textFields.password.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.password.messageType
+            )}
             helperText={textFields.password.message}
             fullWidth
           />

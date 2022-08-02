@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { IUser, useUserContext } from "../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
-import { setTextFieldColor } from "../../../utils/generic";
+import { getTextFieldColorBasedOnMessageType } from "../../../utils/generic";
 
 interface IEditUserProps {
   onModalClose?: () => void;
@@ -140,7 +140,9 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             sx={textField}
             required={textFields.name.isRequired}
             error={textFields.name.isError || false}
-            color={setTextFieldColor(textFields.name.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.name.messageType
+            )}
             helperText={textFields.name.message}
           />
         </Grid>
@@ -160,7 +162,9 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
                 label={textFields.gender.label}
                 required={textFields.gender.isRequired}
                 error={textFields.gender.isError || false}
-                color={setTextFieldColor(textFields.gender.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.gender.messageType
+                )}
                 helperText={textFields.gender.message}
                 {...params}
               />
@@ -196,7 +200,9 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             sx={textField}
             required={textFields.headline.isRequired}
             error={textFields.headline.isError || false}
-            color={setTextFieldColor(textFields.headline.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.headline.messageType
+            )}
             helperText={textFields.headline.message}
           />
         </Grid>
@@ -212,7 +218,9 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
                 label={textFields.location.label}
                 required={textFields.location.isRequired}
                 error={textFields.location.isError || false}
-                color={setTextFieldColor(textFields.location.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.location.messageType
+                )}
                 helperText={textFields.location.message}
                 {...params}
               />

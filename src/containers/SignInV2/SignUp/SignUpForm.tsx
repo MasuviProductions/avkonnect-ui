@@ -17,7 +17,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignUpUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
-import { setTextFieldColor } from "../../../utils/generic";
+import { getTextFieldColorBasedOnMessageType } from "../../../utils/generic";
 
 interface ISignUpFormProps {
   saveLoading?: boolean;
@@ -63,12 +63,14 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.fname.value}
             label={textFields.fname.label}
-            onChange={event => onFieldValueChange(event, "fname")}
+            onChange={(event) => onFieldValueChange(event, "fname")}
             onBlur={onFieldValueBlur("fname")}
             sx={signUpTextFieldSx}
             required={textFields.fname.isRequired}
             error={textFields.fname.isError || false}
-            color={setTextFieldColor(textFields.fname.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.fname.messageType
+            )}
             helperText={textFields.fname.message}
             fullWidth
           />
@@ -79,12 +81,14 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.lname.value}
             label={textFields.lname.label}
-            onChange={event => onFieldValueChange(event, "lname")}
+            onChange={(event) => onFieldValueChange(event, "lname")}
             onBlur={onFieldValueBlur("lname")}
             sx={signUpTextFieldSx}
             required={textFields.lname.isRequired}
             error={textFields.lname.isError || false}
-            color={setTextFieldColor(textFields.lname.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.lname.messageType
+            )}
             helperText={textFields.lname.message}
             fullWidth
           />
@@ -95,12 +99,14 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.emailId.value}
             label={textFields.emailId.label}
-            onChange={event => onFieldValueChange(event, "emailId")}
+            onChange={(event) => onFieldValueChange(event, "emailId")}
             onBlur={onFieldValueBlur("emailId")}
             sx={signUpTextFieldSx}
             required={textFields.emailId.isRequired}
             error={textFields.emailId.isError || false}
-            color={setTextFieldColor(textFields.emailId.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.emailId.messageType
+            )}
             helperText={textFields.emailId.message}
             fullWidth
           />
@@ -111,12 +117,14 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.password.value}
             label={textFields.password.label}
-            onChange={event => onFieldValueChange(event, "password")}
+            onChange={(event) => onFieldValueChange(event, "password")}
             onBlur={onFieldValueBlur("password")}
             sx={signUpTextFieldSx}
             required={textFields.password.isRequired}
             error={textFields.password.isError || false}
-            color={setTextFieldColor(textFields.password.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.password.messageType
+            )}
             helperText={textFields.password.message}
             fullWidth
           />

@@ -57,7 +57,7 @@ export interface ITextField {
   label: string;
   value: string;
   message?: string;
-  messageType?: string;
+  messageType?: ITextFieldMessageType;
   options?: Readonly<string[]>;
   isError: boolean;
   isRequired: boolean;

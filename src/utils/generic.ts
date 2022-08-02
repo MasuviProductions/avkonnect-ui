@@ -139,8 +139,8 @@ export const getCurrentYear = (): number => {
   return new Date().getFullYear();
 };
 
-export const setTextFieldColor = (
-  messageType: string | undefined
+export const getTextFieldColorBasedOnMessageType = (
+  messageType: ITextFieldMessageType | undefined
 ): ITextFieldMessageType | undefined => {
   return messageType === "warning" ? "warning" : undefined;
 };

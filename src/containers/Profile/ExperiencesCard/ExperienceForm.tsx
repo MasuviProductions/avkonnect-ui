@@ -33,7 +33,7 @@ import { useEffect, useState } from "react";
 import { MAX_DATE } from "../../../constants/forms/generic";
 import {
   getURLFormattedMessage,
-  setTextFieldColor,
+  getTextFieldColorBasedOnMessageType,
 } from "../../../utils/generic";
 
 interface IExperienceFormProps {
@@ -148,7 +148,9 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.companyName.isRequired}
             error={textFields.companyName.isError || false}
-            color={setTextFieldColor(textFields.companyName.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.companyName.messageType
+            )}
             helperText={textFields.companyName.message}
           />
         </Grid>
@@ -164,7 +166,9 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
                 label={textFields.industry.label}
                 required={textFields.industry.isRequired}
                 error={textFields.industry.isError || false}
-                color={setTextFieldColor(textFields.industry.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.industry.messageType
+                )}
                 helperText={textFields.industry.message}
                 {...params}
               />
@@ -185,7 +189,9 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.role.isRequired}
             error={textFields.role.isError || false}
-            color={setTextFieldColor(textFields.role.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.role.messageType
+            )}
             helperText={textFields.role.message}
           />
         </Grid>
@@ -201,7 +207,9 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
                 label={textFields.employmentType.label}
                 required={textFields.employmentType.isRequired}
                 error={textFields.employmentType.isError || false}
-                color={setTextFieldColor(textFields.employmentType.messageType)}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.employmentType.messageType
+                )}
                 helperText={textFields.employmentType.message}
                 {...params}
               />
@@ -271,7 +279,9 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             sx={textField}
             required={textFields.description.isRequired}
             error={textFields.description.isError || false}
-            color={setTextFieldColor(textFields.description.messageType)}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.description.messageType
+            )}
             helperText={textFields.description.message}
           />
         </Grid>
