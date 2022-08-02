@@ -1,6 +1,6 @@
 import { IFooterType } from "../../interfaces/app";
-import BottomFooter from "./FooterType/BottomFooter";
-import SideFooter from "./FooterType/SideFooter";
+import BottomFooter from "./BottomFooter";
+import SideFooter from "./SideFooter";
 
 interface IFooterProps {
   footerType: IFooterType;

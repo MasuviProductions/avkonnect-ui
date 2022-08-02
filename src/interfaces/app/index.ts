@@ -38,7 +38,7 @@ export interface IImageSelectorAttrib {
 export type ITextFieldMessageType = "warning" | "error";
 
 export interface ITextFieldPattern {
-  regex: RegExp;
+  regex?: RegExp;
   message?: string;
   messageType?: ITextFieldMessageType;
   maxCharacters?: number;

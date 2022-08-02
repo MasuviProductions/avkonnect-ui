@@ -6,16 +6,13 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import { getCurrentYear } from "../../../utils/generic";
+import { getCurrentYear } from "../../utils/generic";
 import Link from "next/link";
-import { LABELS } from "../../../constants/labels";
-import { APP_ROUTES } from "../../../constants/app";
+import { LABELS } from "../../constants/labels";
+import { APP_ROUTES } from "../../constants/app";
 import Image from "next/image";
-import { PNG } from "../../../assets/PNG";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import { PNG } from "../../assets/PNG";
+import FooterSocialMediaIcon from "../../components/FooterSocialMediaIcon";
 
 const BottomFooter: React.FC = () => {
   return (
@@ -70,32 +67,16 @@ const BottomFooter: React.FC = () => {
                 </Typography>
               </Grid>
               <Grid item mr={2}>
-                <Link href={LABELS.COMPANY_FACEBOOK_LINK} passHref>
-                  <a target="_blank" rel="noopener noreferrer">
-                    <FacebookIcon sx={facebookIconSx} />
-                  </a>
-                </Link>
+                <FooterSocialMediaIcon socialMedia="facebook" />
               </Grid>
               <Grid item mr={2}>
-                <Link href={LABELS.COMPANY_INSTAGRAM_LINK} passHref>
-                  <a target="_blank" rel="noopener noreferrer">
-                    <InstagramIcon sx={instagramIconSx} />
-                  </a>
-                </Link>
+                <FooterSocialMediaIcon socialMedia="instagram" />
               </Grid>
               <Grid item mr={2}>
-                <Link href={LABELS.COMPANY_TWITTER_LINK} passHref>
-                  <a target="_blank" rel="noopener noreferrer">
-                    <TwitterIcon sx={twitterIconSx} />
-                  </a>
-                </Link>
+                <FooterSocialMediaIcon socialMedia="twitter" />
               </Grid>
               <Grid item mr={2}>
-                <Link href={LABELS.COMPANY_LINKEDIN_LINK} passHref>
-                  <a target="_blank" rel="noopener noreferrer">
-                    <LinkedInIcon sx={linkedinIconSx} />
-                  </a>
-                </Link>
+                <FooterSocialMediaIcon socialMedia="linkedin" />
               </Grid>
             </Grid>
           </Grid>
@@ -129,40 +110,6 @@ const linkSx: SxProps<Theme> = (theme: Theme) => ({
 const miniHeadingSx: SxProps<Theme> = (theme: Theme) => ({
   color: theme.palette.navbar.contrastText,
   fontWeight: "600",
-});
-
-const facebookIconSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.text.secondary,
-  ":hover": {
-    cursor: "pointer",
-    color: "#4267B2",
-  },
-});
-
-const instagramIconSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.text.secondary,
-  ":hover": {
-    cursor: "pointer",
-    color: "#fb3958",
-  },
-});
-
-const twitterIconSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.text.secondary,
-  ":hover": {
-    cursor: "pointer",
-    color: "#1DA1F2",
-  },
-});
-
-const linkedinIconSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.text.secondary,
-  ":hover": {
-    cursor: "pointer",
-    backgroundColor: theme.palette.background.default,
-    borderRadius: "3px",
-    color: "#0077B5",
-  },
 });
 
 const copyrightSx: SxProps<Theme> = (theme: Theme) => ({
