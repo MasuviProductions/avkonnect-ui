@@ -13,9 +13,9 @@ import cloneDeep from "lodash.clonedeep";
 import CustomButton from "../../../components/CustomButton";
 import {
   USER_INFO_TEXT_FIELDS_CONFIG,
+  USER_INFO_DATE_FIELDS_CONFIG,
   IUserInfoTextFields,
   IUserInfoDateFields,
-  USER_INFO_DATE_FIELDS_CONFIG,
 } from "../../../constants/forms/user-info";
 import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
@@ -109,7 +109,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
         name: patchUserData?.data?.name as string,
         headline: patchUserData?.data?.headline as string,
@@ -135,7 +135,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={event => onFieldValueChange(event, "name")}
+            onChange={(event) => onFieldValueChange(event, "name")}
             onBlur={onFieldValueBlur("name")}
             sx={textField}
             required={textFields.name.isRequired}
@@ -155,7 +155,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.gender.value}
             options={textFields.gender.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 label={textFields.gender.label}
                 required={textFields.gender.isRequired}
@@ -180,8 +180,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             minDate={dateFields.dateOfBirth.minDate}
             maxDate={dateFields.dateOfBirth.maxDate}
             inputFormat="DD/MM/YYYY"
-            onChange={date => onDateValueChange(date, "dateOfBirth")}
-            renderInput={params => (
+            onChange={(date) => onDateValueChange(date, "dateOfBirth")}
+            renderInput={(params) => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -191,7 +191,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.headline.value}
             label={textFields.headline.label}
-            onChange={event => onFieldValueChange(event, "headline")}
+            onChange={(event) => onFieldValueChange(event, "headline")}
             onBlur={onFieldValueBlur("headline")}
             sx={textField}
             required={textFields.headline.isRequired}
@@ -207,7 +207,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.location.value}
             options={textFields.location.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 label={textFields.location.label}
                 required={textFields.location.isRequired}

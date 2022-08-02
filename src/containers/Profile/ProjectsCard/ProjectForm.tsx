@@ -30,12 +30,11 @@ import {
 } from "../../../interfaces/app";
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
-import { MAX_DATE } from "../../../constants/app";
+import { MAX_DATE } from "../../../constants/forms/generic";
 import {
   getURLFormattedMessage,
   setTextFieldColor,
 } from "../../../utils/generic";
-import { getDateRangeValidity } from "../../../utils/form";
 
 interface IProjectFormProps {
   project?: IUserProjectApiModel;
@@ -144,7 +143,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={event => onFieldValueChange(event, "name")}
+            onChange={(event) => onFieldValueChange(event, "name")}
             onBlur={onFieldValueBlur("name")}
             sx={textField}
             required={textFields.name.isRequired}
@@ -162,7 +161,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.companyName.value}
             label={textFields.companyName.label}
-            onChange={event => onFieldValueChange(event, "companyName")}
+            onChange={(event) => onFieldValueChange(event, "companyName")}
             onBlur={onFieldValueBlur("companyName")}
             sx={textField}
             required={textFields.companyName.isRequired}
@@ -178,7 +177,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.industry.value}
             options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 helperText={textFields.industry.message}
                 label={textFields.industry.label}
@@ -200,7 +199,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
           <TextField
             value={textFields.role.value}
             label={textFields.role.label}
-            onChange={event => onFieldValueChange(event, "role")}
+            onChange={(event) => onFieldValueChange(event, "role")}
             onBlur={onFieldValueBlur("role")}
             sx={textField}
             required={textFields.role.isRequired}
@@ -216,7 +215,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={textFields.employmentType.value}
             options={textFields.employmentType.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
                 helperText={textFields.employmentType.message}
                 label={textFields.employmentType.label}
@@ -241,8 +240,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             value={dateValues.from.value}
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
-            onChange={date => onDateValueChange(date, "from")}
-            renderInput={params => <TextField sx={textField} {...params} />}
+            onChange={(date) => onDateValueChange(date, "from")}
+            renderInput={(params) => <TextField sx={textField} {...params} />}
           />
         </Grid>
 
@@ -254,8 +253,8 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
               value={dateValues.to.value}
               minDate={dateValues.to.minDate}
               maxDate={dateValues.to.maxDate}
-              onChange={date => onDateValueChange(date, "to")}
-              renderInput={params => (
+              onChange={(date) => onDateValueChange(date, "to")}
+              renderInput={(params) => (
                 <TextField sx={textField} {...params} helperText={null} />
               )}
             />
@@ -283,7 +282,7 @@ const ProjectForm: React.FC<IProjectFormProps> = ({
             rows={3}
             value={textFields.description.value}
             label={textFields.description.label}
-            onChange={event => onFieldValueChange(event, "description")}
+            onChange={(event) => onFieldValueChange(event, "description")}
             onBlur={onFieldValueBlur("description")}
             sx={textField}
             required={textFields.description.isRequired}

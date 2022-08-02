@@ -1,7 +1,7 @@
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
-import { IGender } from "../constants/forms/user-info/user-info";
+import { IGender } from "../constants/forms/user-info";
 
 interface IGenderIcon {
   gender: IGender;

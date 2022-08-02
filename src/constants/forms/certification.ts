@@ -4,8 +4,8 @@ import {
   ITextFieldConfig,
   IDateRangeType,
 } from "../../interfaces/app";
-import { MIN_CALENDAR_DATE } from "../app";
 import { LABELS } from "../labels";
+import { MIN_CALENDAR_DATE } from "./generic";
 
 type ICertificationTextFields =
   | "name"

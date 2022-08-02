@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import { IDateFieldConfig, ITextFieldConfig } from "../../../interfaces/app";
-import { MIN_CALENDAR_DATE } from "../../app";
 import { LABELS } from "../../labels";
+import { MIN_CALENDAR_DATE } from "../generic";
 import { CITIES } from "./indian-cities";
 
 type IUserInfoTextFields = "name" | "headline" | "gender" | "location";
 
-export type IGender = "Male" | "Female" | "Others";
+type IGender = "Male" | "Female" | "Others";
 
 const GENDER_FIELDS: IGender[] = ["Male", "Female", "Others"];
 
@@ -58,5 +58,5 @@ const USER_INFO_DATE_FIELDS_CONFIG: Record<
   },
 };
 
-export type { IUserInfoTextFields, IUserInfoDateFields };
+export type { IUserInfoTextFields, IUserInfoDateFields, IGender };
 export { USER_INFO_TEXT_FIELDS_CONFIG, USER_INFO_DATE_FIELDS_CONFIG };

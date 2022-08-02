@@ -33,7 +33,7 @@ import ModalLayout from "../../../components/ModalLayout";
 import ShareButton from "../../../components/ShareButton";
 import EditUser from "./EditUser";
 import dayjs from "dayjs";
-import { IGender } from "../../../constants/forms/user-info/user-info";
+import { IGender } from "../../../constants/forms/user-info";
 import useConnection from "../../../hooks/useConnection";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import WithdrawConnectionModal from "../../../components/Connections/WithdrawConnectionModal/WithdrawConnectionModal";

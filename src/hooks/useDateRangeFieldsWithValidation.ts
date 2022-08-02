@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import cloneDeep from "lodash.clonedeep";
 import { useCallback, useEffect, useState } from "react";
-import { MIN_CALENDAR_DATE } from "../constants/app";
+import { MIN_CALENDAR_DATE } from "../constants/forms/generic";
 import {
   IDateRange,
   IDateFieldConfig,
@@ -34,7 +34,7 @@ const useDateRangeFieldsWithValidation = (
 
   const onDateValueChange = useCallback(
     (date: Dayjs | null, dateType: IDateRangeType) => {
-      setDateValues(prev => {
+      setDateValues((prev) => {
         const newDateValues = cloneDeep(prev);
 
         newDateValues[dateType].value = date;
