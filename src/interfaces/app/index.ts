@@ -35,11 +35,12 @@ export interface IImageSelectorAttrib {
 }
 
 // Text Field Interfaces
+export type ITextFieldMessageType = "warning" | "error";
 
 export interface ITextFieldPattern {
   regex: RegExp;
   message?: string;
-  messageType?: "warning" | "error";
+  messageType?: ITextFieldMessageType;
 }
 
 export interface ITextFieldConfig {
@@ -49,19 +50,22 @@ export interface ITextFieldConfig {
   limitations?: ITextFieldPattern[];
   options?: Readonly<string[]>;
   intialValue?: string;
+  isRequired?: boolean;
 }
 
 export interface ITextField {
   label: string;
   value: string;
   message?: string;
-  messageType?: string;
+  messageType?: ITextFieldMessageType;
   options?: Readonly<string[]>;
+  isError: boolean;
+  isRequired: boolean;
 }
 
 export interface ITextFieldValidity {
-  message: string;
-  messageType: string;
+  message?: string;
+  messageType?: string;
   isValid: boolean;
 }
 

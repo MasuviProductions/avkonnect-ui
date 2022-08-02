@@ -25,10 +25,16 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
   const [userFeedbackReq, setUserFeedbackReq] =
     useState<IUserFeedbackApiResponse>();
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<IFeedbackTextFields>(
-      FEEDBACK_TEXT_FIELDS_CONFIG
-    );
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<IFeedbackTextFields>(
+    FEEDBACK_TEXT_FIELDS_CONFIG
+  );
 
   const { accessToken, authUser } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
@@ -46,11 +52,13 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
     );
 
   const handleSubmitFeedback = () => {
-    setUserFeedbackReq({
-      subject: textFields.subject.value,
-      description: textFields.description.value,
-      feedbackType: textFields.feedbackType.value,
-    });
+    if (onValidateAllFields()) {
+      setUserFeedbackReq({
+        subject: textFields.subject.value,
+        description: textFields.description.value,
+        feedbackType: textFields.feedbackType.value,
+      });
+    }
   };
 
   useEffect(() => {
@@ -85,8 +93,16 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 value={textFields.subject.value}
                 label={textFields.subject.label}
                 onChange={event => onFieldValueChange(event, "subject")}
-                onBlur={event => onFieldValueBlur(event, "subject")}
+                onBlur={onFieldValueBlur("subject")}
                 sx={textField}
+                required={textFields.subject.isRequired}
+                error={textFields.subject.isError || false}
+                color={
+                  textFields.subject.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                helperText={textFields.subject.message}
               />
             </Grid>
 
@@ -98,9 +114,15 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 sx={textField}
                 renderInput={params => (
                   <TextField
-                    helperText={textFields.feedbackType.message}
-                    error={!!(textFields.feedbackType.messageType === "error")}
                     label={textFields.feedbackType.label}
+                    required={textFields.feedbackType.isRequired}
+                    error={textFields.feedbackType.isError || false}
+                    color={
+                      textFields.feedbackType.messageType === "warning"
+                        ? "warning"
+                        : undefined
+                    }
+                    helperText={textFields.feedbackType.message}
                     {...params}
                   />
                 )}
@@ -118,8 +140,16 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 value={textFields.description.value}
                 label={textFields.description.label}
                 onChange={event => onFieldValueChange(event, "description")}
-                onBlur={event => onFieldValueBlur(event, "description")}
+                onBlur={onFieldValueBlur("description")}
                 sx={textField}
+                required={textFields.description.isRequired}
+                error={textFields.description.isError || false}
+                color={
+                  textFields.description.messageType === "warning"
+                    ? "warning"
+                    : undefined
+                }
+                helperText={textFields.description.message}
               />
             </Grid>
 
@@ -128,7 +158,9 @@ const FeedbackForm: React.FC<IFeedbackFormProps> = ({
                 <Grid item>
                   <CustomButton
                     loading={userFeedbackLoading}
-                    disabled={userFeedbackLoading}
+                    disabled={
+                      !isFormInitialized || !isFormValid || userFeedbackLoading
+                    }
                     onClick={handleSubmitFeedback}
                   >
                     {LABELS.SUBMIT}

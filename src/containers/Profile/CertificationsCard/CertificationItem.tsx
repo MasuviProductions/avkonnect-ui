@@ -13,7 +13,7 @@ import { IUserCertificationApiModel } from "../../../interfaces/api/external";
 import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { useUserContext } from "../../../contexts/UserContext";
-import { MAX_DATE } from "../../../constants/app";
+import { MAX_DATE } from "../../../constants/forms/generic";
 import { getLinkedTextIfURLIsPresent } from "../../../utils/generic";
 
 interface ICertificationItemProps {

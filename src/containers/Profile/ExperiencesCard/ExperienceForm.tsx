@@ -30,8 +30,11 @@ import {
 } from "../../../interfaces/app";
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
-import { MAX_DATE } from "../../../constants/app";
-import { getURLFormattedMessage } from "../../../utils/generic";
+import { MAX_DATE } from "../../../constants/forms/generic";
+import {
+  getURLFormattedMessage,
+  getTextFieldColorBasedOnMessageType,
+} from "../../../utils/generic";
 
 interface IExperienceFormProps {
   experience?: IUserExperienceApiModel;
@@ -79,14 +82,19 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
   const experienceTextFieldsConfig =
     getInitialExperienceTextFieldValues(experience);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<IExperienceTextFields>(
-      experienceTextFieldsConfig
-    );
-
-  const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
-    experienceDateRangeFieldsConfig
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<IExperienceTextFields>(
+    experienceTextFieldsConfig
   );
+
+  const { dateValues, isDateRangeValid, onDateValueChange } =
+    useDateRangeFieldsWithValidation(experienceDateRangeFieldsConfig);
 
   const [isPresentlyWorking, setIsPresentlyWorking] = useState(
     experience?.endDate === MAX_DATE
@@ -99,19 +107,21 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
   };
 
   const handleSaveExperience = () => {
-    const urlFormattedDescription = getURLFormattedMessage(
-      textFields.description.value
-    );
-    const updatedExperience: IUserExperienceApiModel = {
-      companyName: textFields.companyName.value as string,
-      description: urlFormattedDescription,
-      employmentType: textFields.employmentType.value,
-      endDate: dateValues.to.value?.valueOf() as number,
-      industry: textFields.industry.value,
-      role: textFields.role.value as string,
-      startDate: dateValues.from.value?.valueOf() as number,
-    };
-    onSaveExperience?.(updatedExperience);
+    if (onValidateAllFields()) {
+      const urlFormattedDescription = getURLFormattedMessage(
+        textFields.description.value
+      );
+      const updatedExperience: IUserExperienceApiModel = {
+        companyName: textFields.companyName.value as string,
+        description: urlFormattedDescription,
+        employmentType: textFields.employmentType.value,
+        endDate: dateValues.to.value?.valueOf() as number,
+        industry: textFields.industry.value,
+        role: textFields.role.value as string,
+        startDate: dateValues.from.value?.valueOf() as number,
+      };
+      onSaveExperience?.(updatedExperience);
+    }
   };
 
   const handleRemoveExperience = () => {
@@ -133,9 +143,15 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
           <TextField
             value={textFields.companyName.value}
             label={textFields.companyName.label}
-            onChange={event => onFieldValueChange(event, "companyName")}
-            onBlur={event => onFieldValueBlur(event, "companyName")}
+            onChange={(event) => onFieldValueChange(event, "companyName")}
+            onBlur={onFieldValueBlur("companyName")}
             sx={textField}
+            required={textFields.companyName.isRequired}
+            error={textFields.companyName.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.companyName.messageType
+            )}
+            helperText={textFields.companyName.message}
           />
         </Grid>
 
@@ -145,11 +161,15 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.industry.value}
             options={textFields.industry.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
-                helperText={textFields.industry.message}
-                error={!!(textFields.industry.messageType === "error")}
                 label={textFields.industry.label}
+                required={textFields.industry.isRequired}
+                error={textFields.industry.isError || false}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.industry.messageType
+                )}
+                helperText={textFields.industry.message}
                 {...params}
               />
             )}
@@ -164,9 +184,15 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
           <TextField
             value={textFields.role.value}
             label={textFields.role.label}
-            onChange={event => onFieldValueChange(event, "role")}
-            onBlur={event => onFieldValueBlur(event, "role")}
+            onChange={(event) => onFieldValueChange(event, "role")}
+            onBlur={onFieldValueBlur("role")}
             sx={textField}
+            required={textFields.role.isRequired}
+            error={textFields.role.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.role.messageType
+            )}
+            helperText={textFields.role.message}
           />
         </Grid>
 
@@ -176,11 +202,15 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={textFields.employmentType.value}
             options={textFields.employmentType.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
-                helperText={textFields.employmentType.message}
-                error={!!(textFields.employmentType.messageType === "error")}
                 label={textFields.employmentType.label}
+                required={textFields.employmentType.isRequired}
+                error={textFields.employmentType.isError || false}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.employmentType.messageType
+                )}
+                helperText={textFields.employmentType.message}
                 {...params}
               />
             )}
@@ -198,8 +228,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             value={dateValues.from.value}
             minDate={dateValues.from.minDate}
             maxDate={dateValues.from.maxDate}
-            onChange={date => onDateValueChange(date, "from")}
-            renderInput={params => (
+            onChange={(date) => onDateValueChange(date, "from")}
+            renderInput={(params) => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -213,8 +243,8 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
               value={dateValues.to.value}
               minDate={dateValues.to.minDate}
               maxDate={dateValues.to.maxDate}
-              onChange={date => onDateValueChange(date, "to")}
-              renderInput={params => (
+              onChange={(date) => onDateValueChange(date, "to")}
+              renderInput={(params) => (
                 <TextField sx={textField} {...params} helperText={null} />
               )}
             />
@@ -244,9 +274,15 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             rows={3}
             value={textFields.description.value}
             label={textFields.description.label}
-            onChange={event => onFieldValueChange(event, "description")}
-            onBlur={event => onFieldValueBlur(event, "description")}
+            onChange={(event) => onFieldValueChange(event, "description")}
+            onBlur={onFieldValueBlur("description")}
             sx={textField}
+            required={textFields.description.isRequired}
+            error={textFields.description.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.description.messageType
+            )}
+            helperText={textFields.description.message}
           />
         </Grid>
 
@@ -267,7 +303,12 @@ const ExperienceForm: React.FC<IExperienceFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={saveLoading}
+                disabled={
+                  !isDateRangeValid ||
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  saveLoading
+                }
                 onClick={handleSaveExperience}
               >
                 {LABELS.SAVE}
