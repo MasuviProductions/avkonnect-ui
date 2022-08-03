@@ -38,9 +38,10 @@ export interface IImageSelectorAttrib {
 export type ITextFieldMessageType = "warning" | "error";
 
 export interface ITextFieldPattern {
-  regex: RegExp;
+  regex?: RegExp;
   message?: string;
   messageType?: ITextFieldMessageType;
+  maxCharacters?: number;
 }
 
 export interface ITextFieldConfig {
@@ -109,3 +110,5 @@ export interface IApiResponseState<T = unknown> {
   loading: boolean;
   error?: unknown;
 }
+
+export type IFooterType = "bottom" | "side";

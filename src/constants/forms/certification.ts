@@ -31,32 +31,32 @@ const CERTIFICATION_TEXT_FIELDS_CONFIG: Record<
   name: {
     label: LABELS.CERTIFICATION_NAME,
     id: "name",
-    limitations: [{ regex: /^.{0,100}$/ }],
+    limitations: [{ maxCharacters: 100 }],
     isRequired: true,
   },
   description: {
     label: LABELS.CERTIFICATION_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /.{0,1000}/ }],
+    limitations: [{ maxCharacters: 1000 }],
     isRequired: true,
   },
   industry: {
     label: LABELS.CERTIFICATION_INDUSTRY,
     id: "industry",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ maxCharacters: 25 }],
     options: INDUSTRY_FIELDS,
     isRequired: true,
   },
   issuerName: {
     label: LABELS.CERTIFICATION_ISSUER_NAME,
     id: "issuer",
-    limitations: [{ regex: /.{0,50}/ }],
+    limitations: [{ maxCharacters: 50 }],
     isRequired: true,
   },
   link: {
     label: LABELS.CERTIFICATION_LINK,
     id: "link",
-    limitations: [{ regex: /.{0,100}/ }],
+    limitations: [{ maxCharacters: 200 }],
     isRequired: false,
   },
 };

@@ -23,14 +23,17 @@ export const getFieldValidity = (
     return fieldValidity;
   }
   for (let index = 0; index < validations.length; index += 1) {
-    let regex = new RegExp(validations[index].regex, "i");
-    if (!regex.test(value)) {
-      const fieldValidity: ITextFieldValidity = {
-        message: validations[index].message || "",
-        messageType: validations[index].messageType || "",
-        isValid: false,
-      };
-      return fieldValidity;
+    let validRegex = validations[index].regex;
+    if (validRegex) {
+      let regex = new RegExp(validRegex, "i");
+      if (!regex.test(value)) {
+        const fieldValidity: ITextFieldValidity = {
+          message: validations[index].message || "",
+          messageType: validations[index].messageType || "",
+          isValid: false,
+        };
+        return fieldValidity;
+      }
     }
   }
   const fieldValidity: ITextFieldValidity = {
@@ -56,11 +59,22 @@ export const isFieldValueLimited = (
   value: string
 ): boolean => {
   for (let index = 0; index < limitations.length; index += 1) {
+    let isValid = true;
     // TODO: Check for regex
-    let regex = new RegExp(limitations[index].regex, "i");
-    if (regex.test(value)) {
-      return true;
+    let validRegex = limitations[index].regex;
+    let maxCharacters = limitations[index].maxCharacters;
+    if (maxCharacters && value.length <= maxCharacters) {
+      isValid = isValid && true;
+    } else {
+      isValid = false;
     }
+    if (validRegex) {
+      let regex = new RegExp(validRegex, "i");
+      if (regex.test(value)) {
+        isValid = isValid && true;
+      }
+    }
+    return isValid;
   }
   return false;
 };

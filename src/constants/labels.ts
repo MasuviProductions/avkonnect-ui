@@ -14,6 +14,14 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Links
+  COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
+  COMPANY_LINKEDIN_LINK:
+    "https://www.linkedin.com/company/masuvi-production-pvt-ltd/",
+  COMPANY_INSTAGRAM_LINK: "https://www.instagram.com/avkonnect/",
+  COMPANY_FACEBOOK_LINK: "https://www.facebook.com/masuviproduction/",
+  COMPANY_TWITTER_LINK: "https://twitter.com/guthalvvg",
+
   // Pages
   PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
   PAGE_NOT_FOUND_SNOOP: "Were you snooping around?",
@@ -30,6 +38,11 @@ export const LABELS = {
   FEEDBACK: "Feedback",
   FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
+
+  // Footer
+  LINKS_HEADER: "Links",
+  WHATSAPP_US_TITLE: "WhatsApp Us",
+  FOLLOW_US_HEADER: "Follow Us",
 
   // Logos
   TITLE_LOGO: "AVKonnect Logo",

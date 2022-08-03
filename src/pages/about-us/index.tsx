@@ -1,4 +1,4 @@
-import AboutUs from "../../containers/About-us/AboutUs";
+import AboutUs from "../../containers/AboutUs/AboutUs";
 import { NextPageWithSkeleton } from "../../interfaces/app";
 const AboutUsPage: NextPageWithSkeleton = () => {
   return <AboutUs />;
