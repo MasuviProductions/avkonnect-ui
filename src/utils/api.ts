@@ -16,8 +16,8 @@ import {
   IUserFeedbackApiResponse,
   IUserConnectionsApiResponse,
   IUserConnectionApiResponse,
-  IUserNotificationsApiResponse,
-  IUserNotificationCountApiResponse,
+  INotificationsApiResponse,
+  INotificationCountApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -347,12 +347,12 @@ export const getUserNotifications = async (
   userId: string,
   limit: number,
   nextSearchStartFromKey?: string
-): Promise<AVKonnectApiResponse<IUserNotificationsApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationsApiResponse>> => {
   const queryString = `?limit=${limit}&nextSearchStartFromKey=${
     nextSearchStartFromKey || ""
   }`;
   const userNotifications = await axios
-    .get<AVKonnectApiResponse<IUserNotificationsApiResponse>>(
+    .get<AVKonnectApiResponse<INotificationsApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS.url(userId, queryString),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -365,9 +365,9 @@ export const getUserNotifications = async (
 export const getUserNotificationsUnseenCount = async (
   accessToken: string,
   userId: string
-): Promise<AVKonnectApiResponse<IUserNotificationCountApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationCountApiResponse>> => {
   const userNotifications = await axios
-    .get<AVKonnectApiResponse<IUserNotificationCountApiResponse>>(
+    .get<AVKonnectApiResponse<INotificationCountApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
@@ -378,9 +378,9 @@ export const getUserNotificationsUnseenCount = async (
 export const deleteUserNotificationsUnseenCount = async (
   accessToken: string,
   userId: string
-): Promise<AVKonnectApiResponse<IUserNotificationCountApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationCountApiResponse>> => {
   const userNotificationCount = await axios
-    .delete<AVKonnectApiResponse<IUserNotificationCountApiResponse>>(
+    .delete<AVKonnectApiResponse<INotificationCountApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
