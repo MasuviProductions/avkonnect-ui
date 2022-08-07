@@ -29,7 +29,6 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
           <Typography variant="h6">
-            {/* {LABELS.DESCRIPTION_INTRO_2} */}
             <Link href={APP_ROUTES.ABOUT.route}>{LABELS.READ_MORE}</Link>
           </Typography>
         </Box>

@@ -194,7 +194,7 @@ export const LABELS = {
   DESCRIPTION_PARAGRAPH_1:
     "Our features help you match with other media professionals. You get to meet actors, singers, script writers, journalists, directors and many more from exploring on our platform.",
   DESCRIPTION_PARAGRAPH_2:
-    "AVkonnect provides you with many opportunities either career or business we contribute to your development the open community of filmmakers, content creators, media curators etc., will be there to guide you through out way.",
+    "AVkonnect offers numerous opportunities for advancement in your career or business. We support your growth, and our open community of filmmakers, content creators, media curators, and others will help you along the way.",
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
