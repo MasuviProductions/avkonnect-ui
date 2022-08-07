@@ -1,3 +1,5 @@
+import { IGender } from "../../constants/forms/user-info";
+
 export interface AVConnectApiResponseError {
   message: string;
   code: string;
@@ -208,4 +210,100 @@ export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
 
 export interface IUserNotificationCountApiResponse {
   pendingNotificationCount: number;
+}
+
+type IUserResourceTypes = "post" | "comment";
+
+type IUserSourceTypes = "user" | "company";
+
+interface IUserPostRequestContentApiModel {
+  text: string;
+  mediaUrls?: string[];
+}
+
+export interface IUserPostPostApiRequest {
+  content: IUserPostRequestContentApiModel;
+  hashtags?: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+}
+
+interface IUserPostResponseContentModel {
+  text: string;
+  createdAt: Date;
+  mediaUrls: string[];
+}
+
+interface IRelatedUserInfoResponseModel {
+  id: string;
+  backgroundImageUrl: string;
+  displayPictureUrl: string;
+  email: string;
+  headline: string;
+  name: string;
+  gender: IGender;
+  location: string;
+}
+
+export interface IUserPostApiResponse {
+  sourceId: string;
+  sourceType: IUserSourceTypes;
+  contents: IUserPostResponseContentModel[];
+  hashtags: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IUserPatchPostApiRequest {
+  content: IUserPostRequestContentApiModel;
+  hashtags: string[];
+}
+
+interface IUserCommentApiModel {
+  text: string;
+  mediaUrls: string[];
+}
+
+export interface IUserPostCommentApiRequest {
+  resourceId: string;
+  resourceType: IUserResourceTypes;
+  comment: IUserCommentApiModel;
+}
+
+export interface IUserPostCommentApiResponse {
+  resourceId: string;
+  resourceType: IUserResourceTypes;
+  id: string;
+  sourceId: string;
+  sourceType: IUserSourceTypes;
+  createdAt: Date;
+  contents: IUserCommentApiModel[];
+}
+
+export interface IUserGetCommentApiResponse {
+  resourceType: IUserResourceTypes;
+  resourceId: string;
+  contents: IUserCommentApiModel[];
+  createdAt: Date;
+  sourceType: IUserSourceTypes;
+  sourceId: string;
+  id: string;
+}
+
+export interface IUserPatchCommentApiRequest {
+  comment: IUserCommentApiModel;
+}
+
+export interface IUserPatchCommentApiResponse {
+  resourceType: IUserResourceTypes;
+  resourceId: string;
+  contents: IUserCommentApiModel[];
+  createdAt: Date;
+  sourceType: IUserSourceTypes;
+  sourceId: string;
+  id: string;
 }

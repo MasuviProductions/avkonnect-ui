@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../constants/api";
+import { FETCH_NOTIFICATION_INTERVAL_MS } from "../constants/app";
 import { LABELS } from "../constants/labels";
 import {
   deleteUserNotificationsUnseenCount,
@@ -52,7 +53,7 @@ const UserNotificationsContextProvider: React.FC<IUserNotificationsProps> = ({
       ),
     {
       enabled: !!authUser?.id,
-      refetchInterval: 30000,
+      refetchInterval: FETCH_NOTIFICATION_INTERVAL_MS,
     }
   );
 
