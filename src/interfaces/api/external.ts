@@ -45,7 +45,7 @@ export interface IAuthUserApiResponse {
   displayPictureUrl: string;
 }
 
-export interface IUserProfileApiResponse {
+export interface IUserProfileApiModel {
   aboutUser: string;
   followeeCount: number;
   displayPictureUrl: string;
@@ -66,6 +66,9 @@ export interface IUserProfileApiResponse {
   gender: string;
   location: string;
 }
+
+export type IUserProfileApiResponse = IUserProfileApiModel;
+
 export type IUserProfilePatchApiRequest = Partial<
   Omit<
     IUserProfileApiResponse,
@@ -186,29 +189,56 @@ export type IUserConnectionApiResponse = IUserConnectionApiModel;
 
 export type IUserConnectionsApiResponse = IUserConnectionApiModel[];
 
-export type IUserNotificationResourceType =
+export type INotificationSourceType = "user" | "company";
+
+export type INotificationResourceType =
+  | "post"
+  | "comment"
+  | "connection"
+  | "broadcast";
+
+export type INotificationConnectionActivity =
   | "connectionRequest"
   | "connectionConfirmation";
+export type INotificationPostActivity =
+  | "postReaction"
+  | "postComment"
+  | "postCreation";
+export type INotificationCommentActivity =
+  | "commentReaction"
+  | "commentComment"
+  | "commentCreation";
 
-export type IUserNotificationRelatedUsersType = Pick<
-  IUserProfileApiResponse,
-  "name" | "backgroundImageUrl" | "displayPictureUrl" | "id" | "currentPosition"
->;
+export type INotificationResourceActivity =
+  | INotificationConnectionActivity
+  | INotificationPostActivity
+  | INotificationCommentActivity;
 
-interface IUserNotificationsApiModel {
+export interface INotificationsApiModel {
   id: string;
-  resourceType: IUserNotificationResourceType;
+  userId: string;
+  createdAt: Date;
   read: boolean;
   resourceId: string;
-  relatedUserIds: string[];
-  relatedUsers: IUserNotificationRelatedUsersType[];
-  createdAt: Date;
+  resourceActivity: INotificationResourceActivity;
+  resourceType: INotificationResourceType;
+  aggregatorCount: number;
   expiresAt: Date;
+  sourceId: string;
+  sourceType: INotificationSourceType;
 }
 
-export type IUserNotificationsApiResponse = IUserNotificationsApiModel[];
+export type IRelatedSource = Pick<
+  IUserProfileApiModel,
+  "name" | "headline" | "displayPictureUrl"
+>;
 
-export interface IUserNotificationCountApiResponse {
+export interface INotificationsApiResponse {
+  notifications: Array<INotificationsApiModel>;
+  relatedSources: Array<IRelatedSource>;
+}
+
+export interface INotificationCountApiResponse {
   pendingNotificationCount: number;
 }
 

@@ -1,45 +1,45 @@
 import { Avatar, SxProps, Theme } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { IUserNotificationRelatedUsersType } from "../../../interfaces/api/external";
 import { usernameToColor } from "../../../utils/generic";
 import { SystemStyleObject } from "@mui/system";
+import { IRelatedSource } from "../../../interfaces/api/external";
 
 export interface INotificationIconProps {
   notificationType: string;
-  relatedUsers: IUserNotificationRelatedUsersType[];
+  relatedSource: IRelatedSource;
 }
 
 const NotificationIcon: React.FC<INotificationIconProps> = ({
   notificationType,
-  relatedUsers,
+  relatedSource,
 }) => {
   const handleUserAvatarSx = (theme: Theme): SystemStyleObject<Theme> => {
     return userAvatar(
       theme,
-      relatedUsers[0].displayPictureUrl
+      relatedSource.displayPictureUrl
         ? theme.palette.background.default
-        : usernameToColor(relatedUsers[0].name)
+        : usernameToColor(relatedSource.name)
     );
   };
   switch (notificationType) {
     case "connectionConfirmation":
       return (
         <Avatar
-          src={relatedUsers[0].displayPictureUrl}
-          alt={`${relatedUsers[0].name}`}
+          src={relatedSource.displayPictureUrl}
+          alt={`${relatedSource.name}`}
           sx={handleUserAvatarSx}
         >
-          {relatedUsers[0].name[0]}
+          {relatedSource.name[0]}
         </Avatar>
       );
     case "connectionRequest":
       return (
         <Avatar
-          src={relatedUsers[0].displayPictureUrl}
-          alt={`${relatedUsers[0].name}`}
+          src={relatedSource.displayPictureUrl}
+          alt={`${relatedSource.name}`}
           sx={handleUserAvatarSx}
         >
-          {relatedUsers[0].name[0]}
+          {relatedSource.name[0]}
         </Avatar>
       );
 

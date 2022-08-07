@@ -9,13 +9,18 @@ import { useSnackbarContext } from "../../contexts/SnackbarContext";
 import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
 import useInfiniteLoading from "../../hooks/useInfiniteLoading";
 import useRemountKey from "../../hooks/useRemountKey";
-import { IUserNotificationsApiResponse } from "../../interfaces/api/external";
+import {
+  INotificationsApiModel,
+  IRelatedSource,
+  IUserProfileApiModel,
+} from "../../interfaces/api/external";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import {
   getUserNotifications,
   patchReadUserNotification,
 } from "../../utils/api";
 import { generateNotificationMessage } from "../../utils/generic";
+import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
 import NotificationCard from "./NotificationCard/NotificationCard";
 import NotificationsSkeleton from "./NotificationsSkeleton";
 
@@ -28,8 +33,12 @@ const Notifications: ReactFCWithSkeleton = () => {
 
   const { remountKey } = useRemountKey(4);
 
-  const [uptoDateUserNotifications, setUptoDateUserNotifications] =
-    useState<IUserNotificationsApiResponse>([]);
+  const [uptoDateUserNotifications, setUptoDateUserNotifications] = useState<
+    INotificationsApiModel[]
+  >([]);
+  const [relatedSourcesMap, setRelatedSourcesMap] = useState<
+    Record<string, IRelatedSource>
+  >({});
 
   const [nextNotificationsSearchKey, setNextNotificationsSearchKey] =
     useState<Record<string, unknown>>();
@@ -81,7 +90,7 @@ const Notifications: ReactFCWithSkeleton = () => {
     authUser,
     nextNotificationsSearchKey,
     triggerGetUserNotificationsApi,
-    uptoDateUserNotifications.length,
+    uptoDateUserNotifications,
   ]);
 
   const infiniteLoadRef = useInfiniteLoading(
@@ -122,11 +131,22 @@ const Notifications: ReactFCWithSkeleton = () => {
 
   useEffect(() => {
     if (getUserNotificationsData) {
-      setUptoDateUserNotifications(prev => {
+      setUptoDateUserNotifications((prev) => {
         return [
           ...prev,
-          ...(getUserNotificationsData?.data as IUserNotificationsApiResponse),
+          ...(getUserNotificationsData?.data
+            ?.notifications as INotificationsApiModel[]),
         ];
+      });
+      setRelatedSourcesMap((prev) => {
+        const sourcesMap = transformUsersListToUserIdUserMap(
+          getUserNotificationsData.data?.relatedSources || []
+        ) as Record<string, IRelatedSource>;
+        const updatedRelatedSourcesMap = {
+          ...prev,
+          ...sourcesMap,
+        };
+        return updatedRelatedSourcesMap;
       });
       setNextNotificationsSearchKey(
         getUserNotificationsData.dDBPagination?.nextSearchStartFromKey
@@ -160,13 +180,14 @@ const Notifications: ReactFCWithSkeleton = () => {
               <NotificationCard
                 isRead={userNotification?.read}
                 notificationMessage={generateNotificationMessage(
-                  userNotification?.resourceType,
-                  userNotification?.relatedUsers
+                  userNotification.resourceActivity,
+                  relatedSourcesMap[userNotification.sourceId]
                 )}
                 notificationId={userNotification?.id}
                 notificationTime={userNotification?.createdAt}
-                notificationType={userNotification?.resourceType}
-                relatedUsers={userNotification?.relatedUsers}
+                notificationActivity={userNotification?.resourceActivity}
+                notificationResourceType={userNotification.resourceType}
+                relatedSource={relatedSourcesMap[userNotification.sourceId]}
                 onReadNotification={onReadNotification}
               />
             </Grid>

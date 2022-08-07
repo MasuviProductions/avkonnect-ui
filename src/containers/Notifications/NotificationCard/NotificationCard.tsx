@@ -5,19 +5,21 @@ import {
   getTimeAgo,
 } from "../../../utils/generic";
 import Link from "next/link";
-import {
-  IUserNotificationRelatedUsersType,
-  IUserNotificationResourceType,
-} from "../../../interfaces/api/external";
 import NotificationIcon from "../NotificationIcon/NotificationIcon";
+import {
+  INotificationResourceActivity,
+  INotificationResourceType,
+  IRelatedSource,
+} from "../../../interfaces/api/external";
 
 export interface INotificationCardProps {
   isRead: boolean;
   notificationMessage: string;
   notificationId: string;
-  notificationType: IUserNotificationResourceType;
+  notificationActivity: INotificationResourceActivity;
+  notificationResourceType: INotificationResourceType;
   notificationTime: Date;
-  relatedUsers: IUserNotificationRelatedUsersType[];
+  relatedSource: IRelatedSource;
   onReadNotification: (notificationId: string) => void;
 }
 
@@ -25,9 +27,10 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
   isRead,
   notificationMessage,
   notificationId,
-  notificationType,
+  notificationResourceType,
+  notificationActivity,
   notificationTime,
-  relatedUsers,
+  relatedSource,
   onReadNotification,
 }) => {
   const theme = useTheme();
@@ -50,12 +53,12 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
       }
       onClick={handleReadNotificationClick}
     >
-      <Link href={getNotificationTypeBasedLink(notificationType)} passHref>
+      <Link href={getNotificationTypeBasedLink(notificationActivity)} passHref>
         <Grid container alignItems="center" px={1}>
           <Grid item md={1} sm={2} xs={2}>
             <NotificationIcon
-              notificationType={notificationType}
-              relatedUsers={relatedUsers}
+              notificationType={notificationActivity}
+              relatedSource={relatedSource}
             />
           </Grid>
           <Grid item md={10} sm={9} xs={9} ml={1}>

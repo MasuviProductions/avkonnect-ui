@@ -25,8 +25,8 @@ const AboutUs: ReactFCWithSkeleton<IAboutUsProps> = () => {
             {LABELS.ABOUT_US}
           </Typography>
         </Grid>
-        <Grid item xs={8} sm={10} mt={3}>
-          <Typography variant="h6" color="text.primary" textAlign="center">
+        <Grid item xs={10} sm={10} mt={3}>
+          <Typography variant="inherit" color="text.primary" textAlign="center">
             {LABELS.ABOUT_US_INTRO}
             <Link
               href={compile(APP_ROUTES.PROFILE.route)({
