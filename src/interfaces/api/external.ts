@@ -1,16 +1,16 @@
 import { IGender } from "../../constants/forms/user-info";
 
-export interface AVConnectApiResponseError {
+export interface AVKonnectApiResponseError {
   message: string;
   code: string;
 }
 
-export interface AVConnectApiResponseDDBPagination {
+export interface AVKonnectApiResponseDDBPagination {
   nextSearchStartFromKey?: Record<string, unknown>;
   count: number;
 }
 
-export interface AVConnectApiResponsePagination {
+export interface AVKonnectApiResponsePagination {
   totalCount: number;
   totalPages: number;
   page: number;
@@ -20,9 +20,9 @@ export interface AVConnectApiResponsePagination {
 export interface AVKonnectApiResponse<T = undefined> {
   success: boolean;
   data?: T;
-  error?: AVConnectApiResponseError;
-  dDBPagination?: AVConnectApiResponseDDBPagination;
-  pagination?: AVConnectApiResponsePagination;
+  error?: AVKonnectApiResponseError;
+  dDBPagination?: AVKonnectApiResponseDDBPagination;
+  pagination?: AVKonnectApiResponsePagination;
 }
 
 export interface ISignInUserApiModel {
