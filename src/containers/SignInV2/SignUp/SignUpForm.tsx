@@ -17,6 +17,7 @@ import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
 import { ISignUpUserApiModel } from "../../../interfaces/api/external";
 import { ITextFieldConfig } from "../../../interfaces/app";
+import { getTextFieldColorBasedOnMessageType } from "../../../utils/generic";
 
 interface ISignUpFormProps {
   saveLoading?: boolean;
@@ -43,8 +44,13 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
 }) => {
   const signUpTextFieldsConfig = getInitialSignUpTextFieldValues();
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<ISignUpTextFields>(signUpTextFieldsConfig);
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+  } = useTextFieldsWithValidation<ISignUpTextFields>(signUpTextFieldsConfig);
 
   const handleSignInRedirect = () => {
     setActiveTabValue(0);
@@ -57,9 +63,15 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.fname.value}
             label={textFields.fname.label}
-            onChange={event => onFieldValueChange(event, "fname")}
-            onBlur={event => onFieldValueBlur(event, "fname")}
+            onChange={(event) => onFieldValueChange(event, "fname")}
+            onBlur={onFieldValueBlur("fname")}
             sx={signUpTextFieldSx}
+            required={textFields.fname.isRequired}
+            error={textFields.fname.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.fname.messageType
+            )}
+            helperText={textFields.fname.message}
             fullWidth
           />
         </Box>
@@ -69,9 +81,15 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.lname.value}
             label={textFields.lname.label}
-            onChange={event => onFieldValueChange(event, "lname")}
-            onBlur={event => onFieldValueBlur(event, "lname")}
+            onChange={(event) => onFieldValueChange(event, "lname")}
+            onBlur={onFieldValueBlur("lname")}
             sx={signUpTextFieldSx}
+            required={textFields.lname.isRequired}
+            error={textFields.lname.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.lname.messageType
+            )}
+            helperText={textFields.lname.message}
             fullWidth
           />
         </Box>
@@ -81,9 +99,15 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.emailId.value}
             label={textFields.emailId.label}
-            onChange={event => onFieldValueChange(event, "emailId")}
-            onBlur={event => onFieldValueBlur(event, "emailId")}
+            onChange={(event) => onFieldValueChange(event, "emailId")}
+            onBlur={onFieldValueBlur("emailId")}
             sx={signUpTextFieldSx}
+            required={textFields.emailId.isRequired}
+            error={textFields.emailId.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.emailId.messageType
+            )}
+            helperText={textFields.emailId.message}
             fullWidth
           />
         </Box>
@@ -93,16 +117,27 @@ const SignUpForm: React.FC<ISignUpFormProps> = ({
           <TextField
             value={textFields.password.value}
             label={textFields.password.label}
-            onChange={event => onFieldValueChange(event, "password")}
-            onBlur={event => onFieldValueBlur(event, "password")}
+            onChange={(event) => onFieldValueChange(event, "password")}
+            onBlur={onFieldValueBlur("password")}
             sx={signUpTextFieldSx}
+            required={textFields.password.isRequired}
+            error={textFields.password.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.password.messageType
+            )}
+            helperText={textFields.password.message}
             fullWidth
           />
         </Box>
       </Grid>
       <Grid item xs={12}>
         <Box my={2} mx={1}>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button
+            variant="contained"
+            disabled={!isFormInitialized || !isFormValid}
+            color="primary"
+            fullWidth
+          >
             {LABELS.SIGN_UP}
           </Button>
         </Box>
@@ -129,10 +164,10 @@ const signUpTextFieldSx: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

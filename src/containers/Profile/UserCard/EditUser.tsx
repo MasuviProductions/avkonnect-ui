@@ -13,9 +13,9 @@ import cloneDeep from "lodash.clonedeep";
 import CustomButton from "../../../components/CustomButton";
 import {
   USER_INFO_TEXT_FIELDS_CONFIG,
+  USER_INFO_DATE_FIELDS_CONFIG,
   IUserInfoTextFields,
   IUserInfoDateFields,
-  USER_INFO_DATE_FIELDS_CONFIG,
 } from "../../../constants/forms/user-info";
 import { LABELS } from "../../../constants/labels";
 import useTextFieldsWithValidation from "../../../hooks/useTextFieldsWithValidation";
@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import { IUser, useUserContext } from "../../../contexts/UserContext";
 import { useSnackbarContext } from "../../../contexts/SnackbarContext";
+import { getTextFieldColorBasedOnMessageType } from "../../../utils/generic";
 
 interface IEditUserProps {
   onModalClose?: () => void;
@@ -75,21 +76,31 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
   const userInfoDateFieldsConfig = getInitialUserInfoDateFieldValues(user);
   const userInfoTextFieldsConfig = getInitialUserInfoTextFieldValues(user);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<IUserInfoTextFields>(userInfoTextFieldsConfig);
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<IUserInfoTextFields>(
+    userInfoTextFieldsConfig
+  );
 
   const { dateFields, onDateValueChange } =
     useDateFieldsWithValidation<IUserInfoDateFields>(userInfoDateFieldsConfig);
 
   const handleSaveUserInfo = () => {
-    const updatedUserInfo: IUserProfilePatchApiRequest = {
-      name: textFields.name.value as string,
-      headline: textFields.headline.value as string,
-      dateOfBirth: dateFields.dateOfBirth.value?.valueOf() as number,
-      gender: textFields.gender.value as string,
-      location: textFields.location.value as string,
-    };
-    setPatchUserReq(updatedUserInfo);
+    if (onValidateAllFields()) {
+      const updatedUserInfo: IUserProfilePatchApiRequest = {
+        name: textFields.name.value as string,
+        headline: textFields.headline.value as string,
+        dateOfBirth: dateFields.dateOfBirth.value?.valueOf() as number,
+        gender: textFields.gender.value as string,
+        location: textFields.location.value as string,
+      };
+      setPatchUserReq(updatedUserInfo);
+    }
   };
 
   useEffect(() => {
@@ -98,7 +109,7 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
         message: LABELS.SAVE_SUCCESS,
         messageType: "success",
       }));
-      setUser(prev => ({
+      setUser((prev) => ({
         ...prev,
         name: patchUserData?.data?.name as string,
         headline: patchUserData?.data?.headline as string,
@@ -124,9 +135,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.name.value}
             label={textFields.name.label}
-            onChange={event => onFieldValueChange(event, "name")}
-            onBlur={event => onFieldValueBlur(event, "name")}
+            onChange={(event) => onFieldValueChange(event, "name")}
+            onBlur={onFieldValueBlur("name")}
             sx={textField}
+            required={textFields.name.isRequired}
+            error={textFields.name.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.name.messageType
+            )}
+            helperText={textFields.name.message}
           />
         </Grid>
 
@@ -140,11 +157,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.gender.value}
             options={textFields.gender.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
-                helperText={textFields.gender.message}
-                error={!!(textFields.gender.messageType === "error")}
                 label={textFields.gender.label}
+                required={textFields.gender.isRequired}
+                error={textFields.gender.isError || false}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.gender.messageType
+                )}
+                helperText={textFields.gender.message}
                 {...params}
               />
             )}
@@ -163,8 +184,8 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             minDate={dateFields.dateOfBirth.minDate}
             maxDate={dateFields.dateOfBirth.maxDate}
             inputFormat="DD/MM/YYYY"
-            onChange={date => onDateValueChange(date, "dateOfBirth")}
-            renderInput={params => (
+            onChange={(date) => onDateValueChange(date, "dateOfBirth")}
+            renderInput={(params) => (
               <TextField sx={textField} {...params} helperText={null} />
             )}
           />
@@ -174,9 +195,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
           <TextField
             value={textFields.headline.value}
             label={textFields.headline.label}
-            onChange={event => onFieldValueChange(event, "headline")}
-            onBlur={event => onFieldValueBlur(event, "headline")}
+            onChange={(event) => onFieldValueChange(event, "headline")}
+            onBlur={onFieldValueBlur("headline")}
             sx={textField}
+            required={textFields.headline.isRequired}
+            error={textFields.headline.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.headline.messageType
+            )}
+            helperText={textFields.headline.message}
           />
         </Grid>
 
@@ -186,11 +213,15 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             value={textFields.location.value}
             options={textFields.location.options as Readonly<string[]>}
             sx={textField}
-            renderInput={params => (
+            renderInput={(params) => (
               <TextField
-                helperText={textFields.location.message}
-                error={!!(textFields.location.messageType === "error")}
                 label={textFields.location.label}
+                required={textFields.location.isRequired}
+                error={textFields.location.isError || false}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.location.messageType
+                )}
+                helperText={textFields.location.message}
                 {...params}
               />
             )}
@@ -206,7 +237,11 @@ const EditUser: React.FC<IEditUserProps> = ({ onModalClose }) => {
             <Grid item>
               <CustomButton
                 loading={patchUserStatus === "loading"}
-                disabled={patchUserStatus === "loading"}
+                disabled={
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  patchUserStatus === "loading"
+                }
                 onClick={handleSaveUserInfo}
               >
                 {LABELS.SAVE}
@@ -228,10 +263,10 @@ const textField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

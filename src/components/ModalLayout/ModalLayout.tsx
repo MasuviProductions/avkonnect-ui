@@ -88,7 +88,7 @@ const headerContainer = (
   paddingY: 1,
   paddingX: 2,
   borderBottom: `1px solid ${
-    showBorder ? theme.palette.grey[700] : "transparent"
+    showBorder ? theme.palette.secondary.dark : "transparent"
   }`,
 });
 

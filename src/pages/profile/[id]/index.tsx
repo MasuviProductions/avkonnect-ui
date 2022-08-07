@@ -4,7 +4,7 @@ import Error from "../../../components/Error/Error";
 import Profile from "../../../containers/Profile";
 import UserContextProvider from "../../../contexts/UserContext";
 import {
-  AVConnectApiResponse,
+  AVKonnectApiResponse,
   IUserProfileApiResponse,
 } from "../../../interfaces/api/external";
 import {
@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
 };
 
 const transformUserProfileResponsetoIProtectedPageProps = (
-  response: AVConnectApiResponse<IUserProfileApiResponse>
+  response: AVKonnectApiResponse<IUserProfileApiResponse>
 ): { data: IProfilePageData | null; error: IPageError | null } => {
   if (!response.data) {
     const transformedError: IPageError = {

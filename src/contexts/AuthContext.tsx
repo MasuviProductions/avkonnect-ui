@@ -43,8 +43,9 @@ const AuthContextProvider: React.FC = ({ children }) => {
     API_ENDPOINTS.AUTH_USER.key,
     () => fetchAuthUser(sessionData?.accessToken as string),
     {
-      cacheTime: 1000 * 60 * 3,
       enabled: Boolean(sessionData) && sessionStatus !== "loading",
+      refetchOnWindowFocus: true,
+      refetchInterval: 1000 * 60,
     }
   );
 

@@ -16,18 +16,21 @@ const FEEDBACK_TEXT_FIELDS_CONFIG: Record<
   feedbackType: {
     label: LABELS.FEEDBACK_TYPE,
     id: "feedbackType",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ maxCharacters: 30 }],
     options: FEEDBACK_TYPE_FIELDS,
+    isRequired: true,
   },
   description: {
     label: LABELS.FEEDBACK_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /.{0,1000}/ }],
+    limitations: [{ maxCharacters: 1000 }],
+    isRequired: true,
   },
   subject: {
     label: LABELS.FEEDBACK_SUBJECT,
     id: "subject",
-    limitations: [{ regex: /.{0,15}/ }],
+    limitations: [{ maxCharacters: 15 }],
+    isRequired: true,
   },
 };
 

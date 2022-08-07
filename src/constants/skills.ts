@@ -26,7 +26,7 @@ export const SKILLS_LIST = [
   "Field Events Management",
   "Film Direction",
   "Film Distribution",
-  "Film Droduction",
+  "Film Production",
   "Film Publishing",
   "Film critique",
   "Game AI engineering",

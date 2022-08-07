@@ -5,7 +5,9 @@ import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
 import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
+import AboutUsPage from "../pages/about-us";
 import NotificationsPage from "../pages/notifications";
+import PrivacyPolicyPage from "../pages/legal/privacy-policy";
 import { LABELS } from "./labels";
 
 export const SESSION_REFETCH_INTERVAL = 5 * 60;
@@ -31,6 +33,11 @@ export const APP_ROUTES = {
     key: "search",
     skeleton: Search.Skeleton,
   },
+  ABOUT: {
+    route: "/about-us",
+    key: "about-us",
+    skeleton: AboutUsPage.Skeleton,
+  },
   MY_NETWORK: {
     route: "/my-network",
     key: "my-network",
@@ -40,6 +47,11 @@ export const APP_ROUTES = {
     route: "/notifications",
     key: "notifications",
     skeleton: NotificationsPage.Skeleton,
+  },
+  LEGAL_PRIVACY_POLICY: {
+    route: "/legal/privacy-policy",
+    key: "legal-privacy-policy",
+    skeleton: PrivacyPolicyPage.Skeleton,
   },
 };
 
@@ -70,8 +82,6 @@ export const MAX_EXPERIENCES_LIMIT = 8;
 
 export const CERTIFICATIONS_ELLIPSE_LIMIT = 2;
 export const MAX_CERTIFICATIONS_LIMIT = 8;
-
-export const MAX_DATE = 8640000000000000;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
 

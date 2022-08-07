@@ -16,7 +16,7 @@ import {
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SxProps } from "@mui/system";
 import Link from "next/link";
 import Image from "next/image";
@@ -258,5 +258,11 @@ const notificationBadgeSx: SxProps<Theme> = {
 const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
 
 const contrastIconSx: SxProps<Theme> = { color: "navbar.contrastText" };
+
+const deskLogoTextSx: SxProps<Theme> = {
+  fontFamily: "'Quicksand' !important",
+  fontSize: "34px",
+  fontWeight: "600",
+};
 
 export default Header;

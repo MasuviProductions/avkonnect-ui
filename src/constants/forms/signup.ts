@@ -7,22 +7,22 @@ const SIGN_UP_FIELDS_CONFIG: Record<ISignUpTextFields, ITextFieldConfig> = {
   emailId: {
     label: LABELS.EMAIL_ID,
     id: "emailId",
-    limitations: [{ regex: /.{0,75}/ }],
+    limitations: [{ maxCharacters: 75 }],
   },
   fname: {
     label: LABELS.FNAME,
     id: "fname",
-    limitations: [{ regex: /.{0,50}/ }],
+    limitations: [{ maxCharacters: 50 }],
   },
   lname: {
     label: LABELS.LNAME,
     id: "lname",
-    limitations: [{ regex: /.{0,50}/ }],
+    limitations: [{ maxCharacters: 50 }],
   },
   password: {
     label: LABELS.PASSWORD,
     id: "password",
-    limitations: [{ regex: /.{0,20}/ }],
+    limitations: [{ maxCharacters: 20 }],
   },
 };
 

@@ -5,6 +5,7 @@ import {
   IDateRangeType,
 } from "../../interfaces/app";
 import { LABELS } from "../labels";
+import { MIN_CALENDAR_DATE } from "./generic";
 
 type IExperienceTextFields =
   | "companyName"
@@ -39,29 +40,34 @@ const EXPERIENCE_TEXT_FIELDS_CONFIG: Record<
   companyName: {
     label: LABELS.EXPERIENCE_COMPANY_NAME,
     id: "companyName",
-    limitations: [{ regex: /^.{0,50}$/ }],
+    limitations: [{ maxCharacters: 100 }],
+    isRequired: true,
   },
   description: {
     label: LABELS.EXPERIENCE_DESCRIPTION,
     id: "description",
-    limitations: [{ regex: /.{0,1000}/ }],
+    limitations: [{ maxCharacters: 1000 }],
+    isRequired: true,
   },
   employmentType: {
     label: LABELS.EXPERIENCE_EMPLOYMENT_TYPE,
     id: "employmentType",
-    limitations: [{ regex: /.{0,15}/ }],
+    limitations: [{ maxCharacters: 30 }],
     options: EMPLOYMENT_TYPE_FIELDS,
+    isRequired: true,
   },
   industry: {
     label: LABELS.EXPERIENCE_INDUSTRY,
     id: "industry",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ maxCharacters: 30 }],
     options: INDUSTRY_FIELDS,
+    isRequired: true,
   },
   role: {
     label: LABELS.EXPERIENCE_ROLE,
     id: "role",
-    limitations: [{ regex: /.{0,25}/ }],
+    limitations: [{ maxCharacters: 50 }],
+    isRequired: true,
   },
 };
 
@@ -74,7 +80,7 @@ const EXPERIENCE_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.EXPERIENCE_START_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
   to: {
@@ -82,7 +88,7 @@ const EXPERIENCE_DATE_RANGE_FIELDS_CONFIG: Record<
     value: null,
     views: ["year", "month"],
     label: LABELS.EXPERIENCE_END_DATE,
-    minDate: dayjs("01-01-1910"),
+    minDate: dayjs(MIN_CALENDAR_DATE),
     maxDate: dayjs(new Date(Date.now())),
   },
 };

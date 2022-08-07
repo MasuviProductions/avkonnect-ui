@@ -1,15 +1,26 @@
 export const LABELS = {
   TITLE: "AVKonnect",
+  COMPANY_EMAIL: "masuviproductions@gmail.com",
   SUBMIT: "Submit",
   SKIP: "Skip",
   SAVE: "Save",
   REMOVE: "Remove",
   SAVE_SUCCESS: "Save was successful",
   SAVE_FAILED: "Something went wrong while saving",
-  LOGIN_OR_REGISTER: "Login or register",
+  SIGNIN_BOX_HEADER_1: "JOIN THE FASTEST GROWING MEDIA NETWORK",
+  SIGNIN_BOX_HEADER_2: "Grow with us!",
+  SIGNUP_OR_SIGNIN: "Sign up OR Sign in",
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+
+  // Links
+  COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
+  COMPANY_LINKEDIN_LINK:
+    "https://www.linkedin.com/company/masuvi-production-pvt-ltd/",
+  COMPANY_INSTAGRAM_LINK: "https://www.instagram.com/avkonnect/",
+  COMPANY_FACEBOOK_LINK: "https://www.facebook.com/masuviproduction/",
+  COMPANY_TWITTER_LINK: "https://twitter.com/guthalvvg",
 
   // Pages
   PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
@@ -27,6 +38,11 @@ export const LABELS = {
   FEEDBACK: "Feedback",
   FEEDBACK_HELPER: `Help us improve AVKonnect`,
   VIEW_PROFILE: "View Profile",
+
+  // Footer
+  LINKS_HEADER: "Links",
+  WHATSAPP_US_TITLE: "WhatsApp Us",
+  FOLLOW_US_HEADER: "Follow Us",
 
   // Logos
   TITLE_LOGO: "AVKonnect Logo",
@@ -115,7 +131,26 @@ export const LABELS = {
   ABOUT_HELPER:
     "A brief summary of you, your acheievements and fields of interest pertaining to the media industry.",
 
-  // User Skills Labels
+  // About us page labels
+  ABOUT_US: "About Us",
+  READ_MORE: "Read More",
+  ABOUT_US_INTRO:
+    "AVkonnect is the brain child of Masuvi Productions Pvt Ltd (founded in 2017) our founder ",
+  VISHVESHWARA: "Vishveshwara Guthal ",
+  ABOUT_INTRO_2:
+    "being an active member in film industry from the age of 16 and a software engineer by education conceived the idea of an automated platform dedicated to media fraternity AVkonnect which provides ample scope and opportunities to aspiring media professionals and media houses to get to know each other and do meaningful professional collaboration, AVkonnect brings customise solution to aspiring actors, filmmakers, news anchors, event managers, influencers, content creators etc to utilise to their benefit.", // User Skills Labels
+  OUR_VISION: "Our Vision ",
+  OUR_VISION_DESCRIPTION:
+    "Build economic opportunities for every member in the media industry and enhance the coherence at every stage of production. ",
+  OUR_MISSION: "Our Mission ",
+  OUR_MISSION_1:
+    "1. Collaborate with relevant stakeholders Frequently to increase footprints in the media fraternity. ",
+  OUR_MISSION_2:
+    "2. Provide employment opportunities without any logistical barriers. ",
+  OUR_MISSION_3:
+    "3. Create a platform to synergize coherent growth between the media entities. ",
+  BY: "by ",
+  MASUVI: "Masuvi Productions ",
   SKILLS_TITLE: "Skills",
   ADD_SKILLS: "Add Skills",
   EDIT_SKILLS: "Edit Skills",
@@ -152,6 +187,14 @@ export const LABELS = {
   EXPERIENCE_HELPER:
     "Your relevant career experiences can be highlighted here. They may be professional or personal experiences.",
 
+  // Landing page Labels
+  DESCRIPTION_INTRO:
+    "Welcome to AVKonnect, the platform for media professionals to network and collaborate. Login for free to explore the world of media.",
+  DESCRIPTION_INTRO_2: "To know more click on ",
+  DESCRIPTION_PARAGRAPH_1:
+    "Our features help you match with other media professionals. You get to meet actors, singers, script writers, journalists, directors and many more from exploring on our platform.",
+  DESCRIPTION_PARAGRAPH_2:
+    "AVkonnect offers numerous opportunities for advancement in your career or business. We support your growth, and our open community of filmmakers, content creators, media curators, and others will help you along the way.",
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
@@ -213,4 +256,11 @@ export const LABELS = {
   NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
     `Your request to connect with ${userName} was accepted!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
+
+  // Legal Pages
+  PRIVACY_POLICY_TITLE: "Privacy Policy",
+  PRIVACY_POLICY_LAST_UPDATED: "Last Updated on 3ʳᵈ July, 2022",
+
+  // Form Fields Generic
+  FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
 };

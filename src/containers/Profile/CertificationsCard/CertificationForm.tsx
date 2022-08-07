@@ -29,8 +29,11 @@ import {
 } from "../../../interfaces/app";
 import useDateRangeFieldsWithValidation from "../../../hooks/useDateRangeFieldsWithValidation";
 import { useEffect, useState } from "react";
-import { MAX_DATE } from "../../../constants/app";
-import { getURLFormattedMessage } from "../../../utils/generic";
+import {
+  getURLFormattedMessage,
+  getTextFieldColorBasedOnMessageType,
+} from "../../../utils/generic";
+import { MAX_DATE } from "../../../constants/forms/generic";
 
 interface ICertificationFormProps {
   certification?: IUserCertificationApiModel;
@@ -84,14 +87,19 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   const certificationTextFieldsConfig =
     getInitialCertificationTextFieldValues(certification);
 
-  const { textFields, onFieldValueChange, onFieldValueBlur } =
-    useTextFieldsWithValidation<ICertificationTextFields>(
-      certificationTextFieldsConfig
-    );
-
-  const { dateValues, onDateValueChange } = useDateRangeFieldsWithValidation(
-    certificationDateRangeFieldsConfig
+  const {
+    textFields,
+    isFormInitialized,
+    isFormValid,
+    onFieldValueChange,
+    onFieldValueBlur,
+    onValidateAllFields,
+  } = useTextFieldsWithValidation<ICertificationTextFields>(
+    certificationTextFieldsConfig
   );
+
+  const { dateValues, isDateRangeValid, onDateValueChange } =
+    useDateRangeFieldsWithValidation(certificationDateRangeFieldsConfig);
 
   const [isPresentlyWorking, setIsPresentlyWorking] = useState(
     certification?.expiresAt === MAX_DATE
@@ -104,20 +112,22 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
   };
 
   const handleSaveCertification = () => {
-    const urlFormattedDescription: string = getURLFormattedMessage(
-      textFields.description.value
-    );
-    const updatedCertification: IUserCertificationApiModel = {
-      issuerName: textFields.issuerName.value as string,
-      name: textFields.name.value as string,
-      link: textFields.link.value as string,
-      description: urlFormattedDescription,
-      expiresAt: dateValues.to.value?.valueOf() as number,
-      industry: textFields.industry.value,
-      issuedAt: dateValues.from.value?.valueOf() as number,
-      photoUrl: "",
-    };
-    onSaveCertification?.(updatedCertification);
+    if (onValidateAllFields()) {
+      const urlFormattedDescription: string = getURLFormattedMessage(
+        textFields.description.value
+      );
+      const updatedCertification: IUserCertificationApiModel = {
+        issuerName: textFields.issuerName.value as string,
+        name: textFields.name.value as string,
+        link: textFields.link.value as string,
+        description: urlFormattedDescription,
+        expiresAt: dateValues.to.value?.valueOf() as number,
+        industry: textFields.industry.value,
+        issuedAt: dateValues.from.value?.valueOf() as number,
+        photoUrl: "",
+      };
+      onSaveCertification?.(updatedCertification);
+    }
   };
 
   const handleRemoveCertification = () => {
@@ -140,8 +150,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.name.value}
             label={textFields.name.label}
             onChange={(event) => onFieldValueChange(event, "name")}
-            onBlur={(event) => onFieldValueBlur(event, "name")}
+            onBlur={onFieldValueBlur("name")}
             sx={textField}
+            required={textFields.name.isRequired}
+            error={textFields.name.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.name.messageType
+            )}
+            helperText={textFields.name.message}
           />
         </Grid>
 
@@ -154,8 +170,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.issuerName.value}
             label={textFields.issuerName.label}
             onChange={(event) => onFieldValueChange(event, "issuerName")}
-            onBlur={(event) => onFieldValueBlur(event, "issuerName")}
+            onBlur={onFieldValueBlur("issuerName")}
             sx={textField}
+            required={textFields.issuerName.isRequired}
+            error={textFields.issuerName.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.issuerName.messageType
+            )}
+            helperText={textFields.issuerName.message}
           />
         </Grid>
 
@@ -168,8 +190,13 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             renderInput={(params) => (
               <TextField
                 helperText={textFields.industry.message}
-                error={!!(textFields.industry.messageType === "error")}
                 label={textFields.industry.label}
+                required={textFields.industry.isRequired}
+                error={textFields.industry.isError || false}
+                color={getTextFieldColorBasedOnMessageType(
+                  textFields.industry.messageType
+                )}
+                onBlur={onFieldValueBlur("industry")}
                 {...params}
               />
             )}
@@ -234,8 +261,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.description.value}
             label={textFields.description.label}
             onChange={(event) => onFieldValueChange(event, "description")}
-            onBlur={(event) => onFieldValueBlur(event, "description")}
+            onBlur={onFieldValueBlur("description")}
             sx={textField}
+            required={textFields.description.isRequired}
+            error={textFields.description.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.description.messageType
+            )}
+            helperText={textFields.description.message}
           />
         </Grid>
 
@@ -244,8 +277,14 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             value={textFields.link.value}
             label={textFields.link.label}
             onChange={(event) => onFieldValueChange(event, "link")}
-            onBlur={(event) => onFieldValueBlur(event, "link")}
+            onBlur={onFieldValueBlur("link")}
             sx={textField}
+            required={textFields.link.isRequired}
+            error={textFields.link.isError || false}
+            color={getTextFieldColorBasedOnMessageType(
+              textFields.link.messageType
+            )}
+            helperText={textFields.link.message}
           />
         </Grid>
 
@@ -266,7 +305,12 @@ const CertificationForm: React.FC<ICertificationFormProps> = ({
             <Grid item>
               <CustomButton
                 loading={saveLoading}
-                disabled={saveLoading}
+                disabled={
+                  !isDateRangeValid ||
+                  !isFormInitialized ||
+                  !isFormValid ||
+                  saveLoading
+                }
                 onClick={handleSaveCertification}
               >
                 {LABELS.SAVE}
@@ -288,10 +332,10 @@ const textField: SxProps<Theme> = (theme: Theme) => ({
 
   ".MuiOutlinedInput-root": {
     fieldset: {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.grey[500],
+      borderColor: theme.palette.secondary.main,
     },
   },
 

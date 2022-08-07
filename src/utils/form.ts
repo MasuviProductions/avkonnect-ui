@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+import { LABELS } from "../constants/labels";
 import {
   IDateField,
   IDateFieldConfig,
@@ -9,25 +11,47 @@ import {
 
 export const getFieldValidity = (
   validations: ITextFieldPattern[],
-  value: string
+  value: string,
+  isRequired: boolean
 ): ITextFieldValidity => {
+  if (isRequired && !value) {
+    const fieldValidity: ITextFieldValidity = {
+      message: LABELS.FORM_FIELD_MANDATORY_ERROR_MSG,
+      messageType: "error",
+      isValid: false,
+    };
+    return fieldValidity;
+  }
   for (let index = 0; index < validations.length; index += 1) {
-    let regex = new RegExp(validations[index].regex, "i");
-    if (regex.test(value)) {
-      const fieldValidity: ITextFieldValidity = {
-        message: validations[index].message || "",
-        messageType: validations[index].messageType || "",
-        isValid: false,
-      };
-      return fieldValidity;
+    let validRegex = validations[index].regex;
+    if (validRegex) {
+      let regex = new RegExp(validRegex, "i");
+      if (!regex.test(value)) {
+        const fieldValidity: ITextFieldValidity = {
+          message: validations[index].message || "",
+          messageType: validations[index].messageType || "",
+          isValid: false,
+        };
+        return fieldValidity;
+      }
     }
   }
   const fieldValidity: ITextFieldValidity = {
-    message: "",
-    messageType: "",
     isValid: true,
   };
   return fieldValidity;
+};
+
+export const getDateRangeValidity = (
+  fromDate: Dayjs | null,
+  toDate: Dayjs | null
+): boolean => {
+  if (toDate && fromDate) {
+    if (toDate >= fromDate) {
+      return true;
+    }
+  }
+  return false;
 };
 
 export const isFieldValueLimited = (
@@ -35,11 +59,22 @@ export const isFieldValueLimited = (
   value: string
 ): boolean => {
   for (let index = 0; index < limitations.length; index += 1) {
+    let isValid = true;
     // TODO: Check for regex
-    let regex = new RegExp(limitations[index].regex, "i");
-    if (regex.test(value)) {
-      return true;
+    let validRegex = limitations[index].regex;
+    let maxCharacters = limitations[index].maxCharacters;
+    if (maxCharacters && value.length <= maxCharacters) {
+      isValid = isValid && true;
+    } else {
+      isValid = false;
     }
+    if (validRegex) {
+      let regex = new RegExp(validRegex, "i");
+      if (regex.test(value)) {
+        isValid = isValid && true;
+      }
+    }
+    return isValid;
   }
   return false;
 };
@@ -52,9 +87,11 @@ export const transformTextFieldConfigToFields = <T extends string>(
     fields[field as T] = {
       value: fieldsConfig[field as T].intialValue || "",
       message: "",
-      messageType: "",
+      messageType: undefined,
       label: fieldsConfig[field as T].label,
       options: fieldsConfig[field as T].options,
+      isError: false,
+      isRequired: fieldsConfig[field as T].isRequired || false,
     };
   });
 

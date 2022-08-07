@@ -1,5 +1,5 @@
 import {
-  AVConnectApiResponse,
+  AVKonnectApiResponse,
   IUserUploadSignedUrlApiResponse,
   IUserImageType,
   IUserProfileApiResponse,
@@ -16,8 +16,8 @@ import {
   IUserFeedbackApiResponse,
   IUserConnectionsApiResponse,
   IUserConnectionApiResponse,
-  IUserNotificationsApiResponse,
-  IUserNotificationCountApiResponse,
+  INotificationsApiResponse,
+  INotificationCountApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -26,7 +26,7 @@ export const fetchAuthUser = async (
   accessToken: string
 ): Promise<IUserProfileApiResponse> => {
   const userProfileResponse = await axios
-    .get<AVConnectApiResponse<IUserProfileApiResponse>>(
+    .get<AVKonnectApiResponse<IUserProfileApiResponse>>(
       API_ENDPOINTS.AUTH_USER.url,
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -39,9 +39,9 @@ export const fetchAuthUser = async (
 export const fetchUserProfile = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserProfileApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserProfileApiResponse>> => {
   const userProfileResponse = await axios
-    .get<AVConnectApiResponse<IUserProfileApiResponse>>(
+    .get<AVKonnectApiResponse<IUserProfileApiResponse>>(
       API_ENDPOINTS.USER_PROFILE.url(userId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -55,11 +55,11 @@ export const patchUserProfile = async (
   accessToken: string,
   userId: string,
   reqBody: IUserProfilePatchApiRequest
-): Promise<AVConnectApiResponse<IUserProfileApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserProfileApiResponse>> => {
   const userProfileResponse = await axios
     .patch<
       IUserProfilePatchApiRequest,
-      AxiosResponse<AVConnectApiResponse<IUserProfileApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserProfileApiResponse>>
     >(API_ENDPOINTS.USER_PROFILE.url(userId), reqBody, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -71,9 +71,9 @@ export const fetchUserImageSignedUrl = async (
   accessToken: string,
   userId: string,
   imageType: IUserImageType
-): Promise<AVConnectApiResponse<IUserUploadSignedUrlApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserUploadSignedUrlApiResponse>> => {
   const userProfileResponse = await axios
-    .get<AVConnectApiResponse<IUserUploadSignedUrlApiResponse>>(
+    .get<AVKonnectApiResponse<IUserUploadSignedUrlApiResponse>>(
       `${API_ENDPOINTS.USER_SIGNED_URL.url(userId)}?imageType=${imageType}`,
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -98,9 +98,9 @@ export const putUserImageToS3 = async (
 export const getUserSkills = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserSkillsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserSkillsApiResponse>> => {
   const userSkillsResponse = await axios
-    .get<AVConnectApiResponse<IUserSkillsApiResponse>>(
+    .get<AVKonnectApiResponse<IUserSkillsApiResponse>>(
       API_ENDPOINTS.USER_SKILLS.url(userId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -114,11 +114,11 @@ export const putUserSkills = async (
   accessToken: string,
   userId: string,
   skills: IUserSkillSetApiModel[]
-): Promise<AVConnectApiResponse<IUserSkillsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserSkillsApiResponse>> => {
   const userSkillsResponse = await axios
     .put<
       IUserSkillSetApiModel[],
-      AxiosResponse<AVConnectApiResponse<IUserSkillsApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserSkillsApiResponse>>
     >(API_ENDPOINTS.USER_SKILLS.url(userId), skills, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -129,9 +129,9 @@ export const putUserSkills = async (
 export const getUserProjects = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserProjectsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserProjectsApiResponse>> => {
   const userProjectsResponse = await axios
-    .get<AVConnectApiResponse<IUserProjectsApiResponse>>(
+    .get<AVKonnectApiResponse<IUserProjectsApiResponse>>(
       API_ENDPOINTS.USER_PROJECTS.url(userId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -145,11 +145,11 @@ export const putUserProjects = async (
   accessToken: string,
   userId: string,
   projects: IUserProjectApiModel[]
-): Promise<AVConnectApiResponse<IUserProjectsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserProjectsApiResponse>> => {
   const userProjectsResponse = await axios
     .put<
       IUserProjectApiModel[],
-      AxiosResponse<AVConnectApiResponse<IUserProjectsApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserProjectsApiResponse>>
     >(API_ENDPOINTS.USER_PROJECTS.url(userId), projects, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -160,9 +160,9 @@ export const putUserProjects = async (
 export const getUserExperiences = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserExperiencesApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserExperiencesApiResponse>> => {
   const userExperiencesResponse = await axios
-    .get<AVConnectApiResponse<IUserExperiencesApiResponse>>(
+    .get<AVKonnectApiResponse<IUserExperiencesApiResponse>>(
       API_ENDPOINTS.USER_EXPERIENCES.url(userId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -176,11 +176,11 @@ export const putUserExperiences = async (
   accessToken: string,
   userId: string,
   experiences: IUserExperienceApiModel[]
-): Promise<AVConnectApiResponse<IUserExperiencesApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserExperiencesApiResponse>> => {
   const userExperiencesResponse = await axios
     .put<
       IUserProjectApiModel[],
-      AxiosResponse<AVConnectApiResponse<IUserExperiencesApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserExperiencesApiResponse>>
     >(API_ENDPOINTS.USER_EXPERIENCES.url(userId), experiences, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -191,9 +191,9 @@ export const putUserExperiences = async (
 export const getUserCertifications = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserCertificationsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserCertificationsApiResponse>> => {
   const userCertificationsResponse = await axios
-    .get<AVConnectApiResponse<IUserCertificationsApiResponse>>(
+    .get<AVKonnectApiResponse<IUserCertificationsApiResponse>>(
       API_ENDPOINTS.USER_CERTIFICATIONS.url(userId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -207,11 +207,11 @@ export const putUserCertifications = async (
   accessToken: string,
   userId: string,
   certifications: IUserCertificationApiModel[]
-): Promise<AVConnectApiResponse<IUserCertificationsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserCertificationsApiResponse>> => {
   const userCertificationsResponse = await axios
     .put<
       IUserProjectApiModel[],
-      AxiosResponse<AVConnectApiResponse<IUserCertificationsApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserCertificationsApiResponse>>
     >(API_ENDPOINTS.USER_CERTIFICATIONS.url(userId), certifications, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -223,11 +223,11 @@ export const postUserFeedback = async (
   accessToken: string,
   userId: string,
   feedback: IUserFeedbackApiResponse
-): Promise<AVConnectApiResponse<IUserFeedbackApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserFeedbackApiResponse>> => {
   const userFeedbackResponse = await axios
     .post<
       IUserFeedbackApiResponse,
-      AxiosResponse<AVConnectApiResponse<IUserFeedbackApiResponse>>
+      AxiosResponse<AVKonnectApiResponse<IUserFeedbackApiResponse>>
     >(API_ENDPOINTS.USER_FEEDBACK.url(userId), feedback, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -240,12 +240,12 @@ export const getUsersSearch = async (
   searchString: string,
   page: number,
   limit: number
-): Promise<AVConnectApiResponse<IUsersSearchApiResponse[]>> => {
+): Promise<AVKonnectApiResponse<IUsersSearchApiResponse[]>> => {
   const queryString = `?search=${searchString}&limit=${limit}&page=${
     page || 0
   }`;
   const usersSearchResponse = await axios
-    .get<AVConnectApiResponse<IUsersSearchApiResponse[]>>(
+    .get<AVKonnectApiResponse<IUsersSearchApiResponse[]>>(
       API_ENDPOINTS.USERS_SEARCH.url(queryString),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -261,12 +261,12 @@ export const getUserConnections = async (
   connectionType: "all" | "connected" | "pending" | "sent",
   limit: number,
   nextSearchStartFromKey?: string
-): Promise<AVConnectApiResponse<IUserConnectionsApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserConnectionsApiResponse>> => {
   const queryString = `?connectionType=${connectionType}&limit=${limit}&nextSearchStartFromKey=${
     nextSearchStartFromKey || ""
   }`;
   const userConnections = await axios
-    .get<AVConnectApiResponse<IUserConnectionsApiResponse>>(
+    .get<AVKonnectApiResponse<IUserConnectionsApiResponse>>(
       API_ENDPOINTS.USER_CONNECTIONS.url(userId, queryString),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -280,9 +280,9 @@ export const getUserConnection = async (
   accessToken: string,
   userId: string,
   connecteeId: string
-): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserConnectionApiResponse>> => {
   const userConnection = await axios
-    .get<AVConnectApiResponse<IUserConnectionApiResponse>>(
+    .get<AVKonnectApiResponse<IUserConnectionApiResponse>>(
       API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -296,9 +296,9 @@ export const postUserConnection = async (
   accessToken: string,
   userId: string,
   connecteeId: string
-): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserConnectionApiResponse>> => {
   const userConnection = await axios
-    .post<AVConnectApiResponse<IUserConnectionApiResponse>>(
+    .post<AVKonnectApiResponse<IUserConnectionApiResponse>>(
       API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
       undefined,
       {
@@ -313,9 +313,9 @@ export const patchUserConnection = async (
   accessToken: string,
   userId: string,
   connecteeId: string
-): Promise<AVConnectApiResponse<IUserConnectionApiResponse>> => {
+): Promise<AVKonnectApiResponse<IUserConnectionApiResponse>> => {
   const userConnection = await axios
-    .patch<AVConnectApiResponse<IUserConnectionApiResponse>>(
+    .patch<AVKonnectApiResponse<IUserConnectionApiResponse>>(
       API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
       undefined,
       {
@@ -330,9 +330,9 @@ export const deleteUserConnection = async (
   accessToken: string,
   userId: string,
   connecteeId: string
-): Promise<AVConnectApiResponse> => {
+): Promise<AVKonnectApiResponse> => {
   const userConnection = await axios
-    .delete<AVConnectApiResponse>(
+    .delete<AVKonnectApiResponse>(
       API_ENDPOINTS.USER_CONNECTION.url(userId, connecteeId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -347,12 +347,12 @@ export const getUserNotifications = async (
   userId: string,
   limit: number,
   nextSearchStartFromKey?: string
-): Promise<AVConnectApiResponse<IUserNotificationsApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationsApiResponse>> => {
   const queryString = `?limit=${limit}&nextSearchStartFromKey=${
     nextSearchStartFromKey || ""
   }`;
   const userNotifications = await axios
-    .get<AVConnectApiResponse<IUserNotificationsApiResponse>>(
+    .get<AVKonnectApiResponse<INotificationsApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS.url(userId, queryString),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -365,9 +365,9 @@ export const getUserNotifications = async (
 export const getUserNotificationsUnseenCount = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationCountApiResponse>> => {
   const userNotifications = await axios
-    .get<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+    .get<AVKonnectApiResponse<INotificationCountApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
@@ -378,9 +378,9 @@ export const getUserNotificationsUnseenCount = async (
 export const deleteUserNotificationsUnseenCount = async (
   accessToken: string,
   userId: string
-): Promise<AVConnectApiResponse<IUserNotificationCountApiResponse>> => {
+): Promise<AVKonnectApiResponse<INotificationCountApiResponse>> => {
   const userNotificationCount = await axios
-    .delete<AVConnectApiResponse<IUserNotificationCountApiResponse>>(
+    .delete<AVKonnectApiResponse<INotificationCountApiResponse>>(
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
@@ -392,9 +392,9 @@ export const patchReadUserNotification = async (
   accessToken: string,
   userId: string,
   notificationId: string
-): Promise<AVConnectApiResponse> => {
+): Promise<AVKonnectApiResponse> => {
   const updatedUserNotificationAsRead = await axios
-    .patch<AVConnectApiResponse>(
+    .patch<AVKonnectApiResponse>(
       API_ENDPOINTS.USER_NOTIFICATION_READ.url(userId, notificationId),
       undefined,
       {

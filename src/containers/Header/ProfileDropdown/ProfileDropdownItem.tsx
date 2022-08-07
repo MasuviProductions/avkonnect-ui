@@ -30,7 +30,9 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
           <Grid container>
             {!!children && <Grid item>{children}</Grid>}
             <Grid item px={1} ml={1}>
-              <Typography variant="body1">{title}</Typography>
+              <Typography variant="body1" color="text.primary">
+                {title}
+              </Typography>
               {description && (
                 <Typography variant="caption" color="text.secondary" mt={2}>
                   {description}

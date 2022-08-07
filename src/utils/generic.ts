@@ -13,9 +13,10 @@ import {
 } from "../constants/app";
 import { LABELS } from "../constants/labels";
 import {
-  IUserNotificationRelatedUsersType,
-  IUserNotificationResourceType,
+  INotificationResourceActivity,
+  IRelatedSource,
 } from "../interfaces/api/external";
+import { ITextFieldMessageType } from "../interfaces/app";
 
 dayjs.extend(relativeTime);
 
@@ -117,14 +118,18 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
 };
 
 export const generateNotificationMessage = (
-  resourceType: string,
-  relatedUsers: IUserNotificationRelatedUsersType[]
+  notificationActivity: INotificationResourceActivity,
+  relatedSource: IRelatedSource
 ) => {
-  switch (resourceType) {
+  switch (notificationActivity) {
     case "connectionRequest":
-      return LABELS.NOTIFICATION_CONNECTION_REQUEST(relatedUsers[0].name);
+      return LABELS.NOTIFICATION_CONNECTION_REQUEST(
+        relatedSource.name as string
+      );
     case "connectionConfirmation":
-      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(relatedUsers[0].name);
+      return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(
+        relatedSource.name as string
+      );
     default:
       return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
   }
@@ -134,10 +139,20 @@ export const getTimeAgo = (unixTime: Date): string => {
   return dayjs(unixTime).fromNow();
 };
 
+export const getCurrentYear = (): number => {
+  return new Date().getFullYear();
+};
+
+export const getTextFieldColorBasedOnMessageType = (
+  messageType: ITextFieldMessageType | undefined
+): ITextFieldMessageType | undefined => {
+  return messageType === "warning" ? "warning" : undefined;
+};
+
 export const getNotificationTypeBasedLink = (
-  notificationType: IUserNotificationResourceType
+  notificationActivity: INotificationResourceActivity
 ): string => {
-  switch (notificationType) {
+  switch (notificationActivity) {
     case "connectionRequest":
       return `${APP_ROUTES.MY_NETWORK.route}`;
     case "connectionConfirmation":
