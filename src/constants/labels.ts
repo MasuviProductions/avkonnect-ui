@@ -133,11 +133,12 @@ export const LABELS = {
 
   // About us page labels
   ABOUT_US: "About Us",
+  READ_MORE: "Read More",
   ABOUT_US_INTRO:
-    "Avkonnect is the brain child of Masuvi Productions Pvt Ltd (founded in 2017) our founder ",
+    "AVkonnect is the brain child of Masuvi Productions Pvt Ltd (founded in 2017) our founder ",
   VISHVESHWARA: "Vishveshwara Guthal ",
   ABOUT_INTRO_2:
-    "being an active member in film industry from the age of 16 and a software engineer by education conceived the idea of an automated platform dedicated to media fraternity avkonnect which provides ample scope and opportunities to aspiring media professionals and media houses to get to know each other and do meaningful professional collaboration, AVkonnect brings customise solution to aspiring actors, filmmakers, news anchors, event managers, influencers, content creators etc to utilise to their benefit ", // User Skills Labels
+    "being an active member in film industry from the age of 16 and a software engineer by education conceived the idea of an automated platform dedicated to media fraternity AVkonnect which provides ample scope and opportunities to aspiring media professionals and media houses to get to know each other and do meaningful professional collaboration, AVkonnect brings customise solution to aspiring actors, filmmakers, news anchors, event managers, influencers, content creators etc to utilise to their benefit.", // User Skills Labels
   OUR_VISION: "Our Vision ",
   OUR_VISION_DESCRIPTION:
     "Build economic opportunities for every member in the media industry and enhance the coherence at every stage of production. ",
@@ -188,12 +189,12 @@ export const LABELS = {
 
   // Landing page Labels
   DESCRIPTION_INTRO:
-    "Welcome to AVKonnect, the social media platform that helps media professionals network and conduct business. login for free to explore the world of media.",
+    "Welcome to AVKonnect, the platform for media professionals to network and collaborate. Login for free to explore the world of media.",
   DESCRIPTION_INTRO_2: "To know more click on ",
   DESCRIPTION_PARAGRAPH_1:
-    " Our features allow us to better understand you as a user and recommend you to a potential media professional. A director looking for an actor for his next project, a news editor looking for a good journalist to cover a story, or a singer looking for a music producer are just a few examples, but there are endless opportunities available through the platform.",
+    "Our features help you match with other media professionals. You get to meet actors, singers, script writers, journalists, directors and many more from exploring on our platform.",
   DESCRIPTION_PARAGRAPH_2:
-    "We contribute to the development of your media career through the various features we offer, which enable you to communicate with many media executives and staff from all aspects of media channels.",
+    "AVkonnect offers numerous opportunities for advancement in your career or business. We support your growth, and our open community of filmmakers, content creators, media curators, and others will help you along the way.",
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
