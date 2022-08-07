@@ -14,7 +14,6 @@ import { APP_ROUTES } from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
 import DescriptionGridSkeleton from "./DescriptionGridSkeleton";
-import { compile } from "path-to-regexp";
 
 interface IDescriptionGridProps {
   handleSignIn: () => void;
@@ -30,21 +29,7 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
           <Typography variant="h6">
-            {LABELS.DESCRIPTION_INTRO_2}
-            <Link href={APP_ROUTES.ABOUT.route}>{LABELS.ABOUT_US}</Link>
-          </Typography>
-        </Box>
-        <Box>
-          <Image
-            src={PNG.AvkonnectPost1}
-            alt="1080p placeholder"
-            width="720"
-            height="720"
-          />
-        </Box>
-        <Box my={1}>
-          <Typography variant="inherit">
-            {LABELS.DESCRIPTION_PARAGRAPH_1}
+            <Link href={APP_ROUTES.ABOUT.route}>{LABELS.READ_MORE}</Link>
           </Typography>
         </Box>
         <Box>
@@ -56,9 +41,18 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
           />
         </Box>
         <Box my={1}>
-          <Typography variant="inherit">
-            {LABELS.DESCRIPTION_PARAGRAPH_2}
-          </Typography>
+          <Typography variant="h6">{LABELS.DESCRIPTION_PARAGRAPH_1}</Typography>
+        </Box>
+        <Box>
+          <Image
+            src={PNG.AvkonnectPost1}
+            alt="1080p placeholder"
+            width="720"
+            height="720"
+          />
+        </Box>
+        <Box my={1}>
+          <Typography variant="h6">{LABELS.DESCRIPTION_PARAGRAPH_2}</Typography>
         </Box>
         {/* TODO: END DESCRIPTION HERE */}
       </Grid>
