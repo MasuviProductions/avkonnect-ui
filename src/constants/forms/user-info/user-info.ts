@@ -19,26 +19,26 @@ const USER_INFO_TEXT_FIELDS_CONFIG: Record<
   name: {
     label: LABELS.USER_INFO_NAME,
     id: "name",
-    limitations: [{ regex: /^.{0,50}$/ }],
+    limitations: [{ maxCharacters: 100 }],
     isRequired: true,
   },
   gender: {
     label: LABELS.USER_INFO_GENDER,
     id: "gender",
-    limitations: [{ regex: /^.{0,25}$/ }],
+    limitations: [{ maxCharacters: 25 }],
     options: GENDER_FIELDS,
     isRequired: true,
   },
   location: {
     label: LABELS.USER_INFO_LOCATION,
     id: "location",
-    limitations: [{ regex: /^.{0,100}$/ }],
+    limitations: [{ maxCharacters: 200 }],
     options: CITY_FIELDS,
   },
   headline: {
     label: LABELS.USER_INFO_HEADLINE,
     id: "headline",
-    limitations: [{ regex: /^.{0,50}$/ }],
+    limitations: [{ maxCharacters: 400 }],
   },
 };
 
