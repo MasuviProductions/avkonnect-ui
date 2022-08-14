@@ -77,11 +77,18 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
     []
   );
 
+  const getTitle = () => {
+    if (userNotificationsCount) {
+      return `(${userNotificationsCount}) | ${LABELS.TITLE}`;
+    }
+    return LABELS.TITLE;
+  };
+
   return (
     <>
       <AppBar position="sticky" sx={{ backgroundColor: "navbar.main" }}>
         <Head>
-          <title>{LABELS.TITLE}</title>
+          <title>{getTitle()}</title>
           <meta name="description" content="-by Masuvi Production" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -177,7 +184,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 open={Boolean(themeAnchorEl)}
                 onClose={handleThemeClose}
               >
-                {THEMES_LIST.map(theme => (
+                {THEMES_LIST.map((theme) => (
                   <MenuItem
                     key={theme.key}
                     onClick={() => handleThemeSelect(theme.themeOption)}
