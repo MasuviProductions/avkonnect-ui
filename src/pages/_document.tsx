@@ -16,9 +16,7 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta
             name="theme-color"
-            content={
-              createTheme(THEMES_LIST[0].themeOption).palette.primary.main
-            }
+            content={createTheme(THEMES_LIST[0]).palette.primary.main}
           />
           <link
             rel="stylesheet"

@@ -3,10 +3,12 @@ import { Session } from "next-auth";
 import { handleServerSideAuthenticationRedirect } from "../utils/generic";
 import { NextPageWithSkeleton, SessionProps } from "../interfaces/app";
 import Home from "../containers/Home";
+// import LayoutCard from "../components/LayoutCard";
 
 const HomePage: NextPageWithSkeleton = () => {
   return (
     <>
+      {/* <LayoutCard withLighterBg>asd</LayoutCard> */}
       <Home />
     </>
   );

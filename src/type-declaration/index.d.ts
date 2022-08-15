@@ -1,10 +1,22 @@
 declare module "@mui/material/styles" {
-  interface Palette {
-    navbar: Palette["navbar"];
+  interface ThemeOptions {
+    key: string;
+    name: string;
   }
-  interface PaletteOptions {
-    navbar: PaletteOptions["navbar"];
+
+  interface TypeBackground {
+    navbar: string;
   }
+
+  interface TypeText {
+    navbar: string;
+  }
+  // interface Palette {
+  //   navbar: Palette["navbar"];
+  // }
+  // interface PaletteOptions {
+  //   navbar: PaletteOptions["navbar"];
+  // }
 }
 
 export = "@mui/material/styles";

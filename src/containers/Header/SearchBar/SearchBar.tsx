@@ -239,8 +239,8 @@ const searchBarContainer: SxProps<Theme> = (theme: Theme) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
   },
-  backgroundColor: "navbar.contrastText",
-  color: "navbar.main",
+  backgroundColor: theme.palette.text.navbar,
+  color: theme.palette.background.navbar,
 });
 
 const showResultsButton: SxProps<Theme> = (theme: Theme) => ({
@@ -251,11 +251,11 @@ const showResultsButton: SxProps<Theme> = (theme: Theme) => ({
 const searchBarTextfield: SxProps<Theme> = (theme: Theme) => ({
   ml: 1,
   flex: 1,
-  color: "navbar.main",
+  color: theme.palette.background.navbar,
 });
 
 const iconColor: SxProps<Theme> = (theme: Theme) => ({
-  color: "navbar.contrastText",
+  color: theme.palette.text.navbar,
 });
 
 const searchFieldMobileContainer: SxProps<Theme> = (theme: Theme) => ({
@@ -264,7 +264,7 @@ const searchFieldMobileContainer: SxProps<Theme> = (theme: Theme) => ({
   zIndex: 1,
   top: 0,
   left: 0,
-  backgroundColor: "navbar.main",
+  backgroundColor: theme.palette.background.navbar,
   padding: 1,
 });
 

@@ -93,9 +93,9 @@ const BottomFooter: React.FC = () => {
 
 const bottomFooterBoxSx: SxProps<Theme> = (theme: Theme) => ({
   width: "100%",
-  backgroundColor: theme.palette.navbar.main,
+  backgroundColor: theme.palette.background.navbar,
   borderRadius: "6px 6px 0px 0px",
-  boxShadow: `0px 0px 5px ${theme.palette.navbar.main}`,
+  boxShadow: `0px 0px 5px ${theme.palette.background.navbar}`,
 });
 
 const linkSx: SxProps<Theme> = (theme: Theme) => ({
@@ -108,7 +108,7 @@ const linkSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const miniHeadingSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.navbar.contrastText,
+  color: theme.palette.background.navbar,
   fontWeight: "600",
 });
 
