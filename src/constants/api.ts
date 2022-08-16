@@ -84,22 +84,83 @@ const API_ENDPOINTS = {
     url: (userId: string, notificationId: string) =>
       `${AVKONNECT_URL.NOTIFICATIONS()}/users/${userId}/notifications/${notificationId}/read`,
   },
-  USER_POST: {
-    key: "user-post",
+  CREATE_POST: {
+    key: "create-post",
     url: () => `${AVKONNECT_URL.POSTS()}/posts`,
   },
-  USER_POST_ID: {
-    key: "user-post",
+  GET_POST: {
+    key: "get-post",
     url: (postId: string) => `${AVKONNECT_URL.POSTS()}/posts/${postId}`,
   },
-  USER_COMMENT: {
-    key: "user-comment",
+  PATCH_POST: {
+    key: "patch-post",
+    url: (postId: string) => `${AVKONNECT_URL.POSTS()}/posts/${postId}`,
+  },
+  DELETE_POST: {
+    key: "delete-post",
+    url: (postId: string) => `${AVKONNECT_URL.POSTS()}/posts/${postId}`,
+  },
+  CREATE_COMMENT: {
+    key: "create-comment",
     url: () => `${AVKONNECT_URL.POSTS()}/comments`,
   },
-  USER_COMMENT_ID: {
-    key: "user-comment-id",
+  GET_COMMENT: {
+    key: "get-comment",
     url: (commentId: string) =>
       `${AVKONNECT_URL.POSTS()}/comments/${commentId}`,
+  },
+  PATCH_COMMENT: {
+    key: "patch-comment",
+    url: (commentId: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}`,
+  },
+  DELETE_COMMENT: {
+    key: "delete-comment",
+    url: (commentId: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}`,
+  },
+  GET_POST_REACTIONS: {
+    key: "get-post-reactions",
+    url: (postId: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/reactions`,
+  },
+  GET_POST_COMMENTS: {
+    key: "get-post-comments",
+    url: (postId: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/comments`,
+  },
+  GET_POSTS_INFO: {
+    key: "get-posts-info",
+    url: () => `${AVKONNECT_URL.POSTS()}/posts/getPostsInfo`,
+  },
+  GET_POST_ACTIVITY: {
+    key: "get-post-activity",
+    url: (postId: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/activity`,
+  },
+  GET_COMMENTS_COMMENTS: {
+    key: "get-comments-comments",
+    url: (commentId: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/comments`,
+  },
+  GET_COMMENT_ACTIVITY: {
+    key: "get-comment-activity",
+    url: (commentId: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/activity`,
+  },
+  CREATE_REACTION: {
+    key: "create-reaction",
+    url: () => `${AVKONNECT_URL.POSTS()}/reactions`,
+  },
+  GET_REACTION: {
+    key: "get-reaction",
+    url: (reactionId: string) =>
+      `${AVKONNECT_URL.POSTS()}/reactionns/${reactionId}`,
+  },
+  DELETE_REACTION: {
+    key: "delete-reaction",
+    url: (reactionId: string) =>
+      `${AVKONNECT_URL.POSTS()}/reactions/${reactionId}`,
   },
 };
 

@@ -18,14 +18,20 @@ import {
   IUserConnectionApiResponse,
   INotificationsApiResponse,
   INotificationCountApiResponse,
-  IUserPatchPostApiRequest,
-  IUserPostPostApiRequest,
-  IUserPostCommentApiRequest,
-  IUserPostCommentApiResponse,
-  IUserGetCommentApiResponse,
-  IUserPatchCommentApiRequest,
-  IUserPatchCommentApiResponse,
-  IUserPostApiResponse,
+  IPostApiResponse,
+  ICreatePostApiRequest,
+  IPatchPostApiRequest,
+  ICreateCommentApiRequest,
+  IPatchCommentApiRequest,
+  ICommentApiResponseModel,
+  IGetPostReactionsApiResponse,
+  IGetPostCommentsApiResponse,
+  IGetPostsInfoApiRequest,
+  IGetPostsInfoApiResponse,
+  IGetCommentsCommentsApiResponse,
+  ICreateReactionApiRequest,
+  IReactionApiResponse,
+  IActivityApiModel,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -413,118 +419,274 @@ export const patchReadUserNotification = async (
   return updatedUserNotificationAsRead;
 };
 
-export const postUserPost = async (
+export const createPost = async (
   accessToken: string,
-  postUserPostContent: IUserPostPostApiRequest
-): Promise<AVKonnectApiResponse<IUserPostApiResponse>> => {
-  const postUserPostResponse = await axios
+  createPostContent: ICreatePostApiRequest
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
+  const createPostResponse = await axios
     .post<
-      IUserPostPostApiRequest,
-      AxiosResponse<AVKonnectApiResponse<IUserPostApiResponse>>
-    >(API_ENDPOINTS.USER_POST.url(), postUserPostContent, {
+      ICreatePostApiRequest,
+      AxiosResponse<AVKonnectApiResponse<IPostApiResponse>>
+    >(API_ENDPOINTS.CREATE_POST.url(), createPostContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return postUserPostResponse;
+  return createPostResponse;
 };
 
-export const getUserPost = async (
+export const getPost = async (
   accessToken: string,
   postId: string
-): Promise<AVKonnectApiResponse<IUserPostApiResponse>> => {
-  const userPostResponse = await axios
-    .get<AVKonnectApiResponse<IUserPostApiResponse>>(
-      API_ENDPOINTS.USER_POST_ID.url(postId),
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
+  const getPostResponse = await axios
+    .get<AVKonnectApiResponse<IPostApiResponse>>(
+      API_ENDPOINTS.GET_POST.url(postId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
     .then(res => res.data);
-  return userPostResponse;
+  return getPostResponse;
 };
 
-export const patchUserPost = async (
+export const patchPost = async (
   accessToken: string,
   postId: string,
-  patchUserPostContent: IUserPatchPostApiRequest
-): Promise<AVKonnectApiResponse<IUserPostApiResponse>> => {
-  const patchUserPostResponse = await axios
+  patchPostContent: IPatchPostApiRequest
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
+  const patchPostResponse = await axios
     .patch<
-      IUserPatchPostApiRequest,
-      AxiosResponse<AVKonnectApiResponse<IUserPostApiResponse>>
-    >(API_ENDPOINTS.USER_POST_ID.url(postId), patchUserPostContent, {
+      IPatchPostApiRequest,
+      AxiosResponse<AVKonnectApiResponse<IPostApiResponse>>
+    >(API_ENDPOINTS.PATCH_POST.url(postId), patchPostContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return patchUserPostResponse;
+  return patchPostResponse;
 };
 
-export const deleteUserPost = async (
+export const deletePost = async (
   accessToken: string,
   postId: string
 ): Promise<AVKonnectApiResponse> => {
-  const deleteUserPostResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.USER_POST_ID.url(postId), {
+  const deletePostResponse = await axios
+    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_POST.url(postId), {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return deleteUserPostResponse;
+  return deletePostResponse;
 };
 
-export const postUserComment = async (
+export const createComment = async (
   accessToken: string,
-  postUserCommentContent: IUserPostCommentApiRequest
-): Promise<AVKonnectApiResponse<IUserPostCommentApiResponse>> => {
-  const postUserCommentResponse = await axios
+  postUserCommentContent: ICreateCommentApiRequest
+): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+  const createCommentResponse = await axios
     .post<
-      IUserPostCommentApiResponse,
-      AxiosResponse<AVKonnectApiResponse<IUserPostCommentApiResponse>>
-    >(API_ENDPOINTS.USER_COMMENT.url(), postUserCommentContent, {
+      ICreateCommentApiRequest,
+      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+    >(API_ENDPOINTS.CREATE_COMMENT.url(), postUserCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return postUserCommentResponse;
+  return createCommentResponse;
 };
 
-export const getUserComment = async (
+export const getComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse<IUserGetCommentApiResponse>> => {
-  const getUserCommentResponse = await axios
-    .get<AVKonnectApiResponse<IUserGetCommentApiResponse>>(
-      API_ENDPOINTS.USER_COMMENT_ID.url(commentId),
+): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+  const getCommentResponse = await axios
+    .get<AVKonnectApiResponse<ICommentApiResponseModel>>(
+      API_ENDPOINTS.GET_COMMENT.url(commentId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
     .then(res => res.data);
-  return getUserCommentResponse;
+  return getCommentResponse;
 };
 
-export const patchUserComment = async (
+export const patchComment = async (
   accessToken: string,
   commentId: string,
-  patchUserCommentContent: IUserPatchCommentApiRequest
-): Promise<AVKonnectApiResponse<IUserPatchCommentApiResponse>> => {
-  const patchUserCommentResponse = await axios
+  patchCommentContent: IPatchCommentApiRequest
+): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+  const patchCommentResponse = await axios
     .patch<
-      IUserPatchCommentApiRequest,
-      AxiosResponse<AVKonnectApiResponse<IUserPatchCommentApiResponse>>
-    >(API_ENDPOINTS.USER_POST_ID.url(commentId), patchUserCommentContent, {
+      IPatchCommentApiRequest,
+      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+    >(API_ENDPOINTS.PATCH_COMMENT.url(commentId), patchCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return patchUserCommentResponse;
+  return patchCommentResponse;
 };
 
-export const deleteUserComment = async (
+export const deleteComment = async (
   accessToken: string,
   commentId: string
 ): Promise<AVKonnectApiResponse> => {
-  const deleteUserCommentResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.USER_POST_ID.url(commentId), {
+  const deleteCommentResponse = await axios
+    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_COMMENT.url(commentId), {
       headers: { authorization: `Bearer ${accessToken}` },
     })
     .then(res => res.data);
-  return deleteUserCommentResponse;
+  return deleteCommentResponse;
+};
+
+export const getPostReactions = async (
+  accessToken: string,
+  postId: string
+): Promise<AVKonnectApiResponse<IGetPostReactionsApiResponse>> => {
+  const getPostReactionsResponse = await axios
+    .get<AVKonnectApiResponse<IGetPostReactionsApiResponse>>(
+      API_ENDPOINTS.GET_POST_REACTIONS.url(postId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+  return getPostReactionsResponse;
+};
+
+export const getPostComments = async (
+  accessToken: string,
+  postId: string
+): Promise<AVKonnectApiResponse<IGetPostCommentsApiResponse>> => {
+  const getPostCommentsResponse = await axios
+    .get<AVKonnectApiResponse<IGetPostCommentsApiResponse>>(
+      API_ENDPOINTS.GET_POST_COMMENTS.url(postId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+  return getPostCommentsResponse;
+};
+
+export const getPostsInfo = async (
+  accessToken: string,
+  getPostsInfoContent: IGetPostsInfoApiRequest
+): Promise<AVKonnectApiResponse<IGetPostsInfoApiResponse>> => {
+  const getPostsInfoResponse = await axios
+    .post<
+      IGetPostsInfoApiRequest,
+      AxiosResponse<AVKonnectApiResponse<IGetPostsInfoApiResponse>>
+    >(API_ENDPOINTS.GET_POSTS_INFO.url(), getPostsInfoContent, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then(res => res.data);
+
+  return getPostsInfoResponse;
+};
+
+export const getPostActivity = async (
+  accessToken: string,
+  postId: string
+): Promise<AVKonnectApiResponse<IActivityApiModel>> => {
+  const getPostActivityResponse = await axios
+    .get<AVKonnectApiResponse<IActivityApiModel>>(
+      API_ENDPOINTS.GET_POST_ACTIVITY.url(postId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then(res => res.data);
+
+  return getPostActivityResponse;
+};
+
+export const getCommentsComments = async (
+  accessToken: string,
+  commentId: string
+): Promise<AVKonnectApiResponse<IGetCommentsCommentsApiResponse>> => {
+  const getCommentsComments = await axios
+    .get<AVKonnectApiResponse<IGetCommentsCommentsApiResponse>>(
+      API_ENDPOINTS.GET_COMMENTS_COMMENTS.url(commentId),
+      {
+        headers: {
+          authorizations: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+
+  return getCommentsComments;
+};
+
+export const getCommentActivity = async (
+  accessToken: string,
+  commentId: string
+): Promise<AVKonnectApiResponse<IActivityApiModel>> => {
+  const getCommentActivityResponse = await axios
+    .get<AVKonnectApiResponse<IActivityApiModel>>(
+      API_ENDPOINTS.GET_COMMENT_ACTIVITY.url(commentId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+
+  return getCommentActivityResponse;
+};
+
+export const createReaction = async (
+  accessToken: string,
+  createReactionContent: ICreateReactionApiRequest
+): Promise<AVKonnectApiResponse<IReactionApiResponse>> => {
+  const createReactionResponse = await axios
+    .post<
+      ICreateReactionApiRequest,
+      AxiosResponse<AVKonnectApiResponse<IReactionApiResponse>>
+    >(API_ENDPOINTS.CREATE_REACTION.url(), createReactionContent, {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then(res => res.data);
+
+  return createReactionResponse;
+};
+
+export const getReaction = async (
+  accessToken: string,
+  reactionId: string
+): Promise<AVKonnectApiResponse<IReactionApiResponse>> => {
+  const getReactionResponse = await axios
+    .get<AVKonnectApiResponse<IReactionApiResponse>>(
+      API_ENDPOINTS.GET_REACTION.url(reactionId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+
+  return getReactionResponse;
+};
+
+export const deleteReaction = async (
+  accessToken: string,
+  reactionId: string
+): Promise<AVKonnectApiResponse> => {
+  const deleteReactionResponse = await axios
+    .delete<AVKonnectApiResponse>(
+      API_ENDPOINTS.DELETE_REACTION.url(reactionId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+
+  return deleteReactionResponse;
 };
