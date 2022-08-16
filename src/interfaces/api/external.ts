@@ -425,3 +425,32 @@ export interface IReactionApiResponse {
   createdAt: Date;
   relatedSource: IRelatedUserInfoResponseModel;
 }
+
+interface IFeedSourceApiModel {
+  sourceId: string;
+  resourceId: string;
+  sourceType: ISourceTypes;
+  resourceType: IResourceTypes;
+}
+
+interface IUserFeedApiModel {
+  postId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sourceId: string;
+  sourceType: ISourceTypes;
+  contents: IPostResponseContentModel;
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+  activity: IActivityApiModel;
+  hashtags: string[];
+  isBanned: boolean;
+  isDeleted: boolean;
+  feedId: string;
+  feedSources: IFeedSourceApiModel[];
+}
+
+export interface IGetUserFeedsApiResponse {
+  feeds: IUserFeedApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}

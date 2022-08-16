@@ -32,6 +32,7 @@ import {
   ICreateReactionApiRequest,
   IReactionApiResponse,
   IActivityApiModel,
+  IGetUserFeedsApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -689,4 +690,22 @@ export const deleteReaction = async (
     .then(res => res.data);
 
   return deleteReactionResponse;
+};
+
+export const getUserFeeds = async (
+  accessToken: string,
+  userId: string
+): Promise<AVKonnectApiResponse<IGetUserFeedsApiResponse>> => {
+  const getUserFeedsResponse = await axios
+    .get<AVKonnectApiResponse<IGetUserFeedsApiResponse>>(
+      API_ENDPOINTS.GET_USER_FEEDS.url(userId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+
+  return getUserFeedsResponse;
 };

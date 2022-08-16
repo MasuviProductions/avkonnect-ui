@@ -4,11 +4,13 @@ const AVKONNECT_URL = {
   BASE: ENV.AVKONNECT_CORE_URL,
   NOTIFICATIONS_BASE: ENV.AVKONNECT_NOTIFICATIONS_URL,
   POSTS_BASE: ENV.AVKONNECT_POSTS_URL,
+  FEEDS_BASE: ENV.AVKONNECT_FEEDS_URL,
   AUTH: (): string => `${AVKONNECT_URL.BASE}/api/v1/auth`,
   USERS: (): string => `${AVKONNECT_URL.BASE}/api/v1/users`,
   NOTIFICATIONS: (): string =>
     `${AVKONNECT_URL.NOTIFICATIONS_BASE}/api/notifications/v1`,
-  POSTS: (): string => `${AVKONNECT_URL.BASE}/api/posts/v1`,
+  POSTS: (): string => `${AVKONNECT_URL.POSTS_BASE}/api/posts/v1`,
+  FEEDS: (): string => `${AVKONNECT_URL.FEEDS_BASE}/api/feeds/v1`,
 };
 
 const API_ENDPOINTS = {
@@ -161,6 +163,10 @@ const API_ENDPOINTS = {
     key: "delete-reaction",
     url: (reactionId: string) =>
       `${AVKONNECT_URL.POSTS()}/reactions/${reactionId}`,
+  },
+  GET_USER_FEEDS: {
+    key: "get-user-feeds",
+    url: (userId: string) => `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds`,
   },
 };
 
