@@ -1,14 +1,16 @@
-export interface AVConnectApiResponseError {
+import { IGender } from "../../constants/forms/user-info";
+
+export interface AVKonnectApiResponseError {
   message: string;
   code: string;
 }
 
-export interface AVConnectApiResponseDDBPagination {
+export interface AVKonnectApiResponseDDBPagination {
   nextSearchStartFromKey?: Record<string, unknown>;
   count: number;
 }
 
-export interface AVConnectApiResponsePagination {
+export interface AVKonnectApiResponsePagination {
   totalCount: number;
   totalPages: number;
   page: number;
@@ -18,9 +20,9 @@ export interface AVConnectApiResponsePagination {
 export interface AVKonnectApiResponse<T = undefined> {
   success: boolean;
   data?: T;
-  error?: AVConnectApiResponseError;
-  dDBPagination?: AVConnectApiResponseDDBPagination;
-  pagination?: AVConnectApiResponsePagination;
+  error?: AVKonnectApiResponseError;
+  dDBPagination?: AVKonnectApiResponseDDBPagination;
+  pagination?: AVKonnectApiResponsePagination;
 }
 
 export interface ISignInUserApiModel {
@@ -238,4 +240,217 @@ export interface INotificationsApiResponse {
 
 export interface INotificationCountApiResponse {
   pendingNotificationCount: number;
+}
+
+type IResourceTypes = "post" | "comment";
+
+type ISourceTypes = "user" | "company";
+
+type IReactionTypes = "like" | "love" | "support" | "laugh" | "sad";
+
+interface IPostRequestContentApiModel {
+  text: string;
+  mediaUrls?: string[];
+}
+
+export interface ICreatePostApiRequest {
+  content: IPostRequestContentApiModel;
+  hashtags?: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+}
+
+interface IPostResponseContentModel {
+  text: string;
+  createdAt: Date;
+  mediaUrls: string[];
+}
+
+interface IRelatedUserInfoResponseModel {
+  id: string;
+  backgroundImageUrl: string;
+  displayPictureUrl: string;
+  email: string;
+  headline: string;
+  name: string;
+  gender: IGender;
+  location: string;
+}
+
+export interface IPostApiResponse {
+  sourceId: string;
+  sourceType: ISourceTypes;
+  contents: IPostResponseContentModel[];
+  hashtags: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+  isDeleted: boolean;
+  isBanned: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  id: string;
+  activity: IActivityApiModel;
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IPatchPostApiRequest {
+  content: IPostRequestContentApiModel;
+  hashtags: string[];
+}
+
+interface ICommentApiModel {
+  text: string;
+  mediaUrls: string[];
+  createdAt: Date;
+}
+
+export interface ICreateCommentApiRequest {
+  resourceId: string;
+  resourceType: IResourceTypes;
+  comment: Omit<ICommentApiModel, "createdAt">;
+}
+
+export interface ICommentApiResponseModel {
+  resourceId: string;
+  resourceType: IResourceTypes;
+  id: string;
+  sourceId: string;
+  sourceType: ISourceTypes;
+  createdAt: Date;
+  contents: ICommentApiModel[];
+  isDeleted: boolean;
+  isBanned: boolean;
+  activity: IActivityApiModel;
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IPatchCommentApiRequest {
+  comment: ICommentApiModel;
+}
+
+interface IReactionApiModel {
+  sourceType: ISourceTypes;
+  resourceType: IResourceTypes;
+  resourceId: string;
+  reaction: IReactionTypes;
+  createdAt: Date;
+  id: string;
+  sourceId: string;
+}
+
+export interface IGetPostReactionsApiResponse {
+  reactions: IReactionApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetPostCommentsApiResponse {
+  comments: Omit<ICommentApiResponseModel, "relatedSources">;
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetPostsInfoApiRequest {
+  sourceId: string;
+  sourceType: ISourceTypes;
+  postIds: string[];
+}
+
+type IReactionCountApiModel = Record<IReactionTypes, number>;
+
+interface IPostInfoSourceActivityApiModel {
+  sourceComments: ICommentApiModel[];
+}
+
+interface IGetPostInfoApiModel {
+  postId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sourceId: string;
+  sourceType: ISourceTypes;
+  contents: ICommentApiModel[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+  reactionsCount: IReactionCountApiModel;
+  commentsCount: number;
+  sourceActivity: IPostInfoSourceActivityApiModel;
+  hashtags: string[];
+  isBanned: boolean;
+  isDeleted: boolean;
+}
+
+export interface IGetPostsInfoApiResponse {
+  postsInfo: IGetPostInfoApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+interface IReportSourcesModel {
+  sourceId: string;
+  sourceType: ISourceTypes;
+  reportReason: string;
+}
+
+interface IReportInfoApiModel {
+  sources: IReportSourcesModel[];
+  reportCount: number;
+}
+
+export interface IActivityApiModel {
+  commentsCount: number;
+  resourceType: IResourceTypes;
+  resourceId: string;
+  updatedAt: Date;
+  createdAt: Date;
+  id: string;
+  reactionsCount: IReactionCountApiModel;
+  reportInfo: IReportInfoApiModel;
+}
+
+export interface IGetCommentsCommentsApiResponse {
+  comments: Omit<ICommentApiResponseModel, "relatedSources">;
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface ICreateReactionApiRequest {
+  resourceId: string;
+  resourceType: IResourceTypes;
+  reaction: IReactionTypes;
+}
+
+export interface IReactionApiResponse {
+  id: string;
+  sourceId: string;
+  sourceType: ISourceTypes;
+  resourceId: string;
+  resourceType: IResourceTypes;
+  reaction: IReactionTypes;
+  createdAt: Date;
+  relatedSource: IRelatedUserInfoResponseModel;
+}
+
+interface IFeedSourceApiModel {
+  sourceId: string;
+  resourceId: string;
+  sourceType: ISourceTypes;
+  resourceType: IResourceTypes;
+}
+
+interface IUserFeedApiModel {
+  postId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sourceId: string;
+  sourceType: ISourceTypes;
+  contents: IPostResponseContentModel;
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
+  activity: IActivityApiModel;
+  hashtags: string[];
+  isBanned: boolean;
+  isDeleted: boolean;
+  feedId: string;
+  feedSources: IFeedSourceApiModel[];
+}
+
+export interface IGetUserFeedsApiResponse {
+  feeds: IUserFeedApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
 }

@@ -61,7 +61,8 @@ const userAvatar = (theme: Theme, color: string): SystemStyleObject<Theme> => {
 };
 
 const notificationIconSx: SxProps<Theme> = {
-  fontSize: "40px",
+  fontSize: "48px",
+  margin: "0px 5px",
 };
 
 export default NotificationIcon;
