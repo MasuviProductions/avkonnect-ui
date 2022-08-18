@@ -1,3 +1,5 @@
+import { IReactionTypes } from "../interfaces/api/external";
+
 export const LABELS = {
   TITLE: "AVKonnect",
   COMPANY_EMAIL: "masuviproductions@gmail.com",
@@ -263,4 +265,16 @@ export const LABELS = {
 
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
+
+  // Comments
+  ADD_COMMENT: "Add your comment..",
+  POST_COMMENT: "Post",
+  REPLY: "Reply",
+
+  // Reactions
+  LOVE: "Love",
+  LIKE: "Like",
+  LAUGH: "Laugh",
+  SAD: "Sad",
+  SUPPORT: "Support",
 };

@@ -112,3 +112,8 @@ export interface IApiResponseState<T = unknown> {
 }
 
 export type IFooterType = "bottom" | "side";
+
+export interface IReactionConfig {
+  label: string;
+  emoji: string;
+}

@@ -1,5 +1,5 @@
-import { IUserImageType } from "../interfaces/api/external";
-import { IImageSelectorAttrib } from "../interfaces/app";
+import { IReactionTypes, IUserImageType } from "../interfaces/api/external";
+import { IImageSelectorAttrib, IReactionConfig } from "../interfaces/app";
 import Home from "../pages";
 import Profile from "../pages/profile/[id]";
 import Search from "../pages/search";
@@ -95,3 +95,14 @@ export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
 export const URL_MATCH_REGEX_WITHOUT_PROTOCOL = new RegExp(
   /^(!https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
 );
+
+export const UUID_REGEX_STRING =
+  "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+
+export const REACTION_CONFIGS: Record<IReactionTypes, IReactionConfig> = {
+  love: { label: LABELS.LOVE, emoji: "&#x1F496" },
+  like: { label: LABELS.LIKE, emoji: "&#x1F44D" },
+  laugh: { label: LABELS.LAUGH, emoji: "" },
+  support: { label: LABELS.SUPPORT, emoji: "" },
+  sad: { label: LABELS.SAD, emoji: "" },
+};

@@ -1,3 +1,5 @@
+import { IReactionTypes } from "../interfaces/api/external";
+
 declare module "@mui/material/styles" {
   interface ThemeOptions {
     key: string;
@@ -10,13 +12,16 @@ declare module "@mui/material/styles" {
 
   interface TypeText {
     navbar: string;
+    link: string;
   }
-  // interface Palette {
-  //   navbar: Palette["navbar"];
-  // }
-  // interface PaletteOptions {
-  //   navbar: PaletteOptions["navbar"];
-  // }
+
+  interface Palette {
+    reactions: Record<IReactionTypes, string>;
+  }
+
+  interface PaletteOptions {
+    reactions: Record<IReactionTypes, string>;
+  }
 }
 
 export = "@mui/material/styles";

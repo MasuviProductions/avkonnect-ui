@@ -1,3 +1,4 @@
+import { IResourceTypes } from "../interfaces/api/external";
 import ENV from "./env";
 
 const AVKONNECT_URL = {
@@ -128,8 +129,8 @@ const API_ENDPOINTS = {
   },
   GET_POST_COMMENTS: {
     key: "get-post-comments",
-    url: (postId: string) =>
-      `${AVKONNECT_URL.POSTS()}/posts/${postId}/comments`,
+    url: (postId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/comments${queryString}`,
   },
   GET_POSTS_INFO: {
     key: "get-posts-info",
@@ -142,8 +143,8 @@ const API_ENDPOINTS = {
   },
   GET_COMMENTS_COMMENTS: {
     key: "get-comments-comments",
-    url: (commentId: string) =>
-      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/comments`,
+    url: (commentId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/comments${queryString}`,
   },
   GET_COMMENT_ACTIVITY: {
     key: "get-comment-activity",
@@ -161,8 +162,8 @@ const API_ENDPOINTS = {
   },
   DELETE_REACTION: {
     key: "delete-reaction",
-    url: (reactionId: string) =>
-      `${AVKONNECT_URL.POSTS()}/reactions/${reactionId}`,
+    url: (resourceType: IResourceTypes, resourceId: string) =>
+      `${AVKONNECT_URL.POSTS()}/reactions/${resourceType}/${resourceId}`,
   },
   GET_USER_FEEDS: {
     key: "get-user-feeds",
