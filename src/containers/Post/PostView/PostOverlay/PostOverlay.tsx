@@ -63,8 +63,10 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
         <Box sx={postOverlayContainerSx}>
           <Box sx={contentsContainerSx}>
             {/* TODO */}
-            <Box sx={{ width: "100%", height: "25vh" }}>
-              Some sample post to be inserted here
+            <Box
+              sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
+            >
+              Post to be inserted here
             </Box>
 
             {uptoDateComments.map((comment, index) => (

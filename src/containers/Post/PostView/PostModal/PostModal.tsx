@@ -63,7 +63,9 @@ const PostModal: React.FC<IPostModalProps> = ({
         <Box sx={postModalContainerSx}>
           <Box sx={contentsContainerSx}>
             {/* TODO */}
-            <Box sx={{ width: "100%", height: "25vh" }}>
+            <Box
+              sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
+            >
               Some sample post to be inserted here
             </Box>
 
