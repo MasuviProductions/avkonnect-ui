@@ -2,22 +2,26 @@ import { Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../interfaces/api/external";
 
-export const simpleLinkSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  cursor: "pointer",
-  fontWeight: 500,
-  fontSize: 14,
-  color: theme.palette.text.primary,
-  display: "inline",
-  textDecoration: "none",
-  ":hover": {
-    textDecoration: "underline",
-  },
-});
+export const simpleLinkSx =
+  (fontSize?: number) =>
+  (theme: Theme): SystemStyleObject<Theme> => ({
+    cursor: "pointer",
+    fontWeight: 500,
+    fontSize: fontSize || 14,
+    color: theme.palette.text.primary,
+    display: "inline",
+    textDecoration: "none",
+    ":hover": {
+      textDecoration: "underline",
+    },
+  });
 
-export const decoratedLinkSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  ...simpleLinkSx(theme),
-  color: theme.palette.text.link,
-});
+export const decoratedLinkSx =
+  (fontSize?: number) =>
+  (theme: Theme): SystemStyleObject<Theme> => ({
+    ...simpleLinkSx(fontSize)(theme),
+    color: theme.palette.text.link,
+  });
 
 export const userAvatarSx: (
   color: string,

@@ -16,6 +16,8 @@ import { useComments } from "../../../../hooks/useComments";
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
 }
+
+// Warning: Desktop specific component
 const PostModal: React.FC<IPostModalProps> = ({
   replyFocused = false,
   showModal,
@@ -36,7 +38,7 @@ const PostModal: React.FC<IPostModalProps> = ({
     (nextSearchKey) => () =>
       getPostComments(accessToken as string, id, 5, nextSearchKey),
     { cacheTime: 0, refetchInterval: false, enabled: false },
-    true
+    false
   );
 
   const handleClickLoadMore = () => {
@@ -81,10 +83,7 @@ const PostModal: React.FC<IPostModalProps> = ({
                   userReaction={comment.sourceActivity?.reaction}
                   key={`comment-${comment.id}`}
                 >
-                  <Comment
-                    commentText={comment.contents[0].text}
-                    enableCommentOverlay
-                  />
+                  <Comment commentText={comment.contents[0].text} />
                 </AboutResourceProvider>
               </Box>
             ))}

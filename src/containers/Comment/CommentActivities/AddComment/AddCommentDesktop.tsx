@@ -34,7 +34,7 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
 
         <Grid item xs>
           <Grid container>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <TextField
                 label={LABELS.ADD_COMMENT}
                 multiline

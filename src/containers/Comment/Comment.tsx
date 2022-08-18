@@ -1,4 +1,5 @@
-import { Avatar, Grid, Hidden } from "@mui/material";
+import { Avatar, Box, Grid, Hidden, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import { useAboutResourceContext } from "../../contexts/AboutResourceContext";
 import { usernameToColor } from "../../utils/generic";
 import { userAvatarSx } from "../../styles/sx";
@@ -7,6 +8,7 @@ import CommentBox from "./CommentBox";
 import AddComment from "./CommentActivities/AddComment";
 import { useState } from "react";
 import CommentOverlay from "./CommentOverlay/CommentOverlay";
+import SubCommentsSection from "./SubCommentsSection";
 
 // Warning: Recursive component
 export interface IComment {
@@ -24,13 +26,12 @@ const Comment: React.FC<IComment> = ({
   onReplyChainEnd,
 }) => {
   const {
-    id,
     sourceInfo: { name, displayPictureUrl, id: sourceId },
     resourceType,
   } = useAboutResourceContext();
 
   // NOTE: Tweak this for increasing reply chain
-  const isEndOfReplyChain = resourceType === "comment";
+  const isEndOfCommentReplies = resourceType === "comment";
 
   const [openCommentOverlay, setOpenCommentOverlay] = useState(false);
 
@@ -44,12 +45,18 @@ const Comment: React.FC<IComment> = ({
   };
 
   const handlePromptReply = () => {
-    setPromptReply(true);
-
-    if (isEndOfReplyChain) {
-      setInputFeed(sourceId);
+    if (isEndOfCommentReplies) {
+      onReplyChainEnd?.(sourceId);
       return;
+    } else {
+      setInputFeed("");
+      setPromptReply(true);
     }
+  };
+
+  const handleOnReplyChainEnd = (sourceId: string) => {
+    setInputFeed(sourceId);
+    setPromptReply(true);
   };
 
   const handleViewRepliesInOverlay = (promptReply: boolean): void => {
@@ -57,7 +64,7 @@ const Comment: React.FC<IComment> = ({
       setPromptReply(true);
       setOpenCommentOverlay(true);
 
-      if (isEndOfReplyChain) {
+      if (isEndOfCommentReplies) {
         onReplyChainEnd?.(sourceId);
         return;
       }
@@ -72,7 +79,7 @@ const Comment: React.FC<IComment> = ({
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} sx={commentContainerSx}>
         <Grid item my={1}>
           <Avatar
             alt={name}
@@ -95,19 +102,25 @@ const Comment: React.FC<IComment> = ({
                 onPromptReply={handlePromptReply}
               />
             </Grid>
-
-            <Hidden mdDown> </Hidden>
-
-            <Hidden mdDown>
-              {promptReply && (
-                <Grid item xs={12}>
-                  <AddComment inputFeed={inputFeed} />
-                </Grid>
-              )}
-            </Hidden>
           </Grid>
         </Grid>
       </Grid>
+
+      <Hidden mdDown>
+        <Box ml={5}>
+          {!isEndOfCommentReplies && (
+            <SubCommentsSection
+              initialCommentsFeed={[]}
+              onReplyChainEnd={handleOnReplyChainEnd}
+            />
+          )}
+          {promptReply && (
+            <Grid item xs={12}>
+              <AddComment inputFeed={inputFeed} />
+            </Grid>
+          )}
+        </Box>
+      </Hidden>
 
       <Hidden mdUp>
         {enableCommentOverlay && (
@@ -122,5 +135,9 @@ const Comment: React.FC<IComment> = ({
     </>
   );
 };
+
+const commentContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  padding: 1,
+});
 
 export default Comment;

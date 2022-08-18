@@ -17,6 +17,7 @@ interface IPostOverlayProps extends IOverlay {
   replyFocused?: boolean;
 }
 
+// Warning: Handheld specific component
 const PostOverlay: React.FC<IPostOverlayProps> = ({
   replyFocused = false,
   showOverlay,

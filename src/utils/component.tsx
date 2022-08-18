@@ -23,7 +23,7 @@ export const parseContentText = (
       <Link
         key={i}
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
-        sx={decoratedLinkSx}
+        sx={decoratedLinkSx()}
       >
         {relatedSource?.name}
       </Link>
@@ -32,7 +32,7 @@ export const parseContentText = (
 
   const hashTagRegex = new RegExp(/#(\w+)/g);
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
-    return <Typography sx={decoratedLinkSx}>{`#${match}`}</Typography>;
+    return <Typography sx={decoratedLinkSx()}>{`#${match}`}</Typography>;
   });
 
   return replacedText;

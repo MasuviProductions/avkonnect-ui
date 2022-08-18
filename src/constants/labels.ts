@@ -270,6 +270,8 @@ export const LABELS = {
   ADD_COMMENT: "Add your comment..",
   POST_COMMENT: "Post",
   REPLY: "Reply",
+  LOAD_MORE_REPLIES: "Load more replies",
+  LOAD_MORE_COMMENTS: "Load more comments",
 
   // Reactions
   LOVE: "Love",

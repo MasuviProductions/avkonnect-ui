@@ -16,6 +16,7 @@ import AddComment from "../CommentActivities/AddComment";
 
 interface CommentOverlay extends IOverlay, IComment {}
 
+// Warning: Handheld specific component
 const CommentOverlay: React.FC<CommentOverlay> = ({
   commentText,
   showOverlay,
@@ -40,7 +41,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
     `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
     (nextSearchKey) => () =>
       getCommentsComments(accessToken as string, id, 5, nextSearchKey),
-    { cacheTime: 0, refetchInterval: false, enabled: false },
+    { cacheTime: 0, enabled: false },
     true
   );
 

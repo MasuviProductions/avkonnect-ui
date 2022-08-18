@@ -47,6 +47,7 @@ export const useComments = (
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   allCommentsFetched: boolean;
+  updateComments: (comments: ICommentApiResponseModel[]) => void;
 } => {
   const { authUser } = useAuthContext();
   const [uptoDateComments, setUptoDateComments] = useState<
@@ -71,7 +72,7 @@ export const useComments = (
         ? encodeURI(JSON.stringify(nextSearchStartFromKey))
         : undefined
     ),
-    options
+    { ...options, refetchOnWindowFocus: false, refetchInterval: false }
   );
 
   const infiniteLoadCallback = useCallback(() => {
@@ -95,11 +96,15 @@ export const useComments = (
     infiniteLoadCallback
   );
 
-  const resetQueryData = () => {
+  const resetQueryData = useCallback(() => {
     setNextSearchStartFromKey(undefined);
     setUptoDateComments([]);
     clearGetCommentsQueryData();
-  };
+  }, [clearGetCommentsQueryData]);
+
+  const updateComments = useCallback((comments: ICommentApiResponseModel[]) => {
+    setUptoDateComments(comments);
+  }, []);
 
   useEffect(() => {
     if (getCommentsRes?.data) {
@@ -136,6 +141,7 @@ export const useComments = (
     triggerGetCommentsApi,
     getCommentsStatus,
     allCommentsFetched: !nextSearchStartFromKey,
+    updateComments,
   };
 };
 
