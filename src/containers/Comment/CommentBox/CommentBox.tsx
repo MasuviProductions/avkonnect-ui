@@ -35,7 +35,7 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
           <Grid item>
             <Link
               href={compile(APP_ROUTES.PROFILE.route)({ id: userId })}
-              sx={simpleLinkSx}
+              sx={simpleLinkSx()}
             >
               {name}
             </Link>
