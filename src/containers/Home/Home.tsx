@@ -7,6 +7,7 @@ import { APP_ROUTES } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
+import Feeds from "./Feeds";
 import HomeSkeleton from "./HomeSkeleton";
 
 interface IHomeProps {}
@@ -18,7 +19,8 @@ const Home: ReactFCWithSkeleton<IHomeProps> = () => {
 
   return (
     <Container>
-      <Grid
+      <Feeds />
+      {/* <Grid
         container
         justifyContent="center"
         flexDirection="column"
@@ -73,7 +75,7 @@ const Home: ReactFCWithSkeleton<IHomeProps> = () => {
         <Grid item xs={4} md={2}>
           <Image src={PNG.MadeInIndia} alt={LABELS.MADE_IN_INDIA} />
         </Grid>
-      </Grid>
+      </Grid> */}
     </Container>
   );
 };

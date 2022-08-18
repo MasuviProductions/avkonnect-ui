@@ -95,3 +95,7 @@ export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
 export const URL_MATCH_REGEX_WITHOUT_PROTOCOL = new RegExp(
   /^(!https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
 );
+
+export const TEXT_MATCH_REGEX_WITH_USERID = new RegExp(
+  /(@user_[0-9a-zA-Z-]*)/g
+);

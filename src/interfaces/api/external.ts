@@ -266,7 +266,7 @@ interface IPostResponseContentModel {
   mediaUrls: string[];
 }
 
-interface IRelatedUserInfoResponseModel {
+export interface IRelatedUserInfoResponseModel {
   id: string;
   backgroundImageUrl: string;
   displayPictureUrl: string;
@@ -433,13 +433,13 @@ interface IFeedSourceApiModel {
   resourceType: IResourceTypes;
 }
 
-interface IUserFeedApiModel {
+export interface IUserFeedApiModel {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel;
+  contents: IPostResponseContentModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;

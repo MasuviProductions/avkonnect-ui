@@ -263,4 +263,7 @@ export const LABELS = {
 
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
+
+  // Feeds
+  FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
 };

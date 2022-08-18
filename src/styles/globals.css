@@ -19,3 +19,13 @@ a {
 .MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeSmall {
   color: #777 !important;
 }
+
+/* Set CSS inline */
+.avkUserLink {
+  color: rgb(11, 112, 184);
+  font-weight: 600;
+}
+
+.avkUserLink:hover {
+  text-decoration: underline;
+}
