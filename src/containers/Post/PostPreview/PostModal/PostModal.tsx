@@ -1,7 +1,6 @@
-import { Box, Button, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import ViewOverlay from "../../../../components/ViewOverlay";
+import { Box, Button, Grid, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
+import { useEffect } from "react";
 import API_ENDPOINTS from "../../../../constants/api";
 import AboutResourceProvider, {
   useAboutResourceContext,
@@ -11,101 +10,61 @@ import { getPostComments } from "../../../../utils/api";
 import Comment from "../../../Comment";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
-import {
-  ICommentApiResponseModel,
-  IRelatedSource,
-} from "../../../../interfaces/api/external";
-import { transformUsersListToUserIdUserMap } from "../../../../utils/transformers";
+import AddComment from "../../../Comment/CommentActivities/AddComment";
+import { useComments } from "../../../../hooks/useComments";
 
-interface IPostModalProps extends IModalLayoutProps {}
-const PostModal: React.FC<IPostModalProps> = ({ showModal, onModalClose }) => {
+interface IPostModalProps extends IModalLayoutProps {
+  replyFocused?: boolean;
+}
+const PostModal: React.FC<IPostModalProps> = ({
+  replyFocused = false,
+  showModal,
+  onModalClose,
+}) => {
   const { accessToken } = useAuthContext();
   const { id } = useAboutResourceContext();
 
-  const [nextNotificationsSearchKey, setNextNotificationsSearchKey] =
-    useState<Record<string, unknown>>();
-
-  const [uptoDateComments, setUptoDateComments] = useState<
-    ICommentApiResponseModel[]
-  >([]);
-
-  const [relatedSourcesMap, setRelatedSourcesMap] = useState<
-    Record<string, IRelatedSource>
-  >({});
-
   const {
-    data: postsCommentsRes,
-    refetch: triggerPostCommentsApi,
-    isFetching: postCommentsFetching,
-    status: postCommentsStatus,
-    remove: clearpostCommentsQueryData,
-  } = useQuery(
+    uptoDateComments,
+    relatedSourcesMap,
+    resetQueryData,
+    triggerGetCommentsApi,
+    getCommentsStatus,
+    allCommentsFetched,
+  } = useComments(
     `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`,
-    () =>
-      getPostComments(
-        accessToken as string,
-        id,
-        2,
-        nextNotificationsSearchKey
-          ? encodeURI(JSON.stringify(nextNotificationsSearchKey))
-          : undefined
-      ),
-    { cacheTime: 0, refetchInterval: false, enabled: false }
+    (nextSearchKey) => () =>
+      getPostComments(accessToken as string, id, 5, nextSearchKey),
+    { cacheTime: 0, refetchInterval: false, enabled: false },
+    true
   );
 
   const handleClickLoadMore = () => {
-    triggerPostCommentsApi();
+    triggerGetCommentsApi();
   };
 
   useEffect(() => {
     if (showModal) {
-      triggerPostCommentsApi();
+      triggerGetCommentsApi();
     }
-  }, [showModal, triggerPostCommentsApi]);
+  }, [showModal, triggerGetCommentsApi]);
 
   useEffect(() => {
     if (!showModal) {
-      setNextNotificationsSearchKey(undefined);
-      setUptoDateComments([]);
-      clearpostCommentsQueryData();
+      resetQueryData();
     }
-  }, [clearpostCommentsQueryData, showModal]);
-
-  useEffect(() => {
-    if (postsCommentsRes?.data) {
-      setUptoDateComments((prev) => [
-        ...prev,
-        ...(postsCommentsRes?.data?.comments || []),
-      ]);
-      setRelatedSourcesMap((prev) => {
-        const sourcesMap = transformUsersListToUserIdUserMap(
-          postsCommentsRes.data?.relatedSources || []
-        ) as Record<string, IRelatedSource>;
-        const updatedRelatedSourcesMap = {
-          ...prev,
-          ...sourcesMap,
-        };
-        return updatedRelatedSourcesMap;
-      });
-
-      setNextNotificationsSearchKey(
-        postsCommentsRes.dDBPagination?.nextSearchStartFromKey
-      );
-    }
-  }, [
-    postsCommentsRes?.dDBPagination?.nextSearchStartFromKey,
-    postsCommentsRes?.data,
-  ]);
+  }, [resetQueryData, showModal]);
 
   return (
     <>
       <ModalLayout showModal={showModal} onModalClose={onModalClose}>
-        <Grid container>
-          <Grid item xs={12} md={6}>
-            POST
-          </Grid>
+        <Box sx={postModalContainerSx}>
+          <Box sx={contentsContainerSx}>
+            {/* TODO */}
+            <Box sx={{ width: "100%", height: "25vh" }}>
+              Some sample post to be inserted here
+            </Box>
 
-          <Grid item xs={12} md={6}>
             {uptoDateComments.map((comment) => (
               <Box key={comment.id}>
                 <AboutResourceProvider
@@ -122,19 +81,42 @@ const PostModal: React.FC<IPostModalProps> = ({ showModal, onModalClose }) => {
                   userReaction={comment.sourceActivity?.reaction}
                   key={`comment-${comment.id}`}
                 >
-                  <Comment commentText={comment.contents[0].text} />
+                  <Comment
+                    commentText={comment.contents[0].text}
+                    enableCommentOverlay
+                  />
                 </AboutResourceProvider>
               </Box>
             ))}
 
-            {nextNotificationsSearchKey && (
-              <Button onClick={handleClickLoadMore}>Load more..</Button>
+            {!allCommentsFetched && (
+              <Button onClick={handleClickLoadMore}>Load more comments</Button>
             )}
-          </Grid>
-        </Grid>
+          </Box>
+
+          <Box sx={addCommentSx}>
+            <AddComment />
+          </Box>
+        </Box>
       </ModalLayout>
     </>
   );
 };
+
+const postModalContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "100%",
+  overflowY: "hidden",
+});
+
+const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "calc(100% - 100px - 16px)",
+  overflowY: "auto",
+  padding: 1.5,
+  paddingBottom: 5,
+});
+
+const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  paddingY: 1.5,
+});
 
 export default PostModal;

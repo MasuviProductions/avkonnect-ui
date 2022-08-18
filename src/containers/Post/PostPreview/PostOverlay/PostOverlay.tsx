@@ -1,7 +1,6 @@
 import { Box, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useCallback, useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useEffect } from "react";
 import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
 import API_ENDPOINTS from "../../../../constants/api";
@@ -9,13 +8,8 @@ import AboutResourceProvider, {
   useAboutResourceContext,
 } from "../../../../contexts/AboutResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
-import useInfiniteLoading from "../../../../hooks/useInfiniteLoading";
-import {
-  ICommentApiResponseModel,
-  IRelatedSource,
-} from "../../../../interfaces/api/external";
+import { useComments } from "../../../../hooks/useComments";
 import { getPostComments } from "../../../../utils/api";
-import { transformUsersListToUserIdUserMap } from "../../../../utils/transformers";
 import Comment from "../../../Comment";
 import AddComment from "../../../Comment/CommentActivities/AddComment";
 
@@ -28,99 +22,37 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   showOverlay,
   onOverlayClose,
 }) => {
-  const { accessToken, authUser } = useAuthContext();
+  const { accessToken } = useAuthContext();
   const { id } = useAboutResourceContext();
 
-  const [nextNotificationsSearchKey, setNextNotificationsSearchKey] =
-    useState<Record<string, unknown>>();
-
-  const [uptoDateComments, setUptoDateComments] = useState<
-    ICommentApiResponseModel[]
-  >([]);
-
-  const [relatedSourcesMap, setRelatedSourcesMap] = useState<
-    Record<string, IRelatedSource>
-  >({});
-
   const {
-    data: postsCommentsRes,
-    refetch: triggerPostCommentsApi,
-    isFetching: postCommentsFetching,
-    status: postCommentsStatus,
-    remove: clearpostCommentsQueryData,
-  } = useQuery(
-    `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`,
-    () =>
-      getPostComments(
-        accessToken as string,
-        id,
-        5,
-        nextNotificationsSearchKey
-          ? encodeURI(JSON.stringify(nextNotificationsSearchKey))
-          : undefined
-      ),
-    { cacheTime: 0, refetchInterval: false, enabled: false }
-  );
-
-  const infiniteLoadCallback = useCallback(() => {
-    if (uptoDateComments.length > 0 && nextNotificationsSearchKey) {
-      if (authUser) {
-        triggerPostCommentsApi();
-      }
-    }
-  }, [
-    authUser,
-    nextNotificationsSearchKey,
-    triggerPostCommentsApi,
     uptoDateComments,
-  ]);
-
-  const infiniteLoadRef = useInfiniteLoading(
-    postCommentsFetching,
-    infiniteLoadCallback
+    relatedSourcesMap,
+    resetQueryData,
+    infiniteLoadRef,
+    triggerGetCommentsApi,
+    getCommentsStatus,
+  } = useComments(
+    `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`,
+    (nextSearchKey) => () =>
+      getPostComments(accessToken as string, id, 5, nextSearchKey),
+    { cacheTime: 0, refetchInterval: false, enabled: false },
+    true
   );
 
   useEffect(() => {
     if (showOverlay) {
-      triggerPostCommentsApi();
+      triggerGetCommentsApi();
     }
-  }, [triggerPostCommentsApi, showOverlay, clearpostCommentsQueryData]);
+  }, [triggerGetCommentsApi, showOverlay]);
 
   useEffect(() => {
     if (!showOverlay) {
-      setNextNotificationsSearchKey(undefined);
-      setUptoDateComments([]);
-      clearpostCommentsQueryData();
+      resetQueryData();
     }
-  }, [clearpostCommentsQueryData, showOverlay]);
+  }, [resetQueryData, showOverlay]);
 
-  useEffect(() => {
-    if (postsCommentsRes?.data) {
-      setUptoDateComments((prev) => [
-        ...prev,
-        ...(postsCommentsRes?.data?.comments || []),
-      ]);
-      setRelatedSourcesMap((prev) => {
-        const sourcesMap = transformUsersListToUserIdUserMap(
-          postsCommentsRes.data?.relatedSources || []
-        ) as Record<string, IRelatedSource>;
-        const updatedRelatedSourcesMap = {
-          ...prev,
-          ...sourcesMap,
-        };
-        return updatedRelatedSourcesMap;
-      });
-
-      setNextNotificationsSearchKey(
-        postsCommentsRes.dDBPagination?.nextSearchStartFromKey
-      );
-    }
-  }, [
-    postsCommentsRes?.dDBPagination?.nextSearchStartFromKey,
-    postsCommentsRes?.data,
-  ]);
-
-  if (postCommentsStatus === "loading") {
+  if (getCommentsStatus === "loading") {
     return <></>;
   }
 
@@ -129,6 +61,11 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
         <Box sx={postOverlayContainerSx}>
           <Box sx={contentsContainerSx}>
+            {/* TODO */}
+            <Box sx={{ width: "100%", height: "25vh" }}>
+              Some sample post to be inserted here
+            </Box>
+
             {uptoDateComments.map((comment, index) => (
               <Box
                 key={comment.id}
@@ -151,13 +88,16 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
                   createdAt={comment.createdAt}
                   userReaction={comment.sourceActivity?.reaction}
                 >
-                  <Comment commentText={comment.contents[0].text} />
+                  <Comment
+                    commentText={comment.contents[0].text}
+                    enableCommentOverlay
+                  />
                 </AboutResourceProvider>
               </Box>
             ))}
           </Box>
 
-          <Box sx={addCommentx}>
+          <Box sx={addCommentSx}>
             <AddComment isFocused={replyFocused} />
           </Box>
         </Box>
@@ -178,7 +118,7 @@ const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingBottom: 5,
 });
 
-const addCommentx = (theme: Theme): SystemStyleObject<Theme> => ({
+const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingY: 1.5,
 });
 

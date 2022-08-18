@@ -3,13 +3,13 @@ import CommentReactions from "./CommentReactions";
 import CommentReply from "./CommentReply";
 
 interface ICommentActivitiesProps {
-  onReplyClick: () => void;
-  onViewReplies: () => void;
+  onViewRepliesInOverlay: (promptReply: boolean) => void;
+  onPromptReply: () => void;
 }
 
 const CommentActivities: React.FC<ICommentActivitiesProps> = ({
-  onReplyClick,
-  onViewReplies,
+  onViewRepliesInOverlay,
+  onPromptReply,
 }) => {
   return (
     <>
@@ -25,8 +25,8 @@ const CommentActivities: React.FC<ICommentActivitiesProps> = ({
 
         <Grid item>
           <CommentReply
-            onReplyClick={onReplyClick}
-            onViewReplies={onViewReplies}
+            onViewRepliesInOverlay={onViewRepliesInOverlay}
+            onPromptReply={onPromptReply}
           />
         </Grid>
       </Grid>

@@ -80,7 +80,10 @@ const AddComment: React.FC<IAddCommentProps> = ({
       </Hidden>
 
       <Hidden mdDown>
-        <AddCommentDesktop />
+        <AddCommentDesktop
+          inputFeed={inputFeed}
+          onSubmitComment={handleCommentSubmit}
+        />
       </Hidden>
     </>
   );

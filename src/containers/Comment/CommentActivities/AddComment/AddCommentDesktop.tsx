@@ -5,7 +5,15 @@ import { usernameToColor } from "../../../../utils/generic";
 import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 
-const AddCommentDesktop: React.FC = () => {
+interface IAddCommentDesktopProps {
+  inputFeed?: string;
+  onSubmitComment: () => void;
+}
+
+const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
+  inputFeed,
+  onSubmitComment,
+}) => {
   const { authUser } = useAuthContext();
 
   const name = authUser?.name as string;
@@ -33,11 +41,17 @@ const AddCommentDesktop: React.FC = () => {
                 fullWidth
                 maxRows={4}
                 sx={commentTextFieldSx}
+                value={inputFeed}
               />
             </Grid>
 
             <Grid item xs={12} py={1}>
-              <Button variant="contained" color="primary" sx={postButtonSx}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={postButtonSx}
+                onClick={onSubmitComment}
+              >
                 {LABELS.POST_COMMENT}
               </Button>
             </Grid>

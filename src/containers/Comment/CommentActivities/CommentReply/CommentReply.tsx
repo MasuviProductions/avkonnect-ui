@@ -4,31 +4,61 @@ import { useAboutResourceContext } from "../../../../contexts/AboutResourceConte
 import { reactionButtonSx } from "../../../../styles/sx";
 
 interface ICommentReplyProps {
-  onReplyClick: () => void;
-  onViewReplies: () => void;
+  onViewRepliesInOverlay: (promptReply: boolean) => void;
+  onPromptReply: () => void;
 }
 
 const CommentReply: React.FC<ICommentReplyProps> = ({
-  onReplyClick,
-  onViewReplies,
+  onViewRepliesInOverlay,
+  onPromptReply,
 }) => {
   const { commentsCount } = useAboutResourceContext();
 
+  const handleViewRepliesInOverlay = (prmptRply: boolean) => {
+    return () => onViewRepliesInOverlay(prmptRply);
+  };
+
   return (
     <>
-      <Grid container>
-        <Grid item>
-          <Button sx={reactionButtonSx()} onClick={onReplyClick}>
-            {LABELS.REPLY}
-          </Button>
-        </Grid>
+      {/* NOTE: Handheld view */}
+      <Hidden mdUp>
+        <Grid container>
+          <Grid item>
+            <Button
+              sx={reactionButtonSx()}
+              onClick={handleViewRepliesInOverlay(true)}
+            >
+              {LABELS.REPLY}
+            </Button>
+          </Grid>
 
-        <Grid>
-          <Button sx={reactionButtonSx()} onClick={onViewReplies}>
-            {`${commentsCount} Replies`}
-          </Button>
+          <Grid>
+            <Button
+              sx={reactionButtonSx()}
+              onClick={handleViewRepliesInOverlay(false)}
+            >
+              {`${commentsCount} Replies`}
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </Hidden>
+
+      {/* NOTE: Desktop view */}
+      <Hidden mdDown>
+        <Grid container>
+          <Grid item>
+            <Button sx={reactionButtonSx()} onClick={onPromptReply}>
+              {LABELS.REPLY}
+            </Button>
+          </Grid>
+
+          <Grid>
+            <Button sx={reactionButtonSx()}>
+              {`${commentsCount} Replies`}
+            </Button>
+          </Grid>
+        </Grid>
+      </Hidden>
     </>
   );
 };

@@ -5,19 +5,21 @@ import { userAvatarSx } from "../../styles/sx";
 import CommentActivities from "./CommentActivities";
 import CommentBox from "./CommentBox";
 import AddComment from "./CommentActivities/AddComment";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CommentOverlay from "./CommentOverlay/CommentOverlay";
 
+// Warning: Recursive component
 export interface IComment {
   commentText: string;
-  preventSubsequentOverlay?: boolean;
+  // Handheld specefic prop to enable Comment overlay
+  enableCommentOverlay?: boolean;
   replyFocused?: boolean;
   onReplyChainEnd?: (tagUser: string) => void;
 }
 
 const Comment: React.FC<IComment> = ({
   commentText,
-  preventSubsequentOverlay = false,
+  enableCommentOverlay = false,
   replyFocused = false,
   onReplyChainEnd,
 }) => {
@@ -34,27 +36,38 @@ const Comment: React.FC<IComment> = ({
 
   const [promptReply, setPromptReply] = useState<boolean>(replyFocused);
 
+  const [inputFeed, setInputFeed] = useState<string | undefined>();
+
   const handleCommentOverlayClose = () => {
     setPromptReply(false);
     setOpenCommentOverlay(false);
   };
 
-  const handleReplyClick = () => {
+  const handlePromptReply = () => {
     setPromptReply(true);
-    setOpenCommentOverlay(true);
 
     if (isEndOfReplyChain) {
-      onReplyChainEnd?.(sourceId);
+      setInputFeed(sourceId);
       return;
-    }
-
-    if (preventSubsequentOverlay) {
-      onReplyChainEnd?.("");
     }
   };
 
-  const handleViewReplies = () => {
-    setOpenCommentOverlay(true);
+  const handleViewRepliesInOverlay = (promptReply: boolean): void => {
+    if (promptReply) {
+      setPromptReply(true);
+      setOpenCommentOverlay(true);
+
+      if (isEndOfReplyChain) {
+        onReplyChainEnd?.(sourceId);
+        return;
+      }
+
+      if (!enableCommentOverlay) {
+        onReplyChainEnd?.("");
+      }
+    } else {
+      setOpenCommentOverlay(true);
+    }
   };
 
   return (
@@ -78,28 +91,34 @@ const Comment: React.FC<IComment> = ({
 
             <Grid item xs={12}>
               <CommentActivities
-                onReplyClick={handleReplyClick}
-                onViewReplies={handleViewReplies}
+                onViewRepliesInOverlay={handleViewRepliesInOverlay}
+                onPromptReply={handlePromptReply}
               />
             </Grid>
 
+            <Hidden mdDown> </Hidden>
+
             <Hidden mdDown>
-              <Grid item xs={12}>
-                <AddComment isFocused={promptReply} />
-              </Grid>
+              {promptReply && (
+                <Grid item xs={12}>
+                  <AddComment inputFeed={inputFeed} />
+                </Grid>
+              )}
             </Hidden>
           </Grid>
         </Grid>
       </Grid>
 
-      {!preventSubsequentOverlay && (
-        <CommentOverlay
-          commentText={commentText}
-          showOverlay={openCommentOverlay}
-          onOverlayClose={handleCommentOverlayClose}
-          replyFocused={promptReply}
-        />
-      )}
+      <Hidden mdUp>
+        {enableCommentOverlay && (
+          <CommentOverlay
+            commentText={commentText}
+            showOverlay={openCommentOverlay}
+            onOverlayClose={handleCommentOverlayClose}
+            replyFocused={promptReply}
+          />
+        )}
+      </Hidden>
     </>
   );
 };

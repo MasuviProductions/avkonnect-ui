@@ -1,7 +1,6 @@
 import { Box, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useState, useEffect, useCallback } from "react";
-import { useQuery } from "react-query";
+import { useState, useEffect } from "react";
 import ViewOverlay, {
   IOverlay,
 } from "../../../components/ViewOverlay/ViewOverlay";
@@ -10,14 +9,9 @@ import AboutResourceProvider, {
   useAboutResourceContext,
 } from "../../../contexts/AboutResourceContext";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import useInfiniteLoading from "../../../hooks/useInfiniteLoading";
-import {
-  ICommentApiResponseModel,
-  IRelatedSource,
-} from "../../../interfaces/api/external";
 import { getCommentsComments } from "../../../utils/api";
-import { transformUsersListToUserIdUserMap } from "../../../utils/transformers";
 import Comment, { IComment } from "../Comment";
+import { useComments } from "../../../hooks/useComments";
 import AddComment from "../CommentActivities/AddComment";
 
 interface CommentOverlay extends IOverlay, IComment {}
@@ -28,68 +22,26 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
   onOverlayClose,
   replyFocused = false,
 }) => {
-  const { accessToken, authUser } = useAuthContext();
+  const { accessToken } = useAuthContext();
   const { id } = useAboutResourceContext();
 
   const [promptReply, setPromptReply] = useState<boolean>(replyFocused);
 
   const [commentInputFeed, setCommentInputfeed] = useState<string>("");
 
-  useEffect(() => {
-    setPromptReply(replyFocused);
-  }, [replyFocused]);
-
-  useEffect(() => {
-    setCommentInputfeed("");
-  }, [replyFocused]);
-
-  const [nextNotificationsSearchKey, setNextNotificationsSearchKey] =
-    useState<Record<string, unknown>>();
-
-  const [uptoDateComments, setUptoDateComments] = useState<
-    ICommentApiResponseModel[]
-  >([]);
-
-  const [relatedSourcesMap, setRelatedSourcesMap] = useState<
-    Record<string, IRelatedSource>
-  >({});
-
   const {
-    data: commentCommentsResData,
-    refetch: triggerCommentCommentsApi,
-    status: commentCommentsStatus,
-    isFetching: commentCommentsFetching,
-    remove: clearCommentCommentsQueryData,
-  } = useQuery(
-    `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
-    () =>
-      getCommentsComments(
-        accessToken as string,
-        id,
-        5,
-        nextNotificationsSearchKey
-          ? encodeURI(JSON.stringify(nextNotificationsSearchKey))
-          : undefined
-      ),
-    { cacheTime: 0, refetchInterval: false, enabled: showOverlay }
-  );
-
-  const infiniteLoadCallback = useCallback(() => {
-    if (uptoDateComments.length > 0 && nextNotificationsSearchKey) {
-      if (authUser) {
-        triggerCommentCommentsApi();
-      }
-    }
-  }, [
-    authUser,
-    nextNotificationsSearchKey,
-    triggerCommentCommentsApi,
     uptoDateComments,
-  ]);
-
-  const infiniteLoadRef = useInfiniteLoading(
-    commentCommentsFetching,
-    infiniteLoadCallback
+    relatedSourcesMap,
+    resetQueryData,
+    infiniteLoadRef,
+    triggerGetCommentsApi,
+    getCommentsStatus,
+  } = useComments(
+    `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
+    (nextSearchKey) => () =>
+      getCommentsComments(accessToken as string, id, 5, nextSearchKey),
+    { cacheTime: 0, refetchInterval: false, enabled: false },
+    true
   );
 
   const handleOnReplyChainEnd = (tagUser: string) => {
@@ -108,47 +60,26 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
   };
 
   useEffect(() => {
+    setPromptReply(replyFocused);
+  }, [replyFocused]);
+
+  useEffect(() => {
+    setCommentInputfeed("");
+  }, [replyFocused]);
+
+  useEffect(() => {
     if (showOverlay) {
-      triggerCommentCommentsApi();
+      triggerGetCommentsApi();
     }
-  }, [triggerCommentCommentsApi, showOverlay, clearCommentCommentsQueryData]);
+  }, [showOverlay, triggerGetCommentsApi]);
 
   useEffect(() => {
     if (!showOverlay) {
-      setNextNotificationsSearchKey(undefined);
-      setUptoDateComments([]);
-      clearCommentCommentsQueryData();
+      resetQueryData();
     }
-  }, [clearCommentCommentsQueryData, showOverlay]);
+  }, [resetQueryData, showOverlay]);
 
-  useEffect(() => {
-    if (commentCommentsResData?.data) {
-      setRelatedSourcesMap((prev) => {
-        const sourcesMap = transformUsersListToUserIdUserMap(
-          commentCommentsResData.data?.relatedSources || []
-        ) as Record<string, IRelatedSource>;
-        const updatedRelatedSourcesMap = {
-          ...prev,
-          ...sourcesMap,
-        };
-        return updatedRelatedSourcesMap;
-      });
-
-      setUptoDateComments((prev) => [
-        ...prev,
-        ...(commentCommentsResData?.data?.comments || []),
-      ]);
-
-      setNextNotificationsSearchKey(
-        commentCommentsResData.dDBPagination?.nextSearchStartFromKey
-      );
-    }
-  }, [
-    commentCommentsResData?.dDBPagination?.nextSearchStartFromKey,
-    commentCommentsResData?.data,
-  ]);
-
-  if (commentCommentsStatus === "loading") {
+  if (getCommentsStatus === "loading") {
     return <></>;
   }
 
@@ -162,7 +93,6 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
           <Box sx={contentsContainerSx}>
             <Comment
               commentText={commentText}
-              preventSubsequentOverlay
               replyFocused={promptReply}
               onReplyChainEnd={handleOnReplyChainEnd}
             />
@@ -192,14 +122,13 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
                 >
                   <Comment
                     commentText={comment.contents[0].text}
-                    preventSubsequentOverlay
                     onReplyChainEnd={handleOnReplyChainEnd}
                   />
                 </AboutResourceProvider>
               </Box>
             ))}
           </Box>
-          <Box sx={addCommentx}>
+          <Box sx={addCommentSx}>
             <AddComment
               isFocused={promptReply}
               inputFeed={commentInputFeed}
@@ -224,7 +153,7 @@ const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingBottom: 5,
 });
 
-const addCommentx = (theme: Theme): SystemStyleObject<Theme> => ({
+const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingY: 1.5,
 });
 
