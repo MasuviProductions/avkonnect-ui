@@ -1,5 +1,5 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Drawer, Grid, IconButton, Theme } from "@mui/material";
+import { Box, Drawer, Grid, IconButton, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect, useState } from "react";
 
@@ -29,8 +29,8 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
   return (
     <>
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
-        <Grid container sx={overlayContainerSx}>
-          <Grid item xs={12} sx={overlayHeaderSx}>
+        <Box sx={overlayContainerSx}>
+          <Box sx={overlayHeaderSx}>
             <Grid container>
               <Grid item>
                 <IconButton onClick={handleDrawerClose}>
@@ -38,11 +38,10 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
                 </IconButton>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} p={1.5}>
-            {children}
-          </Grid>
-        </Grid>
+          </Box>
+
+          <Box sx={overlayBodySx}>{children}</Box>
+        </Box>
       </Drawer>
     </>
   );
@@ -51,10 +50,19 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
 const overlayHeaderSx = (theme: Theme): SystemStyleObject<Theme> => ({
   backgroundColor: theme.palette.background.paper,
   borderBottom: `2px solid ${theme.palette.background.default}`,
+  width: "inherit",
+});
+
+const overlayBodySx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "100%",
+  width: "100%",
+  overflowY: "auto",
 });
 
 const overlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   width: "100vw",
+  height: "100%",
+  overflow: "hidden",
 });
 
 const backbuttonSx = (theme: Theme): SystemStyleObject<Theme> => ({

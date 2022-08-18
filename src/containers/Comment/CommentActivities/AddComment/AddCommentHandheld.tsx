@@ -91,13 +91,7 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
 const addCommentContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingBottom: 1,
   paddingX: 1,
-  [theme.breakpoints.down("md")]: {
-    backgroundColor: theme.palette.background.paper,
-    position: "fixed",
-    zIndex: 1,
-    bottom: 0,
-    left: 0,
-  },
+  backgroundColor: theme.palette.background.paper,
 });
 
 const commentTextFieldSx = (theme: Theme): SystemStyleObject<Theme> => ({});

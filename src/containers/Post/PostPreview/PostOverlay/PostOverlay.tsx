@@ -1,4 +1,5 @@
-import { Box } from "@mui/material";
+import { Box, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import ViewOverlay from "../../../../components/ViewOverlay";
@@ -126,37 +127,59 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   return (
     <>
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
-        {uptoDateComments.map((comment, index) => (
-          <Box
-            key={comment.id}
-            ref={
-              index === uptoDateComments.length - 1
-                ? infiniteLoadRef
-                : undefined
-            }
-          >
-            <AboutResourceProvider
-              id={comment.id}
-              type="comment"
-              sourceId={comment.sourceId}
-              sourceType={comment.sourceType}
-              resourceId={comment.resourceId}
-              resourceType={comment.resourceType}
-              reactionsCount={comment.activity.reactionsCount}
-              commentsCount={comment.activity.commentsCount}
-              relatedSourceMap={relatedSourcesMap}
-              createdAt={comment.createdAt}
-              userReaction={comment.sourceActivity?.reaction}
-            >
-              <Comment commentText={comment.contents[0].text} />
-            </AboutResourceProvider>
+        <Box sx={postOverlayContainerSx}>
+          <Box sx={contentsContainerSx}>
+            {uptoDateComments.map((comment, index) => (
+              <Box
+                key={comment.id}
+                ref={
+                  index === uptoDateComments.length - 1
+                    ? infiniteLoadRef
+                    : undefined
+                }
+              >
+                <AboutResourceProvider
+                  id={comment.id}
+                  type="comment"
+                  sourceId={comment.sourceId}
+                  sourceType={comment.sourceType}
+                  resourceId={comment.resourceId}
+                  resourceType={comment.resourceType}
+                  reactionsCount={comment.activity.reactionsCount}
+                  commentsCount={comment.activity.commentsCount}
+                  relatedSourceMap={relatedSourcesMap}
+                  createdAt={comment.createdAt}
+                  userReaction={comment.sourceActivity?.reaction}
+                >
+                  <Comment commentText={comment.contents[0].text} />
+                </AboutResourceProvider>
+              </Box>
+            ))}
           </Box>
-        ))}
 
-        <AddComment isFocused={replyFocused} />
+          <Box sx={addCommentx}>
+            <AddComment isFocused={replyFocused} />
+          </Box>
+        </Box>
       </ViewOverlay>
     </>
   );
 };
+
+const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "100%",
+  overflowY: "hidden",
+});
+
+const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "calc(100% - 100px - 16px)",
+  overflowY: "auto",
+  padding: 1.5,
+  paddingBottom: 5,
+});
+
+const addCommentx = (theme: Theme): SystemStyleObject<Theme> => ({
+  paddingY: 1.5,
+});
 
 export default PostOverlay;

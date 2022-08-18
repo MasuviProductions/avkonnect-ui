@@ -1,4 +1,5 @@
-import { Box } from "@mui/material";
+import { Box, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 import ViewOverlay, {
@@ -157,52 +158,74 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
         showOverlay={showOverlay}
         onOverlayClose={handleCloseOverlay}
       >
-        <Comment
-          commentText={commentText}
-          preventSubsequentOverlay
-          replyFocused={promptReply}
-          onReplyChainEnd={handleOnReplyChainEnd}
-        />
-        {uptoDateComments.map((comment, index) => (
-          <Box
-            key={comment.id}
-            ml={5}
-            ref={
-              index === uptoDateComments.length - 1
-                ? infiniteLoadRef
-                : undefined
-            }
-          >
-            <AboutResourceProvider
-              id={comment.id}
-              type="comment"
-              sourceId={comment.sourceId}
-              sourceType={comment.sourceType}
-              resourceId={comment.resourceId}
-              resourceType={comment.resourceType}
-              reactionsCount={comment.activity.reactionsCount}
-              commentsCount={comment.activity.commentsCount}
-              relatedSourceMap={relatedSourcesMap}
-              createdAt={comment.createdAt}
-              userReaction={comment.sourceActivity?.reaction}
-              key={`comment-${comment.id}`}
-            >
-              <Comment
-                commentText={comment.contents[0].text}
-                preventSubsequentOverlay
-                onReplyChainEnd={handleOnReplyChainEnd}
-              />
-            </AboutResourceProvider>
+        <Box sx={commentOverlayContainerSx}>
+          <Box sx={contentsContainerSx}>
+            <Comment
+              commentText={commentText}
+              preventSubsequentOverlay
+              replyFocused={promptReply}
+              onReplyChainEnd={handleOnReplyChainEnd}
+            />
+            {uptoDateComments.map((comment, index) => (
+              <Box
+                key={comment.id}
+                ml={5}
+                ref={
+                  index === uptoDateComments.length - 1
+                    ? infiniteLoadRef
+                    : undefined
+                }
+              >
+                <AboutResourceProvider
+                  id={comment.id}
+                  type="comment"
+                  sourceId={comment.sourceId}
+                  sourceType={comment.sourceType}
+                  resourceId={comment.resourceId}
+                  resourceType={comment.resourceType}
+                  reactionsCount={comment.activity.reactionsCount}
+                  commentsCount={comment.activity.commentsCount}
+                  relatedSourceMap={relatedSourcesMap}
+                  createdAt={comment.createdAt}
+                  userReaction={comment.sourceActivity?.reaction}
+                  key={`comment-${comment.id}`}
+                >
+                  <Comment
+                    commentText={comment.contents[0].text}
+                    preventSubsequentOverlay
+                    onReplyChainEnd={handleOnReplyChainEnd}
+                  />
+                </AboutResourceProvider>
+              </Box>
+            ))}
           </Box>
-        ))}
-        <AddComment
-          isFocused={promptReply}
-          inputFeed={commentInputFeed}
-          onCommentFieldBlur={handleCommentFieldBlur}
-        />
+          <Box sx={addCommentx}>
+            <AddComment
+              isFocused={promptReply}
+              inputFeed={commentInputFeed}
+              onCommentFieldBlur={handleCommentFieldBlur}
+            />
+          </Box>
+        </Box>
       </ViewOverlay>
     </>
   );
 };
+
+const commentOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "100%",
+  overflowY: "hidden",
+});
+
+const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  height: "calc(100% - 100px - 16px)",
+  overflowY: "auto",
+  padding: 1.5,
+  paddingBottom: 5,
+});
+
+const addCommentx = (theme: Theme): SystemStyleObject<Theme> => ({
+  paddingY: 1.5,
+});
 
 export default CommentOverlay;

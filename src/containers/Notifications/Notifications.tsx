@@ -12,7 +12,6 @@ import useRemountKey from "../../hooks/useRemountKey";
 import {
   INotificationsApiModel,
   IRelatedSource,
-  IUserProfileApiModel,
 } from "../../interfaces/api/external";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import {

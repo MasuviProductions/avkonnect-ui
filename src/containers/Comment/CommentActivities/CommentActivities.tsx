@@ -1,7 +1,4 @@
-import { Button, Divider, Grid } from "@mui/material";
-import { LABELS } from "../../../constants/labels";
-import { useAboutResourceContext } from "../../../contexts/AboutResourceContext";
-import { reactionButtonSx } from "../../../styles/sx";
+import { Divider, Grid } from "@mui/material";
 import CommentReactions from "./CommentReactions";
 import CommentReply from "./CommentReply";
 

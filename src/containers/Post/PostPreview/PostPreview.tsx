@@ -28,7 +28,7 @@ const PostPreview: React.FC<IPostPreviewProps> = ({}) => {
         <>
           <Hidden mdUp>Open post in Overlay</Hidden>
 
-          <Hidden mdDown>Open post in modal</Hidden>
+          <Hidden mdDown>Open post in Modal</Hidden>
         </>
       </Button>
 
