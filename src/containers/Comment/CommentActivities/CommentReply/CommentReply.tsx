@@ -12,7 +12,9 @@ const CommentReply: React.FC<ICommentReplyProps> = ({
   onViewRepliesInOverlay,
   onPromptReply,
 }) => {
-  const { commentsCount } = useAboutResourceContext();
+  const { commentsCount, resourceType } = useAboutResourceContext();
+
+  const showRepliesCount = resourceType !== "comment";
 
   const handleViewRepliesInOverlay = (prmptRply: boolean) => {
     return () => onViewRepliesInOverlay(prmptRply);
@@ -32,14 +34,16 @@ const CommentReply: React.FC<ICommentReplyProps> = ({
             </Button>
           </Grid>
 
-          <Grid>
-            <Button
-              sx={reactionButtonSx()}
-              onClick={handleViewRepliesInOverlay(false)}
-            >
-              {`${commentsCount} Replies`}
-            </Button>
-          </Grid>
+          {showRepliesCount && (
+            <Grid item>
+              <Button
+                sx={reactionButtonSx()}
+                onClick={handleViewRepliesInOverlay(false)}
+              >
+                {`${commentsCount} Replies`}
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Hidden>
 
@@ -52,11 +56,13 @@ const CommentReply: React.FC<ICommentReplyProps> = ({
             </Button>
           </Grid>
 
-          <Grid>
-            <Button sx={reactionButtonSx()}>
-              {`${commentsCount} Replies`}
-            </Button>
-          </Grid>
+          {showRepliesCount && (
+            <Grid item>
+              <Button sx={reactionButtonSx()}>
+                {`${commentsCount} Replies`}
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Hidden>
     </>

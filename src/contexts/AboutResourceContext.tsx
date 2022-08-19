@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import useComments, { IUseComments } from "../hooks/useComments";
 import {
+  ICommentApiResponseModel,
   IReactionCountApiModel,
   IReactionTypes,
   IRelatedSource,
@@ -18,6 +20,7 @@ interface IAboutResourceContext {
   relatedSourceMap: Record<string, IRelatedSource>;
   createdAt: Date;
   userReaction?: IReactionTypes;
+  loadedComments: ICommentApiResponseModel[];
   updateUserReaction: (reaction?: IReactionTypes) => void;
   reactionsCount: IReactionCountApiModel;
   incrementReactionCount: (reaction: IReactionTypes) => void;
@@ -25,6 +28,7 @@ interface IAboutResourceContext {
   commentsCount: number;
   incrementCommentsCount: () => void;
   decrementCommentsCount: () => void;
+  commentsQuery?: IUseComments;
 }
 
 const AboutResourceContext = createContext<IAboutResourceContext>({
@@ -44,6 +48,7 @@ const AboutResourceContext = createContext<IAboutResourceContext>({
   resourceId: undefined,
   resourceType: undefined,
   userReaction: undefined,
+  loadedComments: [],
   relatedSourceMap: {},
   updateUserReaction: () => {},
   reactionsCount: {
@@ -58,6 +63,7 @@ const AboutResourceContext = createContext<IAboutResourceContext>({
   commentsCount: 0,
   incrementCommentsCount: () => {},
   decrementCommentsCount: () => {},
+  commentsQuery: undefined,
 });
 
 interface IResourceProviderProps
@@ -66,6 +72,7 @@ interface IResourceProviderProps
     | "commentsCount"
     | "reactionsCount"
     | "userReaction"
+    | "loadedComments"
     | "id"
     | "type"
     | "sourceId"
@@ -86,11 +93,40 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
   commentsCount,
   reactionsCount,
   userReaction,
+  loadedComments,
   relatedSourceMap,
   createdAt,
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
+
+  const { incrementCommentsCount: incrementParentCommentsCount } =
+    useAboutResourceContext();
+
+  const incrementCommentsCount = () => {
+    setCommentsCountState((prev) => prev + 1);
+    if (type === "comment") {
+      incrementParentCommentsCount();
+    }
+  };
+
+  const decrementCommentsCount = () => {
+    setCommentsCountState((prev) => prev - 1);
+  };
+
+  const commentsQuery = useComments(
+    type,
+    id,
+    true,
+    incrementCommentsCount,
+    decrementCommentsCount
+  );
+
+  useEffect(() => {
+    loadedComments.forEach((comment) => {
+      commentsQuery.appendComment(comment);
+    });
+  }, [commentsQuery, loadedComments]);
 
   const [userReactionState, setUserReactionState] = useState<
     IReactionTypes | undefined
@@ -101,6 +137,9 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
 
   const [commentsCountState, setCommentsCountState] =
     useState<number>(commentsCount);
+
+  const [loadedCommentsState, setLoadedComments] =
+    useState<ICommentApiResponseModel[]>(loadedComments);
 
   const updateUserReaction = (reaction?: IReactionTypes) => {
     setUserReactionState(reaction);
@@ -118,13 +157,6 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
       ...prev,
       [reaction]: prev[reaction] - 1,
     }));
-  };
-
-  const incrementCommentsCount = () => {
-    setCommentsCountState((prev) => prev + 1);
-  };
-  const decrementCommentsCount = () => {
-    setCommentsCountState((prev) => prev - 1);
   };
 
   useEffect(() => {
@@ -151,14 +183,16 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
         resourceType,
         userReaction: userReactionState,
         updateUserReaction,
+        loadedComments: loadedCommentsState,
         reactionsCount: reactionsCountState,
         incrementReactionCount,
         decrementReactionCount,
         commentsCount: commentsCountState,
-        incrementCommentsCount,
-        decrementCommentsCount,
         relatedSourceMap,
         createdAt,
+        incrementCommentsCount,
+        decrementCommentsCount,
+        commentsQuery: commentsQuery,
       }}
     >
       {children}

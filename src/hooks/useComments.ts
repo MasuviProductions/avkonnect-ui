@@ -5,41 +5,30 @@ import {
   useQuery,
   UseQueryOptions,
 } from "react-query";
+import API_ENDPOINTS from "../constants/api";
 import { useAuthContext } from "../contexts/AuthContext";
 import {
   AVKonnectApiResponse,
   ICommentApiResponseModel,
+  ICommentContentApiModel,
+  ICreateCommentApiRequest,
   IGetCommentsCommentsApiResponse,
   IGetPostCommentsApiResponse,
   IRelatedSource,
+  IResourceTypes,
 } from "../interfaces/api/external";
+import {
+  createComment,
+  getCommentsComments,
+  getPostComments,
+} from "../utils/api";
 import { transformUsersListToUserIdUserMap } from "../utils/transformers";
 import useInfiniteLoading from "./useInfiniteLoading";
 
-type ICommentsResponseApiModel = IGetPostCommentsApiResponse &
+export type ICommentsResponseApiModel = IGetPostCommentsApiResponse &
   IGetCommentsCommentsApiResponse;
 
-type IUseCommentsQueryFunction = QueryFunction<
-  AVKonnectApiResponse<ICommentsResponseApiModel>,
-  QueryKey
->;
-
-type IUseCommentsQueryOptions = Omit<
-  UseQueryOptions<
-    AVKonnectApiResponse<ICommentsResponseApiModel>,
-    unknown,
-    AVKonnectApiResponse<ICommentsResponseApiModel>,
-    QueryKey
-  >,
-  "queryKey" | "queryFn"
->;
-
-export const useComments = (
-  queryKey: QueryKey,
-  queryFn: (nxtSrchKey: string | undefined) => IUseCommentsQueryFunction,
-  options: IUseCommentsQueryOptions,
-  withInfiniteLoading: boolean
-): {
+export interface IUseComments {
   uptoDateComments: ICommentApiResponseModel[];
   relatedSourcesMap: Record<string, IRelatedSource>;
   resetQueryData: () => void;
@@ -47,9 +36,19 @@ export const useComments = (
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   allCommentsFetched: boolean;
-  updateComments: (comments: ICommentApiResponseModel[]) => void;
-} => {
-  const { authUser } = useAuthContext();
+  appendComment: (comment: ICommentApiResponseModel) => void;
+  addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
+}
+
+export const useComments = (
+  type: IResourceTypes,
+  id: string,
+  withInfiniteLoading: boolean,
+  onCommentAdd: () => void,
+  onCommentRemove: () => void
+): IUseComments => {
+  const { authUser, accessToken } = useAuthContext();
+
   const [uptoDateComments, setUptoDateComments] = useState<
     ICommentApiResponseModel[]
   >([]);
@@ -58,6 +57,9 @@ export const useComments = (
   >({});
   const [nextSearchStartFromKey, setNextSearchStartFromKey] =
     useState<Record<string, unknown>>();
+  const [createCommentReqBody, setCreateCommentReqBody] = useState<
+    ICreateCommentApiRequest | undefined
+  >();
 
   const {
     data: getCommentsRes,
@@ -65,15 +67,54 @@ export const useComments = (
     isFetching: getCommentsFetching,
     status: getCommentsStatus,
     remove: clearGetCommentsQueryData,
-  } = useQuery(
-    queryKey,
-    queryFn(
-      nextSearchStartFromKey
-        ? encodeURI(JSON.stringify(nextSearchStartFromKey))
-        : undefined
-    ),
-    { ...options, refetchOnWindowFocus: false, refetchInterval: false }
+  } = useQuery<AVKonnectApiResponse<ICommentsResponseApiModel>>(
+    type === "post"
+      ? `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`
+      : `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
+    () =>
+      type === "post"
+        ? getPostComments(
+            accessToken as string,
+            id,
+            5,
+            nextSearchStartFromKey
+              ? encodeURI(JSON.stringify(nextSearchStartFromKey))
+              : undefined
+          )
+        : getCommentsComments(
+            accessToken as string,
+            id,
+            5,
+            nextSearchStartFromKey
+              ? encodeURI(JSON.stringify(nextSearchStartFromKey))
+              : undefined
+          ),
+    { refetchOnWindowFocus: false, refetchInterval: false, enabled: false }
   );
+
+  const {
+    data: createCommentResData,
+    // refetch: triggerCreateCommentApi,
+    // status: createCommentStatus,
+    // isFetching: createCommentFetching,
+    remove: clearCreateCommentQueryData,
+  } = useQuery(
+    `POST:${API_ENDPOINTS.CREATE_COMMENT.key}-${id}`,
+    () =>
+      createComment(
+        accessToken as string,
+        createCommentReqBody as ICreateCommentApiRequest
+      ),
+    { cacheTime: 0, refetchInterval: false, enabled: !!createCommentReqBody }
+  );
+
+  const addComment = (comment: Omit<ICommentContentApiModel, "createdAt">) => {
+    setCreateCommentReqBody({
+      resourceId: id,
+      resourceType: type,
+      comment: comment,
+    });
+  };
 
   const infiniteLoadCallback = useCallback(() => {
     if (withInfiniteLoading) {
@@ -102,19 +143,11 @@ export const useComments = (
     clearGetCommentsQueryData();
   }, [clearGetCommentsQueryData]);
 
-  const updateComments = useCallback((comments: ICommentApiResponseModel[]) => {
-    setUptoDateComments(comments);
-  }, []);
-
-  useEffect(() => {
-    if (getCommentsRes?.data) {
-      setUptoDateComments((prev) => [
-        ...prev,
-        ...(getCommentsRes?.data?.comments || []),
-      ]);
+  const handleUpdateRelatedSources = useCallback(
+    (relatedSources: IRelatedSource[]) => {
       setRelatedSourcesMap((prev) => {
         const sourcesMap = transformUsersListToUserIdUserMap(
-          getCommentsRes.data?.relatedSources || []
+          relatedSources
         ) as Record<string, IRelatedSource>;
         const updatedRelatedSourcesMap = {
           ...prev,
@@ -122,7 +155,34 @@ export const useComments = (
         };
         return updatedRelatedSourcesMap;
       });
+    },
+    []
+  );
 
+  const mergeComments = useCallback((comments: ICommentApiResponseModel[]) => {
+    setUptoDateComments((prev) => [
+      ...prev,
+      ...(comments.filter((comment) => {
+        const isCommentAlreadyPresent = prev.findIndex(
+          (cmt) => cmt.id === comment.id
+        );
+        return isCommentAlreadyPresent < 0;
+      }) || []),
+    ]);
+  }, []);
+
+  const appendComment = useCallback(
+    (comment: ICommentApiResponseModel) => {
+      handleUpdateRelatedSources(comment.relatedSources);
+      mergeComments([comment]);
+    },
+    [handleUpdateRelatedSources, mergeComments]
+  );
+
+  useEffect(() => {
+    if (getCommentsRes?.data) {
+      mergeComments(getCommentsRes?.data?.comments);
+      handleUpdateRelatedSources(getCommentsRes.data?.relatedSources || []);
       setNextSearchStartFromKey(
         getCommentsRes.dDBPagination?.nextSearchStartFromKey
       );
@@ -130,7 +190,23 @@ export const useComments = (
   }, [
     getCommentsRes?.dDBPagination?.nextSearchStartFromKey,
     getCommentsRes?.data,
+    handleUpdateRelatedSources,
     setNextSearchStartFromKey,
+    mergeComments,
+  ]);
+
+  useEffect(() => {
+    if (createCommentResData?.data) {
+      appendComment(createCommentResData.data);
+      onCommentAdd();
+      setCreateCommentReqBody(undefined);
+      clearCreateCommentQueryData();
+    }
+  }, [
+    appendComment,
+    clearCreateCommentQueryData,
+    createCommentResData?.data,
+    onCommentAdd,
   ]);
 
   return {
@@ -141,7 +217,8 @@ export const useComments = (
     triggerGetCommentsApi,
     getCommentsStatus,
     allCommentsFetched: !nextSearchStartFromKey,
-    updateComments,
+    appendComment,
+    addComment,
   };
 };
 

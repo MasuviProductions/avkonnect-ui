@@ -1,17 +1,15 @@
-import { Box, Button, Grid, Theme } from "@mui/material";
+import { Box, Button, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
-import API_ENDPOINTS from "../../../../constants/api";
 import AboutResourceProvider, {
   useAboutResourceContext,
 } from "../../../../contexts/AboutResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
-import { getPostComments } from "../../../../utils/api";
 import Comment from "../../../Comment";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
 import AddComment from "../../../Comment/CommentActivities/AddComment";
-import { useComments } from "../../../../hooks/useComments";
+import { IUseComments } from "../../../../hooks/useComments";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -24,7 +22,7 @@ const PostModal: React.FC<IPostModalProps> = ({
   onModalClose,
 }) => {
   const { accessToken } = useAuthContext();
-  const { id } = useAboutResourceContext();
+  const { commentsQuery, commentsCount } = useAboutResourceContext();
 
   const {
     uptoDateComments,
@@ -33,13 +31,7 @@ const PostModal: React.FC<IPostModalProps> = ({
     triggerGetCommentsApi,
     getCommentsStatus,
     allCommentsFetched,
-  } = useComments(
-    `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`,
-    (nextSearchKey) => () =>
-      getPostComments(accessToken as string, id, 5, nextSearchKey),
-    { cacheTime: 0, refetchInterval: false, enabled: false },
-    false
-  );
+  } = commentsQuery as IUseComments;
 
   const handleClickLoadMore = () => {
     triggerGetCommentsApi();
@@ -66,7 +58,8 @@ const PostModal: React.FC<IPostModalProps> = ({
             <Box
               sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
             >
-              Some sample post to be inserted here
+              Number of comments for post:
+              {commentsCount}
             </Box>
 
             {uptoDateComments.map((comment) => (
@@ -80,6 +73,7 @@ const PostModal: React.FC<IPostModalProps> = ({
                   resourceType={comment.resourceType}
                   reactionsCount={comment.activity.reactionsCount}
                   commentsCount={comment.activity.commentsCount}
+                  loadedComments={[]}
                   relatedSourceMap={relatedSourcesMap}
                   createdAt={comment.createdAt}
                   userReaction={comment.sourceActivity?.reaction}

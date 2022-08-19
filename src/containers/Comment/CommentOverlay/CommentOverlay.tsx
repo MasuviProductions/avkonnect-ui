@@ -1,17 +1,14 @@
 import { Box, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ViewOverlay, {
   IOverlay,
 } from "../../../components/ViewOverlay/ViewOverlay";
-import API_ENDPOINTS from "../../../constants/api";
 import AboutResourceProvider, {
   useAboutResourceContext,
 } from "../../../contexts/AboutResourceContext";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { getCommentsComments } from "../../../utils/api";
 import Comment, { IComment } from "../Comment";
-import { useComments } from "../../../hooks/useComments";
+import { IUseComments } from "../../../hooks/useComments";
 import AddComment from "../CommentActivities/AddComment";
 
 interface CommentOverlay extends IOverlay, IComment {}
@@ -23,8 +20,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
   onOverlayClose,
   replyFocused = false,
 }) => {
-  const { accessToken } = useAuthContext();
-  const { id } = useAboutResourceContext();
+  const { commentsQuery } = useAboutResourceContext();
 
   const [promptReply, setPromptReply] = useState<boolean>(replyFocused);
 
@@ -34,16 +30,11 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
     uptoDateComments,
     relatedSourcesMap,
     resetQueryData,
-    infiniteLoadRef,
     triggerGetCommentsApi,
     getCommentsStatus,
-  } = useComments(
-    `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
-    (nextSearchKey) => () =>
-      getCommentsComments(accessToken as string, id, 5, nextSearchKey),
-    { cacheTime: 0, enabled: false },
-    true
-  );
+    infiniteLoadRef,
+    allCommentsFetched,
+  } = commentsQuery as IUseComments;
 
   const handleOnReplyChainEnd = (tagUser: string) => {
     setPromptReply(true);
@@ -116,6 +107,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
                   resourceType={comment.resourceType}
                   reactionsCount={comment.activity.reactionsCount}
                   commentsCount={comment.activity.commentsCount}
+                  loadedComments={[]}
                   relatedSourceMap={relatedSourcesMap}
                   createdAt={comment.createdAt}
                   userReaction={comment.sourceActivity?.reaction}

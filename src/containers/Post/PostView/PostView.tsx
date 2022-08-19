@@ -1,8 +1,6 @@
 // NOTE: Feeds view: This is what should be displayed on feeds
 
-import { Button, Hidden, Typography } from "@mui/material";
-import { useState } from "react";
-import { useAboutResourceContext } from "../../../contexts/AboutResourceContext";
+import { Hidden } from "@mui/material";
 import PostModal from "./PostModal";
 import PostOverlay from "./PostOverlay";
 

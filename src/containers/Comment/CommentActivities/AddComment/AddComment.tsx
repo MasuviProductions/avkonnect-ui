@@ -1,12 +1,6 @@
-import { Hidden, Theme } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import API_ENDPOINTS from "../../../../constants/api";
+import { Hidden } from "@mui/material";
 import { useAboutResourceContext } from "../../../../contexts/AboutResourceContext";
-import { useAuthContext } from "../../../../contexts/AuthContext";
-import { ICreateCommentApiRequest } from "../../../../interfaces/api/external";
-import { createComment } from "../../../../utils/api";
-
+import { IUseComments } from "../../../../hooks/useComments";
 import AddCommentDesktop from "./AddCommentDesktop";
 import AddCommentHandheld from "./AddCommentHandheld";
 
@@ -21,52 +15,16 @@ const AddComment: React.FC<IAddCommentProps> = ({
   isFocused,
   onCommentFieldBlur,
 }) => {
-  const { accessToken } = useAuthContext();
-  const { id, type, incrementCommentsCount } = useAboutResourceContext();
+  const { commentsQuery } = useAboutResourceContext();
 
-  const [commentReqBody, setCommentReqBody] = useState<
-    ICreateCommentApiRequest | undefined
-  >();
-
-  const {
-    data: createCommentResData,
-    refetch: triggerCreateCommentApi,
-    status: createCommentStatus,
-    isFetching: createCommentFetching,
-    remove: clearCreateCommentQueryData,
-  } = useQuery(
-    `POST:${API_ENDPOINTS.CREATE_COMMENT.key}-${id}`,
-    () =>
-      createComment(
-        accessToken as string,
-        commentReqBody as ICreateCommentApiRequest
-      ),
-    { cacheTime: 0, refetchInterval: false, enabled: !!commentReqBody }
-  );
+  const { addComment } = commentsQuery as IUseComments;
 
   const handleCommentSubmit = () => {
-    setCommentReqBody({
-      resourceId: id,
-      resourceType: type,
-      comment: {
-        text: `Test comment ${Math.ceil(Math.random() * 1000)} `,
-        mediaUrls: [],
-      },
+    addComment({
+      text: `Create comment testing: ${Math.ceil(Math.random() * 1000)} `,
+      mediaUrls: [],
     });
   };
-
-  useEffect(() => {
-    if (createCommentResData?.data) {
-      incrementCommentsCount();
-      //Callback to supply data to parent
-      setCommentReqBody(undefined);
-      clearCreateCommentQueryData();
-    }
-  }, [
-    clearCreateCommentQueryData,
-    createCommentResData,
-    incrementCommentsCount,
-  ]);
 
   return (
     <>

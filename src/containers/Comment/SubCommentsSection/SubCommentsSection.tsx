@@ -1,12 +1,9 @@
 import { Box, Typography } from "@mui/material";
-import API_ENDPOINTS from "../../../constants/api";
 import AboutResourceProvider, {
   useAboutResourceContext,
 } from "../../../contexts/AboutResourceContext";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { getCommentsComments } from "../../../utils/api";
 import Comment from "../Comment";
-import { useComments } from "../../../hooks/useComments";
+import { IUseComments } from "../../../hooks/useComments";
 import { ICommentApiResponseModel } from "../../../interfaces/api/external";
 import { LABELS } from "../../../constants/labels";
 import { decoratedLinkSx } from "../../../styles/sx";
@@ -21,8 +18,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
   initialCommentsFeed,
   onReplyChainEnd,
 }) => {
-  const { accessToken } = useAuthContext();
-  const { id } = useAboutResourceContext();
+  const { commentsQuery } = useAboutResourceContext();
 
   const {
     uptoDateComments,
@@ -31,14 +27,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
     triggerGetCommentsApi,
     getCommentsStatus,
     allCommentsFetched,
-    updateComments,
-  } = useComments(
-    `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
-    (nextSearchKey) => () =>
-      getCommentsComments(accessToken as string, id, 5, nextSearchKey),
-    { cacheTime: 0, refetchInterval: false, enabled: true },
-    false
-  );
+  } = commentsQuery as IUseComments;
 
   const handleClickLoadMore = () => {
     triggerGetCommentsApi();
@@ -58,6 +47,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
               resourceType={comment.resourceType}
               reactionsCount={comment.activity.reactionsCount}
               commentsCount={comment.activity.commentsCount}
+              loadedComments={[]}
               relatedSourceMap={relatedSourcesMap}
               createdAt={comment.createdAt}
               userReaction={comment.sourceActivity?.reaction}
@@ -71,7 +61,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
           </Box>
         ))}
 
-        {!allCommentsFetched && (
+        {true && (
           <Box px={1} pb={1}>
             <Typography
               paragraph
