@@ -9,7 +9,7 @@ import {
   ISourceTypes,
 } from "../interfaces/api/external";
 
-interface IAboutResourceContext {
+interface IResourceContext {
   id: string;
   type: IResourceTypes;
   sourceId: string;
@@ -29,9 +29,10 @@ interface IAboutResourceContext {
   incrementCommentsCount: () => void;
   decrementCommentsCount: () => void;
   commentsQuery?: IUseComments;
+  allCommentsFetched: boolean;
 }
 
-const AboutResourceContext = createContext<IAboutResourceContext>({
+const ResourceContext = createContext<IResourceContext>({
   id: "",
   type: "post",
   sourceId: "",
@@ -64,11 +65,12 @@ const AboutResourceContext = createContext<IAboutResourceContext>({
   incrementCommentsCount: () => {},
   decrementCommentsCount: () => {},
   commentsQuery: undefined,
+  allCommentsFetched: false,
 });
 
 interface IResourceProviderProps
   extends Pick<
-    IAboutResourceContext,
+    IResourceContext,
     | "commentsCount"
     | "reactionsCount"
     | "userReaction"
@@ -83,7 +85,7 @@ interface IResourceProviderProps
     | "relatedSourceMap"
   > {}
 
-const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
+const ResourceProvider: React.FC<IResourceProviderProps> = ({
   id,
   type,
   sourceId,
@@ -101,7 +103,7 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
   const sourceInfo = relatedSourceMap[sourceId];
 
   const { incrementCommentsCount: incrementParentCommentsCount } =
-    useAboutResourceContext();
+    useResourceContext();
 
   const incrementCommentsCount = () => {
     setCommentsCountState((prev) => prev + 1);
@@ -121,12 +123,6 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
     incrementCommentsCount,
     decrementCommentsCount
   );
-
-  useEffect(() => {
-    loadedComments.forEach((comment) => {
-      commentsQuery.appendComment(comment);
-    });
-  }, [commentsQuery, loadedComments]);
 
   const [userReactionState, setUserReactionState] = useState<
     IReactionTypes | undefined
@@ -160,6 +156,12 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
   };
 
   useEffect(() => {
+    loadedComments.forEach((comment) => {
+      commentsQuery.appendComment(comment);
+    });
+  }, [commentsQuery, loadedComments]);
+
+  useEffect(() => {
     setUserReactionState(userReaction);
   }, [userReaction]);
 
@@ -172,7 +174,7 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
   }, [commentsCount]);
 
   return (
-    <AboutResourceContext.Provider
+    <ResourceContext.Provider
       value={{
         id,
         type,
@@ -193,17 +195,19 @@ const AboutResourceProvider: React.FC<IResourceProviderProps> = ({
         incrementCommentsCount,
         decrementCommentsCount,
         commentsQuery: commentsQuery,
+        allCommentsFetched:
+          commentsQuery.uptoDateComments.length === commentsCount,
       }}
     >
       {children}
-    </AboutResourceContext.Provider>
+    </ResourceContext.Provider>
   );
 };
 
-const useAboutResourceContext = (): IAboutResourceContext => {
-  const resourceContext = useContext(AboutResourceContext);
+const useResourceContext = (): IResourceContext => {
+  const resourceContext = useContext(ResourceContext);
   return resourceContext;
 };
 
-export { useAboutResourceContext };
-export default AboutResourceProvider;
+export { useResourceContext };
+export default ResourceProvider;

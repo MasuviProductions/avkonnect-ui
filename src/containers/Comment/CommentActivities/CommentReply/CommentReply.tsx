@@ -1,6 +1,6 @@
 import { Button, Grid, Hidden, Typography } from "@mui/material";
 import { LABELS } from "../../../../constants/labels";
-import { useAboutResourceContext } from "../../../../contexts/AboutResourceContext";
+import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { reactionButtonSx } from "../../../../styles/sx";
 
 interface ICommentReplyProps {
@@ -12,7 +12,7 @@ const CommentReply: React.FC<ICommentReplyProps> = ({
   onViewRepliesInOverlay,
   onPromptReply,
 }) => {
-  const { commentsCount, resourceType } = useAboutResourceContext();
+  const { commentsCount, resourceType } = useResourceContext();
 
   const showRepliesCount = resourceType !== "comment";
 

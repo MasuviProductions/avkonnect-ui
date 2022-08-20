@@ -3,9 +3,9 @@ import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
-import AboutResourceProvider, {
-  useAboutResourceContext,
-} from "../../../../contexts/AboutResourceContext";
+import ResourceProvider, {
+  useResourceContext,
+} from "../../../../contexts/ResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { IUseComments } from "../../../../hooks/useComments";
 import Comment from "../../../Comment";
@@ -22,7 +22,8 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   onOverlayClose,
 }) => {
   const { accessToken } = useAuthContext();
-  const { commentsQuery, commentsCount } = useAboutResourceContext();
+  const { commentsQuery, commentsCount, allCommentsFetched } =
+    useResourceContext();
 
   const {
     uptoDateComments,
@@ -31,7 +32,6 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
     triggerGetCommentsApi,
     getCommentsStatus,
     infiniteLoadRef,
-    allCommentsFetched,
   } = commentsQuery as IUseComments;
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
                     : undefined
                 }
               >
-                <AboutResourceProvider
+                <ResourceProvider
                   id={comment.id}
                   type="comment"
                   sourceId={comment.sourceId}
@@ -90,7 +90,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
                     commentText={comment.contents[0].text}
                     enableCommentOverlay
                   />
-                </AboutResourceProvider>
+                </ResourceProvider>
               </Box>
             ))}
           </Box>

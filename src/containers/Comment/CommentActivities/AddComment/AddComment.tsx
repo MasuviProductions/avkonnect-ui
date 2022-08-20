@@ -1,5 +1,5 @@
 import { Hidden } from "@mui/material";
-import { useAboutResourceContext } from "../../../../contexts/AboutResourceContext";
+import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { IUseComments } from "../../../../hooks/useComments";
 import AddCommentDesktop from "./AddCommentDesktop";
 import AddCommentHandheld from "./AddCommentHandheld";
@@ -15,7 +15,7 @@ const AddComment: React.FC<IAddCommentProps> = ({
   isFocused,
   onCommentFieldBlur,
 }) => {
-  const { commentsQuery } = useAboutResourceContext();
+  const { commentsQuery } = useResourceContext();
 
   const { addComment } = commentsQuery as IUseComments;
 
@@ -39,8 +39,10 @@ const AddComment: React.FC<IAddCommentProps> = ({
 
       <Hidden mdDown>
         <AddCommentDesktop
+          isFocused={isFocused}
           inputFeed={inputFeed}
           onSubmitComment={handleCommentSubmit}
+          onCommentFieldBlur={onCommentFieldBlur}
         />
       </Hidden>
     </>

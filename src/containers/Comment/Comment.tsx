@@ -1,12 +1,12 @@
 import { Avatar, Box, Grid, Hidden, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useAboutResourceContext } from "../../contexts/AboutResourceContext";
+import { useResourceContext } from "../../contexts/ResourceContext";
 import { usernameToColor } from "../../utils/generic";
 import { userAvatarSx } from "../../styles/sx";
 import CommentActivities from "./CommentActivities";
 import CommentBox from "./CommentBox";
 import AddComment from "./CommentActivities/AddComment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommentOverlay from "./CommentOverlay/CommentOverlay";
 import SubCommentsSection from "./SubCommentsSection";
 
@@ -17,6 +17,8 @@ export interface IComment {
   enableCommentOverlay?: boolean;
   replyFocused?: boolean;
   onReplyChainEnd?: (tagUser: string) => void;
+  // Desktop specific prop
+  onSubCommentFieldBlur?: () => void;
 }
 
 const Comment: React.FC<IComment> = ({
@@ -24,11 +26,12 @@ const Comment: React.FC<IComment> = ({
   enableCommentOverlay = false,
   replyFocused = false,
   onReplyChainEnd,
+  onSubCommentFieldBlur,
 }) => {
   const {
     sourceInfo: { name, displayPictureUrl, id: sourceId },
     resourceType,
-  } = useAboutResourceContext();
+  } = useResourceContext();
 
   // NOTE: Tweak this for increasing reply chain
   const isEndOfCommentReplies = resourceType === "comment";
@@ -37,7 +40,14 @@ const Comment: React.FC<IComment> = ({
 
   const [promptReply, setPromptReply] = useState<boolean>(replyFocused);
 
+  const [isCommentFieldFocused, setIsCommentFieldFocused] =
+    useState<boolean>(replyFocused);
+
   const [inputFeed, setInputFeed] = useState<string | undefined>();
+
+  const handleCommentFieldBlur = () => {
+    setIsCommentFieldFocused(false);
+  };
 
   const handleCommentOverlayClose = () => {
     setPromptReply(false);
@@ -51,12 +61,14 @@ const Comment: React.FC<IComment> = ({
     } else {
       setInputFeed("");
       setPromptReply(true);
+      setIsCommentFieldFocused(true);
     }
   };
 
   const handleOnReplyChainEnd = (sourceId: string) => {
     setInputFeed(sourceId);
     setPromptReply(true);
+    setIsCommentFieldFocused(true);
   };
 
   const handleViewRepliesInOverlay = (promptReply: boolean): void => {
@@ -112,11 +124,18 @@ const Comment: React.FC<IComment> = ({
             <SubCommentsSection
               initialCommentsFeed={[]}
               onReplyChainEnd={handleOnReplyChainEnd}
+              onSubCommentFieldBlur={handleCommentFieldBlur}
             />
           )}
           {promptReply && (
             <Grid item xs={12}>
-              <AddComment inputFeed={inputFeed} />
+              <AddComment
+                inputFeed={inputFeed}
+                isFocused={isCommentFieldFocused}
+                onCommentFieldBlur={
+                  onSubCommentFieldBlur || handleCommentFieldBlur
+                }
+              />
             </Grid>
           )}
         </Box>

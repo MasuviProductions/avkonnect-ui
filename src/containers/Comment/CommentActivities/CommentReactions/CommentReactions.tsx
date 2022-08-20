@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../../../../constants/api";
 import { REACTION_CONFIGS } from "../../../../constants/app";
-import { useAboutResourceContext } from "../../../../contexts/AboutResourceContext";
+import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import {
   ICreateReactionApiRequest,
@@ -25,7 +25,7 @@ const CommentReactions: React.FC<ICommentReactionsProps> = () => {
     type,
     incrementReactionCount,
     decrementReactionCount,
-  } = useAboutResourceContext();
+  } = useResourceContext();
 
   const [reactionUpdateReqBody, setReactionUpdateReqBody] =
     useState<ICreateReactionApiRequest>();

@@ -35,7 +35,7 @@ export interface IUseComments {
   infiniteLoadRef: (node: any) => void;
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
-  allCommentsFetched: boolean;
+  getCommentsFetching: boolean;
   appendComment: (comment: ICommentApiResponseModel) => void;
   addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
 }
@@ -216,7 +216,7 @@ export const useComments = (
     infiniteLoadRef,
     triggerGetCommentsApi,
     getCommentsStatus,
-    allCommentsFetched: !nextSearchStartFromKey,
+    getCommentsFetching,
     appendComment,
     addComment,
   };

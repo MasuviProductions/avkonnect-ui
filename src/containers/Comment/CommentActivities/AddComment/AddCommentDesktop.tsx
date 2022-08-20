@@ -4,20 +4,32 @@ import { userAvatarSx } from "../../../../styles/sx";
 import { usernameToColor } from "../../../../utils/generic";
 import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
+import { useEffect, useRef } from "react";
 
 interface IAddCommentDesktopProps {
+  isFocused?: boolean;
   inputFeed?: string;
   onSubmitComment: () => void;
+  onCommentFieldBlur?: () => void;
 }
 
 const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
+  isFocused = false,
   inputFeed,
   onSubmitComment,
+  onCommentFieldBlur,
 }) => {
   const { authUser } = useAuthContext();
 
+  const textFieldRef = useRef<HTMLInputElement>();
+
   const name = authUser?.name as string;
   const displayPictureUrl = authUser?.displayPictureUrl as string;
+
+  useEffect(() => {
+    if (typeof inputFeed != "undefined" && isFocused)
+      textFieldRef.current?.focus();
+  }, [inputFeed, isFocused]);
 
   return (
     <>
@@ -40,8 +52,10 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
                 multiline
                 fullWidth
                 maxRows={4}
+                inputRef={textFieldRef}
                 sx={commentTextFieldSx}
                 value={inputFeed}
+                onBlur={onCommentFieldBlur}
               />
             </Grid>
 

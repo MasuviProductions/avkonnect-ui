@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import AboutResourceProvider, {
-  useAboutResourceContext,
-} from "../../../contexts/AboutResourceContext";
+import ResourceProvider, {
+  useResourceContext,
+} from "../../../contexts/ResourceContext";
 import Comment from "../Comment";
 import { IUseComments } from "../../../hooks/useComments";
 import { ICommentApiResponseModel } from "../../../interfaces/api/external";
@@ -11,14 +11,16 @@ import { decoratedLinkSx } from "../../../styles/sx";
 interface ISubCommentsSectionProps {
   initialCommentsFeed: ICommentApiResponseModel[];
   onReplyChainEnd?: (tagUser: string) => void;
+  onSubCommentFieldBlur?: () => void;
 }
 
 // Warning: Desktop specific component
 const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
   initialCommentsFeed,
   onReplyChainEnd,
+  onSubCommentFieldBlur,
 }) => {
-  const { commentsQuery } = useAboutResourceContext();
+  const { commentsQuery, allCommentsFetched } = useResourceContext();
 
   const {
     uptoDateComments,
@@ -26,7 +28,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
     resetQueryData,
     triggerGetCommentsApi,
     getCommentsStatus,
-    allCommentsFetched,
+    getCommentsFetching,
   } = commentsQuery as IUseComments;
 
   const handleClickLoadMore = () => {
@@ -38,7 +40,7 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
       <Box>
         {uptoDateComments.map((comment) => (
           <Box key={comment.id}>
-            <AboutResourceProvider
+            <ResourceProvider
               id={comment.id}
               type="comment"
               sourceId={comment.sourceId}
@@ -56,12 +58,17 @@ const SubCommentsSection: React.FC<ISubCommentsSectionProps> = ({
               <Comment
                 commentText={comment.contents[0].text}
                 onReplyChainEnd={onReplyChainEnd}
+                onSubCommentFieldBlur={onSubCommentFieldBlur}
               />
-            </AboutResourceProvider>
+            </ResourceProvider>
           </Box>
         ))}
 
-        {true && (
+        {getCommentsFetching ? (
+          <>Loading..</>
+        ) : allCommentsFetched ? (
+          <></>
+        ) : (
           <Box px={1} pb={1}>
             <Typography
               paragraph

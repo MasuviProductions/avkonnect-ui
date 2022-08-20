@@ -31,13 +31,13 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
 
   const textFieldRef = useRef<HTMLInputElement>();
 
+  const name = authUser?.name as string;
+  const displayPictureUrl = authUser?.displayPictureUrl as string;
+
   useEffect(() => {
     if (typeof inputFeed != "undefined" && isFocused)
       textFieldRef.current?.focus();
   }, [inputFeed, isFocused]);
-
-  const name = authUser?.name as string;
-  const displayPictureUrl = authUser?.displayPictureUrl as string;
 
   return (
     <>

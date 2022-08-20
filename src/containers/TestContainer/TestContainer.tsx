@@ -1,7 +1,7 @@
 import { Button, Typography, Hidden, Box } from "@mui/material";
 import { useState } from "react";
 import PostView from "../Post/PostView";
-import AboutResourceProvider from "../../contexts/AboutResourceContext";
+import ResourceProvider from "../../contexts/ResourceContext";
 import API_ENDPOINTS from "../../constants/api";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { getPost } from "../../utils/api";
@@ -75,7 +75,7 @@ const TestContainer: React.FC = () => {
           </Typography>
         </Box>
 
-        <AboutResourceProvider
+        <ResourceProvider
           id={postResData.data.id}
           type="post"
           sourceId={postResData.data.sourceId}
@@ -95,7 +95,7 @@ const TestContainer: React.FC = () => {
             showPost={showPostDetail}
             onPostClose={handlePostDetailClose}
           />
-        </AboutResourceProvider>
+        </ResourceProvider>
       </Box>
     </>
   );

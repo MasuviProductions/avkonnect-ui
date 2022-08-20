@@ -1,15 +1,16 @@
 import { Box, Button, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
-import AboutResourceProvider, {
-  useAboutResourceContext,
-} from "../../../../contexts/AboutResourceContext";
+import ResourceProvider, {
+  useResourceContext,
+} from "../../../../contexts/ResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import Comment from "../../../Comment";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
 import AddComment from "../../../Comment/CommentActivities/AddComment";
 import { IUseComments } from "../../../../hooks/useComments";
+import { LABELS } from "../../../../constants/labels";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -22,7 +23,8 @@ const PostModal: React.FC<IPostModalProps> = ({
   onModalClose,
 }) => {
   const { accessToken } = useAuthContext();
-  const { commentsQuery, commentsCount } = useAboutResourceContext();
+  const { commentsQuery, commentsCount, allCommentsFetched } =
+    useResourceContext();
 
   const {
     uptoDateComments,
@@ -30,7 +32,7 @@ const PostModal: React.FC<IPostModalProps> = ({
     resetQueryData,
     triggerGetCommentsApi,
     getCommentsStatus,
-    allCommentsFetched,
+    getCommentsFetching,
   } = commentsQuery as IUseComments;
 
   const handleClickLoadMore = () => {
@@ -64,7 +66,7 @@ const PostModal: React.FC<IPostModalProps> = ({
 
             {uptoDateComments.map((comment) => (
               <Box key={comment.id}>
-                <AboutResourceProvider
+                <ResourceProvider
                   id={comment.id}
                   type="comment"
                   sourceId={comment.sourceId}
@@ -80,12 +82,18 @@ const PostModal: React.FC<IPostModalProps> = ({
                   key={`comment-${comment.id}`}
                 >
                   <Comment commentText={comment.contents[0].text} />
-                </AboutResourceProvider>
+                </ResourceProvider>
               </Box>
             ))}
 
-            {!allCommentsFetched && (
-              <Button onClick={handleClickLoadMore}>Load more comments</Button>
+            {getCommentsFetching ? (
+              <>Loading..</>
+            ) : allCommentsFetched ? (
+              <></>
+            ) : (
+              <Button onClick={handleClickLoadMore}>
+                {LABELS.LOAD_MORE_COMMENTS}
+              </Button>
             )}
           </Box>
 

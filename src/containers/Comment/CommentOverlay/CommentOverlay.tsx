@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo } from "react";
 import ViewOverlay, {
   IOverlay,
 } from "../../../components/ViewOverlay/ViewOverlay";
-import AboutResourceProvider, {
-  useAboutResourceContext,
-} from "../../../contexts/AboutResourceContext";
+import ResourceProvider, {
+  useResourceContext,
+} from "../../../contexts/ResourceContext";
 import Comment, { IComment } from "../Comment";
 import { IUseComments } from "../../../hooks/useComments";
 import AddComment from "../CommentActivities/AddComment";
@@ -20,7 +20,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
   onOverlayClose,
   replyFocused = false,
 }) => {
-  const { commentsQuery } = useAboutResourceContext();
+  const { commentsQuery, allCommentsFetched } = useResourceContext();
 
   const [promptReply, setPromptReply] = useState<boolean>(replyFocused);
 
@@ -33,7 +33,6 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
     triggerGetCommentsApi,
     getCommentsStatus,
     infiniteLoadRef,
-    allCommentsFetched,
   } = commentsQuery as IUseComments;
 
   const handleOnReplyChainEnd = (tagUser: string) => {
@@ -98,7 +97,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
                     : undefined
                 }
               >
-                <AboutResourceProvider
+                <ResourceProvider
                   id={comment.id}
                   type="comment"
                   sourceId={comment.sourceId}
@@ -117,7 +116,7 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
                     commentText={comment.contents[0].text}
                     onReplyChainEnd={handleOnReplyChainEnd}
                   />
-                </AboutResourceProvider>
+                </ResourceProvider>
               </Box>
             ))}
           </Box>

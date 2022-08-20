@@ -2,7 +2,7 @@ import { Box, Link, Grid, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../constants/app";
-import { useAboutResourceContext } from "../../../contexts/AboutResourceContext";
+import { useResourceContext } from "../../../contexts/ResourceContext";
 import { simpleLinkSx } from "../../../styles/sx";
 import { parseContentText } from "../../../utils/component";
 import { getTimeAgo } from "../../../utils/generic";
@@ -23,7 +23,7 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
     createdAt,
     sourceId: userId,
     relatedSourceMap,
-  } = useAboutResourceContext();
+  } = useResourceContext();
   return (
     <>
       <Box sx={commentCardSx}>
