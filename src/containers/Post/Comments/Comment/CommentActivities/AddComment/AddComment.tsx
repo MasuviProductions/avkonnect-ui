@@ -1,6 +1,6 @@
 import { Hidden } from "@mui/material";
-import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { IUseComments } from "../../../../hooks/useComments";
+import { useResourceContext } from "../../../../../../contexts/ResourceContext";
+import { IUseComments } from "../../../../../../hooks/useComments";
 import AddCommentDesktop from "./AddCommentDesktop";
 import AddCommentHandheld from "./AddCommentHandheld";
 

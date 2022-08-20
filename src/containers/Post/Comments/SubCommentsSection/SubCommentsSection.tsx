@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import ResourceProvider, {
   useResourceContext,
-} from "../../../contexts/ResourceContext";
-import Comment from "../Comment";
-import { IUseComments } from "../../../hooks/useComments";
-import { ICommentApiResponseModel } from "../../../interfaces/api/external";
-import { LABELS } from "../../../constants/labels";
-import { decoratedLinkSx } from "../../../styles/sx";
+} from "../../../../contexts/ResourceContext";
+import Comment from "../Comment/Comment";
+import { IUseComments } from "../../../../hooks/useComments";
+import { ICommentApiResponseModel } from "../../../../interfaces/api/external";
+import { LABELS } from "../../../../constants/labels";
+import { decoratedLinkSx } from "../../../../styles/sx";
 
 interface ISubCommentsSectionProps {
   initialCommentsFeed: ICommentApiResponseModel[];

@@ -1,18 +1,9 @@
 import { Button, Typography, Hidden, Box } from "@mui/material";
 import { useState } from "react";
 import PostView from "../../Post/PostView";
-import ResourceProvider, {
-  useResourceContext,
-} from "../../../contexts/ResourceContext";
-import API_ENDPOINTS from "../../../constants/api";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { getPost } from "../../../utils/api";
-import { useQuery } from "react-query";
-import { transformUsersListToUserIdUserMap } from "../../../utils/transformers";
-import { IRelatedSource } from "../../../interfaces/api/external";
+import { useResourceContext } from "../../../contexts/ResourceContext";
 
 const Feed: React.FC = () => {
-  const { accessToken } = useAuthContext();
   const { id } = useResourceContext();
   const [showPostDetail, setShowPostDetail] = useState(false);
 

@@ -1,11 +1,11 @@
 import { Box, Link, Grid, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
-import { APP_ROUTES } from "../../../constants/app";
-import { useResourceContext } from "../../../contexts/ResourceContext";
-import { simpleLinkSx } from "../../../styles/sx";
-import { parseContentText } from "../../../utils/component";
-import { getTimeAgo } from "../../../utils/generic";
+import { APP_ROUTES } from "../../../../../constants/app";
+import { useResourceContext } from "../../../../../contexts/ResourceContext";
+import { simpleLinkSx } from "../../../../../styles/sx";
+import { parseContentText } from "../../../../../utils/component";
+import { getTimeAgo } from "../../../../../utils/generic";
 
 interface ICommentBoxProps {
   commentText: string;

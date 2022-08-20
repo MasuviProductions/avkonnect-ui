@@ -1,14 +1,14 @@
 import { Avatar, Box, Grid, Hidden, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useResourceContext } from "../../contexts/ResourceContext";
-import { usernameToColor } from "../../utils/generic";
-import { userAvatarSx } from "../../styles/sx";
+import { useResourceContext } from "../../../../contexts/ResourceContext";
+import { usernameToColor } from "../../../../utils/generic";
+import { userAvatarSx } from "../../../../styles/sx";
 import CommentActivities from "./CommentActivities";
 import CommentBox from "./CommentBox";
 import AddComment from "./CommentActivities/AddComment";
 import { useEffect, useState } from "react";
-import CommentOverlay from "./CommentOverlay/CommentOverlay";
-import SubCommentsSection from "./SubCommentsSection";
+import CommentOverlay from "../CommentOverlay/CommentOverlay";
+import SubCommentsSection from "../SubCommentsSection";
 
 // Warning: Recursive component
 export interface IComment {

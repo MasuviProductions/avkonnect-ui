@@ -3,13 +3,13 @@ import { SystemStyleObject } from "@mui/system";
 import { useState, useEffect, useMemo } from "react";
 import ViewOverlay, {
   IOverlay,
-} from "../../../components/ViewOverlay/ViewOverlay";
+} from "../../../../components/ViewOverlay/ViewOverlay";
 import ResourceProvider, {
   useResourceContext,
-} from "../../../contexts/ResourceContext";
-import Comment, { IComment } from "../Comment";
-import { IUseComments } from "../../../hooks/useComments";
-import AddComment from "../CommentActivities/AddComment";
+} from "../../../../contexts/ResourceContext";
+import Comment, { IComment } from "../Comment/Comment";
+import { IUseComments } from "../../../../hooks/useComments";
+import AddComment from "../Comment/CommentActivities/AddComment";
 
 interface CommentOverlay extends IOverlay, IComment {}
 

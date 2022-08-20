@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import SendIcon from "@mui/icons-material/Send";
-import { userAvatarSx } from "../../../../styles/sx";
-import { usernameToColor } from "../../../../utils/generic";
-import { LABELS } from "../../../../constants/labels";
-import { useAuthContext } from "../../../../contexts/AuthContext";
+import { userAvatarSx } from "../../../../../../styles/sx";
+import { usernameToColor } from "../../../../../../utils/generic";
+import { LABELS } from "../../../../../../constants/labels";
+import { useAuthContext } from "../../../../../../contexts/AuthContext";
 import { useEffect, useRef } from "react";
 
 interface IAddCommentHandheldProps {

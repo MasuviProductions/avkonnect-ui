@@ -5,10 +5,10 @@ import ResourceProvider, {
   useResourceContext,
 } from "../../../../contexts/ResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
-import Comment from "../../../Comment";
+import Comment from "../../Comments/Comment";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
-import AddComment from "../../../Comment/CommentActivities/AddComment";
+import AddComment from "../../Comments/Comment/CommentActivities/AddComment";
 import { IUseComments } from "../../../../hooks/useComments";
 import { LABELS } from "../../../../constants/labels";
 

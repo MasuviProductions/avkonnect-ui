@@ -8,8 +8,8 @@ import ResourceProvider, {
 } from "../../../../contexts/ResourceContext";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { IUseComments } from "../../../../hooks/useComments";
-import Comment from "../../../Comment";
-import AddComment from "../../../Comment/CommentActivities/AddComment";
+import Comment from "../../Comments/Comment";
+import AddComment from "../../Comments/Comment/CommentActivities/AddComment";
 
 interface IPostOverlayProps extends IOverlay {
   replyFocused?: boolean;

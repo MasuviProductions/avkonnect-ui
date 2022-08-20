@@ -1,17 +1,17 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import API_ENDPOINTS from "../../../../constants/api";
-import { REACTION_CONFIGS } from "../../../../constants/app";
-import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { useAuthContext } from "../../../../contexts/AuthContext";
+import API_ENDPOINTS from "../../../../../../constants/api";
+import { REACTION_CONFIGS } from "../../../../../../constants/app";
+import { useResourceContext } from "../../../../../../contexts/ResourceContext";
+import { useAuthContext } from "../../../../../../contexts/AuthContext";
 import {
   ICreateReactionApiRequest,
   IReactionTypes,
   IResourceTypes,
-} from "../../../../interfaces/api/external";
-import { reactionButtonSx } from "../../../../styles/sx";
-import { createReaction, deleteReaction } from "../../../../utils/api";
+} from "../../../../../../interfaces/api/external";
+import { reactionButtonSx } from "../../../../../../styles/sx";
+import { createReaction, deleteReaction } from "../../../../../../utils/api";
 
 interface ICommentReactionsProps {}
 

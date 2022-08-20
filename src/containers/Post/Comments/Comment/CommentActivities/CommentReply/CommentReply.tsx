@@ -1,7 +1,7 @@
 import { Button, Grid, Hidden, Typography } from "@mui/material";
-import { LABELS } from "../../../../constants/labels";
-import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { reactionButtonSx } from "../../../../styles/sx";
+import { LABELS } from "../../../../../../constants/labels";
+import { useResourceContext } from "../../../../../../contexts/ResourceContext";
+import { reactionButtonSx } from "../../../../../../styles/sx";
 
 interface ICommentReplyProps {
   onViewRepliesInOverlay: (promptReply: boolean) => void;
