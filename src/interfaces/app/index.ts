@@ -3,6 +3,8 @@ import { Session } from "next-auth";
 import React from "react";
 import { Dayjs } from "dayjs";
 import { CalendarPickerView } from "@mui/lab";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from "@mui/material";
 
 export interface IComponentSkeleton {
   Skeleton: React.FC;
@@ -116,4 +118,5 @@ export type IFooterType = "bottom" | "side";
 export interface IReactionConfig {
   label: string;
   emoji: string;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
 }

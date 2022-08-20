@@ -251,7 +251,8 @@ export type IResourceTypes = "post" | "comment";
 
 export type ISourceTypes = "user" | "company";
 
-export type IReactionTypes = "like" | "love" | "support" | "laugh" | "sad";
+export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
+export type IReactionTypes = typeof REACTIONS[number];
 
 interface IPostRequestContentApiModel {
   text: string;

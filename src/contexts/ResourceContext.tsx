@@ -1,13 +1,18 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import API_ENDPOINTS from "../constants/api";
 import useComments, { IUseComments } from "../hooks/useComments";
 import {
   ICommentApiResponseModel,
+  ICreateReactionApiRequest,
   IReactionCountApiModel,
   IReactionTypes,
   IRelatedSource,
   IResourceTypes,
   ISourceTypes,
 } from "../interfaces/api/external";
+import { createReaction, deleteReaction } from "../utils/api";
+import { useAuthContext } from "./AuthContext";
 
 interface IResourceContext {
   id: string;
@@ -21,8 +26,9 @@ interface IResourceContext {
   createdAt: Date;
   userReaction?: IReactionTypes;
   loadedComments: ICommentApiResponseModel[];
-  updateUserReaction: (reaction?: IReactionTypes) => void;
+  updateUserReaction: (reaction: IReactionTypes) => void;
   reactionsCount: IReactionCountApiModel;
+  totalReactionsCount: number;
   incrementReactionCount: (reaction: IReactionTypes) => void;
   decrementReactionCount: (reaction: IReactionTypes) => void;
   commentsCount: number;
@@ -59,6 +65,7 @@ const ResourceContext = createContext<IResourceContext>({
     sad: 0,
     love: 0,
   },
+  totalReactionsCount: 0,
   incrementReactionCount: () => {},
   decrementReactionCount: () => {},
   commentsCount: 0,
@@ -101,14 +108,66 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
+  const { accessToken } = useAuthContext();
+  const [reactionUpdateReqBody, setReactionUpdateReqBody] = useState<
+    ICreateReactionApiRequest | undefined
+  >();
 
   const { incrementCommentsCount: incrementParentCommentsCount } =
     useResourceContext();
+
+  const { status: createReactionResStatus, remove: clearCreateReactionQuery } =
+    useQuery(
+      `CREATE:${API_ENDPOINTS.CREATE_REACTION.key}-${id}-${type}`,
+      () =>
+        createReaction(
+          accessToken as string,
+          reactionUpdateReqBody as ICreateReactionApiRequest
+        ),
+      { cacheTime: 0, refetchInterval: false, enabled: !!reactionUpdateReqBody }
+    );
+
+  const { refetch: deleteReactionTrigger } = useQuery(
+    `DELETE${API_ENDPOINTS.DELETE_REACTION.key}-${id}-${type}`,
+    () => deleteReaction(accessToken as string, type, id),
+    { cacheTime: 0, refetchInterval: false, enabled: false }
+  );
+
+  useEffect(() => {
+    if (createReactionResStatus === "success") {
+      clearCreateReactionQuery;
+    }
+  }, [clearCreateReactionQuery, createReactionResStatus]);
 
   const incrementCommentsCount = () => {
     setCommentsCountState((prev) => prev + 1);
     if (type === "comment") {
       incrementParentCommentsCount();
+    }
+  };
+
+  const updateUserReaction = (reaction: IReactionTypes) => {
+    const reactionReqBody = {
+      resourceId: id as string,
+      resourceType: type as IResourceTypes,
+      reaction,
+    };
+
+    if (userReactionState) {
+      if (reaction !== userReactionState) {
+        setReactionUpdateReqBody(reactionReqBody);
+        setUserReactionState(reaction);
+        decrementReactionCount(userReactionState);
+        incrementReactionCount(reaction);
+      } else {
+        decrementReactionCount(reaction);
+        setUserReactionState(undefined);
+        deleteReactionTrigger();
+      }
+    } else {
+      setReactionUpdateReqBody(reactionReqBody);
+      setUserReactionState(reaction);
+      incrementReactionCount(reaction);
     }
   };
 
@@ -136,10 +195,6 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
 
   const [loadedCommentsState, setLoadedComments] =
     useState<ICommentApiResponseModel[]>(loadedComments);
-
-  const updateUserReaction = (reaction?: IReactionTypes) => {
-    setUserReactionState(reaction);
-  };
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
     setReactionsCountState((prev) => ({
@@ -187,6 +242,10 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         updateUserReaction,
         loadedComments: loadedCommentsState,
         reactionsCount: reactionsCountState,
+        totalReactionsCount: Object.values(reactionsCount).reduce(
+          (reactionCount, totalCount) => reactionCount + totalCount,
+          0
+        ),
         incrementReactionCount,
         decrementReactionCount,
         commentsCount: commentsCountState,
