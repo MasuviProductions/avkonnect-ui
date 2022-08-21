@@ -167,7 +167,8 @@ const API_ENDPOINTS = {
   },
   GET_USER_FEEDS: {
     key: "get-user-feeds",
-    url: (userId: string) => `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds`,
+    url: (userId: string, queryString: string) =>
+      `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds${queryString}`,
   },
 };
 

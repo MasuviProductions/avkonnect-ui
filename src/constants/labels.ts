@@ -279,4 +279,7 @@ export const LABELS = {
   LAUGH: "Laugh",
   SAD: "Sad",
   SUPPORT: "Support",
+
+  // Feeds
+  FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
 };

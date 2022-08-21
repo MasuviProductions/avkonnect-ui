@@ -12,7 +12,6 @@ const TestContainer: React.FC = () => {
   }
   return (
     <>
-      <Icon />
       <Feeds />
     </>
   );

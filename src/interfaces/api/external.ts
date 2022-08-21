@@ -266,7 +266,7 @@ export interface ICreatePostApiRequest {
   commentsOnlyByConnections: boolean;
 }
 
-interface IPostResponseContentModel {
+export interface IPostResponseContentModel {
   text: string;
   createdAt: Date;
   mediaUrls: string[];
@@ -443,13 +443,13 @@ interface IFeedSourceApiModel {
   resourceType: IResourceTypes;
 }
 
-interface IUserFeedApiModel {
+export interface IUserFeedApiModel {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel;
+  contents: IPostResponseContentModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;

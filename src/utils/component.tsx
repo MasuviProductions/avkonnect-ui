@@ -1,4 +1,5 @@
-import { Link, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { ReactNodeArray } from "react";
 import reactStringReplace from "react-string-replace";
@@ -23,9 +24,9 @@ export const parseContentText = (
       <Link
         key={i}
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
-        sx={decoratedLinkSx()}
+        passHref
       >
-        {relatedSource?.name}
+        <Typography sx={decoratedLinkSx()}>{relatedSource?.name}</Typography>
       </Link>
     );
   });

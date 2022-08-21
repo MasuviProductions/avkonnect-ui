@@ -24,6 +24,7 @@ interface IResourceContext {
   resourceType?: IResourceTypes;
   relatedSourceMap: Record<string, IRelatedSource>;
   createdAt: Date;
+  updatedAt?: Date;
   userReaction?: IReactionTypes;
   loadedComments: ICommentApiResponseModel[];
   updateUserReaction: (reaction: IReactionTypes) => void;
@@ -52,6 +53,7 @@ const ResourceContext = createContext<IResourceContext>({
     email: "",
   },
   createdAt: new Date(Date.now()),
+  updatedAt: new Date(Date.now()),
   resourceId: undefined,
   resourceType: undefined,
   userReaction: undefined,
@@ -89,6 +91,7 @@ interface IResourceProviderProps
     | "resourceId"
     | "resourceType"
     | "createdAt"
+    | "updatedAt"
     | "relatedSourceMap"
   > {}
 
@@ -105,6 +108,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   loadedComments,
   relatedSourceMap,
   createdAt,
+  updatedAt,
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
@@ -172,7 +176,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   };
 
   const decrementCommentsCount = () => {
-    setCommentsCountState((prev) => prev - 1);
+    setCommentsCountState(prev => prev - 1);
   };
 
   const commentsQuery = useComments(
@@ -197,21 +201,21 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     useState<ICommentApiResponseModel[]>(loadedComments);
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState((prev) => ({
+    setReactionsCountState(prev => ({
       ...prev,
       [reaction]: prev[reaction] + 1,
     }));
   };
 
   const decrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState((prev) => ({
+    setReactionsCountState(prev => ({
       ...prev,
       [reaction]: prev[reaction] - 1,
     }));
   };
 
   useEffect(() => {
-    loadedComments.forEach((comment) => {
+    loadedComments.forEach(comment => {
       commentsQuery.appendComment(comment);
     });
   }, [commentsQuery, loadedComments]);
@@ -251,6 +255,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         commentsCount: commentsCountState,
         relatedSourceMap,
         createdAt,
+        updatedAt,
         incrementCommentsCount,
         decrementCommentsCount,
         commentsQuery: commentsQuery,
