@@ -19,17 +19,10 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import ShareIcon from "@mui/icons-material/Share";
-import LikeIcon from "@mui/icons-material/ThumbUpOffAlt";
-import LoveIcon from "@mui/icons-material/FavoriteBorder";
-import LaughIcon from "@mui/icons-material/InsertEmoticon";
-import SadIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SupportIcon from "@mui/icons-material/VolunteerActivism";
-import UnStarredIcon from "@mui/icons-material/StarBorder";
-import StarredIcon from "@mui/icons-material/Star";
 import { getEllipsedText, getTimeAgo } from "../../../utils/generic";
 import ReactionIconClubber from "../../../components/ReactionIconClubber";
 import { compile } from "path-to-regexp";
-import { APP_ROUTES } from "../../../constants/app";
+import { APP_ROUTES, REACTION_CONFIGS } from "../../../constants/app";
 import { parseContentText } from "../../../utils/component";
 import { IPostResponseContentModel } from "../../../interfaces/api/external";
 
@@ -52,6 +45,12 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
 
   const [showPostDetail, setShowPostDetail] = useState(false);
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
+
+  const LikeActiveIcon = REACTION_CONFIGS.like.iconActive;
+  const LoveActiveIcon = REACTION_CONFIGS.love.iconActive;
+  const LaughActiveIcon = REACTION_CONFIGS.laugh.iconActive;
+  const SupportActiveIcon = REACTION_CONFIGS.support.iconActive;
+  const SadActiveIcon = REACTION_CONFIGS.sad.iconActive;
 
   const handlePostDetailOpen = () => {
     setShowPostDetail(true);
@@ -128,7 +127,7 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
       >
         <Grid item pl={1} display="flex" alignItems="center">
           <ReactionIconClubber reactionIconCount={reactionsCount} />
-          <Box component="span" ml={0.3}>
+          <Box component="span" ml={0.5}>
             {userReaction ? (
               totalReactionsCount > 1 ? (
                 <Typography variant="caption">
@@ -190,16 +189,28 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
             open={open}
             onClose={handleLikePopoverClose}
           >
-            <Box p={1}>
-              <LikeIcon color="primary" fontSize="large" sx={likeIconSx} />
-              <LoveIcon color="primary" fontSize="large" sx={loveIconSx} />
-              <SupportIcon
+            <Box pt={1}>
+              <LikeActiveIcon
+                color="primary"
+                fontSize="large"
+                sx={likeIconSx}
+              />
+              <LoveActiveIcon
+                color="primary"
+                fontSize="large"
+                sx={loveIconSx}
+              />
+              <SupportActiveIcon
                 color="primary"
                 fontSize="large"
                 sx={supportIconSx}
               />
-              <LaughIcon color="primary" fontSize="large" sx={laughIconSx} />
-              <SadIcon color="primary" fontSize="large" sx={sadIconSx} />
+              <LaughActiveIcon
+                color="primary"
+                fontSize="large"
+                sx={laughIconSx}
+              />
+              <SadActiveIcon color="primary" fontSize="large" sx={sadIconSx} />
             </Box>
           </Popover>
         </Grid>
@@ -267,10 +278,16 @@ const reactionIconSx = (
   theme: Theme,
   color: string
 ): SystemStyleObject<Theme> => ({
+  fill: color,
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: "50%",
+  padding: "6px",
+  fontSize: "44px",
   margin: "0px 8px",
   "&:hover": {
+    fill: theme.palette.background.paper,
+    backgroundColor: color,
     cursor: "pointer",
-    fill: color,
     animation: "mover 0.2s 4 alternate",
     "@keyframes mover": {
       "0%": { transform: "translateY(0px)" },
@@ -280,23 +297,23 @@ const reactionIconSx = (
 });
 
 const likeIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#207ed6");
+  return reactionIconSx(theme, theme.palette.reactions.like);
 };
 
 const loveIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#c21557");
+  return reactionIconSx(theme, theme.palette.reactions.love);
 };
 
 const supportIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#a38864");
+  return reactionIconSx(theme, theme.palette.reactions.support);
 };
 
 const laughIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#ed771c");
+  return reactionIconSx(theme, theme.palette.reactions.laugh);
 };
 
 const sadIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#5d6163");
+  return reactionIconSx(theme, theme.palette.reactions.sad);
 };
 
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({

@@ -1,11 +1,7 @@
-import LikeIcon from "@mui/icons-material/ThumbUp";
-import LoveIcon from "@mui/icons-material/Favorite";
-import LaughIcon from "@mui/icons-material/EmojiEmotions";
-import SadIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SupportIcon from "@mui/icons-material/Handshake";
 import { IReactionCountApiModel } from "../interfaces/api/external";
 import { Box, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
+import { REACTION_CONFIGS } from "../constants/app";
 
 interface IReactionIconClubber {
   reactionIconCount: IReactionCountApiModel;
@@ -14,6 +10,12 @@ interface IReactionIconClubber {
 const ReactionIconClubber: React.FC<IReactionIconClubber> = ({
   reactionIconCount,
 }) => {
+  const LikeIcon = REACTION_CONFIGS.like.icon;
+  const LoveIcon = REACTION_CONFIGS.love.icon;
+  const LaughIcon = REACTION_CONFIGS.laugh.icon;
+  const SupportIcon = REACTION_CONFIGS.support.icon;
+  const SadIcon = REACTION_CONFIGS.sad.icon;
+
   return (
     <Box component="span" mt={1}>
       {reactionIconCount.like > 0 && <LikeIcon sx={likeIconSx} />}
@@ -31,30 +33,33 @@ const reactionIconSx = (
   zInd?: number,
   ml?: string
 ): SystemStyleObject<Theme> => ({
-  marginLeft: ml ? ml : "-5px",
-  fontSize: "16px",
-  fill: color,
+  marginLeft: ml ? ml : "-3px",
+  padding: "2px",
+  fontSize: "17px",
+  fill: "#fff",
   zIndex: zInd ? zInd : 0,
+  backgroundColor: color,
+  borderRadius: "50%",
 });
 
 const likeIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#207ed6", 0, "0px");
+  return reactionIconSx(theme, theme.palette.reactions.like, 0, "0px");
 };
 
 const loveIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#c21557", 1);
+  return reactionIconSx(theme, theme.palette.reactions.love, 1);
 };
 
 const supportIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#a38864", 2);
+  return reactionIconSx(theme, theme.palette.reactions.support, 2);
 };
 
 const laughIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#ed771c", 3);
+  return reactionIconSx(theme, theme.palette.reactions.laugh, 3);
 };
 
 const sadIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, "#5d6163", 4);
+  return reactionIconSx(theme, theme.palette.reactions.sad, 4);
 };
 
 export default ReactionIconClubber;
