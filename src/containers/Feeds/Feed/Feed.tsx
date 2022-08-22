@@ -9,6 +9,7 @@ import {
   Popover,
   SxProps,
   Theme,
+  ClickAwayListener,
 } from "@mui/material";
 import { useState } from "react";
 import PostView from "../../Post/PostView";
@@ -22,9 +23,10 @@ import ShareIcon from "@mui/icons-material/Share";
 import { getEllipsedText, getTimeAgo } from "../../../utils/generic";
 import ReactionIconClubber from "../../../components/ReactionIconClubber";
 import { compile } from "path-to-regexp";
-import { APP_ROUTES, REACTION_CONFIGS } from "../../../constants/app";
+import { APP_ROUTES } from "../../../constants/app";
 import { parseContentText } from "../../../utils/component";
 import { IPostResponseContentModel } from "../../../interfaces/api/external";
+import ReactionsPopper from "../../../components/ReactionsPopper";
 
 interface IFeedProps {
   feedContent: IPostResponseContentModel[];
@@ -43,36 +45,30 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
     totalReactionsCount,
   } = useResourceContext();
 
-  const [showPostDetail, setShowPostDetail] = useState(false);
-  const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
-
-  const LikeActiveIcon = REACTION_CONFIGS.like.iconActive;
-  const LoveActiveIcon = REACTION_CONFIGS.love.iconActive;
-  const LaughActiveIcon = REACTION_CONFIGS.laugh.iconActive;
-  const SupportActiveIcon = REACTION_CONFIGS.support.iconActive;
-  const SadActiveIcon = REACTION_CONFIGS.sad.iconActive;
+  const [showPostDetail, setShowPostDetail] = useState<boolean>(false);
+  const [showReactionPopper, setReactionPopper] = useState<boolean>(false);
 
   const handlePostDetailOpen = () => {
     setShowPostDetail(true);
   };
 
   const handlePostDetailClose = () => {
-    setShowPostDetail(false);
+    setTimeout(() => {
+      setShowPostDetail(false);
+    }, 2000);
   };
 
   const handleProfileRedirectClick = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
   };
 
-  const handleLikePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setPopoverAnchor(popoverAnchor === null ? event.currentTarget : null);
+  const handleReactionPopperOpen = () => {
+    setReactionPopper(true);
   };
 
-  const handleLikePopoverClose = () => {
-    setPopoverAnchor(null);
+  const handleReactionPopperClose = () => {
+    setReactionPopper(false);
   };
-
-  const open = Boolean(popoverAnchor);
 
   return (
     <Box sx={postBoxSx}>
@@ -156,18 +152,21 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
         )}
       </Grid>
       <Divider />
-      <Grid container alignItems="center" justifyContent="center" mt={1}>
-        <Grid
-          item
-          xs={4}
-          aria-describedby={open ? "reaction-popover" : undefined}
-          onMouseDown={handleLikePopoverOpen}
-        >
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        mt={1}
+        onMouseLeave={handleReactionPopperClose}
+      >
+        <Grid item xs={4}>
+          {showReactionPopper && <ReactionsPopper />}
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
             sx={postInteractionSx}
+            onMouseOver={handleReactionPopperOpen}
             py={1}
           >
             <Typography variant="body2" pr={1}>
@@ -175,44 +174,6 @@ const Feed: React.FC<IFeedProps> = ({ feedContent }) => {
             </Typography>
             <ThumbUpIcon color="primary" fontSize="small" />
           </Box>
-          <Popover
-            id="reaction-popover"
-            anchorEl={popoverAnchor}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            transformOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            open={open}
-            onClose={handleLikePopoverClose}
-          >
-            <Box pt={1}>
-              <LikeActiveIcon
-                color="primary"
-                fontSize="large"
-                sx={likeIconSx}
-              />
-              <LoveActiveIcon
-                color="primary"
-                fontSize="large"
-                sx={loveIconSx}
-              />
-              <SupportActiveIcon
-                color="primary"
-                fontSize="large"
-                sx={supportIconSx}
-              />
-              <LaughActiveIcon
-                color="primary"
-                fontSize="large"
-                sx={laughIconSx}
-              />
-              <SadActiveIcon color="primary" fontSize="large" sx={sadIconSx} />
-            </Box>
-          </Popover>
         </Grid>
         <Grid
           item
@@ -273,48 +234,6 @@ const morePostOptionsSx: SxProps<Theme> = (theme: Theme) => ({
     borderRadius: "50%",
   },
 });
-
-const reactionIconSx = (
-  theme: Theme,
-  color: string
-): SystemStyleObject<Theme> => ({
-  fill: color,
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: "50%",
-  padding: "6px",
-  fontSize: "44px",
-  margin: "0px 8px",
-  "&:hover": {
-    fill: theme.palette.background.paper,
-    backgroundColor: color,
-    cursor: "pointer",
-    animation: "mover 0.2s 4 alternate",
-    "@keyframes mover": {
-      "0%": { transform: "translateY(0px)" },
-      "100%": { transform: "translateY(-5px)" },
-    },
-  },
-});
-
-const likeIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, theme.palette.reactions.like);
-};
-
-const loveIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, theme.palette.reactions.love);
-};
-
-const supportIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, theme.palette.reactions.support);
-};
-
-const laughIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, theme.palette.reactions.laugh);
-};
-
-const sadIconSx = (theme: Theme): SystemStyleObject<Theme> => {
-  return reactionIconSx(theme, theme.palette.reactions.sad);
-};
 
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
   "&:hover": {

@@ -34,6 +34,7 @@ import {
   IActivityApiModel,
   IGetUserFeedsApiResponse,
   IResourceTypes,
+  IGetCommentReactionsApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -539,11 +540,17 @@ export const deleteComment = async (
 
 export const getPostReactions = async (
   accessToken: string,
-  postId: string
+  postId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
 ): Promise<AVKonnectApiResponse<IGetPostReactionsApiResponse>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
   const getPostReactionsResponse = await axios
     .get<AVKonnectApiResponse<IGetPostReactionsApiResponse>>(
-      API_ENDPOINTS.GET_POST_REACTIONS.url(postId),
+      API_ENDPOINTS.GET_POST_REACTIONS.url(postId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
@@ -631,6 +638,29 @@ export const getCommentsComments = async (
     .then(res => res.data);
 
   return getCommentsComments;
+};
+
+export const getCommentReactions = async (
+  accessToken: string,
+  commentId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
+): Promise<AVKonnectApiResponse<IGetCommentReactionsApiResponse>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
+  const getCommentReactionsResponse = await axios
+    .get<AVKonnectApiResponse<IGetCommentReactionsApiResponse>>(
+      API_ENDPOINTS.GET_COMMENT_REACTIONS.url(commentId, queryString),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+  return getCommentReactionsResponse;
 };
 
 export const getCommentActivity = async (

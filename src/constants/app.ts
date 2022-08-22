@@ -94,12 +94,8 @@ export const CERTIFICATIONS_ELLIPSE_LIMIT = 2;
 export const MAX_CERTIFICATIONS_LIMIT = 8;
 
 export const MAX_SEARCH_DROPDOWN_LIMIT = 5;
-
-export const NOTIFICATION_PAGINATION_LIMIT = 10;
 export const MAX_NOTIFICATION_BADGE_LIMIT = 99;
 export const FETCH_NOTIFICATION_INTERVAL_MS = 2 * 60 * 1000;
-
-export const FEEDS_PAGINATION_LIMIT = 15;
 
 export const URL_MATCH_REGEX_WITH_PROTOCOL = new RegExp(
   /(https?:\/\/)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
@@ -144,3 +140,9 @@ export const REACTION_CONFIGS: Record<IReactionTypes, IReactionConfig> = {
     iconActive: SadActiveIcon,
   },
 };
+
+// Pagination Limits
+export const NOTIFICATION_PAGINATION_LIMIT = 10;
+export const FEEDS_PAGINATION_LIMIT = 15;
+export const GET_POST_REACTION_PAGINATION_LIMIT = 10;
+export const GET_COMMENT_REACTION_PAGINATION_LIMIT = 10;

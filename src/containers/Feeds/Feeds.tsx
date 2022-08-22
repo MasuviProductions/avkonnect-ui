@@ -11,7 +11,6 @@ import useInfiniteLoading from "../../hooks/useInfiniteLoading";
 import {
   IRelatedSource,
   IUserFeedApiModel,
-  IUserProfileApiModel,
 } from "../../interfaces/api/external";
 import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
