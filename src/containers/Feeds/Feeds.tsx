@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../../constants/api";
@@ -128,32 +128,36 @@ const Feeds: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      {upToDateUserFeeds?.map((feed, index) => (
-        <ResourceProvider
-          key={feed.feedId}
-          id={feed.postId}
-          type="post"
-          sourceId={feed.sourceId}
-          sourceType={feed.sourceType}
-          reactionsCount={feed.activity.reactionsCount}
-          loadedComments={[]}
-          commentsCount={feed.activity.commentsCount}
-          userReaction={feed.sourceActivity?.reaction}
-          createdAt={feed.createdAt}
-          updatedAt={feed.updatedAt}
-          relatedSourceMap={relatedSourcesMap}
-        >
-          <Box
+      <Grid container>
+        {upToDateUserFeeds?.map((feed, index) => (
+          <Grid
+            item
+            xs={12}
+            key={feed.feedId}
             ref={
               index === upToDateUserFeeds.length - 1
                 ? infiniteLoadRef
                 : undefined
             }
           >
-            <Feed feedContent={feed.contents} />
-          </Box>
-        </ResourceProvider>
-      ))}
+            <ResourceProvider
+              id={feed.postId}
+              type="post"
+              sourceId={feed.sourceId}
+              sourceType={feed.sourceType}
+              reactionsCount={feed.activity.reactionsCount}
+              loadedComments={[]}
+              commentsCount={feed.activity.commentsCount}
+              userReaction={feed.sourceActivity?.reaction}
+              createdAt={feed.createdAt}
+              updatedAt={feed.updatedAt}
+              relatedSourceMap={relatedSourcesMap}
+            >
+              <Feed feedContent={feed.contents} />
+            </ResourceProvider>
+          </Grid>
+        ))}
+      </Grid>
     </Container>
   );
 };

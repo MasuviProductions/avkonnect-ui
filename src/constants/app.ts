@@ -2,12 +2,12 @@ import LikeIcon from "@mui/icons-material/ThumbUpOffAlt";
 import LoveIcon from "@mui/icons-material/FavoriteBorder";
 import LaughIcon from "@mui/icons-material/InsertEmoticon";
 import SadIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SupportIcon from "@mui/icons-material/VolunteerActivismTwoTone";
+import SupportIcon from "@mui/icons-material/VolunteerActivism";
 import LikeActiveIcon from "@mui/icons-material/ThumbUpAltTwoTone";
 import LoveActiveIcon from "@mui/icons-material/FavoriteTwoTone";
 import LaughActiveIcon from "@mui/icons-material/InsertEmoticonTwoTone";
 import SadActiveIcon from "@mui/icons-material/SentimentDissatisfiedTwoTone";
-import SupportActiveIcon from "@mui/icons-material/VolunteerActivism";
+import SupportActiveIcon from "@mui/icons-material/VolunteerActivismTwoTone";
 import { IReactionTypes, IUserImageType } from "../interfaces/api/external";
 import { IImageSelectorAttrib, IReactionConfig } from "../interfaces/app";
 import Home from "../pages";
@@ -115,31 +115,26 @@ export const UUID_REGEX_STRING =
 export const REACTION_CONFIGS: Record<IReactionTypes, IReactionConfig> = {
   love: {
     label: LABELS.LOVE,
-    emoji: "&#x1F496",
     icon: LoveIcon,
     iconActive: LoveActiveIcon,
   },
   like: {
     label: LABELS.LIKE,
-    emoji: "&#x1F44D",
     icon: LikeIcon,
     iconActive: LikeActiveIcon,
   },
   laugh: {
     label: LABELS.LAUGH,
-    emoji: "",
     icon: LaughIcon,
     iconActive: LaughActiveIcon,
   },
   support: {
     label: LABELS.SUPPORT,
-    emoji: "",
     icon: SupportIcon,
     iconActive: SupportActiveIcon,
   },
   sad: {
     label: LABELS.SAD,
-    emoji: "",
     icon: SadIcon,
     iconActive: SadActiveIcon,
   },

@@ -283,7 +283,7 @@ const reactionIconSx = (
   borderRadius: "50%",
   padding: "6px",
   fontSize: "44px",
-  margin: "0px 8px",
+  margin: "0px 3px",
   "&:hover": {
     fill: theme.palette.background.paper,
     backgroundColor: color,
