@@ -5,6 +5,7 @@ import {
   RefObject,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -68,13 +69,19 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
 
   const editorPlugins = [plugins.hashtags, plugins.mentions];
 
-  const handleChangeEditorState = (_editorState: EditorState) => {
+  const handleChangeEditorState = useCallback((_editorState: EditorState) => {
     setEditorState(_editorState);
-  };
+  }, []);
 
   const handleChangeEditorFocus = (_focus: boolean) => {
     setIsEditorFocused(_focus);
   };
+
+  useEffect(() => {
+    if (initialEditorState) {
+      setEditorState(initialEditorState);
+    }
+  }, [initialEditorState]);
 
   return (
     <TextEditorContext.Provider

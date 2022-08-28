@@ -1,9 +1,10 @@
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, Modifier } from "draft-js";
 import createMentionPlugin, { MentionData } from "@draft-js-plugins/mention";
 
 import createHashtagPlugin from "@draft-js-plugins/hashtag";
 
 import { HASHTAG_REGEX } from "../constants/app";
+import { IRelatedSource } from "../interfaces/api/external";
 
 const getPlainText = (editorState: EditorState): string => {
   const currentContent = editorState.getCurrentContent();
@@ -50,6 +51,28 @@ const getStringifiedRawText = (editorState: EditorState): string => {
     convertToRaw(editorState.getCurrentContent())
   );
   return stringifiedRawState;
+};
+
+const getNewEditorStateWithMention = (mentionedSource: IRelatedSource) => {
+  const newEditorState = EditorState.createEmpty();
+  const stateWithEntity = newEditorState
+    .getCurrentContent()
+    .createEntity("mention", "IMMUTABLE", {
+      mention: {
+        id: mentionedSource.id,
+        name: mentionedSource.name,
+        title: mentionedSource.headline,
+        avatar: mentionedSource.displayPictureUrl,
+      },
+    });
+  const editorContent = Modifier.insertText(
+    stateWithEntity,
+    newEditorState.getSelection(),
+    `@${mentionedSource.name}`,
+    undefined,
+    stateWithEntity.getLastCreatedEntityKey()
+  );
+  return EditorState.createWithContent(editorContent);
 };
 
 const getAllHashtagsFromPlainText = (text: string): string[] => {
@@ -104,6 +127,7 @@ const utils = {
   getStringifiedRawText,
   getContentText,
   getAllHashtagsFromPlainText,
+  getNewEditorStateWithMention,
 };
 
 const editorPlugins = {

@@ -228,6 +228,8 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     setCommentsCountState(commentsCount);
   }, [commentsCount]);
 
+  console.log(commentsQuery.uptoDateComments.length, commentsCount);
+
   return (
     <ResourceContext.Provider
       value={{
@@ -242,7 +244,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         updateUserReaction,
         loadedComments: loadedCommentsState,
         reactionsCount: reactionsCountState,
-        totalReactionsCount: Object.values(reactionsCount).reduce(
+        totalReactionsCount: Object.values(reactionsCountState).reduce(
           (reactionCount, totalCount) => reactionCount + totalCount,
           0
         ),

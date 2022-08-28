@@ -1,6 +1,6 @@
 import { Button, Typography, Hidden, Box } from "@mui/material";
 import { useState } from "react";
-import PostView from "../../Post/PostView";
+import PostView from "../../Posts/PostView";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 
 const Feed: React.FC = () => {
