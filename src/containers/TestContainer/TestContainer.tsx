@@ -1,11 +1,10 @@
-import { REACTION_CONFIGS } from "../../constants/app";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { ReactFCWithSkeleton } from "../../interfaces/app";
 import Feeds from "../Feeds";
+import HomeSkeleton from "../Home/HomeSkeleton";
 
-const TestContainer: React.FC = () => {
+const TestContainer: ReactFCWithSkeleton = () => {
   const { authUser } = useAuthContext();
-
-  const Icon = REACTION_CONFIGS.love.icon;
 
   if (!authUser) {
     return <></>;
@@ -16,5 +15,7 @@ const TestContainer: React.FC = () => {
     </>
   );
 };
+TestContainer.Skeleton = HomeSkeleton;
+// const TestContainer = HomeSkeleton;
 
 export default TestContainer;

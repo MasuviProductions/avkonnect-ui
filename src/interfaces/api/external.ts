@@ -247,7 +247,7 @@ export interface INotificationCountApiResponse {
   pendingNotificationCount: number;
 }
 
-export type IResourceTypes = "post" | "comment";
+export type IResourceTypes = "post" | "comment" | "reaction";
 
 export type ISourceTypes = "user" | "company";
 
@@ -436,7 +436,7 @@ export interface IReactionApiResponse {
   relatedSource: IRelatedUserInfoResponseModel;
 }
 
-interface IFeedSourceApiModel {
+export interface IFeedSourceApiModel {
   sourceId: string;
   resourceId: string;
   sourceType: ISourceTypes;

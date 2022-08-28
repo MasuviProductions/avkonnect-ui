@@ -117,25 +117,30 @@ export const REACTION_CONFIGS: Record<IReactionTypes, IReactionConfig> = {
     label: LABELS.LOVE,
     icon: LoveIcon,
     iconActive: LoveActiveIcon,
+    reactionPretext: LABELS.REACTION_PRETEXT_LOVE,
   },
   like: {
     label: LABELS.LIKE,
     icon: LikeIcon,
     iconActive: LikeActiveIcon,
+    reactionPretext: LABELS.REACTION_PRETEXT_LIKE,
   },
   laugh: {
     label: LABELS.LAUGH,
     icon: LaughIcon,
     iconActive: LaughActiveIcon,
+    reactionPretext: LABELS.REACTION_PRETEXT_LAUGH,
   },
   support: {
     label: LABELS.SUPPORT,
     icon: SupportIcon,
     iconActive: SupportActiveIcon,
+    reactionPretext: LABELS.REACTION_PRETEXT_SUPPORT,
   },
   sad: {
     label: LABELS.SAD,
     icon: SadIcon,
     iconActive: SadActiveIcon,
+    reactionPretext: LABELS.REACTION_PRETEXT_SAD,
   },
 };

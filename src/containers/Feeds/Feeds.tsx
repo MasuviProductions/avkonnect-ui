@@ -153,7 +153,7 @@ const Feeds: React.FC = () => {
               updatedAt={feed.updatedAt}
               relatedSourceMap={relatedSourcesMap}
             >
-              <Feed feedContent={feed.contents} />
+              <Feed feedContent={feed.contents} feedSource={feed.feedSources} />
             </ResourceProvider>
           </Grid>
         ))}

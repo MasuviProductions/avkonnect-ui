@@ -1,5 +1,3 @@
-import { IReactionTypes } from "../interfaces/api/external";
-
 export const LABELS = {
   TITLE: "AVKonnect",
   COMPANY_EMAIL: "masuviproductions@gmail.com",
@@ -282,4 +280,24 @@ export const LABELS = {
 
   // Feeds
   FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
+  YOU: "You",
+  YOU_AND_OTHERS: (reactionsCount: number): string =>
+    `You and ${reactionsCount - 1} Others`,
+  BE_FIRST_TO_REACT: `Be the first to react!`,
+  COMMENTS_COUNT: (commentCount: number): string =>
+    commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
+  COMMENT_SOURCE: (commenter: string): string =>
+    `${commenter} commented on this`,
+  REACTION_SOURCE: (reactor: string, emotion: string): string =>
+    `${reactor} ${emotion}`,
+
+  // Feed and Post
+  SHARE: "Share",
+  COMMENT: "Comment",
+  REACTION_PRETEXT_LIKE: "likes this",
+  REACTION_PRETEXT_LOVE: "loves this",
+  REACTION_PRETEXT_LAUGH: "finds this funny",
+  REACTION_PRETEXT_SUPPORT: "supports this",
+  REACTION_PRETEXT_SAD: "expresses their empathy",
+  REACTION_PRETEXT_DEFAULT: "reacted to this",
 };

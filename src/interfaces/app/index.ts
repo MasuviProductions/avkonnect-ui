@@ -119,4 +119,5 @@ export interface IReactionConfig {
   label: string;
   icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   iconActive: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
+  reactionPretext: string;
 }

@@ -1,10 +1,13 @@
-import { Box, Skeleton } from "@mui/material";
+import { Grid } from "@mui/material";
+import FeedsSkeleton from "../Feeds/FeedsSkeleton";
 
 const HomeSkeleton: React.FC = () => {
   return (
-    <Box my={2}>
-      <Skeleton variant="rectangular" width="100%" height={500} />
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <FeedsSkeleton />
+      </Grid>
+    </Grid>
   );
 };
 

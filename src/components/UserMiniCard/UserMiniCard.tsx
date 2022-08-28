@@ -3,7 +3,7 @@ import { SxProps, SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
 import Link from "next/link";
 import { APP_ROUTES } from "../../constants/app";
-import { getMUIElipsedSx, usernameToColor } from "../../utils/generic";
+import { getMUIEllipsedSx, usernameToColor } from "../../utils/generic";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import UserMiniCardSkeleton from "./UserMiniCardSkeleton";
 import { useCallback, useMemo } from "react";
@@ -51,7 +51,7 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
                 <Typography variant="body2">{name}</Typography>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="body2" sx={getMUIElipsedSx(2)}>
+                <Typography variant="body2" sx={getMUIEllipsedSx(2)}>
                   {headline || "--"}
                 </Typography>
               </Grid>
