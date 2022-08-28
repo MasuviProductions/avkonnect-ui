@@ -1,22 +1,21 @@
 import {
   ComponentType,
   createContext,
-  createRef,
   RefObject,
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
 import { EditorState } from "draft-js";
 import Editor, { EditorPlugin } from "@draft-js-plugins/editor";
-import createHashtagPlugin from "@draft-js-plugins/hashtag";
 import { MentionSuggestionsPubProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/MentionSuggestions";
 
 import useRemountKey from "../hooks/useRemountKey";
 import { IPostRequestContentApiModel } from "../interfaces/api/external";
+import { Interpolation } from "@emotion/react";
+import { Theme } from "@mui/material";
 
 interface ITextEditorContext {
   editorKey: string;
@@ -24,6 +23,7 @@ interface ITextEditorContext {
   editorState: EditorState;
   onChangeEditorState: (_editorState: EditorState) => void;
   editorPlugins: EditorPlugin[];
+  mentionsInterpolationStyle?: Interpolation<Theme>;
   isEditorFocused: boolean;
   onChangeEditorFocus: (_focus: boolean) => void;
   mentionSuggestionsComponent: ComponentType<MentionSuggestionsPubProps>;
@@ -45,6 +45,7 @@ interface ITextEditorProvider {
       MentionSuggestions: ComponentType<MentionSuggestionsPubProps>;
     };
   };
+  mentionsInterpolationStyle: Interpolation<Theme>;
   onSaveContent: (
     content: IPostRequestContentApiModel,
     hashtags?: string[]
@@ -54,6 +55,7 @@ interface ITextEditorProvider {
 const TextEditorProvider: React.FC<ITextEditorProvider> = ({
   initialEditorState,
   plugins,
+  mentionsInterpolationStyle,
   onSaveContent,
   children,
 }) => {
@@ -90,6 +92,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         editorRef,
         editorState,
         editorPlugins,
+        mentionsInterpolationStyle,
         isEditorFocused,
         onChangeEditorState: handleChangeEditorState,
         onChangeEditorFocus: handleChangeEditorFocus,

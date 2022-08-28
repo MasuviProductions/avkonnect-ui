@@ -57,8 +57,11 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
           initialEditorState={editorState}
           plugins={{
             hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.mentions.plugin,
+            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
           }}
+          mentionsInterpolationStyle={
+            DRAFTJS.editorPlugins.commentMentions.theme
+          }
           onSaveContent={handleCommentCreate}
         >
           <CommentEditorDesktop />;
@@ -70,8 +73,11 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
           initialEditorState={editorState}
           plugins={{
             hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.mentions.plugin,
+            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
           }}
+          mentionsInterpolationStyle={
+            DRAFTJS.editorPlugins.commentMentions.theme
+          }
           onSaveContent={handleCommentCreate}
         >
           <CommentEditorDesktop />;

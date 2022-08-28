@@ -74,8 +74,9 @@ const PostEditor: React.FC<IPostEditorProps> = ({
         <TextEditorProvider
           plugins={{
             hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.mentions.plugin,
+            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
           }}
+          mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
           onSaveContent={handlePostCreate}
         >
           <PostEditorOverlay
@@ -89,8 +90,9 @@ const PostEditor: React.FC<IPostEditorProps> = ({
         <TextEditorProvider
           plugins={{
             hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.mentions.plugin,
+            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
           }}
+          mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
           onSaveContent={handlePostCreate}
         >
           <PostEditorModal

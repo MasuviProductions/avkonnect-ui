@@ -3,7 +3,7 @@ import CommentReactions from "./CommentReactions";
 import CommentReply from "./CommentReply";
 
 interface ICommentActivitiesProps {
-  onReplyClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onReplyClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const CommentActivities: React.FC<ICommentActivitiesProps> = ({

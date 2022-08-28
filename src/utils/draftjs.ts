@@ -5,6 +5,9 @@ import createHashtagPlugin from "@draft-js-plugins/hashtag";
 
 import { HASHTAG_REGEX } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
+import { FunctionInterpolation, Interpolation } from "@emotion/react";
+import { Theme } from "@mui/material";
+import { decoratedLinkSx } from "../styles/sx";
 
 const getPlainText = (editorState: EditorState): string => {
   const currentContent = editorState.getCurrentContent();
@@ -90,7 +93,7 @@ const mentionsPluginThemeOption = {
   mentionSuggestionsEntryFocused: "mentionSuggestionsEntryFocused",
 };
 
-const mentionsPlugin = createMentionPlugin({
+const postMentionsPlugin = createMentionPlugin({
   entityMutability: "IMMUTABLE",
   theme: mentionsPluginThemeOption,
   mentionPrefix: "@",
@@ -115,6 +118,91 @@ const mentionsPlugin = createMentionPlugin({
   },
 });
 
+const commentMentionsPlugin = createMentionPlugin({
+  entityMutability: "IMMUTABLE",
+  theme: mentionsPluginThemeOption,
+  mentionPrefix: "@",
+  supportWhitespace: true,
+  popperOptions: {
+    strategy: "absolute",
+    placement: "top",
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [0, 15],
+        },
+      },
+    ],
+  },
+});
+
+const mentionSuggestionsEntryTheme = (theme: Theme) => ({
+  transition: `background-color 0.4s cubic-bezier(0.27, 1.27, 0.48, 0.56)`,
+  backgroundColor: theme.palette.background.paper,
+
+  ":active": {
+    backgroundColor: theme.palette.secondary.main,
+  },
+});
+
+// Theme interpolation override to add CSS classes for @draft-js-plugins/mention plugin
+const postMentionPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${mentionsPluginThemeOption.mentionSuggestions}`]: {
+    width: "100%",
+    maxHeight: "300px",
+    overflowY: "auto",
+    paddingBottom: "8px",
+  },
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
+  [`.${mentionsPluginThemeOption.mentionSuggestionsPopupVisible}`]: {
+    border: `1px solid ${theme.palette.secondary.main}`,
+  },
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsEntry}`]:
+    mentionSuggestionsEntryTheme(theme),
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsEntryFocused}`]: {
+    ...mentionSuggestionsEntryTheme(theme),
+    backgroundColor: theme.palette.secondary.main,
+  },
+
+  [`.${mentionsPluginThemeOption.mention}`]: {
+    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+  },
+});
+
+const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${mentionsPluginThemeOption.mentionSuggestions}`]: {
+    width: "300px",
+    maxHeight: "400px",
+    overflowY: "auto",
+    paddingBottom: "8px",
+  },
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
+  [`.${mentionsPluginThemeOption.mentionSuggestionsPopupVisible}`]: {
+    border: `1px solid ${theme.palette.secondary.main}`,
+  },
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsEntry}`]:
+    mentionSuggestionsEntryTheme(theme),
+
+  [`.${mentionsPluginThemeOption.mentionSuggestionsEntryFocused}`]: {
+    ...mentionSuggestionsEntryTheme(theme),
+    backgroundColor: theme.palette.secondary.main,
+  },
+
+  [`.${mentionsPluginThemeOption.mention}`]: {
+    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+  },
+});
+
 const hashtagsPluginThemeOption = {
   hashtag: "hashtag",
 };
@@ -131,9 +219,15 @@ const utils = {
 };
 
 const editorPlugins = {
-  mentions: {
-    plugin: mentionsPlugin,
+  postMentions: {
+    plugin: postMentionsPlugin,
     themeOption: mentionsPluginThemeOption,
+    theme: postMentionPluginOverrideTheme,
+  },
+  commentMentions: {
+    plugin: commentMentionsPlugin,
+    themeOptions: mentionsPluginThemeOption,
+    theme: commentMentionPluginOverrideTheme,
   },
   hashtags: {
     plugin: hashtagsPlugin,
