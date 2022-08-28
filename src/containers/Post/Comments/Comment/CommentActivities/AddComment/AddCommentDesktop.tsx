@@ -48,7 +48,7 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
           <Grid container>
             <Grid item xs={12}>
               <TextField
-                label={LABELS.ADD_COMMENT}
+                label={LABELS.ADD_COMMENT_PLACEHOLDER}
                 multiline
                 fullWidth
                 maxRows={4}

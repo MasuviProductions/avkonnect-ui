@@ -1,4 +1,4 @@
-import { Box, Theme } from "@mui/material";
+import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import ViewOverlay from "../../../../components/ViewOverlay";
@@ -53,8 +53,8 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   return (
     <>
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
-        <Box sx={postOverlayContainerSx}>
-          <Box sx={contentsContainerSx}>
+        <Grid container sx={postOverlayContainerSx}>
+          <Grid item xs={12} sx={contentsContainerSx}>
             {/* TODO */}
             <Box
               sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
@@ -93,12 +93,12 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
                 </ResourceProvider>
               </Box>
             ))}
-          </Box>
+          </Grid>
 
-          <Box sx={addCommentSx}>
+          <Grid item xs={12} sx={addCommentSx}>
             <AddComment isFocused={replyFocused} />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </ViewOverlay>
     </>
   );
@@ -110,14 +110,12 @@ const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
 });
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "calc(100% - 100px - 16px)",
   overflowY: "auto",
+  height: "calc(100% - 80px)",
   padding: 1.5,
   paddingBottom: 5,
 });
 
-const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  paddingY: 1.5,
-});
+const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({});
 
 export default PostOverlay;

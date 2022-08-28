@@ -61,7 +61,7 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
           <Grid container>
             <Grid item xs={12}>
               <TextField
-                label={LABELS.ADD_COMMENT}
+                label={LABELS.ADD_COMMENT_PLACEHOLDER}
                 multiline
                 fullWidth
                 maxRows={4}
@@ -92,6 +92,7 @@ const addCommentContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   paddingBottom: 1,
   paddingX: 1,
   backgroundColor: theme.palette.background.paper,
+  height: "80px",
 });
 
 const commentTextFieldSx = (theme: Theme): SystemStyleObject<Theme> => ({});

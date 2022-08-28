@@ -266,8 +266,13 @@ export const LABELS = {
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
 
+  // Posts
+  ADD_POST_PLACEHOLDER: "What's on your mind?",
+  CREATE_POST: "Create a post",
+  SUBMIT_POST: "Post",
+
   // Comments
-  ADD_COMMENT: "Add your comment..",
+  ADD_COMMENT_PLACEHOLDER: "Add your comment..",
   POST_COMMENT: "Post",
   REPLY: "Reply",
   LOAD_MORE_REPLIES: "Load more replies",

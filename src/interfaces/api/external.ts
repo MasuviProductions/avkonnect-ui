@@ -254,7 +254,7 @@ export type ISourceTypes = "user" | "company";
 export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
 export type IReactionTypes = typeof REACTIONS[number];
 
-interface IPostRequestContentApiModel {
+export interface IPostRequestContentApiModel {
   text: string;
   mediaUrls?: string[];
 }

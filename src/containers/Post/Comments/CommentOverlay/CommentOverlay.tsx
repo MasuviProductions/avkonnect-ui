@@ -1,4 +1,4 @@
-import { Box, Theme } from "@mui/material";
+import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useState, useEffect, useMemo } from "react";
 import ViewOverlay, {
@@ -80,8 +80,8 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
         showOverlay={showOverlay}
         onOverlayClose={handleCloseOverlay}
       >
-        <Box sx={commentOverlayContainerSx}>
-          <Box sx={contentsContainerSx}>
+        <Grid container sx={commentOverlayContainerSx}>
+          <Grid item xs={12} sx={contentsContainerSx}>
             <Comment
               commentText={commentText}
               replyFocused={promptReply}
@@ -119,15 +119,15 @@ const CommentOverlay: React.FC<CommentOverlay> = ({
                 </ResourceProvider>
               </Box>
             ))}
-          </Box>
-          <Box sx={addCommentSx}>
+          </Grid>
+          <Grid xs={12} item sx={addCommentSx}>
             <AddComment
               isFocused={promptReply}
               inputFeed={commentInputFeed}
               onCommentFieldBlur={handleCommentFieldBlur}
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </ViewOverlay>
     </>
   );
@@ -139,8 +139,8 @@ const commentOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
 });
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "calc(100% - 100px - 16px)",
   overflowY: "auto",
+  height: "calc(100% - 80px)",
   padding: 1.5,
   paddingBottom: 5,
 });
