@@ -2,7 +2,7 @@ import { Link, Typography } from "@mui/material";
 import { compile } from "path-to-regexp";
 import { ReactNodeArray } from "react";
 import reactStringReplace from "react-string-replace";
-import { APP_ROUTES, UUID_REGEX_STRING } from "../constants/app";
+import { APP_ROUTES, HASHTAG_REGEX, UUID_REGEX_STRING } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
 import { decoratedLinkSx } from "../styles/sx";
 
@@ -30,7 +30,7 @@ export const parseContentText = (
     );
   });
 
-  const hashTagRegex = new RegExp(/#(\w+)/g);
+  const hashTagRegex = HASHTAG_REGEX;
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
     return <Typography sx={decoratedLinkSx()}>{`#${match}`}</Typography>;
   });

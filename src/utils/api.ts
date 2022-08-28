@@ -254,11 +254,11 @@ export const postUserFeedback = async (
 export const getUsersSearch = async (
   accessToken: string,
   searchString: string,
-  page: number,
-  limit: number
+  limit: number,
+  page?: number
 ): Promise<AVKonnectApiResponse<IUsersSearchApiResponse[]>> => {
   const queryString = `?search=${searchString}&limit=${limit}&page=${
-    page || 0
+    page || 1
   }`;
   const usersSearchResponse = await axios
     .get<AVKonnectApiResponse<IUsersSearchApiResponse[]>>(
