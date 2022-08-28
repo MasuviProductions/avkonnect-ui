@@ -39,7 +39,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
       >
         <Grid item pl={1} display="flex" alignItems="center">
           <ReactionIconClubber reactionIconCount={reactionsCount} />
-          <Box component="span" ml={0.5}>
+          <Box component="span" ml={0.5} py={1}>
             {userReaction ? (
               totalReactionsCount > 1 ? (
                 <Typography variant="caption">
@@ -58,7 +58,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
           </Box>
         </Grid>
         {commentsCount > 0 && (
-          <Grid item p={1} onClick={onPostOpen}>
+          <Grid item onClick={onPostOpen}>
             <Typography
               variant="caption"
               component="span"
@@ -69,7 +69,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
           </Grid>
         )}
       </Grid>
-      <Divider />
+      <Divider sx={dividerSx} />
       <Grid
         container
         alignItems="center"
@@ -79,7 +79,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
       >
         <Grid item xs={4}>
           <>
-            {showReactionPopper && <ReactionsPopper />}
+            <ReactionsPopper show={showReactionPopper} />
             <Box
               display="flex"
               alignItems="center"
@@ -92,7 +92,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
               <Typography variant="body2" pr={1}>
                 {LABELS.LIKE}
               </Typography>
-              <ThumbUpIcon color="primary" fontSize="small" />
+              <ThumbUpIcon fontSize="small" />
             </Box>
           </>
         </Grid>
@@ -109,7 +109,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
           <Typography pr={1} variant="body2">
             {LABELS.COMMENT}
           </Typography>
-          <CommentIcon color="primary" fontSize="small" />
+          <CommentIcon fontSize="small" />
         </Grid>
         <Grid
           item
@@ -123,7 +123,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
           <Typography pr={1} variant="body2">
             {LABELS.SHARE}
           </Typography>
-          <ShareIcon color="primary" fontSize="small" />
+          <ShareIcon fontSize="small" />
         </Grid>
       </Grid>
     </Box>
@@ -143,5 +143,9 @@ const semiCommentLinkSx: SxProps<Theme> = {
     textDecoration: "underline",
   },
 };
+
+const dividerSx: SxProps<Theme> = (theme: Theme) => ({
+  borderColor: `${theme.palette.text.secondary}77`,
+});
 
 export default FeedActivity;

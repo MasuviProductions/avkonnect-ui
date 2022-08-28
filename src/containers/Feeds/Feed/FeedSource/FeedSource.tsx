@@ -1,4 +1,12 @@
-import { Grid, Divider, Typography, Box, Avatar } from "@mui/material";
+import {
+  Grid,
+  Divider,
+  Typography,
+  Box,
+  Avatar,
+  SxProps,
+  Theme,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../../constants/app";
@@ -81,12 +89,16 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
             </Typography>
           </Grid>
         </Grid>
-        <Divider />
+        <Divider sx={dividerSx} />
       </Box>
     );
   } else {
     return <></>;
   }
 };
+
+const dividerSx: SxProps<Theme> = (theme: Theme) => ({
+  borderColor: `${theme.palette.text.secondary}77`,
+});
 
 export default FeedSource;

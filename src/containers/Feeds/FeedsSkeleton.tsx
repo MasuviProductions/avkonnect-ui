@@ -31,7 +31,7 @@ const SingleFeedSkeleton: React.FC = () => {
 
 const FeedsSkeleton: React.FC = () => {
   return (
-    <Box>
+    <Box mt={1}>
       <Box>
         <SingleFeedSkeleton />
       </Box>

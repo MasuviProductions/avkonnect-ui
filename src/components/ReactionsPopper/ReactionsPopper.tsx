@@ -3,7 +3,9 @@ import { SystemStyleObject } from "@mui/system";
 import { REACTION_CONFIGS } from "../../constants/app";
 import { IReactionTypes, REACTIONS } from "../../interfaces/api/external";
 
-interface IReactionsPopper {}
+interface IReactionsPopperProps {
+  show: boolean;
+}
 
 const ReactionIcon: React.FC<{
   reaction: IReactionTypes;
@@ -12,18 +14,25 @@ const ReactionIcon: React.FC<{
   return <Icon sx={reactionIconSx(reaction as IReactionTypes)} />;
 };
 
-const ReactionsPopper: React.FC<IReactionsPopper> = () => {
-  return (
-    <Box pt={1} sx={reactionPopperSx}>
-      {REACTIONS.map((reaction, index) => (
-        <Tooltip key={index} title={REACTION_CONFIGS[reaction].label as string}>
-          <Box component="span">
-            <ReactionIcon reaction={reaction} />
-          </Box>
-        </Tooltip>
-      ))}
-    </Box>
-  );
+const ReactionsPopper: React.FC<IReactionsPopperProps> = ({ show }) => {
+  if (show) {
+    return (
+      <Box pt={1} sx={reactionPopperSx}>
+        {REACTIONS.map((reaction, index) => (
+          <Tooltip
+            key={index}
+            title={REACTION_CONFIGS[reaction].label as string}
+          >
+            <Box component="span">
+              <ReactionIcon reaction={reaction} />
+            </Box>
+          </Tooltip>
+        ))}
+      </Box>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 const reactionPopperSx: SxProps<Theme> = (theme: Theme) => ({
@@ -31,7 +40,7 @@ const reactionPopperSx: SxProps<Theme> = (theme: Theme) => ({
   transform: "translate(0, -100%)",
   opacity: "0",
   backgroundColor: theme.palette.background.paper,
-  boxShadow: `0px 0px 10px ${theme.palette.text.primary}`,
+  boxShadow: `0px 0px 10px ${theme.palette.text.secondary}77`,
   borderRadius: "6px",
   animation: "appear 0.2s forwards 0.3s 1 normal",
   "@keyframes appear": {

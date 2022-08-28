@@ -128,7 +128,7 @@ const Feeds: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Grid container>
+      <Grid container mt={1}>
         {upToDateUserFeeds?.map((feed, index) => (
           <Grid
             item
