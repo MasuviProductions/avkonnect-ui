@@ -4,13 +4,14 @@ import { MentionData } from "@draft-js-plugins/mention";
 import useSourceSearch from "../../../hooks/useSourceSearch";
 import TagSuggestionsItem from "./TagSuggestionsItem";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
+import { LABELS } from "../../../constants/labels";
 
 interface ITagSuggestionsProps {}
 
 const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   const {
@@ -25,6 +26,7 @@ const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
   const [mentionSuggestionOpen, setMentionSuggestionOpen] = useState(false);
 
   const onOpenChange = useCallback((_open: boolean) => {
+    // if (_open === false) return;
     setMentionSuggestionOpen(_open);
   }, []);
 

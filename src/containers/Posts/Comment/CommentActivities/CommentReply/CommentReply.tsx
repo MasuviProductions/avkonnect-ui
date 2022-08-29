@@ -8,7 +8,12 @@ interface ICommentReplyProps {
 }
 
 const CommentReply: React.FC<ICommentReplyProps> = ({ onReplyClick }) => {
-  const { commentsCount, resourceType } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsCount, resourceType } = resourceContext;
 
   const showRepliesCount = resourceType !== "comment";
 
@@ -24,7 +29,7 @@ const CommentReply: React.FC<ICommentReplyProps> = ({ onReplyClick }) => {
         {showRepliesCount && (
           <Grid item>
             <Button sx={reactionButtonSx()} onClick={onReplyClick}>
-              {`${commentsCount} Replies`}
+              {`${commentsCount.comment} Replies`}
             </Button>
           </Grid>
         )}

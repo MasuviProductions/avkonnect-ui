@@ -1,5 +1,14 @@
-import { Avatar, Button, Grid, Theme, TextField } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Theme,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
+import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
+
 import { userAvatarSx } from "../../../styles/sx";
 import { usernameToColor } from "../../../utils/generic";
 import { LABELS } from "../../../constants/labels";
@@ -8,12 +17,16 @@ import TextEditor from "../../../components/TextEditor";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
 import DRAFTJS from "../../../utils/draftjs";
 
-interface ICommentEditorDesktopProps {}
+interface ICommentEditorDesktopProps {
+  submitButtonText: string;
+}
 
-const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({}) => {
+const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
+  submitButtonText,
+}) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   const { onSaveContent, editorState } = textEditorContext;
@@ -31,8 +44,8 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({}) => {
 
   return (
     <>
-      <Grid container spacing={1} py={1}>
-        <Grid item>
+      <Grid container spacing={1}>
+        <Grid item py={1}>
           <Avatar
             alt={name as string}
             src={displayPictureUrl as string}
@@ -42,23 +55,41 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({}) => {
           </Avatar>
         </Grid>
 
-        <Grid item xs>
+        <Grid item xs py={1}>
           <Grid container>
             <Grid item xs={12}>
-              <TextEditor
-                palceholder={LABELS.ADD_POST_PLACEHOLDER}
-                editorContainerSx={editorContainerSx}
-              />
+              <Grid
+                container
+                justifyContent="space-between"
+                sx={commentContainerSx}
+              >
+                <Grid item>
+                  <TextEditor
+                    palceholder={LABELS.ADD_COMMENT_PLACEHOLDER}
+                    editorContainerSx={textEditorContainerSx}
+                  />
+                </Grid>
+
+                <Grid item flex={1}>
+                  <Grid container justifyContent="flex-end">
+                    <Grid item>
+                      <IconButton>
+                        <PhotoCameraBackIcon fontSize="small" />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
 
-            <Grid item xs={12} py={1}>
+            <Grid item xs={12} mt={1}>
               <Button
                 variant="contained"
                 color="primary"
                 sx={postButtonSx}
                 onClick={handleCommentCreate}
               >
-                {LABELS.POST_COMMENT}
+                {submitButtonText}
               </Button>
             </Grid>
           </Grid>
@@ -74,16 +105,37 @@ export const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
   textTransform: "initial",
   borderRadius: "1.5em",
   padding: "4px 16px",
+  marginLeft: "8px",
 });
 
-const editorContainerSx =
+export const commentContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  paddingX: 1.5,
+  paddingY: 0.25,
+  border: "1px solid black",
+  borderRadius: "2rem",
+});
+
+const textEditorContainerSx =
   (_isFocused: boolean) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
-    minHeight: "40px",
-    maxHeight: "300px",
+    padding: 1,
+    borderRadius: "1.5em",
+    fontSize: "14px",
+    minHeight: "30px",
+    minWidth: "300px",
+    backgroundColor: theme.palette.background.paper,
+    // Hide scrollbar, but keep scroll functionality
     overflowY: "auto",
     overflowX: "hidden",
-    backgroundColor: theme.palette.background.paper,
+    msOverflowStyle: "none",
+    scrollbarWidth: "none",
+    "::-webkit-scrollbar": {
+      display: "none",
+    },
+
+    ".public-DraftEditor-content": {
+      wordBreak: "break-word",
+    },
   });
 
 export default CommentEditorDesktop;

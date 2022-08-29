@@ -369,6 +369,10 @@ interface ISourceActivityApiModel {
   reaction?: IReactionTypes;
 }
 
+export type ICommentCountType = "comment" | "subComment";
+
+export type ICommentCountApiModel = Record<ICommentCountType, number>;
+
 interface IGetPostInfoApiModel {
   postId: string;
   createdAt: Date;
@@ -378,8 +382,6 @@ interface IGetPostInfoApiModel {
   contents: ICommentContentApiModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
-  reactionsCount: IReactionCountApiModel;
-  commentsCount: number;
   activity: IActivityApiModel;
   sourceActivity?: ISourceActivityApiModel;
   hashtags: string[];
@@ -404,7 +406,7 @@ interface IReportInfoApiModel {
 }
 
 export interface IActivityApiModel {
-  commentsCount: number;
+  commentsCount: ICommentCountApiModel;
   resourceType: IResourceTypes;
   resourceId: string;
   updatedAt: Date;

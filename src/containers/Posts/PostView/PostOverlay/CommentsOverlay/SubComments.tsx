@@ -5,6 +5,7 @@ import ResourceProvider, {
 import Comment from "../../../Comment/Comment";
 import { IUseComments } from "../../../../../hooks/useComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
+import { LABELS } from "../../../../../constants/labels";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -15,7 +16,12 @@ interface ISubCommentsProps {
 
 // Warning: Desktop specific component
 const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
 
   const {
     uptoDateComments,

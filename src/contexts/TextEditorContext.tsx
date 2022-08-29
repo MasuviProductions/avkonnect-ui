@@ -22,8 +22,8 @@ import { Theme } from "@mui/material";
 import DRAFTJS from "../utils/draftjs";
 
 /* 
-Resources: https://github.com/draft-js-plugins/draft-js-plugins/issues/983
- */
+    Resources: https://github.com/draft-js-plugins/draft-js-plugins/issues/983
+*/
 interface ITextEditorContext {
   editorKey: string;
   editorRef: RefObject<Editor>;
@@ -49,7 +49,6 @@ interface ITextEditorProvider {
   pluginConfig: {
     hashtags: HashtagPluginConfig;
     mentions: MentionPluginConfig;
-    //   MentionSuggestions: ComponentType<MentionSuggestionsPubProps>;
   };
   mentionsInterpolationStyle: Interpolation<Theme>;
   onSaveContent: (
@@ -73,6 +72,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
     initialEditorState || EditorState.createEmpty()
   );
 
+  // ******** Init plugins ********
   useMemo(() => {
     const plugin = DRAFTJS.editorPlugins.createHashtagPlugin(
       pluginConfig.hashtags
@@ -87,6 +87,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
     setEditorPlugins((prev) => [...prev, plugin]);
     return plugin.MentionSuggestions;
   }, [pluginConfig.mentions]);
+  // ******************************
 
   const handleChangeEditorState = useCallback((_editorState: EditorState) => {
     setEditorState(_editorState);

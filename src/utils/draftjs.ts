@@ -211,11 +211,12 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopupVisible}`]: {
-    border: `1px solid ${theme.palette.secondary.main}`,
+    zIndex: 2,
     backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.secondary.main}`,
+    borderRadius: "0.4rem",
     boxShadow:
       "0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%)",
-    borderRadius: "0.4rem",
 
     [theme.breakpoints.down("sm")]: {
       borderRadius: "0",

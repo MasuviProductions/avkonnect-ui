@@ -10,6 +10,7 @@ import { IUseComments } from "../../../../../hooks/useComments";
 import CommentEditor from "../../../CommentEditor";
 import SubComments from "./SubComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
+import { LABELS } from "../../../../../constants/labels";
 
 interface ICommentsOverlayProps extends IOverlay, ICommentProps {}
 
@@ -19,7 +20,12 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
   showOverlay,
   onOverlayClose,
 }) => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
 
   const [mentionedSource, setMentionedSource] = useState<
     IRelatedSource | undefined
@@ -72,7 +78,10 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
             </Box>
           </Grid>
           <Grid xs={12} item sx={addCommentSx}>
-            <CommentEditor type="desktop" mentionedSource={mentionedSource} />
+            <CommentEditor
+              mentionedSource={mentionedSource}
+              submitButtonText={LABELS.REPLY}
+            />
           </Grid>
         </Grid>
       </ViewOverlay>

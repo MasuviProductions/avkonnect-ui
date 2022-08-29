@@ -12,18 +12,20 @@ import { decoratedLinkSx } from "../../../../../styles/sx";
 import CommentEditor from "../../../CommentEditor";
 
 interface ISubCommentsProps {
-  promptyReply: boolean;
+  onReplyClick: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    withTaggedSource?: IRelatedSource
+  ) => void;
 }
 
 // Warning: Desktop specific component
-const SubComments: React.FC<ISubCommentsProps> = ({ promptyReply }) => {
-  const { commentsQuery, allCommentsFetched } = useResourceContext();
+const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
 
-  const [showReplyEditor, setShowReplyEditor] = useState(promptyReply);
-
-  const [mentionedSource, setMentionedSource] = useState<
-    IRelatedSource | undefined
-  >();
+  const { commentsQuery, allCommentsFetched } = resourceContext;
 
   const {
     uptoDateComments,
@@ -39,16 +41,8 @@ const SubComments: React.FC<ISubCommentsProps> = ({ promptyReply }) => {
   const handleReplyClickWithSourceTag =
     (withTaggedSource?: IRelatedSource) =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      setMentionedSource(withTaggedSource);
-      setShowReplyEditor(true);
+      onReplyClick(event, withTaggedSource);
     };
-
-  useEffect(() => {
-    if (promptyReply) {
-      setMentionedSource(undefined);
-      setShowReplyEditor(true);
-    }
-  }, [promptyReply]);
 
   return (
     <>
@@ -94,10 +88,6 @@ const SubComments: React.FC<ISubCommentsProps> = ({ promptyReply }) => {
               {LABELS.LOAD_MORE_REPLIES}
             </Typography>
           </Box>
-        )}
-
-        {showReplyEditor && (
-          <CommentEditor type="desktop" mentionedSource={mentionedSource} />
         )}
       </Box>
     </>

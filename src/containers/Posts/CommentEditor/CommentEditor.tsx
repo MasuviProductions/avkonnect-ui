@@ -9,6 +9,7 @@ import {
   RawDraftEntity,
 } from "draft-js";
 import { useEffect, useState } from "react";
+import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import TextEditorProvider from "../../../contexts/TextEditorContext";
 import { IUseComments } from "../../../hooks/useComments";
@@ -20,15 +21,20 @@ import DRAFTJS from "../../../utils/draftjs";
 import CommentEditorDesktop from "./CommentEditorDesktop";
 
 interface ICommentEditorProps {
-  type: "desktop" | "handheld";
   mentionedSource?: IRelatedSource;
+  submitButtonText: string;
 }
 
 const CommentEditor: React.FC<ICommentEditorProps> = ({
   mentionedSource,
-  type,
+  submitButtonText,
 }) => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
   const { addComment } = commentsQuery as IUseComments;
   const [editorState, setEditorState] = useState<EditorState | undefined>();
 
@@ -64,7 +70,7 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
           }
           onSaveContent={handleCommentCreate}
         >
-          <CommentEditorDesktop />;
+          <CommentEditorDesktop submitButtonText={submitButtonText} />
         </TextEditorProvider>
       </Hidden>
 
@@ -80,7 +86,7 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
           }
           onSaveContent={handleCommentCreate}
         >
-          <CommentEditorDesktop />;
+          <CommentEditorDesktop submitButtonText={submitButtonText} />
         </TextEditorProvider>
       </Hidden>
     </>

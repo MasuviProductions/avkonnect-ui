@@ -15,7 +15,7 @@ const PostEditorOverlay: React.FC<IPostEditorOverlayProps> = ({
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   return (

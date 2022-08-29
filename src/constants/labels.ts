@@ -16,6 +16,10 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Uninitialized Context Error Messages
+  RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
+  TEXT_EDITOR_CONTEXT_UNINITIALIZED: "TextEditorContext not initialized",
+
   // Links
   COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
   COMPANY_LINKEDIN_LINK:
@@ -272,8 +276,8 @@ export const LABELS = {
   SUBMIT_POST: "Post",
 
   // Comments
-  ADD_COMMENT_PLACEHOLDER: "Add your comment..",
-  POST_COMMENT: "Post",
+  ADD_COMMENT_PLACEHOLDER: "Add a comment..",
+  POST_COMMENT: "Comment",
   REPLY: "Reply",
   LOAD_MORE_REPLIES: "Load more replies",
   LOAD_MORE_COMMENTS: "Load more comments",

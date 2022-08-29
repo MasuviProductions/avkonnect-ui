@@ -2,14 +2,15 @@ import React from "react";
 import { Box, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import Editor from "@draft-js-plugins/editor";
+import { Interpolation } from "@emotion/react";
 // Internal dependencies
 import TagSuggestions from "./TagSuggestions";
 import HashtagsInit from "./HashtagsInit";
 import { useTextEditorContext } from "../../contexts/TextEditorContext";
+import DRAFTJS from "../../utils/draftjs";
 // Styles
 import "draft-js/dist/Draft.css";
-import { Interpolation } from "@emotion/react";
-import DRAFTJS from "../../utils/draftjs";
+import { LABELS } from "../../constants/labels";
 
 interface ITextEditorProps {
   palceholder: string;
@@ -24,7 +25,7 @@ const TextEditor: React.FC<ITextEditorProps> = ({
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   const {

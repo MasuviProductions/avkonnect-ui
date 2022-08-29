@@ -1,5 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import { REACTION_CONFIGS } from "../../../../../constants/app";
+import { LABELS } from "../../../../../constants/labels";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
 import { IReactionTypes } from "../../../../../interfaces/api/external";
 import { reactionButtonSx } from "../../../../../styles/sx";
@@ -7,12 +8,17 @@ import { reactionButtonSx } from "../../../../../styles/sx";
 interface ICommentReactionsProps {}
 
 const CommentReactions: React.FC<ICommentReactionsProps> = () => {
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
   const {
     userReaction,
     updateUserReaction,
     reactionsCount,
     totalReactionsCount,
-  } = useResourceContext();
+  } = resourceContext;
 
   const handleReactionClick = (reaction: IReactionTypes) => {
     updateUserReaction(reaction);

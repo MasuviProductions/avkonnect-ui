@@ -1,9 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../constants/api";
+import { LABELS } from "../constants/labels";
 import useComments, { IUseComments } from "../hooks/useComments";
 import {
   ICommentApiResponseModel,
+  ICommentCountApiModel,
+  ICommentCountType,
   ICreateReactionApiRequest,
   IReactionCountApiModel,
   IReactionTypes,
@@ -31,49 +34,15 @@ interface IResourceContext {
   totalReactionsCount: number;
   incrementReactionCount: (reaction: IReactionTypes) => void;
   decrementReactionCount: (reaction: IReactionTypes) => void;
-  commentsCount: number;
+  commentsCount: ICommentCountApiModel;
+  totalCommentsCount: number;
   incrementCommentsCount: () => void;
   decrementCommentsCount: () => void;
   commentsQuery?: IUseComments;
   allCommentsFetched: boolean;
 }
 
-const ResourceContext = createContext<IResourceContext>({
-  id: "",
-  type: "post",
-  sourceId: "",
-  sourceType: "user",
-  sourceInfo: {
-    name: "",
-    headline: "",
-    displayPictureUrl: "",
-    backgroundImageUrl: "",
-    id: "",
-    email: "",
-  },
-  createdAt: new Date(Date.now()),
-  resourceId: undefined,
-  resourceType: undefined,
-  userReaction: undefined,
-  loadedComments: [],
-  relatedSourceMap: {},
-  updateUserReaction: () => {},
-  reactionsCount: {
-    laugh: 0,
-    like: 0,
-    support: 0,
-    sad: 0,
-    love: 0,
-  },
-  totalReactionsCount: 0,
-  incrementReactionCount: () => {},
-  decrementReactionCount: () => {},
-  commentsCount: 0,
-  incrementCommentsCount: () => {},
-  decrementCommentsCount: () => {},
-  commentsQuery: undefined,
-  allCommentsFetched: false,
-});
+const ResourceContext = createContext<IResourceContext | undefined>(undefined);
 
 interface IResourceProviderProps
   extends Pick<
@@ -113,8 +82,12 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     ICreateReactionApiRequest | undefined
   >();
 
-  const { incrementCommentsCount: incrementParentCommentsCount } =
-    useResourceContext();
+  const parentResourceContext = useResourceContext();
+  if (!parentResourceContext) {
+    if (type === "comment") {
+      throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+    }
+  }
 
   const { status: createReactionResStatus, remove: clearCreateReactionQuery } =
     useQuery(
@@ -140,9 +113,9 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   }, [clearCreateReactionQuery, createReactionResStatus]);
 
   const incrementCommentsCount = () => {
-    setCommentsCountState((prev) => prev + 1);
+    setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
     if (type === "comment") {
-      incrementParentCommentsCount();
+      parentResourceContext?.incrementCommentsCount();
     }
   };
 
@@ -172,7 +145,10 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   };
 
   const decrementCommentsCount = () => {
-    setCommentsCountState((prev) => prev - 1);
+    setCommentsCountState((prev) => ({ ...prev, comment: prev.comment - 1 }));
+    if (type === "comment") {
+      parentResourceContext?.decrementCommentsCount();
+    }
   };
 
   const commentsQuery = useComments(
@@ -191,7 +167,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     useState<IReactionCountApiModel>(reactionsCount);
 
   const [commentsCountState, setCommentsCountState] =
-    useState<number>(commentsCount);
+    useState<ICommentCountApiModel>(commentsCount);
 
   const [loadedCommentsState, setLoadedComments] =
     useState<ICommentApiResponseModel[]>(loadedComments);
@@ -249,13 +225,17 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         incrementReactionCount,
         decrementReactionCount,
         commentsCount: commentsCountState,
+        totalCommentsCount: Object.values(commentsCountState).reduce(
+          (commentCount, totalCount) => commentCount + totalCount,
+          0
+        ),
         relatedSourceMap,
         createdAt,
         incrementCommentsCount,
         decrementCommentsCount,
         commentsQuery: commentsQuery,
         allCommentsFetched:
-          commentsQuery.uptoDateComments.length === commentsCount,
+          commentsQuery.uptoDateComments.length === commentsCountState.comment,
       }}
     >
       {children}
@@ -263,7 +243,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   );
 };
 
-const useResourceContext = (): IResourceContext => {
+const useResourceContext = (): IResourceContext | undefined => {
   const resourceContext = useContext(ResourceContext);
   return resourceContext;
 };
