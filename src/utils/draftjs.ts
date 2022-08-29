@@ -125,7 +125,7 @@ const commentMentionsPlugin = createMentionPlugin({
   supportWhitespace: true,
   popperOptions: {
     strategy: "absolute",
-    placement: "top",
+    placement: "top-start",
     modifiers: [
       {
         name: "offset",
@@ -182,12 +182,20 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
     width: "300px",
     maxHeight: "400px",
     overflowY: "auto",
-    paddingBottom: "8px",
   },
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopupVisible}`]: {
     border: `1px solid ${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow:
+      "0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%)",
+    borderRadius: "0.4rem",
+
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: "0",
+      minHeight: "200px",
+    },
   },
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsEntry}`]:

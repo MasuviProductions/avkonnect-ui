@@ -18,13 +18,12 @@ const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
     mentionsInterpolationStyle,
   } = textEditorContext;
 
-  const { upToDateUsersSearch, searchForSources } = useSourceSearch(2, false);
+  const { upToDateUsersSearch, searchForSources } = useSourceSearch(5, false);
   const [searchText, setSearchText] = useState<string>("");
   const [suggestions, setSuggestions] = useState<MentionData[]>([]);
   const [mentionSuggestionOpen, setMentionSuggestionOpen] = useState(false);
 
   const onOpenChange = useCallback((_open: boolean) => {
-    // if (_open === false) return;
     setMentionSuggestionOpen(_open);
   }, []);
 

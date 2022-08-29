@@ -17,6 +17,9 @@ import { IPostRequestContentApiModel } from "../interfaces/api/external";
 import { Interpolation } from "@emotion/react";
 import { Theme } from "@mui/material";
 
+/* 
+Resources: https://github.com/draft-js-plugins/draft-js-plugins/issues/983
+ */
 interface ITextEditorContext {
   editorKey: string;
   editorRef: RefObject<Editor>;

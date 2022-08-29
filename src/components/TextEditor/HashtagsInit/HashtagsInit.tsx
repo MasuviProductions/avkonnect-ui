@@ -1,6 +1,7 @@
 import { GlobalStyles, Theme } from "@mui/material";
-import { Interpolation } from "@emotion/react";
+import { FunctionInterpolation, Interpolation } from "@emotion/react";
 import DRAFTJS from "../../../utils/draftjs";
+import { decoratedLinkSx } from "../../../styles/sx";
 
 interface IHashtagsInitProps {}
 
@@ -10,7 +11,7 @@ const HashtagsInit: React.FC<IHashtagsInitProps> = ({}) => {
 
 const hashtagPluginOverrideTheme: Interpolation<Theme> = (theme: Theme) => ({
   [`.${DRAFTJS.editorPlugins.hashtags.themeOption.hashtag}`]: {
-    color: theme.palette.text.link,
+    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
   },
 });
 export default HashtagsInit;
