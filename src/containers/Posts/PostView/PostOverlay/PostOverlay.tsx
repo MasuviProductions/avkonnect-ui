@@ -59,7 +59,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
             <PostComments />
           </Grid>
 
-          <Grid item xs={12} sx={addCommentSx}>
+          <Grid item xs={12} sx={commentEditorSx}>
             <CommentEditor submitButtonText={LABELS.POST_COMMENT} />
           </Grid>
         </Grid>
@@ -68,18 +68,20 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   );
 };
 
-const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "100%",
-  overflowY: "hidden",
-});
+const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({});
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   overflowY: "auto",
-  height: "calc(100% - 80px)",
   padding: 1.5,
-  paddingBottom: 5,
+  paddingBottom: 30,
 });
 
-const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({});
+const commentEditorSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  position: "fixed",
+  width: "100%",
+  bottom: 0,
+  padding: 1,
+  backgroundColor: theme.palette.background.paper,
+});
 
 export default PostOverlay;

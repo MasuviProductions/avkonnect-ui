@@ -19,6 +19,7 @@ import {
 } from "../../../interfaces/api/external";
 import DRAFTJS from "../../../utils/draftjs";
 import CommentEditorDesktop from "./CommentEditorDesktop";
+import CommentEditorHandheld from "./CommentEditorHandheld";
 
 interface ICommentEditorProps {
   mentionedSource?: IRelatedSource;
@@ -70,7 +71,7 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
           }
           onSaveContent={handleCommentCreate}
         >
-          <CommentEditorDesktop submitButtonText={submitButtonText} />
+          <CommentEditorHandheld submitButtonText={submitButtonText} />
         </TextEditorProvider>
       </Hidden>
 

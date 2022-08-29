@@ -17,11 +17,11 @@ import TextEditor from "../../../components/TextEditor";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
 import DRAFTJS from "../../../utils/draftjs";
 
-interface ICommentEditorDesktopProps {
+interface ICommentEditorHandheldProps {
   submitButtonText: string;
 }
 
-const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
+const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
   submitButtonText,
 }) => {
   const textEditorContext = useTextEditorContext();
@@ -44,47 +44,38 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
 
   return (
     <>
-      <Grid container spacing={1}>
-        <Grid item py={1}>
-          <Avatar
-            alt={name as string}
-            src={displayPictureUrl as string}
-            sx={userAvatarSx(usernameToColor(name))}
-          >
-            {name[0]}
-          </Avatar>
-        </Grid>
-
-        <Grid item xs py={1}>
+      <Grid container spacing={1} sx={commentEditorContainer}>
+        <Grid item xs={12}>
           <Grid container>
-            <Grid item xs={12}>
-              <Grid
-                container
-                justifyContent="space-between"
-                sx={commentContainerSx(isEditorFocused)}
+            <Grid item>
+              <Avatar
+                alt={name as string}
+                src={displayPictureUrl as string}
+                sx={userAvatarSx(usernameToColor(name))}
               >
-                <Grid item>
-                  <TextEditor
-                    palceholder={LABELS.ADD_COMMENT_PLACEHOLDER}
-                    editorContainerSx={textEditorContainerSx}
-                  />
-                </Grid>
-
-                <Grid item flex={1}>
-                  <Grid container justifyContent="flex-end">
-                    <Grid item>
-                      <IconButton>
-                        <PhotoCameraBackIcon fontSize="small" />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
+                {name[0]}
+              </Avatar>
             </Grid>
 
-            <Grid item xs={12} mt={1}>
+            <Grid item xs sx={commentContainerSx(isEditorFocused)}>
+              <TextEditor
+                palceholder={LABELS.ADD_COMMENT_PLACEHOLDER}
+                editorContainerSx={textEditorContainerSx}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Grid container justifyContent="space-between">
+            <Grid item>
+              <IconButton>
+                <PhotoCameraBackIcon fontSize="small" />
+              </IconButton>
+            </Grid>
+
+            <Grid item>
               <Button
-                variant="contained"
                 color="primary"
                 sx={postButtonSx}
                 onClick={handleCommentCreate}
@@ -99,19 +90,22 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
   );
 };
 
-export const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
+const commentEditorContainer = (theme: Theme): SystemStyleObject<Theme> => ({
+  backgroundColor: theme.palette.background.paper,
+});
+
+const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
   fontSize: 12,
   minWidth: 40,
   textTransform: "initial",
-  borderRadius: "1.5em",
   padding: "4px 16px",
-  marginLeft: "8px",
 });
 
-export const commentContainerSx =
+const commentContainerSx =
   (isFocused: boolean) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
-    paddingX: 1.5,
+    marginLeft: 1,
+    paddingX: 2,
     paddingY: 0.25,
     border: `1px solid ${
       isFocused ? theme.palette.text.primary : theme.palette.text.secondary
@@ -126,8 +120,9 @@ const textEditorContainerSx =
     borderRadius: "1.5em",
     fontSize: "14px",
     minHeight: "30px",
-    minWidth: "300px",
+    widht: "100%",
     backgroundColor: theme.palette.background.paper,
+    maxHeight: "150px",
     // Hide scrollbar, but keep scroll functionality
     overflowY: "auto",
     overflowX: "hidden",
@@ -142,4 +137,4 @@ const textEditorContainerSx =
     },
   });
 
-export default CommentEditorDesktop;
+export default CommentEditorHandheld;

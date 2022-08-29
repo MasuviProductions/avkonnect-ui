@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ResourceProvider, {
   useResourceContext,
@@ -9,6 +9,7 @@ import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
 import CommentEditor from "../../../CommentEditor";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
+import { decoratedLinkSx } from "../../../../../styles/sx";
 
 interface IPostCommentsProps {}
 const PostComments: React.FC<IPostCommentsProps> = ({}) => {
@@ -91,10 +92,15 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
       ) : allCommentsFetched ? (
         <></>
       ) : (
-        <Button onClick={handleClickLoadMore}>
-          {LABELS.LOAD_MORE_COMMENTS} {uptoDateComments.length}-
-          {commentsCount.comment}
-        </Button>
+        <Box px={1} pb={1}>
+          <Typography
+            paragraph
+            onClick={handleClickLoadMore}
+            sx={decoratedLinkSx(14)}
+          >
+            {LABELS.VIEW_MORE_COMMENTS}
+          </Typography>
+        </Box>
       )}
     </>
   );

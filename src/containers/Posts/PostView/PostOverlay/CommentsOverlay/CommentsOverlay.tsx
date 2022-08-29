@@ -77,7 +77,7 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
               <SubComments onReplyClick={handleReplyClickWithUserTag} />
             </Box>
           </Grid>
-          <Grid xs={12} item sx={addCommentSx}>
+          <Grid xs={12} item sx={commentEditorSx}>
             <CommentEditor
               mentionedSource={mentionedSource}
               submitButtonText={LABELS.REPLY}
@@ -89,20 +89,22 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
   );
 };
 
-const commentOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "100%",
-  overflowY: "hidden",
-});
+const commentOverlayContainerSx = (
+  theme: Theme
+): SystemStyleObject<Theme> => ({});
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   overflowY: "auto",
-  height: "calc(100% - 80px)",
   padding: 1.5,
-  paddingBottom: 5,
+  paddingBottom: 30,
 });
 
-const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  paddingY: 1.5,
+const commentEditorSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  position: "fixed",
+  width: "100%",
+  bottom: 0,
+  padding: 1,
+  backgroundColor: theme.palette.background.paper,
 });
 
 export default CommentsOverlay;

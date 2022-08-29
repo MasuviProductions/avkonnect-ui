@@ -61,7 +61,7 @@ const getContentTextWithParsedMentions = (
       `@user_${mentionedSources[index].id}` +
       contentTextWithParsedMentions.substring(
         endIndex,
-        contentTextWithParsedMentions.length - 1
+        contentTextWithParsedMentions.length
       );
   }
   return contentTextWithParsedMentions;

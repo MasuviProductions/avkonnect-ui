@@ -59,7 +59,7 @@ const overlayHeaderSx = (theme: Theme): SystemStyleObject<Theme> => ({
 const overlayBodySx = (theme: Theme): SystemStyleObject<Theme> => ({
   height: `calc(100% - 50px)`,
   width: "inherit",
-  overflowY: "hidden",
+  overflowY: "auto",
 });
 
 const overlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
