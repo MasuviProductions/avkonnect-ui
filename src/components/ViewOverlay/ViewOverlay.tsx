@@ -51,7 +51,7 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
 
 const overlayHeaderSx = (theme: Theme): SystemStyleObject<Theme> => ({
   backgroundColor: theme.palette.background.paper,
-  borderBottom: `2px solid ${theme.palette.background.default}`,
+  borderBottom: `1px solid ${theme.palette.secondary.main}`,
   width: "inherit",
   height: "50px",
 });

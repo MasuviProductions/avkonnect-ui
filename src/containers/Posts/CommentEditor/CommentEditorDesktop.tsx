@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Theme,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
@@ -74,7 +67,10 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
                   <Grid container justifyContent="flex-end">
                     <Grid item>
                       <IconButton>
-                        <PhotoCameraBackIcon fontSize="small" />
+                        <PhotoCameraBackIcon
+                          sx={actionIconsSx}
+                          fontSize="small"
+                        />
                       </IconButton>
                     </Grid>
                   </Grid>
@@ -99,7 +95,11 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
   );
 };
 
-export const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
+const actionIconsSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  color: theme.palette.text.secondary,
+});
+
+const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
   fontSize: 12,
   minWidth: 40,
   textTransform: "initial",
@@ -108,7 +108,7 @@ export const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
   marginLeft: "8px",
 });
 
-export const commentContainerSx =
+const commentContainerSx =
   (isFocused: boolean) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
     paddingX: 1.5,

@@ -1,13 +1,5 @@
-import { MentionData } from "@draft-js-plugins/mention";
 import { Hidden } from "@mui/material";
-import {
-  ContentState,
-  convertFromRaw,
-  convertToRaw,
-  EditorState,
-  Modifier,
-  RawDraftEntity,
-} from "draft-js";
+import { EditorState } from "draft-js";
 import { useEffect, useState } from "react";
 import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";

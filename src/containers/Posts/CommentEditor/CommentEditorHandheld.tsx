@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Grid,
-  Theme,
-  TextField,
-  IconButton,
-} from "@mui/material";
+import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
@@ -66,11 +59,11 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={actionsContainerSx}>
           <Grid container justifyContent="space-between">
             <Grid item>
               <IconButton>
-                <PhotoCameraBackIcon fontSize="small" />
+                <PhotoCameraBackIcon sx={actionIconsSx} fontSize="small" />
               </IconButton>
             </Grid>
 
@@ -90,7 +83,17 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
   );
 };
 
+const actionsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  marginTop: 1,
+  borderTop: `1px solid ${theme.palette.secondary.main}`,
+});
+
+const actionIconsSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  color: theme.palette.text.secondary,
+});
+
 const commentEditorContainer = (theme: Theme): SystemStyleObject<Theme> => ({
+  borderTop: `2px solid ${theme.palette.secondary.main}`,
   backgroundColor: theme.palette.background.paper,
 });
 
@@ -105,19 +108,13 @@ const commentContainerSx =
   (isFocused: boolean) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
     marginLeft: 1,
-    paddingX: 2,
     paddingY: 0.25,
-    border: `1px solid ${
-      isFocused ? theme.palette.text.primary : theme.palette.text.secondary
-    }`,
-    borderRadius: "2rem",
   });
 
 const textEditorContainerSx =
   (isFocused: boolean) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
     padding: 1,
-    borderRadius: "1.5em",
     fontSize: "14px",
     minHeight: "30px",
     widht: "100%",
