@@ -55,9 +55,9 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
       <Hidden mdUp>
         <TextEditorProvider
           initialEditorState={editorState}
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
+          pluginConfig={{
+            hashtags: DRAFTJS.editorPlugins.hashtags.pluginConfig,
+            mentions: DRAFTJS.editorPlugins.commentMentions.pluginConfig,
           }}
           mentionsInterpolationStyle={
             DRAFTJS.editorPlugins.commentMentions.theme
@@ -71,9 +71,9 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
       <Hidden mdDown>
         <TextEditorProvider
           initialEditorState={editorState}
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
+          pluginConfig={{
+            hashtags: DRAFTJS.editorPlugins.hashtags.pluginConfig,
+            mentions: DRAFTJS.editorPlugins.commentMentions.pluginConfig,
           }}
           mentionsInterpolationStyle={
             DRAFTJS.editorPlugins.commentMentions.theme

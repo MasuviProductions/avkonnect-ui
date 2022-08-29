@@ -45,8 +45,6 @@ const TextEditor: React.FC<ITextEditorProps> = ({
     editorRef.current!.focus();
   };
 
-  console.log("editorState:", editorState);
-
   return (
     <>
       <Box onClick={onElementFocus} sx={editorContainerSx(isEditorFocused)}>

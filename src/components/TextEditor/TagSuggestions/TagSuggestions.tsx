@@ -14,6 +14,7 @@ const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
   }
 
   const {
+    editorKey,
     mentionSuggestionsComponent: MentionSuggestions,
     mentionsInterpolationStyle,
   } = textEditorContext;

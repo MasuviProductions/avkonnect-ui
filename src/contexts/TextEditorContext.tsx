@@ -5,17 +5,21 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { EditorState } from "draft-js";
 import Editor, { EditorPlugin } from "@draft-js-plugins/editor";
 import { MentionSuggestionsPubProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/MentionSuggestions";
+import { HashtagPluginConfig } from "@draft-js-plugins/hashtag";
+import { MentionPluginConfig } from "@draft-js-plugins/mention";
 
 import useRemountKey from "../hooks/useRemountKey";
 import { IPostRequestContentApiModel } from "../interfaces/api/external";
 import { Interpolation } from "@emotion/react";
 import { Theme } from "@mui/material";
+import DRAFTJS from "../utils/draftjs";
 
 /* 
 Resources: https://github.com/draft-js-plugins/draft-js-plugins/issues/983
@@ -42,11 +46,10 @@ const TextEditorContext = createContext<ITextEditorContext | undefined>(
 
 interface ITextEditorProvider {
   initialEditorState?: EditorState;
-  plugins: {
-    hashtags: EditorPlugin;
-    mentions: EditorPlugin & {
-      MentionSuggestions: ComponentType<MentionSuggestionsPubProps>;
-    };
+  pluginConfig: {
+    hashtags: HashtagPluginConfig;
+    mentions: MentionPluginConfig;
+    //   MentionSuggestions: ComponentType<MentionSuggestionsPubProps>;
   };
   mentionsInterpolationStyle: Interpolation<Theme>;
   onSaveContent: (
@@ -57,22 +60,33 @@ interface ITextEditorProvider {
 
 const TextEditorProvider: React.FC<ITextEditorProvider> = ({
   initialEditorState,
-  plugins,
+  pluginConfig,
   mentionsInterpolationStyle,
   onSaveContent,
   children,
 }) => {
   const editorRef = useRef<Editor>(null);
-
   const { remountKey } = useRemountKey(5);
-
+  const [isEditorFocused, setIsEditorFocused] = useState<boolean>(false);
+  const [editorPlugins, setEditorPlugins] = useState<EditorPlugin[]>([]);
   const [editorState, setEditorState] = useState<EditorState>(
     initialEditorState || EditorState.createEmpty()
   );
 
-  const [isEditorFocused, setIsEditorFocused] = useState<boolean>(false);
+  useMemo(() => {
+    const plugin = DRAFTJS.editorPlugins.createHashtagPlugin(
+      pluginConfig.hashtags
+    );
+    setEditorPlugins((prev) => [...prev, plugin]);
+  }, [pluginConfig.hashtags]);
 
-  const editorPlugins = [plugins.hashtags, plugins.mentions];
+  const MentionSuggestionsComponent = useMemo(() => {
+    const plugin = DRAFTJS.editorPlugins.createMentionPlugin(
+      pluginConfig.mentions
+    );
+    setEditorPlugins((prev) => [...prev, plugin]);
+    return plugin.MentionSuggestions;
+  }, [pluginConfig.mentions]);
 
   const handleChangeEditorState = useCallback((_editorState: EditorState) => {
     setEditorState(_editorState);
@@ -99,7 +113,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         isEditorFocused,
         onChangeEditorState: handleChangeEditorState,
         onChangeEditorFocus: handleChangeEditorFocus,
-        mentionSuggestionsComponent: plugins.mentions.MentionSuggestions,
+        mentionSuggestionsComponent: MentionSuggestionsComponent,
         onSaveContent: onSaveContent,
       }}
     >

@@ -228,8 +228,6 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     setCommentsCountState(commentsCount);
   }, [commentsCount]);
 
-  console.log(commentsQuery.uptoDateComments.length, commentsCount);
-
   return (
     <ResourceContext.Provider
       value={{

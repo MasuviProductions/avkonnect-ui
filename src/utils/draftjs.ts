@@ -1,7 +1,16 @@
-import { EditorState, convertToRaw, Modifier } from "draft-js";
-import createMentionPlugin, { MentionData } from "@draft-js-plugins/mention";
-
-import createHashtagPlugin from "@draft-js-plugins/hashtag";
+import {
+  EditorState,
+  convertToRaw,
+  Modifier,
+  RawDraftEntityRange,
+} from "draft-js";
+import createMentionPlugin, {
+  MentionData,
+  MentionPluginConfig,
+} from "@draft-js-plugins/mention";
+import createHashtagPlugin, {
+  HashtagPluginConfig,
+} from "@draft-js-plugins/hashtag";
 
 import { HASHTAG_REGEX } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
@@ -18,13 +27,22 @@ const getPlainText = (editorState: EditorState): string => {
   return plainText;
 };
 
-const getMentionSources = (editorState: EditorState): MentionData[] => {
+const getMentionSources = (
+  editorState: EditorState
+): {
+  mentionedPositions: RawDraftEntityRange[];
+  mentionedSources: MentionData[];
+} => {
   const currentContent = editorState.getCurrentContent();
-  const contentEntityMap = convertToRaw(currentContent).entityMap;
+  const rawContentState = convertToRaw(currentContent);
+  const contentEntityMap = rawContentState.entityMap;
   const mentionedSources = Object.values(contentEntityMap).map((entity) => {
     return entity.data.mention as MentionData;
   });
-  return mentionedSources;
+  return {
+    mentionedPositions: rawContentState.blocks[0].entityRanges,
+    mentionedSources,
+  };
 };
 
 const getContentTextWithParsedMentions = (
@@ -32,13 +50,20 @@ const getContentTextWithParsedMentions = (
   contentText: string
 ): string => {
   let contentTextWithParsedMentions = contentText;
-  const mentionedSources = getMentionSources(editorState);
-  mentionedSources.forEach((source) => {
-    contentTextWithParsedMentions = contentTextWithParsedMentions.replace(
-      `@${source.name}`,
-      `@user_${source.id}`
-    );
-  });
+  const { mentionedPositions, mentionedSources } =
+    getMentionSources(editorState);
+  for (let index = mentionedPositions.length - 1; index >= 0; index -= 1) {
+    const startIndex = mentionedPositions[index].offset;
+    const endIndex = startIndex + mentionedPositions[index].length;
+
+    contentTextWithParsedMentions =
+      contentTextWithParsedMentions.substring(0, startIndex) +
+      `@user_${mentionedSources[index].id}` +
+      contentTextWithParsedMentions.substring(
+        endIndex,
+        contentTextWithParsedMentions.length - 1
+      );
+  }
   return contentTextWithParsedMentions;
 };
 
@@ -71,7 +96,7 @@ const getNewEditorStateWithMention = (mentionedSource: IRelatedSource) => {
   const editorContent = Modifier.insertText(
     stateWithEntity,
     newEditorState.getSelection(),
-    `@${mentionedSource.name}`,
+    `${mentionedSource.name}`,
     undefined,
     stateWithEntity.getLastCreatedEntityKey()
   );
@@ -93,10 +118,9 @@ const mentionsPluginThemeOption = {
   mentionSuggestionsEntryFocused: "mentionSuggestionsEntryFocused",
 };
 
-const postMentionsPlugin = createMentionPlugin({
+const postMentionsPluginConfig: MentionPluginConfig = {
   entityMutability: "IMMUTABLE",
   theme: mentionsPluginThemeOption,
-  mentionPrefix: "@",
   supportWhitespace: true,
   popperOptions: {
     strategy: "absolute",
@@ -116,12 +140,11 @@ const postMentionsPlugin = createMentionPlugin({
       },
     ],
   },
-});
+};
 
-const commentMentionsPlugin = createMentionPlugin({
+const commentMentionsPluginConfig: MentionPluginConfig = {
   entityMutability: "IMMUTABLE",
   theme: mentionsPluginThemeOption,
-  mentionPrefix: "@",
   supportWhitespace: true,
   popperOptions: {
     strategy: "absolute",
@@ -135,7 +158,7 @@ const commentMentionsPlugin = createMentionPlugin({
       },
     ],
   },
-});
+};
 
 const mentionSuggestionsEntryTheme = (theme: Theme) => ({
   transition: `background-color 0.4s cubic-bezier(0.27, 1.27, 0.48, 0.56)`,
@@ -179,9 +202,11 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
   theme: Theme
 ) => ({
   [`.${mentionsPluginThemeOption.mentionSuggestions}`]: {
+    position: "absolute",
     width: "300px",
     maxHeight: "400px",
     overflowY: "auto",
+    zIndex: 1,
   },
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
@@ -215,9 +240,9 @@ const hashtagsPluginThemeOption = {
   hashtag: "hashtag",
 };
 
-const hashtagsPlugin = createHashtagPlugin({
+const hashtagsPluginConfig: HashtagPluginConfig = {
   theme: hashtagsPluginThemeOption,
-});
+};
 
 const utils = {
   getStringifiedRawText,
@@ -227,18 +252,21 @@ const utils = {
 };
 
 const editorPlugins = {
+  createMentionPlugin,
+  createHashtagPlugin,
+
   postMentions: {
-    plugin: postMentionsPlugin,
+    pluginConfig: postMentionsPluginConfig,
     themeOption: mentionsPluginThemeOption,
     theme: postMentionPluginOverrideTheme,
   },
   commentMentions: {
-    plugin: commentMentionsPlugin,
-    themeOptions: mentionsPluginThemeOption,
+    pluginConfig: commentMentionsPluginConfig,
+    themeOption: mentionsPluginThemeOption,
     theme: commentMentionPluginOverrideTheme,
   },
   hashtags: {
-    plugin: hashtagsPlugin,
+    pluginConfig: hashtagsPluginConfig,
     themeOption: hashtagsPluginThemeOption,
   },
 };

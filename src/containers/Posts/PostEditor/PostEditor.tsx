@@ -72,9 +72,9 @@ const PostEditor: React.FC<IPostEditorProps> = ({
     <>
       <Hidden mdUp>
         <TextEditorProvider
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
+          pluginConfig={{
+            hashtags: DRAFTJS.editorPlugins.hashtags.pluginConfig,
+            mentions: DRAFTJS.editorPlugins.postMentions.pluginConfig,
           }}
           mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
           onSaveContent={handlePostCreate}
@@ -88,9 +88,9 @@ const PostEditor: React.FC<IPostEditorProps> = ({
 
       <Hidden mdDown>
         <TextEditorProvider
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
+          pluginConfig={{
+            hashtags: DRAFTJS.editorPlugins.hashtags.pluginConfig,
+            mentions: DRAFTJS.editorPlugins.postMentions.pluginConfig,
           }}
           mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
           onSaveContent={handlePostCreate}
