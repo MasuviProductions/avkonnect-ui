@@ -91,7 +91,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
       ))}
 
       {getCommentsFetching ? (
-        <>Loading..</>
+        <>....</>
       ) : allCommentsFetched ? (
         <></>
       ) : (

@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { pathToRegexp } from "path-to-regexp";
 import { memo, useEffect, useState } from "react";
@@ -28,7 +29,7 @@ const WithPageSkeleton: React.FC<any> = ({ children }) => {
         return <Skeleton />;
       }
     }
-    return <>Loading..</>;
+    return <Typography variant="h1">....</Typography>;
   }
 
   return <>{children}</>;

@@ -75,7 +75,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
         ))}
 
         {getCommentsFetching ? (
-          <>Loading..</>
+          <>....</>
         ) : allCommentsFetched ? (
           <></>
         ) : (
