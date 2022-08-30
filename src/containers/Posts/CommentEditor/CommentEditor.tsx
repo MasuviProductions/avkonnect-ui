@@ -1,14 +1,7 @@
-import { MentionData } from "@draft-js-plugins/mention";
 import { Hidden } from "@mui/material";
-import {
-  ContentState,
-  convertFromRaw,
-  convertToRaw,
-  EditorState,
-  Modifier,
-  RawDraftEntity,
-} from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import { useEffect, useState } from "react";
+import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import TextEditorProvider from "../../../contexts/TextEditorContext";
 import { IUseComments } from "../../../hooks/useComments";
@@ -18,19 +11,27 @@ import {
 } from "../../../interfaces/api/external";
 import DRAFTJS from "../../../utils/draftjs";
 import CommentEditorDesktop from "./CommentEditorDesktop";
+import CommentEditorHandheld from "./CommentEditorHandheld";
 
 interface ICommentEditorProps {
-  type: "desktop" | "handheld";
   mentionedSource?: IRelatedSource;
+  submitButtonText: string;
 }
 
 const CommentEditor: React.FC<ICommentEditorProps> = ({
   mentionedSource,
-  type,
+  submitButtonText,
 }) => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
   const { addComment } = commentsQuery as IUseComments;
-  const [editorState, setEditorState] = useState<EditorState | undefined>();
+  const [contentState, setContentState] = useState<ContentState>(
+    DRAFTJS.utils.getNewContentState()
+  );
 
   const handleCommentCreate = (
     content: IPostRequestContentApiModel,
@@ -43,46 +44,34 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
   };
 
   useEffect(() => {
-    if (mentionedSource) {
-      const newEditorState =
-        DRAFTJS.utils.getNewEditorStateWithMention(mentionedSource);
-      setEditorState(newEditorState);
-    }
+    const newContentState = DRAFTJS.utils.getNewContentState(mentionedSource);
+    setContentState(newContentState);
   }, [mentionedSource]);
 
   return (
     <>
-      <Hidden mdUp>
-        <TextEditorProvider
-          initialEditorState={editorState}
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
-          }}
-          mentionsInterpolationStyle={
-            DRAFTJS.editorPlugins.commentMentions.theme
-          }
-          onSaveContent={handleCommentCreate}
-        >
-          <CommentEditorDesktop />;
-        </TextEditorProvider>
-      </Hidden>
+      <TextEditorProvider
+        contentState={contentState}
+        pluginConfig={{
+          hashtags: {
+            plugin: DRAFTJS.editorPlugins.commentHashtags.pluginConfig,
+            themeStyle: DRAFTJS.editorPlugins.commentHashtags.theme,
+          },
+          mentions: {
+            plugin: DRAFTJS.editorPlugins.commentMentions.pluginConfig,
+            themeStyle: DRAFTJS.editorPlugins.commentMentions.theme,
+          },
+        }}
+        onSaveContent={handleCommentCreate}
+      >
+        <Hidden mdDown>
+          <CommentEditorDesktop submitButtonText={submitButtonText} />
+        </Hidden>
 
-      <Hidden mdDown>
-        <TextEditorProvider
-          initialEditorState={editorState}
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.commentMentions.plugin,
-          }}
-          mentionsInterpolationStyle={
-            DRAFTJS.editorPlugins.commentMentions.theme
-          }
-          onSaveContent={handleCommentCreate}
-        >
-          <CommentEditorDesktop />;
-        </TextEditorProvider>
-      </Hidden>
+        <Hidden mdUp>
+          <CommentEditorHandheld submitButtonText={submitButtonText} />
+        </Hidden>
+      </TextEditorProvider>
     </>
   );
 };

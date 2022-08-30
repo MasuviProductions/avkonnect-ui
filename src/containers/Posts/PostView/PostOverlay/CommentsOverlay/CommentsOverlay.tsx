@@ -10,6 +10,7 @@ import { IUseComments } from "../../../../../hooks/useComments";
 import CommentEditor from "../../../CommentEditor";
 import SubComments from "./SubComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
+import { LABELS } from "../../../../../constants/labels";
 
 interface ICommentsOverlayProps extends IOverlay, ICommentProps {}
 
@@ -19,7 +20,12 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
   showOverlay,
   onOverlayClose,
 }) => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
 
   const [mentionedSource, setMentionedSource] = useState<
     IRelatedSource | undefined
@@ -37,7 +43,9 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
     withTaggedSource?: IRelatedSource
   ) => {
     if (withTaggedSource) {
-      setMentionedSource(withTaggedSource);
+      setMentionedSource(
+        withTaggedSource ? { ...withTaggedSource } : undefined
+      );
     }
   };
 
@@ -71,8 +79,11 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
               <SubComments onReplyClick={handleReplyClickWithUserTag} />
             </Box>
           </Grid>
-          <Grid xs={12} item sx={addCommentSx}>
-            <CommentEditor type="desktop" mentionedSource={mentionedSource} />
+          <Grid xs={12} item sx={commentEditorSx}>
+            <CommentEditor
+              mentionedSource={mentionedSource}
+              submitButtonText={LABELS.REPLY}
+            />
           </Grid>
         </Grid>
       </ViewOverlay>
@@ -80,20 +91,22 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
   );
 };
 
-const commentOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "100%",
-  overflowY: "hidden",
-});
+const commentOverlayContainerSx = (
+  theme: Theme
+): SystemStyleObject<Theme> => ({});
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   overflowY: "auto",
-  height: "calc(100% - 80px)",
   padding: 1.5,
-  paddingBottom: 5,
+  paddingBottom: 30,
 });
 
-const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  paddingY: 1.5,
+const commentEditorSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  position: "fixed",
+  width: "100%",
+  bottom: 0,
+  padding: 1,
+  backgroundColor: theme.palette.background.paper,
 });
 
 export default CommentsOverlay;

@@ -7,9 +7,15 @@ import ResourceProvider, {
 import { IUseComments } from "../../../../../hooks/useComments";
 import CommentsOverlay from "../CommentsOverlay";
 import { ICommentApiResponseModel } from "../../../../../interfaces/api/external";
+import { LABELS } from "../../../../../constants/labels";
 
 const PostComments: React.FC = () => {
-  const { commentsQuery } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery } = resourceContext;
 
   const [showCommentsOverlay, setShowCommentsOverlay] =
     useState<boolean>(false);

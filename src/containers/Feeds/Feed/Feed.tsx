@@ -2,9 +2,14 @@ import { Button, Typography, Hidden, Box } from "@mui/material";
 import { useState } from "react";
 import PostView from "../../Posts/PostView";
 import { useResourceContext } from "../../../contexts/ResourceContext";
+import { LABELS } from "../../../constants/labels";
 
 const Feed: React.FC = () => {
-  const { id } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+  const { id } = resourceContext;
   const [showPostDetail, setShowPostDetail] = useState(false);
 
   const handlePostDetailOpen = () => {

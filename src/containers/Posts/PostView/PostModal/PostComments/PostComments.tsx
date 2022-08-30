@@ -1,5 +1,5 @@
-import { Box, Button } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
@@ -7,11 +7,25 @@ import Comment from "../../../Comment";
 import { IUseComments } from "../../../../../hooks/useComments";
 import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
+import CommentEditor from "../../../CommentEditor";
+import { IRelatedSource } from "../../../../../interfaces/api/external";
+import { decoratedLinkSx } from "../../../../../styles/sx";
 
 interface IPostCommentsProps {}
 const PostComments: React.FC<IPostCommentsProps> = ({}) => {
-  const { commentsQuery, allCommentsFetched } = useResourceContext();
-  const [showReplyEditor, setShowReplyEditor] = useState(false);
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { commentsQuery, allCommentsFetched, commentsCount } = resourceContext;
+  const [replyEditorCommentId, setReplyEditorCommentId] = useState<
+    string | undefined
+  >();
+
+  const [mentionedSource, setMentionedSource] = useState<
+    IRelatedSource | undefined
+  >();
 
   const {
     uptoDateComments,
@@ -24,9 +38,17 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
     triggerGetCommentsApi();
   };
 
-  const handleReplyClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setShowReplyEditor(true);
-  };
+  const handleReplyClickWithSourceTag =
+    (commentId: string) =>
+    (
+      event: React.MouseEvent<HTMLButtonElement>,
+      withTaggedSource?: IRelatedSource
+    ) => {
+      setMentionedSource(
+        withTaggedSource ? { ...withTaggedSource } : undefined
+      );
+      setReplyEditorCommentId(commentId);
+    };
 
   return (
     <>
@@ -49,23 +71,39 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
           >
             <Comment
               commentText={comment.contents[0].text}
-              onReplyClick={handleReplyClick}
+              onReplyClick={handleReplyClickWithSourceTag(comment.id)}
             />
             <Box ml={5}>
-              <SubComments promptyReply={showReplyEditor} />
+              <SubComments
+                onReplyClick={handleReplyClickWithSourceTag(comment.id)}
+              />
+
+              {replyEditorCommentId === comment.id && (
+                <CommentEditor
+                  key={`comment-editor-${comment.id}`}
+                  submitButtonText={LABELS.REPLY}
+                  mentionedSource={mentionedSource}
+                />
+              )}
             </Box>
           </ResourceProvider>
         </Box>
       ))}
 
       {getCommentsFetching ? (
-        <>Loading..</>
+        <>....</>
       ) : allCommentsFetched ? (
         <></>
       ) : (
-        <Button onClick={handleClickLoadMore}>
-          {LABELS.LOAD_MORE_COMMENTS}
-        </Button>
+        <Box px={1} pb={1}>
+          <Typography
+            paragraph
+            onClick={handleClickLoadMore}
+            sx={decoratedLinkSx(14)}
+          >
+            {LABELS.VIEW_MORE_COMMENTS}
+          </Typography>
+        </Box>
       )}
     </>
   );

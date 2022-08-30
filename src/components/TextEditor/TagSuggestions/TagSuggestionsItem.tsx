@@ -8,32 +8,35 @@ type ITagSuggestionsItemProps = EntryComponentProps;
 
 const TagSuggestionsItem: React.FC<ITagSuggestionsItemProps> = (props) => {
   const { mention, theme, searchValue, isFocused, ...parentProps } = props;
-  const { name, headline, displayPictureUrl } = mention;
+  const { name, title, avatar } = mention;
 
   return (
     <>
       <Box {...parentProps}>
-        <Grid container alignItems="center" sx={suggestionItemContainer} p={1}>
+        <Grid
+          container
+          alignItems="center"
+          sx={suggestionItemContainerSx}
+          p={1}
+        >
           <Grid item>
             <Avatar
               alt={name}
-              src={displayPictureUrl}
-              sx={userAvatarSx(usernameToColor(name), 30)}
+              src={avatar}
+              sx={userAvatarSx(usernameToColor(name), 40)}
             >
               {name[0]}
             </Avatar>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs px={1}>
             <Grid container>
-              <Grid item>
+              <Grid item xs={12}>
                 <Typography variant="body2">{name}</Typography>
               </Grid>
-              <Grid item>
-                <Typography variant="body2">.</Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="body2" sx={getMUIElipsedSx(2)}>
-                  {headline || "--"}
+
+              <Grid item xs={12}>
+                <Typography variant="body2" sx={headlineSx}>
+                  {title || "--"}
                 </Typography>
               </Grid>
             </Grid>
@@ -44,9 +47,15 @@ const TagSuggestionsItem: React.FC<ITagSuggestionsItemProps> = (props) => {
   );
 };
 
-const suggestionItemContainer: SxProps<Theme> = (theme: Theme) => ({
+const suggestionItemContainerSx: SxProps<Theme> = (theme: Theme) => ({
   width: "100%",
   borderRadius: 0,
+});
+
+const headlineSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  ...(getMUIElipsedSx(1) as SystemStyleObject<Theme>),
+  color: theme.palette.text.secondary,
+  fontSize: "12px",
 });
 
 export default TagSuggestionsItem;

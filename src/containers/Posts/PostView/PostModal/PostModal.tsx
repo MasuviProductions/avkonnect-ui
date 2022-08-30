@@ -7,6 +7,7 @@ import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayou
 import { IUseComments } from "../../../../hooks/useComments";
 import PostComments from "./PostComments";
 import CommentEditor from "../../CommentEditor";
+import { LABELS } from "../../../../constants/labels";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -18,7 +19,11 @@ const PostModal: React.FC<IPostModalProps> = ({
   showModal,
   onModalClose,
 }) => {
-  const { commentsQuery, commentsCount } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+  const { commentsQuery, totalCommentsCount } = resourceContext;
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsFetching } =
     commentsQuery as IUseComments;
@@ -37,7 +42,11 @@ const PostModal: React.FC<IPostModalProps> = ({
 
   return (
     <>
-      <ModalLayout showModal={showModal} onModalClose={onModalClose}>
+      <ModalLayout
+        showModal={showModal}
+        onModalClose={onModalClose}
+        maxWidth="sm"
+      >
         <Box sx={postModalContainerSx}>
           <Box sx={contentsContainerSx}>
             {/* TODO */}
@@ -45,14 +54,14 @@ const PostModal: React.FC<IPostModalProps> = ({
               sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
             >
               Number of comments for post:
-              {commentsCount}
+              {totalCommentsCount}
+            </Box>
+
+            <Box sx={addCommentSx}>
+              <CommentEditor submitButtonText={LABELS.POST_COMMENT} />
             </Box>
 
             <PostComments />
-          </Box>
-
-          <Box sx={addCommentSx}>
-            <CommentEditor type="desktop" />
           </Box>
         </Box>
       </ModalLayout>
@@ -62,11 +71,9 @@ const PostModal: React.FC<IPostModalProps> = ({
 
 const postModalContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   height: "100%",
-  overflowY: "hidden",
 });
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "calc(100% - 100px - 16px)",
   overflowY: "auto",
   padding: 1.5,
   paddingBottom: 5,

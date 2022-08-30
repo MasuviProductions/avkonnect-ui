@@ -11,14 +11,9 @@ const CommentActivities: React.FC<ICommentActivitiesProps> = ({
 }) => {
   return (
     <>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item>
           <CommentReactions />
-        </Grid>
-
-        <Grid item py={0.8}>
-          {/* TODO: Add styling here */}
-          <Divider sx={{ backgroundColor: "black" }} orientation="vertical" />
         </Grid>
 
         <Grid item>

@@ -1,5 +1,7 @@
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
+
 import CustomButton from "../../../../components/CustomButton";
 import { LABELS } from "../../../../constants/labels";
 import DRAFTJS from "../../../../utils/draftjs";
@@ -10,7 +12,7 @@ interface IPostActionBarProps {}
 const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   const { editorState, onSaveContent } = textEditorContext;
@@ -28,7 +30,7 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
           <Grid container spacing={1}>
             <Grid item>
               <IconButton>
-                <PhotoCameraBackIcon />
+                <PhotoCameraBackIcon sx={actionIconsSx} />
               </IconButton>
             </Grid>
             <Grid item></Grid>
@@ -43,5 +45,9 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
     </>
   );
 };
+
+const actionIconsSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  color: theme.palette.text.secondary,
+});
 
 export default PostActionBar;

@@ -8,8 +8,7 @@ import HashtagsInit from "./HashtagsInit";
 import { useTextEditorContext } from "../../contexts/TextEditorContext";
 // Styles
 import "draft-js/dist/Draft.css";
-import { Interpolation } from "@emotion/react";
-import DRAFTJS from "../../utils/draftjs";
+import { LABELS } from "../../constants/labels";
 
 interface ITextEditorProps {
   palceholder: string;
@@ -24,7 +23,7 @@ const TextEditor: React.FC<ITextEditorProps> = ({
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
   const {
@@ -35,21 +34,16 @@ const TextEditor: React.FC<ITextEditorProps> = ({
     isEditorFocused,
     onChangeEditorState,
     onChangeEditorFocus,
+    focusEditor,
   } = textEditorContext;
 
   const onChangeFocus = (_isFocused: boolean) => () => {
     onChangeEditorFocus(_isFocused);
   };
 
-  const onElementFocus = () => {
-    editorRef.current!.focus();
-  };
-
-  console.log("editorState:", editorState);
-
   return (
     <>
-      <Box onClick={onElementFocus} sx={editorContainerSx(isEditorFocused)}>
+      <Box onClick={focusEditor} sx={editorContainerSx(isEditorFocused)}>
         <HashtagsInit />
         <TagSuggestions />
         <Editor
@@ -66,11 +60,5 @@ const TextEditor: React.FC<ITextEditorProps> = ({
     </>
   );
 };
-
-const hashtagPluginOverrideTheme: Interpolation<Theme> = (theme: Theme) => ({
-  [`.${DRAFTJS.editorPlugins.hashtags.themeOption.hashtag}`]: {
-    color: theme.palette.text.link,
-  },
-});
 
 export default TextEditor;

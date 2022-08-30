@@ -1,5 +1,6 @@
 import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
+import { useEffect } from "react";
 import TextEditor from "../../../../components/TextEditor/TextEditor";
 import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
@@ -15,8 +16,16 @@ const PostEditorOverlay: React.FC<IPostEditorOverlayProps> = ({
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
+
+  const { focusEditor } = textEditorContext;
+
+  useEffect(() => {
+    if (showOverlay) {
+      focusEditor();
+    }
+  }, [focusEditor, showOverlay]);
 
   return (
     <>

@@ -1,7 +1,20 @@
-import { EditorState, convertToRaw, Modifier } from "draft-js";
-import createMentionPlugin, { MentionData } from "@draft-js-plugins/mention";
-
-import createHashtagPlugin from "@draft-js-plugins/hashtag";
+import {
+  EditorState,
+  convertToRaw,
+  Modifier,
+  RawDraftEntityRange,
+  ContentState,
+  RawDraftContentState,
+  RawDraftEntity,
+  convertFromRaw,
+} from "draft-js";
+import createMentionPlugin, {
+  MentionData,
+  MentionPluginConfig,
+} from "@draft-js-plugins/mention";
+import createHashtagPlugin, {
+  HashtagPluginConfig,
+} from "@draft-js-plugins/hashtag";
 
 import { HASHTAG_REGEX } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
@@ -18,13 +31,23 @@ const getPlainText = (editorState: EditorState): string => {
   return plainText;
 };
 
-const getMentionSources = (editorState: EditorState): MentionData[] => {
+const getMentionSources = (
+  editorState: EditorState
+): {
+  mentionedPositions: RawDraftEntityRange[];
+  mentionedSources: MentionData[];
+} => {
   const currentContent = editorState.getCurrentContent();
-  const contentEntityMap = convertToRaw(currentContent).entityMap;
+  const rawContentState = convertToRaw(currentContent);
+  const contentEntityMap = rawContentState.entityMap;
   const mentionedSources = Object.values(contentEntityMap).map((entity) => {
     return entity.data.mention as MentionData;
   });
-  return mentionedSources;
+
+  return {
+    mentionedPositions: rawContentState.blocks[0].entityRanges,
+    mentionedSources,
+  };
 };
 
 const getContentTextWithParsedMentions = (
@@ -32,13 +55,20 @@ const getContentTextWithParsedMentions = (
   contentText: string
 ): string => {
   let contentTextWithParsedMentions = contentText;
-  const mentionedSources = getMentionSources(editorState);
-  mentionedSources.forEach((source) => {
-    contentTextWithParsedMentions = contentTextWithParsedMentions.replace(
-      `@${source.name}`,
-      `@user_${source.id}`
-    );
-  });
+  const { mentionedPositions, mentionedSources } =
+    getMentionSources(editorState);
+  for (let index = mentionedPositions.length - 1; index >= 0; index -= 1) {
+    const startIndex = mentionedPositions[index].offset;
+    const endIndex = startIndex + mentionedPositions[index].length;
+
+    contentTextWithParsedMentions =
+      contentTextWithParsedMentions.substring(0, startIndex) +
+      `@user_${mentionedSources[index].id}` +
+      contentTextWithParsedMentions.substring(
+        endIndex,
+        contentTextWithParsedMentions.length
+      );
+  }
   return contentTextWithParsedMentions;
 };
 
@@ -56,26 +86,31 @@ const getStringifiedRawText = (editorState: EditorState): string => {
   return stringifiedRawState;
 };
 
-const getNewEditorStateWithMention = (mentionedSource: IRelatedSource) => {
-  const newEditorState = EditorState.createEmpty();
-  const stateWithEntity = newEditorState
-    .getCurrentContent()
-    .createEntity("mention", "IMMUTABLE", {
+const getNewContentState = (mentionedSource?: IRelatedSource): ContentState => {
+  if (!mentionedSource) {
+    return ContentState.createFromText("");
+  }
+  const rawContent = convertToRaw(
+    ContentState.createFromText(mentionedSource.name)
+  );
+  const rawState: RawDraftEntity = {
+    type: "mention",
+    mutability: "IMMUTABLE",
+    data: {
       mention: {
         id: mentionedSource.id,
         name: mentionedSource.name,
         title: mentionedSource.headline,
         avatar: mentionedSource.displayPictureUrl,
       },
-    });
-  const editorContent = Modifier.insertText(
-    stateWithEntity,
-    newEditorState.getSelection(),
-    `@${mentionedSource.name}`,
-    undefined,
-    stateWithEntity.getLastCreatedEntityKey()
-  );
-  return EditorState.createWithContent(editorContent);
+    },
+  };
+  const entityRanges: RawDraftEntityRange[] = [
+    { key: 0, offset: 0, length: mentionedSource.name.length },
+  ];
+  rawContent.entityMap = { ["0"]: rawState };
+  rawContent.blocks = [{ ...rawContent.blocks[0], entityRanges }];
+  return convertFromRaw(rawContent);
 };
 
 const getAllHashtagsFromPlainText = (text: string): string[] => {
@@ -93,10 +128,9 @@ const mentionsPluginThemeOption = {
   mentionSuggestionsEntryFocused: "mentionSuggestionsEntryFocused",
 };
 
-const postMentionsPlugin = createMentionPlugin({
+const postMentionsPluginConfig: MentionPluginConfig = {
   entityMutability: "IMMUTABLE",
   theme: mentionsPluginThemeOption,
-  mentionPrefix: "@",
   supportWhitespace: true,
   popperOptions: {
     strategy: "absolute",
@@ -116,16 +150,15 @@ const postMentionsPlugin = createMentionPlugin({
       },
     ],
   },
-});
+};
 
-const commentMentionsPlugin = createMentionPlugin({
+const commentMentionsPluginConfig: MentionPluginConfig = {
   entityMutability: "IMMUTABLE",
   theme: mentionsPluginThemeOption,
-  mentionPrefix: "@",
   supportWhitespace: true,
   popperOptions: {
     strategy: "absolute",
-    placement: "top",
+    placement: "top-start",
     modifiers: [
       {
         name: "offset",
@@ -135,7 +168,7 @@ const commentMentionsPlugin = createMentionPlugin({
       },
     ],
   },
-});
+};
 
 const mentionSuggestionsEntryTheme = (theme: Theme) => ({
   transition: `background-color 0.4s cubic-bezier(0.27, 1.27, 0.48, 0.56)`,
@@ -179,15 +212,26 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
   theme: Theme
 ) => ({
   [`.${mentionsPluginThemeOption.mentionSuggestions}`]: {
+    position: "absolute",
     width: "300px",
     maxHeight: "400px",
     overflowY: "auto",
-    paddingBottom: "8px",
+    zIndex: 1,
   },
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopup}`]: {},
   [`.${mentionsPluginThemeOption.mentionSuggestionsPopupVisible}`]: {
+    zIndex: 2,
+    backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.secondary.main}`,
+    borderRadius: "0.4rem",
+    boxShadow:
+      "0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%)",
+
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: "0",
+      minHeight: "200px",
+    },
   },
 
   [`.${mentionsPluginThemeOption.mentionSuggestionsEntry}`]:
@@ -199,7 +243,7 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
   },
 
   [`.${mentionsPluginThemeOption.mention}`]: {
-    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
@@ -207,31 +251,56 @@ const hashtagsPluginThemeOption = {
   hashtag: "hashtag",
 };
 
-const hashtagsPlugin = createHashtagPlugin({
+const hashtagsPluginConfig: HashtagPluginConfig = {
   theme: hashtagsPluginThemeOption,
+};
+
+const postHashtagsPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${hashtagsPluginThemeOption.hashtag}`]: {
+    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+  },
+});
+
+const commentHashtagsPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${hashtagsPluginThemeOption.hashtag}`]: {
+    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
+  },
 });
 
 const utils = {
   getStringifiedRawText,
   getContentText,
   getAllHashtagsFromPlainText,
-  getNewEditorStateWithMention,
+  getNewContentState,
 };
 
 const editorPlugins = {
+  createMentionPlugin,
+  createHashtagPlugin,
+
   postMentions: {
-    plugin: postMentionsPlugin,
+    pluginConfig: postMentionsPluginConfig,
     themeOption: mentionsPluginThemeOption,
     theme: postMentionPluginOverrideTheme,
   },
   commentMentions: {
-    plugin: commentMentionsPlugin,
-    themeOptions: mentionsPluginThemeOption,
+    pluginConfig: commentMentionsPluginConfig,
+    themeOption: mentionsPluginThemeOption,
     theme: commentMentionPluginOverrideTheme,
   },
-  hashtags: {
-    plugin: hashtagsPlugin,
+  postHashtags: {
+    pluginConfig: hashtagsPluginConfig,
     themeOption: hashtagsPluginThemeOption,
+    theme: postHashtagsPluginOverrideTheme,
+  },
+  commentHashtags: {
+    pluginConfig: hashtagsPluginConfig,
+    themeOption: hashtagsPluginThemeOption,
+    theme: commentHashtagsPluginOverrideTheme,
   },
 };
 

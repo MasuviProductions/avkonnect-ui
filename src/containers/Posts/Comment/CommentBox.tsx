@@ -2,6 +2,7 @@ import { Box, Link, Grid, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../constants/app";
+import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import { simpleLinkSx } from "../../../styles/sx";
 import { parseContentText } from "../../../utils/component";
@@ -18,12 +19,17 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
   commentMediaUrl,
   isEdited = false,
 }) => {
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
   const {
     sourceInfo: { name, headline },
     createdAt,
     sourceId: userId,
     relatedSourceMap,
-  } = useResourceContext();
+  } = resourceContext;
   return (
     <>
       <Box sx={commentCardSx}>

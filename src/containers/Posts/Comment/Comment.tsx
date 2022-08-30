@@ -5,6 +5,7 @@ import CommentBox from "./CommentBox";
 import { userAvatarSx } from "../../../styles/sx";
 import { usernameToColor } from "../../../utils/generic";
 import { useResourceContext } from "../../../contexts/ResourceContext";
+import { LABELS } from "../../../constants/labels";
 
 export interface ICommentProps {
   commentText: string;
@@ -12,7 +13,12 @@ export interface ICommentProps {
 }
 
 const Comment: React.FC<ICommentProps> = ({ commentText, onReplyClick }) => {
-  const { sourceInfo } = useResourceContext();
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { sourceInfo } = resourceContext;
 
   const { name, displayPictureUrl } = sourceInfo;
   return (

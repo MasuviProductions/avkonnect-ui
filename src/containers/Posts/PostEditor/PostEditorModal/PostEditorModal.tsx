@@ -1,5 +1,7 @@
 import { Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
+import { useEffect } from "react";
+
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
 import "draft-js/dist/Draft.css";
@@ -16,8 +18,16 @@ const PostEditorModal: React.FC<IPostEditorModalProps> = ({
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
-    throw Error("TextEditorContext not initialized");
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
+
+  const { focusEditor } = textEditorContext;
+
+  useEffect(() => {
+    if (showModal) {
+      focusEditor();
+    }
+  }, [focusEditor, showModal]);
 
   return (
     <>

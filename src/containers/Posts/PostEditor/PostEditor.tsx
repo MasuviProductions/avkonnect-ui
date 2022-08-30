@@ -70,37 +70,33 @@ const PostEditor: React.FC<IPostEditorProps> = ({
 
   return (
     <>
-      <Hidden mdUp>
-        <TextEditorProvider
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
-          }}
-          mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
-          onSaveContent={handlePostCreate}
-        >
+      <TextEditorProvider
+        pluginConfig={{
+          hashtags: {
+            plugin: DRAFTJS.editorPlugins.postHashtags.pluginConfig,
+            themeStyle: DRAFTJS.editorPlugins.postHashtags.theme,
+          },
+          mentions: {
+            plugin: DRAFTJS.editorPlugins.postMentions.pluginConfig,
+            themeStyle: DRAFTJS.editorPlugins.postMentions.theme,
+          },
+        }}
+        onSaveContent={handlePostCreate}
+      >
+        <Hidden mdUp>
           <PostEditorOverlay
             showOverlay={showPostEditor}
             onOverlayClose={onPostEditorClose}
           />
-        </TextEditorProvider>
-      </Hidden>
+        </Hidden>
 
-      <Hidden mdDown>
-        <TextEditorProvider
-          plugins={{
-            hashtags: DRAFTJS.editorPlugins.hashtags.plugin,
-            mentions: DRAFTJS.editorPlugins.postMentions.plugin,
-          }}
-          mentionsInterpolationStyle={DRAFTJS.editorPlugins.postMentions.theme}
-          onSaveContent={handlePostCreate}
-        >
+        <Hidden mdDown>
           <PostEditorModal
             showModal={showPostEditor}
             onModalClose={onPostEditorClose}
           />
-        </TextEditorProvider>
-      </Hidden>
+        </Hidden>
+      </TextEditorProvider>
     </>
   );
 };
