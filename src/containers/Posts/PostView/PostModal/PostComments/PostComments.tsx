@@ -80,6 +80,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
 
               {replyEditorCommentId === comment.id && (
                 <CommentEditor
+                  key={`comment-editor-${comment.id}`}
                   submitButtonText={LABELS.REPLY}
                   mentionedSource={mentionedSource}
                 />

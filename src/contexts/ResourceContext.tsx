@@ -169,7 +169,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const [commentsCountState, setCommentsCountState] =
     useState<ICommentCountApiModel>(commentsCount);
 
-  const [loadedCommentsState, setLoadedComments] =
+  const [loadedCommentsState, setLoadedCommentsState] =
     useState<ICommentApiResponseModel[]>(loadedComments);
 
   const incrementReactionCount = (reaction: IReactionTypes) => {

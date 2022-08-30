@@ -1,17 +1,22 @@
-import { GlobalStyles, Theme } from "@mui/material";
-import { FunctionInterpolation, Interpolation } from "@emotion/react";
+import { GlobalStyles, Hidden } from "@mui/material";
+import { LABELS } from "../../../constants/labels";
+import { useTextEditorContext } from "../../../contexts/TextEditorContext";
 import DRAFTJS from "../../../utils/draftjs";
-import { decoratedLinkSx } from "../../../styles/sx";
 
 interface IHashtagsInitProps {}
 
 const HashtagsInit: React.FC<IHashtagsInitProps> = ({}) => {
-  return <GlobalStyles styles={hashtagPluginOverrideTheme} />;
+  const textEditorContext = useTextEditorContext();
+  if (!textEditorContext) {
+    throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
+  }
+
+  const { hashtagsInterpolationStyle } = textEditorContext;
+  return (
+    <>
+      <GlobalStyles styles={hashtagsInterpolationStyle} />
+    </>
+  );
 };
 
-const hashtagPluginOverrideTheme: Interpolation<Theme> = (theme: Theme) => ({
-  [`.${DRAFTJS.editorPlugins.hashtags.themeOption.hashtag}`]: {
-    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
-  },
-});
 export default HashtagsInit;

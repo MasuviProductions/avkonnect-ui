@@ -3,6 +3,10 @@ import {
   convertToRaw,
   Modifier,
   RawDraftEntityRange,
+  ContentState,
+  RawDraftContentState,
+  RawDraftEntity,
+  convertFromRaw,
 } from "draft-js";
 import createMentionPlugin, {
   MentionData,
@@ -39,6 +43,7 @@ const getMentionSources = (
   const mentionedSources = Object.values(contentEntityMap).map((entity) => {
     return entity.data.mention as MentionData;
   });
+
   return {
     mentionedPositions: rawContentState.blocks[0].entityRanges,
     mentionedSources,
@@ -81,26 +86,31 @@ const getStringifiedRawText = (editorState: EditorState): string => {
   return stringifiedRawState;
 };
 
-const getNewEditorStateWithMention = (mentionedSource: IRelatedSource) => {
-  const newEditorState = EditorState.createEmpty();
-  const stateWithEntity = newEditorState
-    .getCurrentContent()
-    .createEntity("mention", "IMMUTABLE", {
+const getNewContentState = (mentionedSource?: IRelatedSource): ContentState => {
+  if (!mentionedSource) {
+    return ContentState.createFromText("");
+  }
+  const rawContent = convertToRaw(
+    ContentState.createFromText(mentionedSource.name)
+  );
+  const rawState: RawDraftEntity = {
+    type: "mention",
+    mutability: "IMMUTABLE",
+    data: {
       mention: {
         id: mentionedSource.id,
         name: mentionedSource.name,
         title: mentionedSource.headline,
         avatar: mentionedSource.displayPictureUrl,
       },
-    });
-  const editorContent = Modifier.insertText(
-    stateWithEntity,
-    newEditorState.getSelection(),
-    `${mentionedSource.name}`,
-    undefined,
-    stateWithEntity.getLastCreatedEntityKey()
-  );
-  return EditorState.createWithContent(editorContent);
+    },
+  };
+  const entityRanges: RawDraftEntityRange[] = [
+    { key: 0, offset: 0, length: mentionedSource.name.length },
+  ];
+  rawContent.entityMap = { ["0"]: rawState };
+  rawContent.blocks = [{ ...rawContent.blocks[0], entityRanges }];
+  return convertFromRaw(rawContent);
 };
 
 const getAllHashtagsFromPlainText = (text: string): string[] => {
@@ -233,7 +243,7 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
   },
 
   [`.${mentionsPluginThemeOption.mention}`]: {
-    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
@@ -245,11 +255,27 @@ const hashtagsPluginConfig: HashtagPluginConfig = {
   theme: hashtagsPluginThemeOption,
 };
 
+const postHashtagsPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${hashtagsPluginThemeOption.hashtag}`]: {
+    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+  },
+});
+
+const commentHashtagsPluginOverrideTheme: Interpolation<Theme> = (
+  theme: Theme
+) => ({
+  [`.${hashtagsPluginThemeOption.hashtag}`]: {
+    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
+  },
+});
+
 const utils = {
   getStringifiedRawText,
   getContentText,
   getAllHashtagsFromPlainText,
-  getNewEditorStateWithMention,
+  getNewContentState,
 };
 
 const editorPlugins = {
@@ -266,9 +292,15 @@ const editorPlugins = {
     themeOption: mentionsPluginThemeOption,
     theme: commentMentionPluginOverrideTheme,
   },
-  hashtags: {
+  postHashtags: {
     pluginConfig: hashtagsPluginConfig,
     themeOption: hashtagsPluginThemeOption,
+    theme: postHashtagsPluginOverrideTheme,
+  },
+  commentHashtags: {
+    pluginConfig: hashtagsPluginConfig,
+    themeOption: hashtagsPluginThemeOption,
+    theme: commentHashtagsPluginOverrideTheme,
   },
 };
 

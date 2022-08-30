@@ -15,7 +15,6 @@ const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
   }
 
   const {
-    editorKey,
     mentionSuggestionsComponent: MentionSuggestions,
     mentionsInterpolationStyle,
   } = textEditorContext;
@@ -26,7 +25,6 @@ const TagSuggestions: React.FC<ITagSuggestionsProps> = ({}) => {
   const [mentionSuggestionOpen, setMentionSuggestionOpen] = useState(false);
 
   const onOpenChange = useCallback((_open: boolean) => {
-    // if (_open === false) return;
     setMentionSuggestionOpen(_open);
   }, []);
 

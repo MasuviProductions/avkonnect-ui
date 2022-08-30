@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { EditorState } from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import Editor, { EditorPlugin } from "@draft-js-plugins/editor";
 import { MentionSuggestionsPubProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/MentionSuggestions";
 import { HashtagPluginConfig } from "@draft-js-plugins/hashtag";
@@ -31,6 +31,7 @@ interface ITextEditorContext {
   onChangeEditorState: (_editorState: EditorState) => void;
   editorPlugins: EditorPlugin[];
   mentionsInterpolationStyle?: Interpolation<Theme>;
+  hashtagsInterpolationStyle?: Interpolation<Theme>;
   isEditorFocused: boolean;
   onChangeEditorFocus: (_focus: boolean) => void;
   mentionSuggestionsComponent: ComponentType<MentionSuggestionsPubProps>;
@@ -38,6 +39,7 @@ interface ITextEditorContext {
     content: IPostRequestContentApiModel,
     hashtags?: string[]
   ) => void;
+  focusEditor: () => void;
 }
 
 const TextEditorContext = createContext<ITextEditorContext | undefined>(
@@ -45,12 +47,11 @@ const TextEditorContext = createContext<ITextEditorContext | undefined>(
 );
 
 interface ITextEditorProvider {
-  initialEditorState?: EditorState;
+  contentState?: ContentState;
   pluginConfig: {
-    hashtags: HashtagPluginConfig;
-    mentions: MentionPluginConfig;
+    hashtags: { plugin: HashtagPluginConfig; themeStyle: Interpolation<Theme> };
+    mentions: { plugin: MentionPluginConfig; themeStyle: Interpolation<Theme> };
   };
-  mentionsInterpolationStyle: Interpolation<Theme>;
   onSaveContent: (
     content: IPostRequestContentApiModel,
     hashtags?: string[]
@@ -58,9 +59,8 @@ interface ITextEditorProvider {
 }
 
 const TextEditorProvider: React.FC<ITextEditorProvider> = ({
-  initialEditorState,
+  contentState,
   pluginConfig,
-  mentionsInterpolationStyle,
   onSaveContent,
   children,
 }) => {
@@ -69,24 +69,24 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
   const [isEditorFocused, setIsEditorFocused] = useState<boolean>(false);
   const [editorPlugins, setEditorPlugins] = useState<EditorPlugin[]>([]);
   const [editorState, setEditorState] = useState<EditorState>(
-    initialEditorState || EditorState.createEmpty()
+    EditorState.createEmpty()
   );
 
   // ******** Init plugins ********
   useMemo(() => {
     const plugin = DRAFTJS.editorPlugins.createHashtagPlugin(
-      pluginConfig.hashtags
+      pluginConfig.hashtags.plugin
     );
     setEditorPlugins((prev) => [...prev, plugin]);
-  }, [pluginConfig.hashtags]);
+  }, [pluginConfig.hashtags.plugin]);
 
   const MentionSuggestionsComponent = useMemo(() => {
     const plugin = DRAFTJS.editorPlugins.createMentionPlugin(
-      pluginConfig.mentions
+      pluginConfig.mentions.plugin
     );
     setEditorPlugins((prev) => [...prev, plugin]);
     return plugin.MentionSuggestions;
-  }, [pluginConfig.mentions]);
+  }, [pluginConfig.mentions.plugin]);
   // ******************************
 
   const handleChangeEditorState = useCallback((_editorState: EditorState) => {
@@ -97,11 +97,23 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
     setIsEditorFocused(_focus);
   };
 
+  const focusEditor = useCallback(() => {
+    editorRef.current?.focus();
+  }, []);
+
   useEffect(() => {
-    if (initialEditorState) {
-      setEditorState(initialEditorState);
+    if (contentState) {
+      setEditorState((prev) => {
+        const resetEditorState = EditorState.push(
+          prev,
+          contentState,
+          "remove-range"
+        );
+        const focusedEditorState = EditorState.moveFocusToEnd(resetEditorState);
+        return focusedEditorState;
+      });
     }
-  }, [initialEditorState]);
+  }, [contentState]);
 
   return (
     <TextEditorContext.Provider
@@ -110,12 +122,14 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         editorRef,
         editorState,
         editorPlugins,
-        mentionsInterpolationStyle,
+        mentionsInterpolationStyle: pluginConfig.mentions.themeStyle,
+        hashtagsInterpolationStyle: pluginConfig.hashtags.themeStyle,
         isEditorFocused,
         onChangeEditorState: handleChangeEditorState,
         onChangeEditorFocus: handleChangeEditorFocus,
         mentionSuggestionsComponent: MentionSuggestionsComponent,
         onSaveContent: onSaveContent,
+        focusEditor,
       }}
     >
       {children}

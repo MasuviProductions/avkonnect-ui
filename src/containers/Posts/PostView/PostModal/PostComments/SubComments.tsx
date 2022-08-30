@@ -85,7 +85,9 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
               onClick={handleClickLoadMore}
               sx={decoratedLinkSx(12)}
             >
-              {LABELS.LOAD_MORE_REPLIES}
+              {uptoDateComments.length === 0
+                ? LABELS.VIEW_REPLIES
+                : LABELS.LOAD_MORE_REPLIES}
             </Typography>
           </Box>
         )}
