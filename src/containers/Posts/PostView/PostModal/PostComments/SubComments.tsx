@@ -1,6 +1,4 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
@@ -9,7 +7,6 @@ import { IUseComments } from "../../../../../hooks/useComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import { decoratedLinkSx } from "../../../../../styles/sx";
-import CommentEditor from "../../../CommentEditor";
 
 interface ISubCommentsProps {
   onReplyClick: (

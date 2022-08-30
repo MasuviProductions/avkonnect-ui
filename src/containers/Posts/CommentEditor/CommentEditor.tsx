@@ -1,5 +1,5 @@
 import { Hidden } from "@mui/material";
-import { ContentState, EditorState } from "draft-js";
+import { ContentState } from "draft-js";
 import { useEffect, useState } from "react";
 import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";

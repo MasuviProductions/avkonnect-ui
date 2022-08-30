@@ -1,4 +1,4 @@
-import { Button, Grid, Hidden, Theme, Typography } from "@mui/material";
+import { Grid, Hidden, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { LABELS } from "../../../../../constants/labels";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";

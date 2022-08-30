@@ -1,10 +1,8 @@
 import {
   EditorState,
   convertToRaw,
-  Modifier,
   RawDraftEntityRange,
   ContentState,
-  RawDraftContentState,
   RawDraftEntity,
   convertFromRaw,
 } from "draft-js";

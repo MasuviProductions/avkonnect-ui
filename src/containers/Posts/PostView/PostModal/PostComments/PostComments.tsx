@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";

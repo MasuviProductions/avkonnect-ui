@@ -71,9 +71,10 @@ const useSourceSearch = (limit: number, withInfiniteLoading: boolean) => {
     if (searchString) {
       setUpToDateUsersSearch([]);
       setNextPageNumber(1);
+      clearGetUsersSearchQuery();
       triggerGetUsersApi();
     }
-  }, [triggerGetUsersApi, searchString]);
+  }, [triggerGetUsersApi, searchString, clearGetUsersSearchQuery]);
 
   useEffect(() => {
     if (!searchString) {
