@@ -1,9 +1,9 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { REACTION_CONFIGS } from "../../../../../constants/app";
 import { LABELS } from "../../../../../constants/labels";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
 import { IReactionTypes } from "../../../../../interfaces/api/external";
-import { reactionButtonSx } from "../../../../../styles/sx";
+import { reactionTextSx, simpleLinkSx } from "../../../../../styles/sx";
 
 interface ICommentReactionsProps {}
 
@@ -13,34 +13,34 @@ const CommentReactions: React.FC<ICommentReactionsProps> = () => {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
-  const {
-    userReaction,
-    updateUserReaction,
-    reactionsCount,
-    totalReactionsCount,
-  } = resourceContext;
+  const { userReaction, updateUserReaction, totalReactionsCount } =
+    resourceContext;
 
-  const handleReactionClick = (reaction: IReactionTypes) => {
+  const handleReactionClick = (reaction: IReactionTypes) => () => {
     updateUserReaction(reaction);
   };
 
   return (
     <>
       <Grid container>
-        <Grid item>
-          <Button
-            size="small"
-            sx={reactionButtonSx(userReaction)}
-            onClick={() => handleReactionClick("like")}
+        <Grid item px={1}>
+          <Typography
+            paragraph
+            onClick={handleReactionClick("like")}
+            sx={reactionTextSx(userReaction)}
           >
             {REACTION_CONFIGS[userReaction || "like"].label}
-          </Button>
+          </Typography>
         </Grid>
 
-        <Grid>
-          <Button size="small" sx={reactionButtonSx(userReaction)}>
+        <Grid item>
+          <Typography
+            paragraph
+            onClick={handleReactionClick("like")}
+            sx={simpleLinkSx(10)}
+          >
             {totalReactionsCount}
-          </Button>
+          </Typography>
         </Grid>
       </Grid>
     </>

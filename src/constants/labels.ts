@@ -281,6 +281,8 @@ export const LABELS = {
   REPLY: "Reply",
   LOAD_MORE_REPLIES: "Load more replies",
   VIEW_REPLIES: "View replies",
+  REPLY_COUNT: (replyCount: number) =>
+    `${replyCount} ${replyCount === 1 ? "Reply" : "Replies"}`,
   VIEW_MORE_COMMENTS: "View more comments",
 
   // Reactions

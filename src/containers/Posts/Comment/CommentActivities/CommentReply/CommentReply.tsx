@@ -1,7 +1,8 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Hidden, Theme, Typography } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
 import { LABELS } from "../../../../../constants/labels";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
-import { reactionButtonSx } from "../../../../../styles/sx";
+import { reactionTextSx } from "../../../../../styles/sx";
 
 interface ICommentReplyProps {
   onReplyClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,23 +20,42 @@ const CommentReply: React.FC<ICommentReplyProps> = ({ onReplyClick }) => {
 
   return (
     <>
-      <Grid container>
+      <Grid container spacing={1}>
         <Grid item>
-          <Button sx={reactionButtonSx()} onClick={onReplyClick}>
+          <Typography paragraph onClick={onReplyClick} sx={reactionTextSx()}>
             {LABELS.REPLY}
-          </Button>
+          </Typography>
         </Grid>
 
-        {showRepliesCount && (
+        {showRepliesCount && commentsCount.comment > 0 && (
           <Grid item>
-            <Button sx={reactionButtonSx()} onClick={onReplyClick}>
-              {`${commentsCount.comment} Replies`}
-            </Button>
+            <Hidden mdUp>
+              <Typography
+                paragraph
+                onClick={onReplyClick}
+                sx={reactionTextSx()}
+              >
+                {LABELS.REPLY_COUNT(commentsCount.comment)}
+              </Typography>
+            </Hidden>
+
+            <Hidden mdDown>
+              <Typography paragraph sx={replyCountMutedSx}>
+                {LABELS.REPLY_COUNT(commentsCount.comment)}
+              </Typography>
+            </Hidden>
           </Grid>
         )}
       </Grid>
     </>
   );
 };
+
+const replyCountMutedSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  ...reactionTextSx()(theme),
+  cursor: "text",
+  fontWeight: "normal",
+  color: theme.palette.text.secondary,
+});
 
 export default CommentReply;
