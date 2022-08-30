@@ -44,7 +44,9 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
       event: React.MouseEvent<HTMLButtonElement>,
       withTaggedSource?: IRelatedSource
     ) => {
-      setMentionedSource(withTaggedSource);
+      setMentionedSource(
+        withTaggedSource ? { ...withTaggedSource } : undefined
+      );
       setReplyEditorCommentId(commentId);
     };
 

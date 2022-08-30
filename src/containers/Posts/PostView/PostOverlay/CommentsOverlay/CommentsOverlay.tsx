@@ -43,7 +43,9 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
     withTaggedSource?: IRelatedSource
   ) => {
     if (withTaggedSource) {
-      setMentionedSource(withTaggedSource);
+      setMentionedSource(
+        withTaggedSource ? { ...withTaggedSource } : undefined
+      );
     }
   };
 
