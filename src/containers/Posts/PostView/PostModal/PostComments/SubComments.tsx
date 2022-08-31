@@ -3,7 +3,7 @@ import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import { decoratedLinkSx } from "../../../../../styles/sx";
@@ -29,7 +29,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
     relatedSourcesMap,
     triggerGetCommentsApi,
     getCommentsFetching,
-  } = commentsQuery as IUseComments;
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleClickLoadMore = () => {
     triggerGetCommentsApi();

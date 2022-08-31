@@ -14,6 +14,7 @@ import {
 } from "../interfaces/api/external";
 import {
   createComment,
+  deleteComment,
   getCommentsComments,
   getPostComments,
 } from "../utils/api";
@@ -23,7 +24,7 @@ import useInfiniteLoading from "./useInfiniteLoading";
 export type ICommentsResponseApiModel = IGetPostCommentsApiResponse &
   IGetCommentsCommentsApiResponse;
 
-export interface IUseComments {
+export interface IUseCommentsForResourceReturn {
   uptoDateComments: ICommentApiModel[];
   relatedSourcesMap: Record<string, IRelatedSource>;
   resetQueryData: () => void;
@@ -31,17 +32,20 @@ export interface IUseComments {
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   getCommentsFetching: boolean;
-  appendComment: (comment: ICommentApiModel) => void;
-  addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
+  appendCommentToResource: (comment: ICommentApiModel) => void;
+  addCommentToResource: (
+    comment: Omit<ICommentContentApiModel, "createdAt">
+  ) => void;
+  removeCommentToResource: (commentId: string) => void;
 }
 
-export const useComments = (
+export const useCommentsForResource = (
   type: IResourceTypes,
   id: string,
   withInfiniteLoading: boolean,
   onCommentAdd: () => void,
   onCommentRemove: () => void
-): IUseComments => {
+): IUseCommentsForResourceReturn => {
   const { authUser, accessToken } = useAuthContext();
 
   const [uptoDateComments, setUptoDateComments] = useState<ICommentApiModel[]>(
@@ -55,6 +59,7 @@ export const useComments = (
   const [createCommentReqBody, setCreateCommentReqBody] = useState<
     ICreateCommentApiRequest | undefined
   >();
+  const [commentToDelete, setCommentToDelete] = useState<string | undefined>();
 
   const {
     data: getCommentsRes,
@@ -103,7 +108,24 @@ export const useComments = (
     { cacheTime: 0, refetchInterval: false, enabled: !!createCommentReqBody }
   );
 
-  const addComment = (comment: Omit<ICommentContentApiModel, "createdAt">) => {
+  const {
+    data: deleteCommentResData,
+    // status: deleteCommentStatus,
+    isFetching: deleteCommentFetching,
+    remove: clearDeleteCommentQueryData,
+  } = useQuery(
+    `DELETE:${API_ENDPOINTS.DELETE_COMMENT.key}-${commentToDelete}`,
+    () => deleteComment(accessToken as string, commentToDelete as string),
+    { cacheTime: 0, refetchInterval: false, enabled: !!commentToDelete }
+  );
+
+  const removeCommentToResource = (commentId: string) => {
+    setCommentToDelete(commentId);
+  };
+
+  const addCommentToResource = (
+    comment: Omit<ICommentContentApiModel, "createdAt">
+  ) => {
     setCreateCommentReqBody({
       resourceId: id,
       resourceType: type,
@@ -155,18 +177,18 @@ export const useComments = (
   );
 
   const mergeComments = useCallback((comments: ICommentApiModel[]) => {
-    setUptoDateComments((prev) => [
-      ...prev,
-      ...(comments.filter((comment) => {
+    setUptoDateComments((prev) => {
+      const updatedComments = comments.filter((comment) => {
         const isCommentAlreadyPresent = prev.findIndex(
           (cmt) => cmt.id === comment.id
         );
         return isCommentAlreadyPresent < 0;
-      }) || []),
-    ]);
+      });
+      return [...prev, ...updatedComments];
+    });
   }, []);
 
-  const appendComment = useCallback(
+  const appendCommentToResource = useCallback(
     (comment: ICommentApiModel) => {
       handleUpdateRelatedSources(comment.relatedSources);
       mergeComments([comment]);
@@ -192,16 +214,32 @@ export const useComments = (
 
   useEffect(() => {
     if (createCommentResData?.data) {
-      appendComment(createCommentResData.data);
-      onCommentAdd();
+      appendCommentToResource(createCommentResData.data);
       setCreateCommentReqBody(undefined);
       clearCreateCommentQueryData();
+      onCommentAdd();
     }
   }, [
-    appendComment,
+    appendCommentToResource,
     clearCreateCommentQueryData,
     createCommentResData?.data,
     onCommentAdd,
+  ]);
+
+  useEffect(() => {
+    if (deleteCommentResData?.data) {
+      setCommentToDelete(undefined);
+      setUptoDateComments((prev) =>
+        prev.filter((comment) => comment.id !== deleteCommentResData?.data?.id)
+      );
+      onCommentRemove();
+
+      clearDeleteCommentQueryData();
+    }
+  }, [
+    clearDeleteCommentQueryData,
+    deleteCommentResData?.data,
+    onCommentRemove,
   ]);
 
   return {
@@ -212,9 +250,10 @@ export const useComments = (
     triggerGetCommentsApi,
     getCommentsStatus,
     getCommentsFetching,
-    appendComment,
-    addComment,
+    appendCommentToResource,
+    addCommentToResource,
+    removeCommentToResource,
   };
 };
 
-export default useComments;
+export default useCommentsForResource;

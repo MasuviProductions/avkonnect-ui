@@ -1,8 +1,16 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../constants/api";
 import { LABELS } from "../constants/labels";
-import useComments, { IUseComments } from "../hooks/useComments";
+import useCommentsForResource, {
+  IUseCommentsForResourceReturn,
+} from "../hooks/useCommentsForResource";
 import {
   ICommentApiModel,
   ICommentCountApiModel,
@@ -35,10 +43,12 @@ interface IResourceContext {
   decrementReactionCount: (reaction: IReactionTypes) => void;
   commentsCount: ICommentCountApiModel;
   totalCommentsCount: number;
-  incrementCommentsCount: () => void;
-  decrementCommentsCount: () => void;
-  commentsQuery?: IUseComments;
+  incrementCommentsCount: (isSubComment?: boolean) => void;
+  decrementCommentsCount: (subCommentCount?: number) => void;
+
+  commentsQuery?: IUseCommentsForResourceReturn;
   allCommentsFetched: boolean;
+  deleteCommentResource: () => void;
 }
 
 const ResourceContext = createContext<IResourceContext | undefined>(undefined);
@@ -107,14 +117,48 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
 
   useEffect(() => {
     if (createReactionResStatus === "success") {
-      clearCreateReactionQuery;
+      clearCreateReactionQuery();
     }
   }, [clearCreateReactionQuery, createReactionResStatus]);
 
-  const incrementCommentsCount = () => {
-    setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
-    if (type === "comment") {
-      parentResourceContext?.incrementCommentsCount();
+  const incrementCommentsCount = (isSubComment?: boolean) => {
+    if (resourceType === "post") {
+      parentResourceContext?.incrementCommentsCount(true);
+      setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
+    } else {
+      if (isSubComment) {
+        setCommentsCountState((prev) => ({
+          ...prev,
+          subComment: prev.subComment + 1,
+        }));
+      } else {
+        setCommentsCountState((prev) => ({
+          ...prev,
+          comment: prev.comment + 1,
+        }));
+      }
+    }
+  };
+
+  const decrementCommentsCount = (subCommentCount?: number) => {
+    if (resourceType === "post") {
+      parentResourceContext?.decrementCommentsCount(1);
+      setCommentsCountState((prev) => ({
+        ...prev,
+        comment: prev.comment - 1,
+      }));
+    } else {
+      if (typeof subCommentCount !== "undefined") {
+        setCommentsCountState((prev) => ({
+          ...prev,
+          subComment: prev.subComment - subCommentCount,
+        }));
+      } else {
+        setCommentsCountState((prev) => ({
+          ...prev,
+          comment: prev.comment - 1,
+        }));
+      }
     }
   };
 
@@ -143,14 +187,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     }
   };
 
-  const decrementCommentsCount = () => {
-    setCommentsCountState((prev) => ({ ...prev, comment: prev.comment - 1 }));
-    if (type === "comment") {
-      parentResourceContext?.decrementCommentsCount();
-    }
-  };
-
-  const commentsQuery = useComments(
+  const commentsQuery = useCommentsForResource(
     type,
     id,
     true,
@@ -185,9 +222,16 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     }));
   };
 
+  const deleteCommentResource = useCallback(() => {
+    if (resourceType === "post") {
+      parentResourceContext?.decrementCommentsCount(commentsCountState.comment);
+    }
+    parentResourceContext?.commentsQuery?.removeCommentToResource(id);
+  }, [commentsCountState.comment, id, parentResourceContext, resourceType]);
+
   useEffect(() => {
     loadedComments.forEach((comment) => {
-      commentsQuery.appendComment(comment);
+      commentsQuery.appendCommentToResource(comment);
     });
   }, [commentsQuery, loadedComments]);
 
@@ -235,6 +279,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         commentsQuery: commentsQuery,
         allCommentsFetched:
           commentsQuery.uptoDateComments.length === commentsCountState.comment,
+        deleteCommentResource,
       }}
     >
       {children}

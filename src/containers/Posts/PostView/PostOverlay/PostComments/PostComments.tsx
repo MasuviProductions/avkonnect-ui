@@ -4,7 +4,7 @@ import Comment from "../../../Comment";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import CommentsOverlay from "../CommentsOverlay";
 import { ICommentApiModel } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
@@ -25,7 +25,7 @@ const PostComments: React.FC = () => {
   >();
 
   const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
-    commentsQuery as IUseComments;
+    commentsQuery as IUseCommentsForResourceReturn;
 
   const handleOverlayOpen = () => {
     setShowCommentsOverlay(true);

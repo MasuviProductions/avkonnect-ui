@@ -1,12 +1,14 @@
 import { Box, Link, Grid, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { compile } from "path-to-regexp";
-import { APP_ROUTES } from "../../../constants/app";
-import { LABELS } from "../../../constants/labels";
-import { useResourceContext } from "../../../contexts/ResourceContext";
-import { simpleLinkSx } from "../../../styles/sx";
-import { parseContentText } from "../../../utils/component";
-import { getTimeAgo } from "../../../utils/generic";
+import { APP_ROUTES } from "../../../../constants/app";
+import { LABELS } from "../../../../constants/labels";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import { useResourceContext } from "../../../../contexts/ResourceContext";
+import { simpleLinkSx } from "../../../../styles/sx";
+import { parseContentText } from "../../../../utils/component";
+import { getTimeAgo } from "../../../../utils/generic";
+import CommentActions from "./CommentActions";
 
 interface ICommentBoxProps {
   commentText: string;
@@ -19,6 +21,7 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
   commentMediaUrl,
   isEdited = false,
 }) => {
+  const { authUser } = useAuthContext();
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
@@ -30,22 +33,40 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
     sourceId: userId,
     relatedSourceMap,
   } = resourceContext;
+
   return (
     <>
       <Box sx={commentCardSx}>
-        <Grid container spacing={1} justifyContent="space-between">
-          <Grid item>
-            <Link
-              href={compile(APP_ROUTES.PROFILE.route)({ id: userId })}
-              sx={simpleLinkSx()}
-            >
-              {name}
-            </Link>
-            <Typography sx={avatarHeadlineSx}>{headline}</Typography>
-          </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                <Link
+                  href={compile(APP_ROUTES.PROFILE.route)({ id: userId })}
+                  sx={simpleLinkSx()}
+                >
+                  {name}
+                </Link>
+              </Grid>
 
-          <Grid item>
-            <Typography sx={commentTimeSx}>{getTimeAgo(createdAt)}</Typography>
+              <Grid item>
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item>
+                    <Typography sx={commentTimeSx}>
+                      {getTimeAgo(createdAt)}
+                    </Typography>
+                  </Grid>
+                  {authUser?.id === userId && (
+                    <Grid item>
+                      <CommentActions />
+                    </Grid>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid xs={12}>
+            <Typography sx={avatarHeadlineSx}>{headline}</Typography>
           </Grid>
         </Grid>
 

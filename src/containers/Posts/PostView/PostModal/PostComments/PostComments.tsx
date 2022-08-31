@@ -4,7 +4,7 @@ import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
 import CommentEditor from "../../../CommentEditor";
@@ -32,7 +32,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
     relatedSourcesMap,
     triggerGetCommentsApi,
     getCommentsFetching,
-  } = commentsQuery as IUseComments;
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleClickLoadMore = () => {
     triggerGetCommentsApi();

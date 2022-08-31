@@ -470,11 +470,14 @@ export const patchPost = async (
 export const deletePost = async (
   accessToken: string,
   postId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
   const deletePostResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_POST.url(postId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
+    .delete<AVKonnectApiResponse<IPostApiResponse>>(
+      API_ENDPOINTS.DELETE_POST.url(postId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
     .then((res) => res.data);
   return deletePostResponse;
 };
@@ -528,11 +531,14 @@ export const patchComment = async (
 export const deleteComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const deleteCommentResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_COMMENT.url(commentId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
+    .delete<AVKonnectApiResponse<ICommentApiModel>>(
+      API_ENDPOINTS.DELETE_COMMENT.url(commentId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
     .then((res) => res.data);
   return deleteCommentResponse;
 };

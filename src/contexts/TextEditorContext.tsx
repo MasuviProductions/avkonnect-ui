@@ -42,6 +42,7 @@ interface ITextEditorContext {
   mentionSuggestionsComponent: ComponentType<MentionSuggestionsPubProps>;
   focusEditor: () => void;
   saveContent: () => void;
+  isEditorEmpty: boolean;
 }
 
 const TextEditorContext = createContext<ITextEditorContext | undefined>(
@@ -145,6 +146,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         mentionSuggestionsComponent: MentionSuggestionsComponent,
         saveContent: saveContent,
         focusEditor,
+        isEditorEmpty: !editorState.getCurrentContent().hasText(),
       }}
     >
       {children}

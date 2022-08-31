@@ -21,7 +21,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { saveContent, isEditorFocused } = textEditorContext;
+  const { saveContent, isEditorFocused, isEditorEmpty } = textEditorContext;
 
   const { authUser } = useAuthContext();
 
@@ -68,6 +68,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
               <Button
                 color="primary"
                 sx={postButtonSx}
+                disabled={isEditorEmpty}
                 onClick={handleCommentCreate}
               >
                 {submitButtonText}

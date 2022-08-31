@@ -21,7 +21,7 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { saveContent, isEditorFocused } = textEditorContext;
+  const { saveContent, isEditorFocused, isEditorEmpty } = textEditorContext;
 
   const { authUser } = useAuthContext();
 
@@ -76,14 +76,16 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
             </Grid>
 
             <Grid item xs={12} mt={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={postButtonSx}
-                onClick={handleCommentCreate}
-              >
-                {submitButtonText}
-              </Button>
+              {!isEditorEmpty && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={postButtonSx}
+                  onClick={handleCommentCreate}
+                >
+                  {submitButtonText}
+                </Button>
+              )}
             </Grid>
           </Grid>
         </Grid>

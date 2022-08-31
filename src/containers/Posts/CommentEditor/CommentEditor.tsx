@@ -6,7 +6,7 @@ import { useResourceContext } from "../../../contexts/ResourceContext";
 import TextEditorProvider, {
   ITextEditorContent,
 } from "../../../contexts/TextEditorContext";
-import { IUseComments } from "../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../hooks/useCommentsForResource";
 import {
   ICommentContentApiModel,
   IRelatedSource,
@@ -30,7 +30,8 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
   }
 
   const { commentsQuery } = resourceContext;
-  const { addComment } = commentsQuery as IUseComments;
+  const { addCommentToResource } =
+    commentsQuery as IUseCommentsForResourceReturn;
   const [contentState, setContentState] = useState<ContentState>(
     DRAFTJS.utils.getNewContentState()
   );
@@ -41,7 +42,7 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
       mediaUrls: [],
       stringifiedRawContent: content.stringifiedRawContent,
     };
-    addComment(comment);
+    addCommentToResource(comment);
   };
 
   useEffect(() => {

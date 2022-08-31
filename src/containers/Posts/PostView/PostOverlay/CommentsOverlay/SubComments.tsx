@@ -3,7 +3,7 @@ import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment/Comment";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 
@@ -28,7 +28,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
     relatedSourcesMap,
 
     infiniteLoadRef,
-  } = commentsQuery as IUseComments;
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleReplyClickWithSourceTag =
     (withTaggedSource?: IRelatedSource) =>

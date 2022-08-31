@@ -15,7 +15,7 @@ const Feeds: React.FC = () => {
   const { data: getFeedsRes } = useQuery(
     API_ENDPOINTS.GET_USER_FEEDS.key,
     () => getUserFeeds(accessToken as string, authUser?.id as string),
-    {}
+    { refetchInterval: false, refetchOnWindowFocus: false }
   );
 
   if (!getFeedsRes?.data) {
