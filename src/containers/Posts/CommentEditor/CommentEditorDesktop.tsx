@@ -8,7 +8,6 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import TextEditor from "../../../components/TextEditor";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
-import DRAFTJS from "../../../utils/draftjs";
 
 interface ICommentEditorDesktopProps {
   submitButtonText: string;
@@ -22,7 +21,7 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { onSaveContent, editorState, isEditorFocused } = textEditorContext;
+  const { saveContent, isEditorFocused } = textEditorContext;
 
   const { authUser } = useAuthContext();
 
@@ -30,9 +29,7 @@ const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
   const displayPictureUrl = authUser?.displayPictureUrl as string;
 
   const handleCommentCreate = () => {
-    const contentText = DRAFTJS.utils.getContentText(editorState);
-    const hastags = DRAFTJS.utils.getAllHashtagsFromPlainText(contentText);
-    onSaveContent({ text: contentText, mediaUrls: [] }, hastags);
+    saveContent();
   };
 
   return (

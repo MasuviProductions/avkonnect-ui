@@ -254,22 +254,18 @@ export type ISourceTypes = "user" | "company";
 export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
 export type IReactionTypes = typeof REACTIONS[number];
 
-export interface IPostRequestContentApiModel {
-  text: string;
-  mediaUrls?: string[];
-}
-
-export interface ICreatePostApiRequest {
-  content: IPostRequestContentApiModel;
-  hashtags?: string[];
-  visibleOnlyToConnections: boolean;
-  commentsOnlyByConnections: boolean;
-}
-
-interface IPostResponseContentModel {
+export interface IPostContentModel {
   text: string;
   createdAt: Date;
   mediaUrls: string[];
+  stringifiedRawContent: string;
+}
+
+export interface ICreatePostApiRequest {
+  content: Omit<IPostContentModel, "createdAt">;
+  hashtags?: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
 }
 
 interface IRelatedUserInfoResponseModel {
@@ -286,7 +282,7 @@ interface IRelatedUserInfoResponseModel {
 export interface IPostApiResponse {
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel[];
+  contents: IPostContentModel[];
   hashtags: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
@@ -301,7 +297,7 @@ export interface IPostApiResponse {
 }
 
 export interface IPatchPostApiRequest {
-  content: IPostRequestContentApiModel;
+  content: Omit<IPostContentModel, "createdAt">;
   hashtags: string[];
 }
 
@@ -309,6 +305,7 @@ export interface ICommentContentApiModel {
   text: string;
   mediaUrls: string[];
   createdAt: Date;
+  stringifiedRawContent: string;
 }
 
 export interface ICreateCommentApiRequest {
@@ -317,7 +314,7 @@ export interface ICreateCommentApiRequest {
   comment: Omit<ICommentContentApiModel, "createdAt">;
 }
 
-export interface ICommentApiResponseModel {
+export interface ICommentApiModel {
   resourceId: string;
   resourceType: IResourceTypes;
   id: string;
@@ -352,7 +349,7 @@ export interface IGetPostReactionsApiResponse {
 }
 
 export interface IGetPostCommentsApiResponse {
-  comments: ICommentApiResponseModel[];
+  comments: ICommentApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
@@ -417,7 +414,7 @@ export interface IActivityApiModel {
 }
 
 export interface IGetCommentsCommentsApiResponse {
-  comments: ICommentApiResponseModel[];
+  comments: ICommentApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
@@ -451,7 +448,7 @@ interface IUserFeedApiModel {
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel;
+  contents: IPostContentModel;
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;

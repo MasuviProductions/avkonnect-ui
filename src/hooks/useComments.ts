@@ -1,15 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
-import {
-  QueryFunction,
-  QueryKey,
-  useQuery,
-  UseQueryOptions,
-} from "react-query";
+import { useQuery } from "react-query";
 import API_ENDPOINTS from "../constants/api";
 import { useAuthContext } from "../contexts/AuthContext";
 import {
   AVKonnectApiResponse,
-  ICommentApiResponseModel,
+  ICommentApiModel,
   ICommentContentApiModel,
   ICreateCommentApiRequest,
   IGetCommentsCommentsApiResponse,
@@ -29,14 +24,14 @@ export type ICommentsResponseApiModel = IGetPostCommentsApiResponse &
   IGetCommentsCommentsApiResponse;
 
 export interface IUseComments {
-  uptoDateComments: ICommentApiResponseModel[];
+  uptoDateComments: ICommentApiModel[];
   relatedSourcesMap: Record<string, IRelatedSource>;
   resetQueryData: () => void;
   infiniteLoadRef: (node: any) => void;
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   getCommentsFetching: boolean;
-  appendComment: (comment: ICommentApiResponseModel) => void;
+  appendComment: (comment: ICommentApiModel) => void;
   addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
 }
 
@@ -49,9 +44,9 @@ export const useComments = (
 ): IUseComments => {
   const { authUser, accessToken } = useAuthContext();
 
-  const [uptoDateComments, setUptoDateComments] = useState<
-    ICommentApiResponseModel[]
-  >([]);
+  const [uptoDateComments, setUptoDateComments] = useState<ICommentApiModel[]>(
+    []
+  );
   const [relatedSourcesMap, setRelatedSourcesMap] = useState<
     Record<string, IRelatedSource>
   >({});
@@ -159,7 +154,7 @@ export const useComments = (
     []
   );
 
-  const mergeComments = useCallback((comments: ICommentApiResponseModel[]) => {
+  const mergeComments = useCallback((comments: ICommentApiModel[]) => {
     setUptoDateComments((prev) => [
       ...prev,
       ...(comments.filter((comment) => {
@@ -172,7 +167,7 @@ export const useComments = (
   }, []);
 
   const appendComment = useCallback(
-    (comment: ICommentApiResponseModel) => {
+    (comment: ICommentApiModel) => {
       handleUpdateRelatedSources(comment.relatedSources);
       mergeComments([comment]);
     },

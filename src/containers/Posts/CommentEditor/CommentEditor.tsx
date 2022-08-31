@@ -3,10 +3,12 @@ import { ContentState } from "draft-js";
 import { useEffect, useState } from "react";
 import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";
-import TextEditorProvider from "../../../contexts/TextEditorContext";
+import TextEditorProvider, {
+  ITextEditorContent,
+} from "../../../contexts/TextEditorContext";
 import { IUseComments } from "../../../hooks/useComments";
 import {
-  IPostRequestContentApiModel,
+  ICommentContentApiModel,
   IRelatedSource,
 } from "../../../interfaces/api/external";
 import DRAFTJS from "../../../utils/draftjs";
@@ -33,14 +35,13 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
     DRAFTJS.utils.getNewContentState()
   );
 
-  const handleCommentCreate = (
-    content: IPostRequestContentApiModel,
-    hashtags?: string[] | undefined
-  ) => {
-    addComment({
+  const handleCommentCreate = (content: ITextEditorContent) => {
+    const comment: Omit<ICommentContentApiModel, "createdAt"> = {
       text: content.text,
       mediaUrls: [],
-    });
+      stringifiedRawContent: content.stringifiedRawContent,
+    };
+    addComment(comment);
   };
 
   useEffect(() => {

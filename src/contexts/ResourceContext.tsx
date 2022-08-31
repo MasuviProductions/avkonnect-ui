@@ -4,9 +4,8 @@ import API_ENDPOINTS from "../constants/api";
 import { LABELS } from "../constants/labels";
 import useComments, { IUseComments } from "../hooks/useComments";
 import {
-  ICommentApiResponseModel,
+  ICommentApiModel,
   ICommentCountApiModel,
-  ICommentCountType,
   ICreateReactionApiRequest,
   IReactionCountApiModel,
   IReactionTypes,
@@ -28,7 +27,7 @@ interface IResourceContext {
   relatedSourceMap: Record<string, IRelatedSource>;
   createdAt: Date;
   userReaction?: IReactionTypes;
-  loadedComments: ICommentApiResponseModel[];
+  loadedComments: ICommentApiModel[];
   updateUserReaction: (reaction: IReactionTypes) => void;
   reactionsCount: IReactionCountApiModel;
   totalReactionsCount: number;
@@ -170,7 +169,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     useState<ICommentCountApiModel>(commentsCount);
 
   const [loadedCommentsState, setLoadedCommentsState] =
-    useState<ICommentApiResponseModel[]>(loadedComments);
+    useState<ICommentApiModel[]>(loadedComments);
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
     setReactionsCountState((prev) => ({

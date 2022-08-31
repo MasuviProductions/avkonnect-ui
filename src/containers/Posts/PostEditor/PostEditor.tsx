@@ -4,10 +4,12 @@ import { useQuery } from "react-query";
 
 import API_ENDPOINTS from "../../../constants/api";
 import { useAuthContext } from "../../../contexts/AuthContext";
-import TextEditorProvider from "../../../contexts/TextEditorContext";
+import TextEditorProvider, {
+  ITextEditorContent,
+} from "../../../contexts/TextEditorContext";
 import {
   ICreatePostApiRequest,
-  IPostRequestContentApiModel,
+  IPostContentModel,
 } from "../../../interfaces/api/external";
 import { createPost } from "../../../utils/api";
 import DRAFTJS from "../../../utils/draftjs";
@@ -47,13 +49,15 @@ const PostEditor: React.FC<IPostEditorProps> = ({
     }
   );
 
-  const handlePostCreate = (
-    content: IPostRequestContentApiModel,
-    hashtags?: string[] | undefined
-  ) => {
+  const handlePostCreate = (content: ITextEditorContent) => {
+    const postContent: Omit<IPostContentModel, "createdAt"> = {
+      text: content.text,
+      stringifiedRawContent: content.stringifiedRawContent,
+      mediaUrls: [],
+    };
     const postReqBody: ICreatePostApiRequest = {
-      content,
-      hashtags,
+      content: postContent,
+      hashtags: [],
       visibleOnlyToConnections: false,
       commentsOnlyByConnections: false,
     };
