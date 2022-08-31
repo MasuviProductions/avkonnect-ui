@@ -8,7 +8,6 @@ import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import TextEditor from "../../../components/TextEditor";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
-import DRAFTJS from "../../../utils/draftjs";
 
 interface ICommentEditorHandheldProps {
   submitButtonText: string;
@@ -22,7 +21,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { onSaveContent, editorState, isEditorFocused } = textEditorContext;
+  const { saveContent, isEditorFocused, isEditorEmpty } = textEditorContext;
 
   const { authUser } = useAuthContext();
 
@@ -30,9 +29,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
   const displayPictureUrl = authUser?.displayPictureUrl as string;
 
   const handleCommentCreate = () => {
-    const contentText = DRAFTJS.utils.getContentText(editorState);
-    const hastags = DRAFTJS.utils.getAllHashtagsFromPlainText(contentText);
-    onSaveContent({ text: contentText, mediaUrls: [] }, hastags);
+    saveContent();
   };
 
   return (
@@ -71,6 +68,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
               <Button
                 color="primary"
                 sx={postButtonSx}
+                disabled={isEditorEmpty}
                 onClick={handleCommentCreate}
               >
                 {submitButtonText}

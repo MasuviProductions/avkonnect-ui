@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
-import { IUseComments } from "../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
 import PostComments from "./PostComments";
 import CommentEditor from "../../CommentEditor";
 import { LABELS } from "../../../../constants/labels";
@@ -23,10 +23,10 @@ const PostModal: React.FC<IPostModalProps> = ({
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
-  const { commentsQuery, totalCommentsCount } = resourceContext;
+  const { commentsQuery, totalCommentsCount, commentsCount } = resourceContext;
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsFetching } =
-    commentsQuery as IUseComments;
+    commentsQuery as IUseCommentsForResourceReturn;
 
   useEffect(() => {
     if (showModal) {

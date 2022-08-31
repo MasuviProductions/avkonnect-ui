@@ -1,4 +1,4 @@
-import { Divider, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import CommentReactions from "./CommentReactions";
 import CommentReply from "./CommentReply";
 

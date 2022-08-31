@@ -1,4 +1,4 @@
-import { Box, Grid, Theme } from "@mui/material";
+import { Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import TextEditor from "../../../../components/TextEditor/TextEditor";

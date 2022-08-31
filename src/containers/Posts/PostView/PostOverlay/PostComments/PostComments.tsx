@@ -4,9 +4,9 @@ import Comment from "../../../Comment";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import CommentsOverlay from "../CommentsOverlay";
-import { ICommentApiResponseModel } from "../../../../../interfaces/api/external";
+import { ICommentApiModel } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 
 const PostComments: React.FC = () => {
@@ -21,18 +21,18 @@ const PostComments: React.FC = () => {
     useState<boolean>(false);
 
   const [commentOverlayComment, setCommentOverlayComment] = useState<
-    ICommentApiResponseModel | undefined
+    ICommentApiModel | undefined
   >();
 
   const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
-    commentsQuery as IUseComments;
+    commentsQuery as IUseCommentsForResourceReturn;
 
   const handleOverlayOpen = () => {
     setShowCommentsOverlay(true);
   };
 
   const handleReplyClick =
-    (_comment: ICommentApiResponseModel) =>
+    (_comment: ICommentApiModel) =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
       setCommentOverlayComment(_comment);
       handleOverlayOpen();

@@ -5,7 +5,7 @@ import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
 import { LABELS } from "../../../../constants/labels";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { IUseComments } from "../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
 import CommentEditor from "../../CommentEditor";
 import PostComments from "./PostComments";
 
@@ -25,7 +25,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
     resourceContext;
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsStatus } =
-    commentsQuery as IUseComments;
+    commentsQuery as IUseCommentsForResourceReturn;
 
   useEffect(() => {
     if (showOverlay) {

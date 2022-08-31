@@ -1,12 +1,14 @@
 import { Hidden } from "@mui/material";
-import { ContentState, EditorState } from "draft-js";
+import { ContentState } from "draft-js";
 import { useEffect, useState } from "react";
 import { LABELS } from "../../../constants/labels";
 import { useResourceContext } from "../../../contexts/ResourceContext";
-import TextEditorProvider from "../../../contexts/TextEditorContext";
-import { IUseComments } from "../../../hooks/useComments";
+import TextEditorProvider, {
+  ITextEditorContent,
+} from "../../../contexts/TextEditorContext";
+import { IUseCommentsForResourceReturn } from "../../../hooks/useCommentsForResource";
 import {
-  IPostRequestContentApiModel,
+  ICommentContentApiModel,
   IRelatedSource,
 } from "../../../interfaces/api/external";
 import DRAFTJS from "../../../utils/draftjs";
@@ -28,19 +30,19 @@ const CommentEditor: React.FC<ICommentEditorProps> = ({
   }
 
   const { commentsQuery } = resourceContext;
-  const { addComment } = commentsQuery as IUseComments;
+  const { addCommentToResource } =
+    commentsQuery as IUseCommentsForResourceReturn;
   const [contentState, setContentState] = useState<ContentState>(
     DRAFTJS.utils.getNewContentState()
   );
 
-  const handleCommentCreate = (
-    content: IPostRequestContentApiModel,
-    hashtags?: string[] | undefined
-  ) => {
-    addComment({
+  const handleCommentCreate = (content: ITextEditorContent) => {
+    const comment: Omit<ICommentContentApiModel, "createdAt"> = {
       text: content.text,
       mediaUrls: [],
-    });
+      stringifiedRawContent: content.stringifiedRawContent,
+    };
+    addCommentToResource(comment);
   };
 
   useEffect(() => {

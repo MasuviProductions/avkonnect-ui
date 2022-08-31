@@ -1,7 +1,6 @@
-import { GlobalStyles, Hidden } from "@mui/material";
+import { GlobalStyles } from "@mui/material";
 import { LABELS } from "../../../constants/labels";
 import { useTextEditorContext } from "../../../contexts/TextEditorContext";
-import DRAFTJS from "../../../utils/draftjs";
 
 interface IHashtagsInitProps {}
 

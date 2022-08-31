@@ -16,7 +16,6 @@ import { HashtagPluginConfig } from "@draft-js-plugins/hashtag";
 import { MentionPluginConfig } from "@draft-js-plugins/mention";
 
 import useRemountKey from "../hooks/useRemountKey";
-import { IPostRequestContentApiModel } from "../interfaces/api/external";
 import { Interpolation } from "@emotion/react";
 import { Theme } from "@mui/material";
 import DRAFTJS from "../utils/draftjs";
@@ -24,6 +23,12 @@ import DRAFTJS from "../utils/draftjs";
 /* 
     Resources: https://github.com/draft-js-plugins/draft-js-plugins/issues/983
 */
+
+export interface ITextEditorContent {
+  text: string;
+  stringifiedRawContent: string;
+}
+
 interface ITextEditorContext {
   editorKey: string;
   editorRef: RefObject<Editor>;
@@ -35,11 +40,9 @@ interface ITextEditorContext {
   isEditorFocused: boolean;
   onChangeEditorFocus: (_focus: boolean) => void;
   mentionSuggestionsComponent: ComponentType<MentionSuggestionsPubProps>;
-  onSaveContent: (
-    content: IPostRequestContentApiModel,
-    hashtags?: string[]
-  ) => void;
   focusEditor: () => void;
+  saveContent: () => void;
+  isEditorEmpty: boolean;
 }
 
 const TextEditorContext = createContext<ITextEditorContext | undefined>(
@@ -52,10 +55,7 @@ interface ITextEditorProvider {
     hashtags: { plugin: HashtagPluginConfig; themeStyle: Interpolation<Theme> };
     mentions: { plugin: MentionPluginConfig; themeStyle: Interpolation<Theme> };
   };
-  onSaveContent: (
-    content: IPostRequestContentApiModel,
-    hashtags?: string[]
-  ) => void;
+  onSaveContent: (content: ITextEditorContent) => void;
 }
 
 const TextEditorProvider: React.FC<ITextEditorProvider> = ({
@@ -101,6 +101,22 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
     editorRef.current?.focus();
   }, []);
 
+  const getContent = useCallback((): ITextEditorContent => {
+    const text = DRAFTJS.utils.getContentText(editorState);
+    const stringifiedRawContent =
+      DRAFTJS.utils.getStringifiedRawText(editorState);
+    const textEditorContent: ITextEditorContent = {
+      text,
+      stringifiedRawContent,
+    };
+    return textEditorContent;
+  }, [editorState]);
+
+  const saveContent = useCallback(() => {
+    const content = getContent();
+    onSaveContent(content);
+  }, [getContent, onSaveContent]);
+
   useEffect(() => {
     if (contentState) {
       setEditorState((prev) => {
@@ -128,8 +144,9 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         onChangeEditorState: handleChangeEditorState,
         onChangeEditorFocus: handleChangeEditorFocus,
         mentionSuggestionsComponent: MentionSuggestionsComponent,
-        onSaveContent: onSaveContent,
+        saveContent: saveContent,
         focusEditor,
+        isEditorEmpty: !editorState.getCurrentContent().hasText(),
       }}
     >
       {children}

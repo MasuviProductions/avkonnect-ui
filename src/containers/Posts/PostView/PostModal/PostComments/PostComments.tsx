@@ -1,10 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import { useState } from "react";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
 import CommentEditor from "../../../CommentEditor";
@@ -32,7 +32,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
     relatedSourcesMap,
     triggerGetCommentsApi,
     getCommentsFetching,
-  } = commentsQuery as IUseComments;
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleClickLoadMore = () => {
     triggerGetCommentsApi();

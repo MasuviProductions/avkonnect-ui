@@ -4,7 +4,6 @@ import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
 import CustomButton from "../../../../components/CustomButton";
 import { LABELS } from "../../../../constants/labels";
-import DRAFTJS from "../../../../utils/draftjs";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 
 interface IPostActionBarProps {}
@@ -15,12 +14,10 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { editorState, onSaveContent } = textEditorContext;
+  const { editorState, saveContent } = textEditorContext;
 
   const handlePostCreate = () => {
-    const contentText = DRAFTJS.utils.getContentText(editorState);
-    const hastags = DRAFTJS.utils.getAllHashtagsFromPlainText(contentText);
-    onSaveContent({ text: contentText, mediaUrls: [] }, hastags);
+    saveContent();
   };
 
   return (

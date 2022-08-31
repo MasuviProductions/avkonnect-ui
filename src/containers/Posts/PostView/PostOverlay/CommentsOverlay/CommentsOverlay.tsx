@@ -6,7 +6,7 @@ import ViewOverlay, {
 } from "../../../../../components/ViewOverlay/ViewOverlay";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
 import Comment, { ICommentProps } from "../../../Comment";
-import { IUseComments } from "../../../../../hooks/useComments";
+import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import CommentEditor from "../../../CommentEditor";
 import SubComments from "./SubComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
@@ -32,7 +32,7 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
   >();
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsStatus } =
-    commentsQuery as IUseComments;
+    commentsQuery as IUseCommentsForResourceReturn;
 
   const handleCloseOverlay = () => {
     onOverlayClose?.();
