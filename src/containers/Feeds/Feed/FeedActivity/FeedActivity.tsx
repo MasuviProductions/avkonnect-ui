@@ -24,8 +24,13 @@ interface IFeedActivityProps {
 }
 
 const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
+  const resourceContext = useResourceContext();
+
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
   const { commentsCount, reactionsCount, userReaction, totalReactionsCount } =
-    useResourceContext();
+    resourceContext;
 
   const ReactionTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -68,14 +73,14 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
             )}
           </Box>
         </Grid>
-        {commentsCount > 0 && (
+        {commentsCount?.comment > 0 && (
           <Grid item onClick={onPostOpen}>
             <Typography
               variant="caption"
               component="span"
               sx={semiCommentLinkSx}
             >
-              {LABELS.COMMENTS_COUNT(commentsCount)}
+              {LABELS.COMMENTS_COUNT(commentsCount?.comment)}
             </Typography>
           </Grid>
         )}

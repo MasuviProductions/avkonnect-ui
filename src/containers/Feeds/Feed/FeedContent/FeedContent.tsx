@@ -1,14 +1,20 @@
 import { Grid } from "@mui/material";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { IPostResponseContentModel } from "../../../../interfaces/api/external";
+import { IPostContentModel } from "../../../../interfaces/api/external";
 import { parseContentText } from "../../../../utils/component";
+import { LABELS } from "../../../../constants/labels";
 
 interface IFeedContentProps {
-  feedContent: IPostResponseContentModel[];
+  feedContent: IPostContentModel[];
 }
 
 const FeedContent: React.FC<IFeedContentProps> = ({ feedContent }) => {
-  const { relatedSourceMap } = useResourceContext();
+  const resourceContext = useResourceContext();
+
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+  const { relatedSourceMap } = resourceContext;
   return (
     <Grid container p={2}>
       <Grid item>

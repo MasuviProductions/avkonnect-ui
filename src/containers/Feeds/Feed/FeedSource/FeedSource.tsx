@@ -26,7 +26,12 @@ interface IFeedSourceProps {
 
 const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
   const router = useRouter();
-  const { relatedSourceMap } = useResourceContext();
+  const resourceContext = useResourceContext();
+
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+  const { relatedSourceMap } = resourceContext;
 
   const getFeedSourceDetails = (
     feedSource: IFeedSourceApiModel[],

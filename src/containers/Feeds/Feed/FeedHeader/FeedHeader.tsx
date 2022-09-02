@@ -11,10 +11,16 @@ import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../../constants/app";
 import { userAvatarSx } from "../../../../styles/sx";
 import { useAuthContext } from "../../../../contexts/AuthContext";
+import { LABELS } from "../../../../constants/labels";
 
 const FeedHeader: React.FC = () => {
   const router = useRouter();
-  const { relatedSourceMap, sourceId, createdAt } = useResourceContext();
+  const resourceContext = useResourceContext();
+
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+  const { relatedSourceMap, sourceId, createdAt } = resourceContext;
   const { authUser } = useAuthContext();
 
   const handleProfileRedirectClick = () => {
