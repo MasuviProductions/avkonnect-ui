@@ -10,14 +10,17 @@ import {
   TooltipProps,
   tooltipClasses,
   styled,
+  Fade,
 } from "@mui/material";
 import ReactionIconClubber from "../../../../components/ReactionIconClubber";
 import ReactionsPopper from "../../../../components/ReactionsPopper";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
 import ShareIcon from "@mui/icons-material/Share";
 import { LABELS } from "../../../../constants/labels";
+import { SystemStyleObject } from "@mui/system";
+import { IReactionTypes } from "../../../../interfaces/api/external";
+import { REACTION_CONFIGS } from "../../../../constants/app";
 
 interface IFeedActivityProps {
   onPostOpen: () => void;
@@ -29,11 +32,30 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
-  const { commentsCount, reactionsCount, userReaction, totalReactionsCount } =
-    resourceContext;
+  const {
+    commentsCount,
+    reactionsCount,
+    userReaction,
+    totalReactionsCount,
+    updateUserReaction,
+  } = resourceContext;
+
+  const ReactionIcon: React.FC<{ reaction?: IReactionTypes }> = ({
+    reaction,
+  }) => {
+    const Icon = REACTION_CONFIGS[reaction || "like"].iconActive;
+    return <Icon sx={reactionIconSx(reaction)} />;
+  };
 
   const ReactionTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
+    <Tooltip
+      classes={{ popper: className }}
+      enterDelay={500}
+      leaveDelay={1000}
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 300 }}
+      {...props}
+    />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.background.paper,
@@ -41,8 +63,8 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     },
   }));
 
-  const handleLikeClick = () => {
-    console.log("Liked");
+  const handleToggleReactionClick = (reaction?: IReactionTypes) => () => {
+    updateUserReaction(reaction || "like");
   };
 
   return (
@@ -97,19 +119,35 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
                 </Fragment>
               }
             >
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                sx={postInteractionSx}
-                onClick={handleLikeClick}
-                py={1}
-              >
-                <Typography variant="body2" pr={1}>
-                  {LABELS.LIKE}
-                </Typography>
-                <ThumbUpIcon fontSize="small" />
-              </Box>
+              {userReaction ? (
+                <Box
+                  display="flex"
+                  alignItems="flex-end"
+                  justifyContent="center"
+                  onClick={handleToggleReactionClick(userReaction)}
+                  sx={reactionPresentSx(userReaction)}
+                  py={1}
+                >
+                  <Typography fontWeight="bold" variant="body2" pr={1}>
+                    {REACTION_CONFIGS[userReaction].label}
+                  </Typography>
+                  <ReactionIcon reaction={userReaction} />
+                </Box>
+              ) : (
+                <Box
+                  display="flex"
+                  alignItems="flex-end"
+                  justifyContent="center"
+                  sx={postInteractionSx}
+                  onClick={handleToggleReactionClick()}
+                  py={1}
+                >
+                  <Typography variant="body2" pr={1}>
+                    {LABELS.LIKE}
+                  </Typography>
+                  <ReactionIcon />
+                </Box>
+              )}
             </ReactionTooltip>
           </>
         </Grid>
@@ -147,6 +185,31 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
   );
 };
 
+const reactionPresentSx: (
+  reactionType: IReactionTypes
+) => (theme: Theme) => SystemStyleObject<Theme> = reactionType => {
+  return (theme: Theme) => ({
+    color: `${theme.palette.reactions[reactionType]}`,
+    "&:hover": {
+      cursor: "pointer",
+      backgroundColor: theme.palette.background.default,
+    },
+  });
+};
+
+const reactionIconSx: (
+  reactionType?: IReactionTypes
+) => (theme: Theme) => SystemStyleObject<Theme> = reactionType => {
+  return (theme: Theme) => ({
+    fill: reactionType
+      ? `${theme.palette.reactions[reactionType]}`
+      : `${theme.palette.grey["A700"]}`,
+    "&:hover": {
+      cursor: "pointer",
+    },
+  });
+};
+
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
   "&:hover": {
     cursor: "pointer",
@@ -163,10 +226,6 @@ const semiCommentLinkSx: SxProps<Theme> = {
 
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   borderColor: `${theme.palette.text.secondary}77`,
-});
-
-const tooltipPopperSx: SxProps<Theme> = (theme: Theme) => ({
-  backgroundColor: theme.palette.background.paper,
 });
 
 export default FeedActivity;
