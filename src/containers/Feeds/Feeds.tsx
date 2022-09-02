@@ -1,4 +1,4 @@
-import { Box, Container, Grid, SxProps, Theme } from "@mui/material";
+import { Grid, SxProps, Theme } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../../constants/api";
@@ -11,7 +11,6 @@ import useInfiniteLoading from "../../hooks/useInfiniteLoading";
 import {
   IRelatedSource,
   IUserFeedApiModel,
-  IUserProfileApiModel,
 } from "../../interfaces/api/external";
 import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";

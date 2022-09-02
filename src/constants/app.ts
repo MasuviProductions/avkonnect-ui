@@ -112,6 +112,8 @@ export const URL_MATCH_REGEX_WITHOUT_PROTOCOL = new RegExp(
 export const UUID_REGEX_STRING =
   "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
+export const HASHTAG_REGEX = new RegExp(/#(\w+)/g);
+
 export const REACTION_CONFIGS: Record<IReactionTypes, IReactionConfig> = {
   love: {
     label: LABELS.LOVE,

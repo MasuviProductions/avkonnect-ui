@@ -7,6 +7,7 @@ import { getMUIEllipsedSx, usernameToColor } from "../../utils/generic";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import UserMiniCardSkeleton from "./UserMiniCardSkeleton";
 import { useCallback, useMemo } from "react";
+import { userAvatarSx } from "../../styles/sx";
 
 interface IUserMiniCardProps {
   id: string;
@@ -25,13 +26,6 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
   onlyThumbnail = false,
   onCardClick,
 }) => {
-  const handleUserAvatarSx = useCallback(
-    (theme: Theme): SystemStyleObject<Theme> => {
-      return userAvatar(theme, usernameToColor(name), onlyThumbnail);
-    },
-    [name, onlyThumbnail]
-  );
-
   const handleCardClick = () => {
     onCardClick?.(id);
   };
@@ -40,7 +34,11 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
     (): JSX.Element => (
       <Grid container spacing={1} alignItems="center" sx={userStripContainer}>
         <Grid item>
-          <Avatar alt={name} src={displayPictureUrl} sx={handleUserAvatarSx}>
+          <Avatar
+            alt={name}
+            src={displayPictureUrl}
+            sx={userAvatarSx(usernameToColor(name), onlyThumbnail ? 40 : 50)}
+          >
             {name[0]}
           </Avatar>
         </Grid>
@@ -60,7 +58,7 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
         )}
       </Grid>
     ),
-    [displayPictureUrl, handleUserAvatarSx, headline, name, onlyThumbnail]
+    [displayPictureUrl, headline, name, onlyThumbnail]
   );
 
   return (
@@ -76,21 +74,6 @@ const UserMiniCard: ReactFCWithSkeleton<IUserMiniCardProps> = ({
   );
 };
 UserMiniCard.Skeleton = UserMiniCardSkeleton;
-
-const userAvatar = (
-  theme: Theme,
-  color: string,
-  isMini: boolean
-): SystemStyleObject<Theme> => {
-  return {
-    width: isMini ? 40 : 55,
-    height: isMini ? 40 : 55,
-    fontSize: "1rem",
-    border: `1px solid ${theme.palette.background.default}`,
-    backgroundColor: color,
-    color: theme.palette.getContrastText(color),
-  };
-};
 
 const userStripContainer: SxProps<Theme> = (theme: Theme) => ({
   cursor: "pointer",

@@ -23,7 +23,7 @@ import {
   IPatchPostApiRequest,
   ICreateCommentApiRequest,
   IPatchCommentApiRequest,
-  ICommentApiResponseModel,
+  ICommentApiModel,
   IGetPostReactionsApiResponse,
   IGetPostCommentsApiResponse,
   IGetPostsInfoApiRequest,
@@ -254,11 +254,11 @@ export const postUserFeedback = async (
 export const getUsersSearch = async (
   accessToken: string,
   searchString: string,
-  page: number,
-  limit: number
+  limit: number,
+  page?: number
 ): Promise<AVKonnectApiResponse<IUsersSearchApiResponse[]>> => {
   const queryString = `?search=${searchString}&limit=${limit}&page=${
-    page || 0
+    page || 1
   }`;
   const usersSearchResponse = await axios
     .get<AVKonnectApiResponse<IUsersSearchApiResponse[]>>(
@@ -470,11 +470,14 @@ export const patchPost = async (
 export const deletePost = async (
   accessToken: string,
   postId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
   const deletePostResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_POST.url(postId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
+    .delete<AVKonnectApiResponse<IPostApiResponse>>(
+      API_ENDPOINTS.DELETE_POST.url(postId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
     .then(res => res.data);
   return deletePostResponse;
 };
@@ -482,11 +485,11 @@ export const deletePost = async (
 export const createComment = async (
   accessToken: string,
   postUserCommentContent: ICreateCommentApiRequest
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const createCommentResponse = await axios
     .post<
       ICreateCommentApiRequest,
-      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+      AxiosResponse<AVKonnectApiResponse<ICommentApiModel>>
     >(API_ENDPOINTS.CREATE_COMMENT.url(), postUserCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -497,9 +500,9 @@ export const createComment = async (
 export const getComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const getCommentResponse = await axios
-    .get<AVKonnectApiResponse<ICommentApiResponseModel>>(
+    .get<AVKonnectApiResponse<ICommentApiModel>>(
       API_ENDPOINTS.GET_COMMENT.url(commentId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
@@ -513,11 +516,11 @@ export const patchComment = async (
   accessToken: string,
   commentId: string,
   patchCommentContent: IPatchCommentApiRequest
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const patchCommentResponse = await axios
     .patch<
       IPatchCommentApiRequest,
-      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+      AxiosResponse<AVKonnectApiResponse<ICommentApiModel>>
     >(API_ENDPOINTS.PATCH_COMMENT.url(commentId), patchCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
@@ -528,11 +531,14 @@ export const patchComment = async (
 export const deleteComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const deleteCommentResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_COMMENT.url(commentId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
+    .delete<AVKonnectApiResponse<ICommentApiModel>>(
+      API_ENDPOINTS.DELETE_COMMENT.url(commentId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
     .then(res => res.data);
   return deleteCommentResponse;
 };

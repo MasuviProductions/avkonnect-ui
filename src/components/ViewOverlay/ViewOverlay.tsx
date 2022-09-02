@@ -29,8 +29,8 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
   return (
     <>
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
-        <Box sx={overlayContainerSx}>
-          <Box sx={overlayHeaderSx}>
+        <Grid container sx={overlayContainerSx}>
+          <Grid item sx={overlayHeaderSx}>
             <Grid container>
               <Grid item>
                 <IconButton onClick={handleDrawerClose}>
@@ -38,10 +38,12 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
                 </IconButton>
               </Grid>
             </Grid>
-          </Box>
+          </Grid>
 
-          <Box sx={overlayBodySx}>{children}</Box>
-        </Box>
+          <Grid item sx={overlayBodySx}>
+            {children}
+          </Grid>
+        </Grid>
       </Drawer>
     </>
   );
@@ -49,13 +51,14 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
 
 const overlayHeaderSx = (theme: Theme): SystemStyleObject<Theme> => ({
   backgroundColor: theme.palette.background.paper,
-  borderBottom: `2px solid ${theme.palette.background.default}`,
+  borderBottom: `1px solid ${theme.palette.secondary.main}`,
   width: "inherit",
+  height: "50px",
 });
 
 const overlayBodySx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "100%",
-  width: "100%",
+  height: `calc(100% - 50px)`,
+  width: "inherit",
   overflowY: "auto",
 });
 

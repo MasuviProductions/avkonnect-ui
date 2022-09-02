@@ -40,16 +40,12 @@ export const userAvatarSx: (
   });
 };
 
-export const reactionButtonSx: (
-  reaction?: IReactionTypes
-) => (theme: Theme) => SystemStyleObject<Theme> = (reaction) => {
-  return (theme) => ({
-    fontSize: 10,
-    minWidth: 40,
-    textTransform: "initial",
+export const reactionTextSx =
+  (reaction?: IReactionTypes, fontSize?: number) =>
+  (theme: Theme): SystemStyleObject<Theme> => ({
+    ...simpleLinkSx(fontSize || 10)(theme),
     padding: 0,
     color: reaction
       ? theme.palette.reactions[reaction]
       : theme.palette.text.primary,
   });
-};

@@ -1,6 +1,6 @@
 import { Box, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
-import PostView from "../../Post/PostView";
+import PostView from "../../Posts/PostView";
 import {
   IFeedSourceApiModel,
   IPostResponseContentModel,
@@ -9,6 +9,7 @@ import FeedActivity from "./FeedActivity";
 import FeedContent from "./FeedContent";
 import FeedHeader from "./FeedHeader";
 import FeedSource from "./FeedSource";
+import { LABELS } from "../../../constants/labels";
 
 export interface IFeedProps {
   feedContent: IPostResponseContentModel[];

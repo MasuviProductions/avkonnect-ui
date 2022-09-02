@@ -14,6 +14,10 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
 
+  // Uninitialized Context Error Messages
+  RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
+  TEXT_EDITOR_CONTEXT_UNINITIALIZED: "TextEditorContext not initialized",
+
   // Links
   COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
   COMPANY_LINKEDIN_LINK:
@@ -264,12 +268,20 @@ export const LABELS = {
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
 
+  // Posts
+  ADD_POST_PLACEHOLDER: "What's on your mind?",
+  CREATE_POST: "Create a post",
+  SUBMIT_POST: "Post",
+
   // Comments
-  ADD_COMMENT: "Add your comment..",
-  POST_COMMENT: "Post",
+  ADD_COMMENT_PLACEHOLDER: "Add a comment..",
+  POST_COMMENT: "Comment",
   REPLY: "Reply",
   LOAD_MORE_REPLIES: "Load more replies",
-  LOAD_MORE_COMMENTS: "Load more comments",
+  VIEW_REPLIES: "View replies",
+  REPLY_COUNT: (replyCount: number) =>
+    `${replyCount} ${replyCount === 1 ? "Reply" : "Replies"}`,
+  VIEW_MORE_COMMENTS: "View more comments",
 
   // Reactions
   LOVE: "Love",
