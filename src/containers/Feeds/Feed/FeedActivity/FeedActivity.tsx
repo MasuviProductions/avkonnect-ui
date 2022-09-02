@@ -1,5 +1,16 @@
-import { useState } from "react";
-import { Box, Grid, Divider, Typography, SxProps, Theme } from "@mui/material";
+import { Fragment, useState } from "react";
+import {
+  Box,
+  Grid,
+  Divider,
+  Typography,
+  SxProps,
+  Theme,
+  Tooltip,
+  TooltipProps,
+  tooltipClasses,
+  styled,
+} from "@mui/material";
 import ReactionIconClubber from "../../../../components/ReactionIconClubber";
 import ReactionsPopper from "../../../../components/ReactionsPopper";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
@@ -15,15 +26,15 @@ interface IFeedActivityProps {
 const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
   const { commentsCount, reactionsCount, userReaction, totalReactionsCount } =
     useResourceContext();
-  const [showReactionPopper, setReactionPopper] = useState<boolean>(false);
 
-  const handleReactionPopperOpen = () => {
-    setReactionPopper(true);
-  };
-
-  const handleReactionPopperClose = () => {
-    setReactionPopper(false);
-  };
+  const ReactionTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: `0px 0px 10px ${theme.palette.text.secondary}77`,
+    },
+  }));
 
   const handleLikeClick = () => {
     console.log("Liked");
@@ -70,30 +81,31 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
         )}
       </Grid>
       <Divider sx={dividerSx} />
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        pt={1}
-        onMouseLeave={handleReactionPopperClose}
-      >
+      <Grid container alignItems="center" justifyContent="center" pt={1}>
         <Grid item xs={4}>
           <>
-            <ReactionsPopper show={showReactionPopper} />
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              sx={postInteractionSx}
-              onClick={handleLikeClick}
-              onMouseOver={handleReactionPopperOpen}
-              py={1}
+            <ReactionTooltip
+              placement="top"
+              title={
+                <Fragment>
+                  <ReactionsPopper />
+                </Fragment>
+              }
             >
-              <Typography variant="body2" pr={1}>
-                {LABELS.LIKE}
-              </Typography>
-              <ThumbUpIcon fontSize="small" />
-            </Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                sx={postInteractionSx}
+                onClick={handleLikeClick}
+                py={1}
+              >
+                <Typography variant="body2" pr={1}>
+                  {LABELS.LIKE}
+                </Typography>
+                <ThumbUpIcon fontSize="small" />
+              </Box>
+            </ReactionTooltip>
           </>
         </Grid>
         <Grid
@@ -146,6 +158,10 @@ const semiCommentLinkSx: SxProps<Theme> = {
 
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   borderColor: `${theme.palette.text.secondary}77`,
+});
+
+const tooltipPopperSx: SxProps<Theme> = (theme: Theme) => ({
+  backgroundColor: theme.palette.background.paper,
 });
 
 export default FeedActivity;

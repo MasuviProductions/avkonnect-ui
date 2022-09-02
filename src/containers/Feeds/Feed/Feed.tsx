@@ -38,10 +38,14 @@ const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
 };
 
 const postBoxSx: SxProps<Theme> = (theme: Theme) => ({
-  margin: "8px",
+  margin: "8px 16px",
   padding: "8px",
   backgroundColor: theme.palette.background.paper,
   borderRadius: "6px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "16px 4px",
+    padding: "0px",
+  },
 });
 
 export default Feed;

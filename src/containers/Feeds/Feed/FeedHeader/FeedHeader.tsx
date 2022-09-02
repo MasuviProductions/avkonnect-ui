@@ -28,19 +28,19 @@ const FeedHeader: React.FC = () => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Grid
-        item
-        display="flex"
-        alignItems="center"
-        sx={profileContainerSx}
-        onClick={handleProfileRedirectClick}
-      >
+      <Grid item display="flex" alignItems="center">
         <Avatar
           alt={relatedSourceMap[sourceId].name}
           src={relatedSourceMap[sourceId].displayPictureUrl}
+          onClick={handleProfileRedirectClick}
           sx={userAvatarSx(usernameToColor(authUser?.name as string), 45)}
         />
-        <Box ml={1} mt={0.5}>
+        <Box
+          ml={1}
+          mt={0.5}
+          onClick={handleProfileRedirectClick}
+          sx={profileRedirectSx}
+        >
           <Typography
             lineHeight={relatedSourceMap[sourceId].headline ? 0.5 : 1.3}
           >
@@ -66,7 +66,7 @@ const FeedHeader: React.FC = () => {
   );
 };
 
-const profileContainerSx: SxProps<Theme> = {
+const profileRedirectSx: SxProps<Theme> = {
   "&:hover": {
     cursor: "pointer",
   },

@@ -21,7 +21,7 @@ const SingleFeedSkeleton: React.FC = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} mt={1.5}>
-            <Skeleton variant="rectangular" width={512} height={200} />
+            <Skeleton variant="rectangular" width="100%" height={200} />
           </Grid>
         </Grid>
       </LayoutCard>

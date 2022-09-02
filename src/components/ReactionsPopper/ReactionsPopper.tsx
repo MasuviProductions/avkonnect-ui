@@ -3,9 +3,7 @@ import { SystemStyleObject } from "@mui/system";
 import { REACTION_CONFIGS } from "../../constants/app";
 import { IReactionTypes, REACTIONS } from "../../interfaces/api/external";
 
-interface IReactionsPopperProps {
-  show: boolean;
-}
+interface IReactionsPopperProps {}
 
 const ReactionIcon: React.FC<{
   reaction: IReactionTypes;
@@ -14,44 +12,19 @@ const ReactionIcon: React.FC<{
   return <Icon sx={reactionIconSx(reaction as IReactionTypes)} />;
 };
 
-const ReactionsPopper: React.FC<IReactionsPopperProps> = ({ show }) => {
-  if (show) {
-    return (
-      <Box pt={1} sx={reactionPopperSx}>
-        {REACTIONS.map((reaction, index) => (
-          <Tooltip
-            key={index}
-            title={REACTION_CONFIGS[reaction].label as string}
-          >
-            <Box component="span">
-              <ReactionIcon reaction={reaction} />
-            </Box>
-          </Tooltip>
-        ))}
-      </Box>
-    );
-  } else {
-    return <></>;
-  }
+const ReactionsPopper: React.FC<IReactionsPopperProps> = () => {
+  return (
+    <Box pt={1}>
+      {REACTIONS.map((reaction, index) => (
+        <Tooltip key={index} title={REACTION_CONFIGS[reaction].label as string}>
+          <Box component="span">
+            <ReactionIcon reaction={reaction} />
+          </Box>
+        </Tooltip>
+      ))}
+    </Box>
+  );
 };
-
-const reactionPopperSx: SxProps<Theme> = (theme: Theme) => ({
-  position: "absolute",
-  transform: "translate(0, -100%)",
-  opacity: "0",
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: `0px 0px 10px ${theme.palette.text.secondary}77`,
-  borderRadius: "6px",
-  animation: "appear 0.2s forwards 0.3s 1 normal",
-  "@keyframes appear": {
-    "0%": {
-      opacity: "0",
-    },
-    "100%": {
-      opacity: "1",
-    },
-  },
-});
 
 const reactionIconSx: (
   reactionType: IReactionTypes
@@ -61,7 +34,7 @@ const reactionIconSx: (
     padding: "6px",
     fontSize: "40px",
     margin: "0px 8px",
-    fill: "#fff",
+    fill: theme.palette.grey["50"],
     backgroundColor: theme.palette.reactions[reactionType],
     "&:hover": {
       cursor: "pointer",

@@ -48,7 +48,7 @@ const reactionIconSx: (
     marginLeft: "-5px",
     padding: "2px",
     fontSize: "17px",
-    fill: "#fff",
+    fill: theme.palette.grey["50"],
     zIndex: zInd ? zInd : 0,
     backgroundColor: theme.palette.reactions[reactionType],
     borderRadius: "50%",

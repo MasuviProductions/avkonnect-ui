@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, SxProps, Theme } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../../constants/api";
@@ -127,39 +127,51 @@ const Feeds: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Grid container mt={1}>
-        {upToDateUserFeeds?.map((feed, index) => (
-          <Grid
-            item
-            xs={12}
-            key={feed.feedId}
-            ref={
-              index === upToDateUserFeeds.length - 1
-                ? infiniteLoadRef
-                : undefined
-            }
-          >
-            <ResourceProvider
-              id={feed.postId}
-              type="post"
-              sourceId={feed.sourceId}
-              sourceType={feed.sourceType}
-              reactionsCount={feed.activity.reactionsCount}
-              loadedComments={[]}
-              commentsCount={feed.activity.commentsCount}
-              userReaction={feed.sourceActivity?.reaction}
-              createdAt={feed.createdAt}
-              updatedAt={feed.updatedAt}
-              relatedSourceMap={relatedSourcesMap}
+    <Grid container sx={feedContainerSx}>
+      <Grid item xs={12} display="flex" justifyContent="center">
+        <Grid container mt={1} maxWidth="sm">
+          {upToDateUserFeeds?.map((feed, index) => (
+            <Grid
+              item
+              xs={12}
+              key={feed.feedId}
+              ref={
+                index === upToDateUserFeeds.length - 1
+                  ? infiniteLoadRef
+                  : undefined
+              }
             >
-              <Feed feedContent={feed.contents} feedSource={feed.feedSources} />
-            </ResourceProvider>
-          </Grid>
-        ))}
+              <ResourceProvider
+                id={feed.postId}
+                type="post"
+                sourceId={feed.sourceId}
+                sourceType={feed.sourceType}
+                reactionsCount={feed.activity.reactionsCount}
+                loadedComments={[]}
+                commentsCount={feed.activity.commentsCount}
+                userReaction={feed.sourceActivity?.reaction}
+                createdAt={feed.createdAt}
+                updatedAt={feed.updatedAt}
+                relatedSourceMap={relatedSourcesMap}
+              >
+                <Feed
+                  feedContent={feed.contents}
+                  feedSource={feed.feedSources}
+                />
+              </ResourceProvider>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
-    </Container>
+    </Grid>
   );
 };
+
+const feedContainerSx: SxProps<Theme> = (theme: Theme) => ({
+  margin: "0px 16px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "0px",
+  },
+});
 
 export default Feeds;
