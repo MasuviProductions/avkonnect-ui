@@ -448,7 +448,7 @@ export interface IUserFeedApiModel {
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostContentModel;
+  contents: IPostContentModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import PostView from "../../Posts/PostView";
 import {
   IFeedSourceApiModel,
-  IPostResponseContentModel,
+  IPostContentModel,
 } from "../../../interfaces/api/external";
 import FeedActivity from "./FeedActivity";
 import FeedContent from "./FeedContent";
@@ -12,7 +12,7 @@ import FeedSource from "./FeedSource";
 import { LABELS } from "../../../constants/labels";
 
 export interface IFeedProps {
-  feedContent: IPostResponseContentModel[];
+  feedContent: IPostContentModel[];
   feedSource: IFeedSourceApiModel[];
 }
 

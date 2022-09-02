@@ -154,7 +154,7 @@ const Feeds: React.FC = () => {
                 relatedSourceMap={relatedSourcesMap}
               >
                 <Feed
-                  feedContent={feed.contents}
+                  feedContent={feed?.contents}
                   feedSource={feed.feedSources}
                 />
               </ResourceProvider>
