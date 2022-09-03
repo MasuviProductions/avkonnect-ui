@@ -21,12 +21,14 @@ const BottomFooter: React.FC = () => {
         <Grid container alignItems="center" textAlign="center">
           <Grid item p={2} md={4} sm={4} xs={12} mt={1}>
             <Link href={APP_ROUTES.ROOT.route} passHref>
-              <Image
-                src={PNG.AvkDeskLogo}
-                alt={LABELS.TITLE_LOGO}
-                width="150"
-                height="50"
-              />
+              <Box component="span">
+                <Image
+                  src={PNG.AvkDeskLogo}
+                  alt={LABELS.TITLE_LOGO}
+                  width="150"
+                  height="50"
+                />
+              </Box>
             </Link>
           </Grid>
           <Grid item md={4} sm={4} xs={12} mb={1}>

@@ -16,7 +16,7 @@ const FeedContent: React.FC<IFeedContentProps> = ({ feedContent }) => {
   }
   const { relatedSourceMap } = resourceContext;
   return (
-    <Grid container p={2}>
+    <Grid container py={2}>
       <Grid item>
         {parseContentText(
           feedContent[feedContent.length - 1].text,

@@ -9,7 +9,6 @@ import FeedActivity from "./FeedActivity";
 import FeedContent from "./FeedContent";
 import FeedHeader from "./FeedHeader";
 import FeedSource from "./FeedSource";
-import { LABELS } from "../../../constants/labels";
 
 export interface IFeedProps {
   feedContent: IPostContentModel[];
@@ -45,7 +44,7 @@ const postBoxSx: SxProps<Theme> = (theme: Theme) => ({
   borderRadius: "6px",
   [theme.breakpoints.down("sm")]: {
     margin: "16px 4px",
-    padding: "0px",
+    padding: "12px",
   },
 });
 
