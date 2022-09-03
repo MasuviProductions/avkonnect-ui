@@ -22,7 +22,7 @@ export const parseContentText = (
     const relatedSource = relatedSourceMap[sourceId];
     return (
       <Link
-        key={i}
+        key={`userId-${i}`}
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
         passHref
       >
@@ -33,7 +33,12 @@ export const parseContentText = (
 
   const hashTagRegex = HASHTAG_REGEX;
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
-    return <Typography sx={decoratedLinkSx()}>{`#${match}`}</Typography>;
+    return (
+      <Typography
+        key={`hastag-${i}`}
+        sx={decoratedLinkSx()}
+      >{`#${match}`}</Typography>
+    );
   });
 
   return replacedText;

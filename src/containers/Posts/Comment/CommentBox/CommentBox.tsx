@@ -65,7 +65,7 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
               </Grid>
             </Grid>
           </Grid>
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <Typography sx={avatarHeadlineSx}>{headline}</Typography>
           </Grid>
         </Grid>

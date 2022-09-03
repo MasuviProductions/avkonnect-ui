@@ -133,7 +133,7 @@ const Feeds: React.FC = () => {
             <Grid
               item
               xs={12}
-              key={feed.feedId}
+              key={index}
               ref={
                 index === upToDateUserFeeds.length - 1
                   ? infiniteLoadRef

@@ -1,19 +1,6 @@
-import { Fragment, useState } from "react";
-import {
-  Box,
-  Grid,
-  Divider,
-  Typography,
-  SxProps,
-  Theme,
-  Tooltip,
-  TooltipProps,
-  tooltipClasses,
-  styled,
-  Fade,
-} from "@mui/material";
+import { Box, Grid, Divider, Typography, SxProps, Theme } from "@mui/material";
 import ReactionIconClubber from "../../../../components/ReactionIconClubber";
-import ReactionsPopper from "../../../../components/ReactionsPopper";
+import ReactionTooltip from "../../../../components/ReactionTooltip";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import CommentIcon from "@mui/icons-material/Comment";
 import ShareIcon from "@mui/icons-material/Share";
@@ -46,22 +33,6 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     const Icon = REACTION_CONFIGS[reaction || "like"].iconActive;
     return <Icon sx={reactionIconSx(reaction)} />;
   };
-
-  const ReactionTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip
-      classes={{ popper: className }}
-      enterDelay={500}
-      leaveDelay={1000}
-      TransitionComponent={Fade}
-      TransitionProps={{ timeout: 300 }}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: `0px 0px 10px ${theme.palette.text.secondary}77`,
-    },
-  }));
 
   const handleToggleReactionClick = (reaction?: IReactionTypes) => () => {
     updateUserReaction(reaction || "like");
@@ -111,14 +82,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
       <Grid container alignItems="center" justifyContent="center" pt={1}>
         <Grid item xs={4}>
           <>
-            <ReactionTooltip
-              placement="top"
-              title={
-                <Fragment>
-                  <ReactionsPopper />
-                </Fragment>
-              }
-            >
+            <ReactionTooltip>
               {userReaction ? (
                 <Box
                   display="flex"

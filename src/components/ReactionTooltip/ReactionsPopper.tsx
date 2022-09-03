@@ -1,4 +1,4 @@
-import { Box, SxProps, Theme, Tooltip } from "@mui/material";
+import { Grid, Theme, Tooltip } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { REACTION_CONFIGS } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
@@ -27,18 +27,22 @@ const ReactionsPopper: React.FC<IReactionsPopperProps> = () => {
   };
 
   return (
-    <Box pt={1}>
+    <Grid container flexWrap="nowrap" pt={1}>
       {REACTIONS.map((reaction, index) => (
-        <Tooltip key={index} title={REACTION_CONFIGS[reaction].label as string}>
-          <Box
-            component="span"
+        <Tooltip
+          key={index}
+          placement="top"
+          title={REACTION_CONFIGS[reaction].label as string}
+        >
+          <Grid
+            item
             onClick={handleReactionIconClick(reaction as IReactionTypes)}
           >
             <ReactionIcon reaction={reaction} />
-          </Box>
+          </Grid>
         </Tooltip>
       ))}
-    </Box>
+    </Grid>
   );
 };
 

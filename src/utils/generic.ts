@@ -162,3 +162,7 @@ export const getNotificationTypeBasedLink = (
       return `${APP_ROUTES.MY_NETWORK.route}`;
   }
 };
+
+export const getRandomNumber = (digits: number) => {
+  return Math.ceil(Math.random() * 10 ** digits);
+};

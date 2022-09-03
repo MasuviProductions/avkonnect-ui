@@ -1,22 +1,18 @@
-import { Grid, Box, Skeleton, Container } from "@mui/material";
+import { Grid, Box, Skeleton, Container, Theme, SxProps } from "@mui/material";
 import LayoutCard from "../../components/LayoutCard";
 
 const SingleFeedSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={containerSx}>
       <LayoutCard>
         <Grid container p={2}>
           <Grid item xs={12}>
             <Grid container display="flex" alignItems="center">
-              <Grid item mt={1} xs={1}>
+              <Grid item mt={1} sm={1} xs={2}>
                 <Skeleton variant="circular" width={40} height={40} />
               </Grid>
-              <Grid item xs={11}>
-                <Grid container>
-                  <Grid item mt={1} mx={1} xs={12}>
-                    <Skeleton variant="rectangular" width="100%" height={30} />
-                  </Grid>
-                </Grid>
+              <Grid item mt={1} sm={11} xs={10}>
+                <Skeleton variant="rectangular" width="100%" height={30} />
               </Grid>
             </Grid>
           </Grid>
@@ -47,5 +43,11 @@ const FeedsSkeleton: React.FC = () => {
     </Box>
   );
 };
+
+const containerSx: SxProps<Theme> = (theme: Theme) => ({
+  [theme.breakpoints.down("sm")]: {
+    padding: "0px",
+  },
+});
 
 export default FeedsSkeleton;
