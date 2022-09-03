@@ -34,6 +34,9 @@ export const userAvatarSx: (
     border: `1px solid ${theme.palette.background.default}`,
     backgroundColor: color,
     color: theme.palette.getContrastText(color),
+    "&:hover": {
+      cursor: "pointer",
+    }
   });
 };
 

@@ -14,6 +14,7 @@ import {
 import { LABELS } from "../constants/labels";
 import {
   INotificationResourceActivity,
+  IReactionTypes,
   IRelatedSource,
 } from "../interfaces/api/external";
 import { ITextFieldMessageType } from "../interfaces/app";
@@ -81,7 +82,7 @@ export const getEllipsedText = (text: string, len: number): string => {
   return `${text.substring(0, len)}...`;
 };
 
-export const getMUIElipsedSx = (
+export const getMUIEllipsedSx = (
   lines?: number,
   fixedHeight?: number
 ): SxProps<Theme> => {
@@ -160,4 +161,8 @@ export const getNotificationTypeBasedLink = (
     default:
       return `${APP_ROUTES.MY_NETWORK.route}`;
   }
+};
+
+export const getRandomNumber = (digits: number) => {
+  return Math.ceil(Math.random() * 10 ** digits);
 };

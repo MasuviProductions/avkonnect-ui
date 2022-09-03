@@ -1,4 +1,5 @@
-import { Link, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { ReactNodeArray } from "react";
 import reactStringReplace from "react-string-replace";
@@ -21,18 +22,23 @@ export const parseContentText = (
     const relatedSource = relatedSourceMap[sourceId];
     return (
       <Link
-        key={i}
+        key={`userId-${i}`}
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
-        sx={decoratedLinkSx()}
+        passHref
       >
-        {relatedSource?.name}
+        <Typography sx={decoratedLinkSx()}>{relatedSource?.name}</Typography>
       </Link>
     );
   });
 
   const hashTagRegex = HASHTAG_REGEX;
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
-    return <Typography sx={decoratedLinkSx()}>{`#${match}`}</Typography>;
+    return (
+      <Typography
+        key={`hastag-${i}`}
+        sx={decoratedLinkSx()}
+      >{`#${match}`}</Typography>
+    );
   });
 
   return replacedText;

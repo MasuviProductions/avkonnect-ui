@@ -34,6 +34,7 @@ interface IResourceContext {
   resourceType?: IResourceTypes;
   relatedSourceMap: Record<string, IRelatedSource>;
   createdAt: Date;
+  updatedAt?: Date;
   userReaction?: IReactionTypes;
   loadedComments: ICommentApiModel[];
   updateUserReaction: (reaction: IReactionTypes) => void;
@@ -67,6 +68,7 @@ interface IResourceProviderProps
     | "resourceId"
     | "resourceType"
     | "createdAt"
+    | "updatedAt"
     | "relatedSourceMap"
   > {}
 
@@ -83,6 +85,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   loadedComments,
   relatedSourceMap,
   createdAt,
+  updatedAt,
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
@@ -124,15 +127,15 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const incrementCommentsCount = (isSubComment?: boolean) => {
     if (resourceType === "post") {
       parentResourceContext?.incrementCommentsCount(true);
-      setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
+      setCommentsCountState(prev => ({ ...prev, comment: prev.comment + 1 }));
     } else {
       if (isSubComment) {
-        setCommentsCountState((prev) => ({
+        setCommentsCountState(prev => ({
           ...prev,
           subComment: prev.subComment + 1,
         }));
       } else {
-        setCommentsCountState((prev) => ({
+        setCommentsCountState(prev => ({
           ...prev,
           comment: prev.comment + 1,
         }));
@@ -143,18 +146,18 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const decrementCommentsCount = (subCommentCount?: number) => {
     if (resourceType === "post") {
       parentResourceContext?.decrementCommentsCount(1);
-      setCommentsCountState((prev) => ({
+      setCommentsCountState(prev => ({
         ...prev,
         comment: prev.comment - 1,
       }));
     } else {
       if (typeof subCommentCount !== "undefined") {
-        setCommentsCountState((prev) => ({
+        setCommentsCountState(prev => ({
           ...prev,
           subComment: prev.subComment - subCommentCount,
         }));
       } else {
-        setCommentsCountState((prev) => ({
+        setCommentsCountState(prev => ({
           ...prev,
           comment: prev.comment - 1,
         }));
@@ -209,14 +212,14 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     useState<ICommentApiModel[]>(loadedComments);
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState((prev) => ({
+    setReactionsCountState(prev => ({
       ...prev,
       [reaction]: prev[reaction] + 1,
     }));
   };
 
   const decrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState((prev) => ({
+    setReactionsCountState(prev => ({
       ...prev,
       [reaction]: prev[reaction] - 1,
     }));
@@ -230,7 +233,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   }, [commentsCountState.comment, id, parentResourceContext, resourceType]);
 
   useEffect(() => {
-    loadedComments.forEach((comment) => {
+    loadedComments.forEach(comment => {
       commentsQuery.appendCommentToResource(comment);
     });
   }, [commentsQuery, loadedComments]);
@@ -274,6 +277,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         ),
         relatedSourceMap,
         createdAt,
+        updatedAt,
         incrementCommentsCount,
         decrementCommentsCount,
         commentsQuery: commentsQuery,

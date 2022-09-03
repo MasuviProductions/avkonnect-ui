@@ -1,15 +1,21 @@
-import { Button, Typography, Hidden, Box } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
 import PostView from "../../Posts/PostView";
-import { useResourceContext } from "../../../contexts/ResourceContext";
-import { LABELS } from "../../../constants/labels";
+import {
+  IFeedSourceApiModel,
+  IPostContentModel,
+} from "../../../interfaces/api/external";
+import FeedActivity from "./FeedActivity";
+import FeedContent from "./FeedContent";
+import FeedHeader from "./FeedHeader";
+import FeedSource from "./FeedSource";
 
-const Feed: React.FC = () => {
-  const resourceContext = useResourceContext();
-  if (!resourceContext) {
-    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
-  }
-  const { id } = resourceContext;
+export interface IFeedProps {
+  feedContent: IPostContentModel[];
+  feedSource: IFeedSourceApiModel[];
+}
+
+const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
   const [showPostDetail, setShowPostDetail] = useState(false);
 
   const handlePostDetailOpen = () => {
@@ -21,47 +27,25 @@ const Feed: React.FC = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          border: "3px solid orange",
-          minHeight: "20vh",
-          maxWidth: "500px",
-          backgroundColor: "background.paper",
-        }}
-      >
-        <Box p={2}>
-          <Typography variant="h5">Feed Item</Typography>
-        </Box>
-
-        <Box p={2}>
-          <Typography variant="body1">Post Id: {id}</Typography>
-        </Box>
-
-        <Box p={2}>
-          <Button variant="contained" onClick={handlePostDetailOpen}>
-            <>
-              <Hidden mdUp>Open post in Overlay</Hidden>
-
-              <Hidden mdDown>Open post in Modal</Hidden>
-            </>
-          </Button>
-        </Box>
-
-        <Box p={2}>
-          <Typography variant="body2">
-            Resize screen to switch between Modal and Overlay. This is
-            controlled in the ~PostView~ Component
-          </Typography>
-        </Box>
-
-        <PostView
-          showPost={showPostDetail}
-          onPostClose={handlePostDetailClose}
-        />
-      </Box>
-    </>
+    <Box sx={postBoxSx}>
+      <FeedSource feedSource={feedSource} />
+      <FeedHeader />
+      <FeedContent feedContent={feedContent} />
+      <FeedActivity onPostOpen={handlePostDetailOpen} />
+      <PostView showPost={showPostDetail} onPostClose={handlePostDetailClose} />
+    </Box>
   );
 };
+
+const postBoxSx: SxProps<Theme> = (theme: Theme) => ({
+  margin: "8px 16px",
+  padding: "8px",
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: "6px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "16px 4px",
+    padding: "12px",
+  },
+});
 
 export default Feed;

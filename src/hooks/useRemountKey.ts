@@ -1,8 +1,5 @@
 import { useCallback, useState } from "react";
-
-const getRandomNumber = (digits: number) => {
-  return Math.ceil(Math.random() * 10 ** digits);
-};
+import { getRandomNumber } from "../utils/generic";
 
 const useRemountKey = (
   digits: number

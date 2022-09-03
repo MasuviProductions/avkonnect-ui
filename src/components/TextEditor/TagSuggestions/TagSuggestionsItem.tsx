@@ -1,12 +1,12 @@
 import { Box, Grid, Avatar, Typography, SxProps, Theme } from "@mui/material";
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry";
-import { getMUIElipsedSx, usernameToColor } from "../../../utils/generic";
+import { getMUIEllipsedSx, usernameToColor } from "../../../utils/generic";
 import { userAvatarSx } from "../../../styles/sx";
 import { SystemStyleObject } from "@mui/system";
 
 type ITagSuggestionsItemProps = EntryComponentProps;
 
-const TagSuggestionsItem: React.FC<ITagSuggestionsItemProps> = (props) => {
+const TagSuggestionsItem: React.FC<ITagSuggestionsItemProps> = props => {
   const { mention, theme, searchValue, isFocused, ...parentProps } = props;
   const { name, title, avatar } = mention;
 
@@ -53,7 +53,7 @@ const suggestionItemContainerSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const headlineSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  ...(getMUIElipsedSx(1) as SystemStyleObject<Theme>),
+  ...(getMUIEllipsedSx(1) as SystemStyleObject<Theme>),
   color: theme.palette.text.secondary,
   fontSize: "12px",
 });

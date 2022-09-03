@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../components/LayoutCard";
 import API_ENDPOINTS from "../../constants/api";
+import { NOTIFICATION_PAGINATION_LIMIT } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useSnackbarContext } from "../../contexts/SnackbarContext";
@@ -56,7 +57,7 @@ const Notifications: ReactFCWithSkeleton = () => {
       getUserNotifications(
         accessToken as string,
         authUser?.id as string,
-        10,
+        NOTIFICATION_PAGINATION_LIMIT,
         nextNotificationsSearchKey
           ? encodeURI(JSON.stringify(nextNotificationsSearchKey))
           : undefined
@@ -130,14 +131,14 @@ const Notifications: ReactFCWithSkeleton = () => {
 
   useEffect(() => {
     if (getUserNotificationsData) {
-      setUptoDateUserNotifications((prev) => {
+      setUptoDateUserNotifications(prev => {
         return [
           ...prev,
           ...(getUserNotificationsData?.data
             ?.notifications as INotificationsApiModel[]),
         ];
       });
-      setRelatedSourcesMap((prev) => {
+      setRelatedSourcesMap(prev => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           getUserNotificationsData.data?.relatedSources || []
         ) as Record<string, IRelatedSource>;
