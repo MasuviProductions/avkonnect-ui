@@ -18,7 +18,7 @@ import { HASHTAG_REGEX } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
 import { FunctionInterpolation, Interpolation } from "@emotion/react";
 import { Theme } from "@mui/material";
-import { decoratedLinkSx } from "../styles/sx";
+import { coloredLinkSx } from "../styles/sx";
 
 const getPlainText = (editorState: EditorState): string => {
   const currentContent = editorState.getCurrentContent();
@@ -75,6 +75,12 @@ const getContentText = (editorState: EditorState): string => {
   let contentText = plainText;
   contentText = getContentTextWithParsedMentions(editorState, contentText);
   return contentText;
+};
+
+const getContentStateFromStringifiedRawContentState = (
+  stringifiedRawContentState: string
+): ContentState => {
+  return convertFromRaw(JSON.parse(stringifiedRawContentState));
 };
 
 const getStringifiedRawText = (editorState: EditorState): string => {
@@ -202,7 +208,7 @@ const postMentionPluginOverrideTheme: Interpolation<Theme> = (
   },
 
   [`.${mentionsPluginThemeOption.mention}`]: {
-    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+    ...(coloredLinkSx(16)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
@@ -241,7 +247,7 @@ const commentMentionPluginOverrideTheme: Interpolation<Theme> = (
   },
 
   [`.${mentionsPluginThemeOption.mention}`]: {
-    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
+    ...(coloredLinkSx(14)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
@@ -257,7 +263,7 @@ const postHashtagsPluginOverrideTheme: Interpolation<Theme> = (
   theme: Theme
 ) => ({
   [`.${hashtagsPluginThemeOption.hashtag}`]: {
-    ...(decoratedLinkSx(16)(theme) as FunctionInterpolation<Theme>),
+    ...(coloredLinkSx(16)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
@@ -265,11 +271,12 @@ const commentHashtagsPluginOverrideTheme: Interpolation<Theme> = (
   theme: Theme
 ) => ({
   [`.${hashtagsPluginThemeOption.hashtag}`]: {
-    ...(decoratedLinkSx(14)(theme) as FunctionInterpolation<Theme>),
+    ...(coloredLinkSx(14)(theme) as FunctionInterpolation<Theme>),
   },
 });
 
 const utils = {
+  getContentStateFromStringifiedRawContentState,
   getStringifiedRawText,
   getContentText,
   getAllHashtagsFromPlainText,

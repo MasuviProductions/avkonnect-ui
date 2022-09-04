@@ -1,4 +1,4 @@
-import { DeleteForever } from "@mui/icons-material";
+import { DeleteForever, Edit } from "@mui/icons-material";
 import { ICustomMenuItem } from "../components/CusomMenu/CustomMenuItem";
 
 export const COMMENT_ACTIONS = ["delete", "edit"] as const;
@@ -8,5 +8,10 @@ export const COMMENT_ACTIONS_MENU: ICustomMenuItem<ICommentActionType>[] = [
     label: "Delete",
     icon: DeleteForever,
     id: "delete",
+  },
+  {
+    label: "Edit",
+    icon: Edit,
+    id: "edit",
   },
 ];

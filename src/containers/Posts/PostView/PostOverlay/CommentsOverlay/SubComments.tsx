@@ -4,8 +4,12 @@ import ResourceProvider, {
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment/Comment";
 import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
-import { IRelatedSource } from "../../../../../interfaces/api/external";
+import {
+  ICommentApiModel,
+  IRelatedSource,
+} from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
+import { ContentState } from "draft-js";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -14,7 +18,7 @@ interface ISubCommentsProps {
   ) => void;
 }
 
-// Warning: Desktop specific component
+// Note: Desktop specific component
 const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
@@ -51,6 +55,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
             <ResourceProvider
               id={comment.id}
               type="comment"
+              content={comment.contents.slice(-1)[0]}
               sourceId={comment.sourceId}
               sourceType={comment.sourceType}
               resourceId={comment.resourceId}
@@ -64,7 +69,6 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
               key={`comment-${comment.id}`}
             >
               <Comment
-                commentText={comment.contents[0].text}
                 onReplyClick={handleReplyClickWithSourceTag(
                   relatedSourcesMap[comment.sourceId]
                 )}

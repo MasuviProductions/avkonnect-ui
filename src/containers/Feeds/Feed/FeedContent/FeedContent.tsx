@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { IPostContentModel } from "../../../../interfaces/api/external";
+import { IPostContentApiModel } from "../../../../interfaces/api/external";
 import { parseContentText } from "../../../../utils/component";
 import { LABELS } from "../../../../constants/labels";
 
 interface IFeedContentProps {
-  feedContent: IPostContentModel[];
+  feedContent: IPostContentApiModel[];
 }
 
 const FeedContent: React.FC<IFeedContentProps> = ({ feedContent }) => {
@@ -16,7 +16,7 @@ const FeedContent: React.FC<IFeedContentProps> = ({ feedContent }) => {
   }
   const { relatedSourceMap } = resourceContext;
   return (
-    <Grid container py={2}>
+    <Grid container p={1}>
       <Grid item>
         {parseContentText(
           feedContent[feedContent.length - 1].text,

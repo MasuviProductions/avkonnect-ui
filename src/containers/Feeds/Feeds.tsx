@@ -1,4 +1,4 @@
-import { Grid, SxProps, Theme } from "@mui/material";
+import { Button, Grid, SxProps, Theme } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import API_ENDPOINTS from "../../constants/api";
@@ -14,12 +14,15 @@ import {
 } from "../../interfaces/api/external";
 import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
+import PostEditor from "../Posts/PostEditor";
 import Feed from "./Feed/Feed";
 import FeedsSkeleton from "./FeedsSkeleton";
 
 const Feeds: React.FC = () => {
   const { accessToken, authUser } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+
+  const [showPostEditor, setShowPostEditor] = useState<boolean>(false);
 
   const [upToDateUserFeeds, setUpToDateUserFeeds] = useState<
     IUserFeedApiModel[]
@@ -51,7 +54,7 @@ const Feeds: React.FC = () => {
   );
 
   const mergeFeeds = useCallback((newFeeds: IUserFeedApiModel[]) => {
-    setUpToDateUserFeeds(prev => [
+    setUpToDateUserFeeds((prev) => [
       ...prev,
       ...(newFeeds as IUserFeedApiModel[]),
     ]);
@@ -59,7 +62,7 @@ const Feeds: React.FC = () => {
 
   const handleUpdateResourceMap = useCallback(
     (relatedSources: IRelatedSource[]) => {
-      setRelatedSourcesMap(prev => {
+      setRelatedSourcesMap((prev) => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           relatedSources
         ) as Record<string, IRelatedSource>;
@@ -90,6 +93,14 @@ const Feeds: React.FC = () => {
     getUserFeedsFetching,
     infiniteLoadCallback
   );
+
+  const handleShowPostEditorOpen = () => {
+    setShowPostEditor(true);
+  };
+
+  const handleShowPostEditorClose = () => {
+    setShowPostEditor(false);
+  };
 
   useEffect(() => {
     if (authUser?.id) {
@@ -127,8 +138,15 @@ const Feeds: React.FC = () => {
 
   return (
     <Grid container sx={feedContainerSx}>
-      <Grid item xs={12} display="flex" justifyContent="center">
-        <Grid container mt={1} maxWidth="sm">
+      <Grid item xs={12}>
+        <Grid container mt={1.5} spacing={1.5} maxWidth="sm">
+          <Grid item xs={12}>
+            <Button onClick={handleShowPostEditorOpen}>Create Post</Button>
+            <PostEditor
+              showPostEditor={showPostEditor}
+              onPostEditorClose={handleShowPostEditorClose}
+            />
+          </Grid>
           {upToDateUserFeeds?.map((feed, index) => (
             <Grid
               item
@@ -143,6 +161,7 @@ const Feeds: React.FC = () => {
               <ResourceProvider
                 id={feed.postId}
                 type="post"
+                content={feed.contents.slice(-1)[0]}
                 sourceId={feed.sourceId}
                 sourceType={feed.sourceType}
                 reactionsCount={feed.activity.reactionsCount}

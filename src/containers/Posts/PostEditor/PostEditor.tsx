@@ -9,7 +9,7 @@ import TextEditorProvider, {
 } from "../../../contexts/TextEditorContext";
 import {
   ICreatePostApiRequest,
-  IPostContentModel,
+  IPostContentApiModel,
 } from "../../../interfaces/api/external";
 import { createPost } from "../../../utils/api";
 import DRAFTJS from "../../../utils/draftjs";
@@ -50,7 +50,7 @@ const PostEditor: React.FC<IPostEditorProps> = ({
   );
 
   const handlePostCreate = (content: ITextEditorContent) => {
-    const postContent: Omit<IPostContentModel, "createdAt"> = {
+    const postContent: Omit<IPostContentApiModel, "createdAt"> = {
       text: content.text,
       stringifiedRawContent: content.stringifiedRawContent,
       mediaUrls: [],

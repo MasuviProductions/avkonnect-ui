@@ -8,6 +8,7 @@ import { LABELS } from "../../../../constants/labels";
 import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../../../interfaces/api/external";
 import { REACTION_CONFIGS } from "../../../../constants/app";
+import { fadedLinkSx, userAvatarHeadlineSx } from "../../../../styles/sx";
 
 interface IFeedActivityProps {
   onPostOpen: () => void;
@@ -40,39 +41,28 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
 
   return (
     <Box>
-      <Grid
-        container
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Grid item pl={1} display="flex" alignItems="center">
-          <ReactionIconClubber reactionIconCount={reactionsCount} />
-          <Box component="span" ml={0.5} py={1}>
-            {userReaction ? (
-              totalReactionsCount > 1 ? (
-                <Typography variant="caption">
-                  {LABELS.YOU_AND_OTHERS(totalReactionsCount)}
-                </Typography>
-              ) : (
-                <Typography variant="caption">{LABELS.YOU}</Typography>
-              )
-            ) : totalReactionsCount > 0 ? (
-              <Typography variant="caption">{totalReactionsCount}</Typography>
-            ) : (
-              <Typography variant="caption">
-                {LABELS.BE_FIRST_TO_REACT}
+      <Grid container display="flex" justifyContent="space-between" p={1}>
+        <Grid item>
+          <Grid container columnSpacing={0.5}>
+            <Grid item ml={0.5} mt={0.5}>
+              <ReactionIconClubber reactionIconCount={reactionsCount} />
+            </Grid>
+            <Grid item>
+              <Typography sx={fadedLinkSx(12)}>
+                {userReaction
+                  ? totalReactionsCount > 1
+                    ? LABELS.YOU_AND_OTHERS(totalReactionsCount)
+                    : LABELS.YOU
+                  : totalReactionsCount > 0
+                  ? totalReactionsCount
+                  : LABELS.BE_FIRST_TO_REACT}
               </Typography>
-            )}
-          </Box>
+            </Grid>
+          </Grid>
         </Grid>
         {commentsCount?.comment > 0 && (
           <Grid item onClick={onPostOpen}>
-            <Typography
-              variant="caption"
-              component="span"
-              sx={semiCommentLinkSx}
-            >
+            <Typography sx={fadedLinkSx(12)}>
               {LABELS.COMMENTS_COUNT(commentsCount?.comment)}
             </Typography>
           </Grid>
@@ -151,7 +141,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
 
 const reactionPresentSx: (
   reactionType: IReactionTypes
-) => (theme: Theme) => SystemStyleObject<Theme> = reactionType => {
+) => (theme: Theme) => SystemStyleObject<Theme> = (reactionType) => {
   return (theme: Theme) => ({
     color: `${theme.palette.reactions[reactionType]}`,
     "&:hover": {
@@ -163,7 +153,7 @@ const reactionPresentSx: (
 
 const reactionIconSx: (
   reactionType?: IReactionTypes
-) => (theme: Theme) => SystemStyleObject<Theme> = reactionType => {
+) => (theme: Theme) => SystemStyleObject<Theme> = (reactionType) => {
   return (theme: Theme) => ({
     fill: reactionType
       ? `${theme.palette.reactions[reactionType]}`
@@ -181,15 +171,8 @@ const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
-const semiCommentLinkSx: SxProps<Theme> = {
-  "&:hover": {
-    cursor: "pointer",
-    textDecoration: "underline",
-  },
-};
-
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({
-  borderColor: `${theme.palette.text.secondary}77`,
+  borderColor: `${theme.palette.secondary.light}`,
 });
 
 export default FeedActivity;

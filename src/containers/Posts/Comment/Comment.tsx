@@ -6,13 +6,13 @@ import { userAvatarSx } from "../../../styles/sx";
 import { usernameToColor } from "../../../utils/generic";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import { LABELS } from "../../../constants/labels";
+import { ContentState } from "draft-js";
 
 export interface ICommentProps {
-  commentText: string;
   onReplyClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Comment: React.FC<ICommentProps> = ({ commentText, onReplyClick }) => {
+const Comment: React.FC<ICommentProps> = ({ onReplyClick }) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
@@ -36,7 +36,7 @@ const Comment: React.FC<ICommentProps> = ({ commentText, onReplyClick }) => {
       <Grid item xs>
         <Grid container>
           <Grid item xs={12}>
-            <CommentBox commentText={commentText} />
+            <CommentBox />
           </Grid>
 
           <Grid item xs={12}>

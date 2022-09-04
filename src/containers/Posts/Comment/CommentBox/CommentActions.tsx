@@ -12,15 +12,17 @@ import {
   ICommentActionType,
 } from "../../../../constants/menu";
 
-interface ICommentActionsProps {}
+interface ICommentActionsProps {
+  onEditClick: () => void;
+}
 
-const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
+const CommentActions: React.FC<ICommentActionsProps> = ({ onEditClick }) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
-  const { id, deleteCommentResource } = resourceContext;
+  const { id, deleteResource } = resourceContext;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -33,7 +35,7 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
   };
 
   const handleCommentDelete = () => {
-    deleteCommentResource();
+    deleteResource();
   };
 
   const handleMenuItemClick = (id: string) => {
@@ -41,10 +43,13 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
     switch (menuItemId) {
       case "delete": {
         handleCommentDelete();
+        handleCommentActionsClose();
         return;
       }
 
       case "edit": {
+        onEditClick();
+        handleCommentActionsClose();
         return;
       }
     }

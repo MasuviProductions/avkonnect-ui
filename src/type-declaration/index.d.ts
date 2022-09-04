@@ -2,9 +2,11 @@ import { IReactionTypes } from "../interfaces/api/external";
 
 declare module "@mui/material/styles" {
   interface ThemeOptions {
-    key: string;
+    key: "dark" | "light";
     name: string;
   }
+
+  interface Theme extends ThemeOptions {}
 
   interface TypeBackground {
     navbar: string;

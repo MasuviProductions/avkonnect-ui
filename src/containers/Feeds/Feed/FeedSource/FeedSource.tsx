@@ -17,7 +17,7 @@ import {
   IRelatedSource,
   IResourceTypes,
 } from "../../../../interfaces/api/external";
-import { userAvatarSx } from "../../../../styles/sx";
+import { simpleLinkSx, userAvatarSx } from "../../../../styles/sx";
 import { usernameToColor } from "../../../../utils/generic";
 
 interface IFeedSourceProps {
@@ -38,7 +38,7 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
     relatedSourceMap: Record<string, IRelatedSource>
   ): [IResourceTypes, IRelatedSource] => {
     let fsResult = feedSource[0];
-    feedSource.forEach(fs => {
+    feedSource.forEach((fs) => {
       if (fs.resourceType === "reaction" && fsResult.resourceType === "post") {
         fsResult = fs;
       }
@@ -65,12 +65,12 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
 
   if (feedResourceType !== "post") {
     return (
-      <Box>
+      <>
         <Grid
           container
           alignItems="center"
           spacing={1}
-          mb={0.6}
+          p={1}
           onClick={handleProfileRedirectClick}
         >
           <Grid item>
@@ -79,23 +79,25 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
               src={feedSourceDetails.displayPictureUrl}
               sx={userAvatarSx(
                 usernameToColor(feedSourceDetails.name as string),
-                35
+                25
               )}
             />
           </Grid>
           <Grid item>
-            <Typography variant="caption">
-              {feedResourceType === "comment"
-                ? LABELS.COMMENT_SOURCE(feedSourceDetails.name)
-                : LABELS.REACTION_SOURCE(
-                    feedSourceDetails.name,
-                    LABELS.REACTION_PRETEXT_DEFAULT
-                  )}
+            <Typography component="span" sx={simpleLinkSx(12)}>
+              {feedSourceDetails.name}
+            </Typography>
+            <Typography component="span" variant="caption">
+              {` ${
+                feedResourceType === "comment"
+                  ? LABELS.COMMENTED_ON
+                  : LABELS.REACTION_SOURCE(LABELS.REACTION_PRETEXT_DEFAULT)
+              }`}
             </Typography>
           </Grid>
         </Grid>
         <Divider sx={dividerSx} />
-      </Box>
+      </>
     );
   } else {
     return <></>;
@@ -103,7 +105,7 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
 };
 
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({
-  borderColor: `${theme.palette.text.secondary}77`,
+  borderColor: `${theme.palette.secondary.light}`,
 });
 
 export default FeedSource;

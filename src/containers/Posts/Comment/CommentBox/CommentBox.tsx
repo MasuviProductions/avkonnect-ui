@@ -1,28 +1,32 @@
-import { Box, Link, Grid, Theme, Typography } from "@mui/material";
+import { Box, Link, Grid, Hidden, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
+import { ContentState } from "draft-js";
 import { compile } from "path-to-regexp";
+import { useState, useEffect } from "react";
 import { APP_ROUTES } from "../../../../constants/app";
 import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import { simpleLinkSx } from "../../../../styles/sx";
+import { simpleLinkSx, userAvatarHeadlineSx } from "../../../../styles/sx";
 import { parseContentText } from "../../../../utils/component";
+import DRAFTJS from "../../../../utils/draftjs";
 import { getTimeAgo } from "../../../../utils/generic";
+import CommentEditor from "../../CommentEditor";
 import CommentActions from "./CommentActions";
 
 interface ICommentBoxProps {
-  commentText: string;
   commentMediaUrl?: string;
   isEdited?: boolean;
 }
 
 const CommentBox: React.FC<ICommentBoxProps> = ({
-  commentText,
   commentMediaUrl,
   isEdited = false,
 }) => {
   const { authUser } = useAuthContext();
   const resourceContext = useResourceContext();
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
@@ -32,7 +36,17 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
     createdAt,
     sourceId: userId,
     relatedSourceMap,
+    content,
+    updateResource,
   } = resourceContext;
+
+  const handleEditModeOpen = () => {
+    setIsEditMode(true);
+  };
+
+  const handleEditModeClose = () => {
+    setIsEditMode(false);
+  };
 
   return (
     <>
@@ -56,9 +70,9 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
                       {getTimeAgo(createdAt)}
                     </Typography>
                   </Grid>
-                  {authUser?.id === userId && (
+                  {authUser?.id === userId && !isEditMode && (
                     <Grid item>
-                      <CommentActions />
+                      <CommentActions onEditClick={handleEditModeOpen} />
                     </Grid>
                   )}
                 </Grid>
@@ -66,14 +80,35 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Typography sx={avatarHeadlineSx}>{headline}</Typography>
+            <Typography sx={userAvatarHeadlineSx}>{headline}</Typography>
           </Grid>
         </Grid>
 
         <Grid container>
-          <Grid item sx={commentTextSx}>
-            {parseContentText(commentText, relatedSourceMap)}
-          </Grid>
+          <Hidden mdDown>
+            {!isEditMode ? (
+              <Grid item sx={commentTextSx}>
+                {parseContentText(content.text, relatedSourceMap)}
+              </Grid>
+            ) : (
+              <>
+                <CommentEditor
+                  type="edit"
+                  initialContentState={DRAFTJS.utils.getContentStateFromStringifiedRawContentState(
+                    content.stringifiedRawContent
+                  )}
+                  onClickCancel={handleEditModeClose}
+                  onClickSave={handleEditModeClose}
+                />
+              </>
+            )}
+          </Hidden>
+
+          <Hidden mdUp>
+            <Grid item sx={commentTextSx}>
+              {parseContentText(content.text, relatedSourceMap)}
+            </Grid>
+          </Hidden>
         </Grid>
       </Box>
     </>
@@ -90,12 +125,7 @@ const commentCardSx = (theme: Theme): SystemStyleObject<Theme> => ({
 const commentTextSx = (theme: Theme): SystemStyleObject<Theme> => ({
   fontSize: 14,
   color: theme.palette.text.primary,
-});
-
-const avatarHeadlineSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  cursor: "pointer",
-  fontSize: 12,
-  color: theme.palette.text.secondary,
+  wordBreak: "break-word",
 });
 
 const commentTimeSx = (theme: Theme): SystemStyleObject<Theme> => ({

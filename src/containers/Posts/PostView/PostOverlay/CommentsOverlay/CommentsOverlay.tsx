@@ -1,6 +1,6 @@
 import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ViewOverlay, {
   IOverlay,
 } from "../../../../../components/ViewOverlay/ViewOverlay";
@@ -11,12 +11,16 @@ import CommentEditor from "../../../CommentEditor";
 import SubComments from "./SubComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
+import DRAFTJS from "../../../../../utils/draftjs";
+import { ContentState } from "draft-js";
 
-interface ICommentsOverlayProps extends IOverlay, ICommentProps {}
+interface ICommentsOverlayProps extends IOverlay, ICommentProps {
+  initialContentState: ContentState;
+}
 
 // Warning: Handheld specific component
 const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
-  commentText,
+  initialContentState,
   showOverlay,
   onOverlayClose,
 }) => {
@@ -27,9 +31,9 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
 
   const { commentsQuery } = resourceContext;
 
-  const [mentionedSource, setMentionedSource] = useState<
-    IRelatedSource | undefined
-  >();
+  const [contentState, setContentState] = useState<ContentState>(
+    DRAFTJS.utils.getNewContentState()
+  );
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsStatus } =
     commentsQuery as IUseCommentsForResourceReturn;
@@ -42,11 +46,8 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
     event: React.MouseEvent<HTMLButtonElement>,
     withTaggedSource?: IRelatedSource
   ) => {
-    if (withTaggedSource) {
-      setMentionedSource(
-        withTaggedSource ? { ...withTaggedSource } : undefined
-      );
-    }
+    const newContentState = DRAFTJS.utils.getNewContentState(withTaggedSource);
+    setContentState(newContentState);
   };
 
   useEffect(() => {
@@ -61,6 +62,12 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
     }
   }, [resetQueryData, showOverlay]);
 
+  useEffect(() => {
+    if (initialContentState) {
+      setContentState(initialContentState);
+    }
+  }, [initialContentState]);
+
   if (getCommentsStatus === "loading") {
     return <></>;
   }
@@ -73,7 +80,7 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
       >
         <Grid container sx={commentOverlayContainerSx}>
           <Grid item xs={12} sx={contentsContainerSx}>
-            <Comment commentText={commentText} onReplyClick={() => {}} />
+            <Comment onReplyClick={handleReplyClickWithUserTag} />
 
             <Box ml={5}>
               <SubComments onReplyClick={handleReplyClickWithUserTag} />
@@ -81,7 +88,7 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
           </Grid>
           <Grid xs={12} item sx={commentEditorSx}>
             <CommentEditor
-              mentionedSource={mentionedSource}
+              initialContentState={contentState}
               submitButtonText={LABELS.REPLY}
             />
           </Grid>

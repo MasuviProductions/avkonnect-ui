@@ -9,7 +9,9 @@ import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
 import CommentEditor from "../../../CommentEditor";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
-import { decoratedLinkSx } from "../../../../../styles/sx";
+import { coloredLinkSx } from "../../../../../styles/sx";
+import DRAFTJS from "../../../../../utils/draftjs";
+import { ContentState } from "draft-js";
 
 interface IPostCommentsProps {}
 const PostComments: React.FC<IPostCommentsProps> = ({}) => {
@@ -23,9 +25,9 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
     string | undefined
   >();
 
-  const [mentionedSource, setMentionedSource] = useState<
-    IRelatedSource | undefined
-  >();
+  const [contentState, setContentState] = useState<ContentState>(
+    DRAFTJS.utils.getNewContentState()
+  );
 
   const {
     uptoDateComments,
@@ -44,9 +46,9 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
       event: React.MouseEvent<HTMLButtonElement>,
       withTaggedSource?: IRelatedSource
     ) => {
-      setMentionedSource(
-        withTaggedSource ? { ...withTaggedSource } : undefined
-      );
+      const newContentState =
+        DRAFTJS.utils.getNewContentState(withTaggedSource);
+      setContentState(newContentState);
       setReplyEditorCommentId(commentId);
     };
 
@@ -57,6 +59,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
           <ResourceProvider
             id={comment.id}
             type="comment"
+            content={comment.contents.slice(-1)[0]}
             sourceId={comment.sourceId}
             sourceType={comment.sourceType}
             resourceId={comment.resourceId}
@@ -69,10 +72,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
             userReaction={comment.sourceActivity?.reaction}
             key={`comment-${comment.id}`}
           >
-            <Comment
-              commentText={comment.contents[0].text}
-              onReplyClick={handleReplyClickWithSourceTag(comment.id)}
-            />
+            <Comment onReplyClick={handleReplyClickWithSourceTag(comment.id)} />
             <Box ml={5}>
               <SubComments
                 onReplyClick={handleReplyClickWithSourceTag(comment.id)}
@@ -82,7 +82,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
                 <CommentEditor
                   key={`comment-editor-${comment.id}`}
                   submitButtonText={LABELS.REPLY}
-                  mentionedSource={mentionedSource}
+                  initialContentState={contentState}
                 />
               )}
             </Box>
@@ -99,7 +99,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
           <Typography
             paragraph
             onClick={handleClickLoadMore}
-            sx={decoratedLinkSx(14)}
+            sx={coloredLinkSx(14)}
           >
             {LABELS.VIEW_MORE_COMMENTS}
           </Typography>

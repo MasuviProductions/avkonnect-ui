@@ -1,21 +1,23 @@
-import { Box, SxProps, Theme } from "@mui/material";
+import { Box, SxProps, Theme, useTheme } from "@mui/material";
 import { useState } from "react";
 import PostView from "../../Posts/PostView";
 import {
   IFeedSourceApiModel,
-  IPostContentModel,
+  IPostContentApiModel,
 } from "../../../interfaces/api/external";
 import FeedActivity from "./FeedActivity";
 import FeedContent from "./FeedContent";
 import FeedHeader from "./FeedHeader";
 import FeedSource from "./FeedSource";
+import LayoutCard from "../../../components/LayoutCard";
 
 export interface IFeedProps {
-  feedContent: IPostContentModel[];
+  feedContent: IPostContentApiModel[];
   feedSource: IFeedSourceApiModel[];
 }
 
 const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
+  const theme = useTheme();
   const [showPostDetail, setShowPostDetail] = useState(false);
 
   const handlePostDetailOpen = () => {
@@ -27,24 +29,25 @@ const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
   };
 
   return (
-    <Box sx={postBoxSx}>
-      <FeedSource feedSource={feedSource} />
-      <FeedHeader />
-      <FeedContent feedContent={feedContent} />
-      <FeedActivity onPostOpen={handlePostDetailOpen} />
-      <PostView showPost={showPostDetail} onPostClose={handlePostDetailClose} />
-    </Box>
+    <LayoutCard withBorder={theme.key === "light"}>
+      <Box sx={feedSx}>
+        <FeedSource feedSource={feedSource} />
+        <FeedHeader />
+        <FeedContent feedContent={feedContent} />
+        <FeedActivity onPostOpen={handlePostDetailOpen} />
+        <PostView
+          showPost={showPostDetail}
+          onPostClose={handlePostDetailClose}
+        />
+      </Box>
+    </LayoutCard>
   );
 };
 
-const postBoxSx: SxProps<Theme> = (theme: Theme) => ({
-  margin: "8px 16px",
-  padding: "8px",
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: "6px",
+const feedSx: SxProps<Theme> = (theme: Theme) => ({
+  padding: 1,
   [theme.breakpoints.down("sm")]: {
-    margin: "16px 4px",
-    padding: "12px",
+    padding: 1.5,
   },
 });
 

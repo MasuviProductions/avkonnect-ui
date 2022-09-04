@@ -6,7 +6,7 @@ import Comment from "../../../Comment";
 import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
-import { decoratedLinkSx } from "../../../../../styles/sx";
+import { coloredLinkSx } from "../../../../../styles/sx";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -49,6 +49,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
             <ResourceProvider
               id={comment.id}
               type="comment"
+              content={comment.contents.slice(-1)[0]}
               sourceId={comment.sourceId}
               sourceType={comment.sourceType}
               resourceId={comment.resourceId}
@@ -62,7 +63,6 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
               key={`comment-${comment.id}`}
             >
               <Comment
-                commentText={comment.contents[0].text}
                 onReplyClick={handleReplyClickWithSourceTag(
                   relatedSourcesMap[comment.sourceId]
                 )}
@@ -80,7 +80,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
             <Typography
               paragraph
               onClick={handleClickLoadMore}
-              sx={decoratedLinkSx(12)}
+              sx={coloredLinkSx(12)}
             >
               {uptoDateComments.length === 0
                 ? LABELS.VIEW_REPLIES

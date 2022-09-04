@@ -5,7 +5,7 @@ import { ReactNodeArray } from "react";
 import reactStringReplace from "react-string-replace";
 import { APP_ROUTES, HASHTAG_REGEX, UUID_REGEX_STRING } from "../constants/app";
 import { IRelatedSource } from "../interfaces/api/external";
-import { decoratedLinkSx } from "../styles/sx";
+import { coloredLinkSx } from "../styles/sx";
 
 export const parseContentText = (
   contentText: string,
@@ -26,7 +26,7 @@ export const parseContentText = (
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
         passHref
       >
-        <Typography sx={decoratedLinkSx()}>{relatedSource?.name}</Typography>
+        <Typography sx={coloredLinkSx()}>{relatedSource?.name}</Typography>
       </Link>
     );
   });
@@ -35,11 +35,11 @@ export const parseContentText = (
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
     return (
       <Typography
-        key={`hastag-${i}`}
-        sx={decoratedLinkSx()}
+        key={`hashtag-${i}`}
+        sx={coloredLinkSx()}
       >{`#${match}`}</Typography>
     );
   });
 
-  return replacedText;
+  return <Typography variant="body2">{replacedText}</Typography>;
 };
