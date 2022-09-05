@@ -4,12 +4,9 @@ import ResourceProvider, {
 } from "../../../../../contexts/ResourceContext";
 import Comment from "../../../Comment/Comment";
 import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
-import {
-  ICommentApiModel,
-  IRelatedSource,
-} from "../../../../../interfaces/api/external";
+import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
-import { ContentState } from "draft-js";
+import { useCallback } from "react";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -27,18 +24,16 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
 
   const { commentsQuery } = resourceContext;
 
-  const {
-    uptoDateComments,
-    relatedSourcesMap,
+  const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
+    commentsQuery as IUseCommentsForResourceReturn;
 
-    infiniteLoadRef,
-  } = commentsQuery as IUseCommentsForResourceReturn;
-
-  const handleReplyClickWithSourceTag =
+  const handleReplyClickWithSourceTag = useCallback(
     (withTaggedSource?: IRelatedSource) =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      onReplyClick(event, withTaggedSource);
-    };
+      (event: React.MouseEvent<HTMLButtonElement>) => {
+        onReplyClick(event, withTaggedSource);
+      },
+    [onReplyClick]
+  );
 
   return (
     <>

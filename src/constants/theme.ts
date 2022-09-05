@@ -25,7 +25,7 @@ export const THEMES_LIST: ThemeOptions[] = [
         link: "#0a66c2",
       },
       reactions: {
-        sad: "#5d6163",
+        sad: "#5600aa",
         laugh: "#ed771c",
         love: "#c21557",
         like: "#207ed6",
@@ -57,7 +57,7 @@ export const THEMES_LIST: ThemeOptions[] = [
         link: "#70b5f9",
       },
       reactions: {
-        sad: "#5d6163",
+        sad: "#bb77ff",
         laugh: "#ed771c",
         love: "#c21557",
         like: "#207ed6",

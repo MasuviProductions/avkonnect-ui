@@ -12,17 +12,15 @@ import {
   ICommentActionType,
 } from "../../../../constants/menu";
 
-interface ICommentActionsProps {
-  onEditClick: () => void;
-}
+interface ICommentActionsProps {}
 
-const CommentActions: React.FC<ICommentActionsProps> = ({ onEditClick }) => {
+const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
-  const { id, deleteResource } = resourceContext;
+  const { id, deleteResource, updateIsBeingEdited } = resourceContext;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -48,7 +46,7 @@ const CommentActions: React.FC<ICommentActionsProps> = ({ onEditClick }) => {
       }
 
       case "edit": {
-        onEditClick();
+        updateIsBeingEdited(true);
         handleCommentActionsClose();
         return;
       }

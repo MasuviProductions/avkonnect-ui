@@ -6,8 +6,8 @@ import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
 import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
 import PostComments from "./PostComments";
-import CommentEditor from "../../CommentEditor";
 import { LABELS } from "../../../../constants/labels";
+import AddComment from "../../CommentEditor/AddComment";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -58,7 +58,7 @@ const PostModal: React.FC<IPostModalProps> = ({
             </Box>
 
             <Box sx={addCommentSx}>
-              <CommentEditor submitButtonText={LABELS.POST_COMMENT} />
+              <AddComment submitButtonText={LABELS.POST_COMMENT} />
             </Box>
 
             <PostComments />

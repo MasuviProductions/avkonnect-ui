@@ -1,20 +1,23 @@
 import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
-import { userAvatarSx } from "../../../styles/sx";
-import { usernameToColor } from "../../../utils/generic";
-import { LABELS } from "../../../constants/labels";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import TextEditor from "../../../components/TextEditor";
-import { useTextEditorContext } from "../../../contexts/TextEditorContext";
+import { userAvatarSx } from "../../../../styles/sx";
+import { usernameToColor } from "../../../../utils/generic";
+import { LABELS } from "../../../../constants/labels";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import TextEditor from "../../../../components/TextEditor";
+import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 
-interface ICommentEditorHandheldProps {
+interface IEditCommentHandheldProps {
   submitButtonText: string;
+  onClickCancel?: () => void;
+  onClickSave?: () => void;
 }
 
-const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
+const EditCommentHandheld: React.FC<IEditCommentHandheldProps> = ({
   submitButtonText,
+  onClickCancel,
+  onClickSave,
 }) => {
   const textEditorContext = useTextEditorContext();
   if (!textEditorContext) {
@@ -30,6 +33,7 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
 
   const handleCommentCreate = () => {
     saveContent();
+    onClickSave?.();
   };
 
   return (
@@ -56,15 +60,9 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sx={actionsContainerSx}>
+        <Grid item xs={12} sx={actionsContainerSx} py={0.5}>
           <Grid container justifyContent="space-between">
-            <Grid item>
-              <IconButton>
-                <PhotoCameraBackIcon sx={actionIconsSx} fontSize="small" />
-              </IconButton>
-            </Grid>
-
-            <Grid item>
+            <Grid item xs={6}>
               <Button
                 color="primary"
                 sx={postButtonSx}
@@ -72,6 +70,12 @@ const CommentEditorHandheld: React.FC<ICommentEditorHandheldProps> = ({
                 onClick={handleCommentCreate}
               >
                 {submitButtonText}
+              </Button>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button color="primary" sx={postButtonSx} onClick={onClickCancel}>
+                {LABELS.CANCEL}
               </Button>
             </Grid>
           </Grid>
@@ -97,9 +101,9 @@ const commentEditorContainer = (theme: Theme): SystemStyleObject<Theme> => ({
 
 const postButtonSx = (theme: Theme): SystemStyleObject<Theme> => ({
   fontSize: 12,
-  minWidth: 40,
+  width: "100%",
   textTransform: "initial",
-  padding: "4px 16px",
+  padding: "4px 20px",
 });
 
 const commentContainerSx =
@@ -132,4 +136,4 @@ const textEditorContainerSx =
     },
   });
 
-export default CommentEditorHandheld;
+export default EditCommentHandheld;

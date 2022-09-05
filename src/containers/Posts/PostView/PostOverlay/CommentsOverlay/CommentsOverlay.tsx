@@ -1,18 +1,18 @@
 import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ViewOverlay, {
   IOverlay,
 } from "../../../../../components/ViewOverlay/ViewOverlay";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
 import Comment, { ICommentProps } from "../../../Comment";
 import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
-import CommentEditor from "../../../CommentEditor";
 import SubComments from "./SubComments";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import DRAFTJS from "../../../../../utils/draftjs";
 import { ContentState } from "draft-js";
+import AddComment from "../../../CommentEditor/AddComment";
 
 interface ICommentsOverlayProps extends IOverlay, ICommentProps {
   initialContentState: ContentState;
@@ -86,8 +86,9 @@ const CommentsOverlay: React.FC<ICommentsOverlayProps> = ({
               <SubComments onReplyClick={handleReplyClickWithUserTag} />
             </Box>
           </Grid>
+
           <Grid xs={12} item sx={commentEditorSx}>
-            <CommentEditor
+            <AddComment
               initialContentState={contentState}
               submitButtonText={LABELS.REPLY}
             />

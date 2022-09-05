@@ -50,6 +50,8 @@ interface IResourceContext {
   totalCommentsCount: number;
   incrementCommentsCount: (isSubComment?: boolean) => void;
   decrementCommentsCount: (subCommentCount?: number) => void;
+  isBeingEdited: boolean;
+  updateIsBeingEdited: (isEdited: boolean) => void;
 
   commentsQuery?: IUseCommentsForResourceReturn;
   allCommentsFetched: boolean;
@@ -231,6 +233,8 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     onResourceUpdate
   );
 
+  const [isBeingEdited, setIsBeingEdited] = useState<boolean>(false);
+
   const [contentState, setContentState] = useState<
     IPostContentApiModel | ICommentContentApiModel
   >(content);
@@ -247,6 +251,10 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
 
   const [loadedCommentsState, setLoadedCommentsState] =
     useState<ICommentApiModel[]>(loadedComments);
+
+  const updateIsBeingEdited = (_isBeingEdited: boolean) => {
+    setIsBeingEdited(_isBeingEdited);
+  };
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
     setReactionsCountState((prev) => ({
@@ -329,6 +337,8 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         userReaction: userReactionState,
         updateUserReaction,
         loadedComments: loadedCommentsState,
+        isBeingEdited,
+        updateIsBeingEdited,
         reactionsCount: reactionsCountState,
         totalReactionsCount: Object.values(reactionsCountState).reduce(
           (reactionCount, totalCount) => reactionCount + totalCount,

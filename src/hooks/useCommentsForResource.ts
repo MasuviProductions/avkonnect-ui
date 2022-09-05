@@ -34,6 +34,9 @@ export interface IUseCommentsForResourceReturn {
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   getCommentsFetching: boolean;
+  createCommentFetching: boolean;
+  patchCommentFetching: boolean;
+  deleteCommentFetching: boolean;
   appendComment: (comment: ICommentApiModel) => void;
   addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
   removeComment: (id: string) => void;
@@ -101,7 +104,7 @@ export const useCommentsForResource = (
     data: createCommentResData,
     // refetch: triggerCreateCommentApi,
     // status: createCommentStatus,
-    // isFetching: createCommentFetching,
+    isFetching: createCommentFetching,
     remove: clearCreateCommentQueryData,
   } = useQuery(
     `POST:${API_ENDPOINTS.CREATE_COMMENT.key}-${id}`,
@@ -117,7 +120,7 @@ export const useCommentsForResource = (
     data: patchCommentResData,
     // refetch: triggerCreateCommentApi,
     // status: createCommentStatus,
-    // isFetching: createCommentFetching,
+    isFetching: patchCommentFetching,
     remove: clearPatchCommentQueryData,
   } = useQuery(
     `PATCH:${API_ENDPOINTS.PATCH_COMMENT.key}-${id}`,
@@ -286,6 +289,9 @@ export const useCommentsForResource = (
     addComment,
     removeComment,
     updateComment,
+    createCommentFetching,
+    patchCommentFetching,
+    deleteCommentFetching,
   };
 };
 

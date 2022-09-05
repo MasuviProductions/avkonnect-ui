@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Hidden, Theme } from "@mui/material";
+import { Avatar, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import CommentActivities from "./CommentActivities";
 import CommentBox from "./CommentBox";
@@ -6,7 +6,6 @@ import { userAvatarSx } from "../../../styles/sx";
 import { usernameToColor } from "../../../utils/generic";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import { LABELS } from "../../../constants/labels";
-import { ContentState } from "draft-js";
 
 export interface ICommentProps {
   onReplyClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,8 +18,8 @@ const Comment: React.FC<ICommentProps> = ({ onReplyClick }) => {
   }
 
   const { sourceInfo } = resourceContext;
-
   const { name, displayPictureUrl } = sourceInfo;
+
   return (
     <Grid container spacing={1} sx={commentContainerSx}>
       <Grid item my={1}>

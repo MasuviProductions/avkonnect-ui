@@ -7,11 +7,11 @@ import Comment from "../../../Comment";
 import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsForResource";
 import { LABELS } from "../../../../../constants/labels";
 import SubComments from "./SubComments";
-import CommentEditor from "../../../CommentEditor";
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { coloredLinkSx } from "../../../../../styles/sx";
 import DRAFTJS from "../../../../../utils/draftjs";
 import { ContentState } from "draft-js";
+import AddComment from "../../../CommentEditor/AddComment";
 
 interface IPostCommentsProps {}
 const PostComments: React.FC<IPostCommentsProps> = ({}) => {
@@ -79,7 +79,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
               />
 
               {replyEditorCommentId === comment.id && (
-                <CommentEditor
+                <AddComment
                   key={`comment-editor-${comment.id}`}
                   submitButtonText={LABELS.REPLY}
                   initialContentState={contentState}

@@ -1,8 +1,6 @@
 import { Box, Link, Grid, Hidden, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import { ContentState } from "draft-js";
 import { compile } from "path-to-regexp";
-import { useState, useEffect } from "react";
 import { APP_ROUTES } from "../../../../constants/app";
 import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
@@ -11,21 +9,14 @@ import { simpleLinkSx, userAvatarHeadlineSx } from "../../../../styles/sx";
 import { parseContentText } from "../../../../utils/component";
 import DRAFTJS from "../../../../utils/draftjs";
 import { getTimeAgo } from "../../../../utils/generic";
-import CommentEditor from "../../CommentEditor";
+import EditComment from "../../CommentEditor/EditComment";
 import CommentActions from "./CommentActions";
 
-interface ICommentBoxProps {
-  commentMediaUrl?: string;
-  isEdited?: boolean;
-}
+interface ICommentBoxProps {}
 
-const CommentBox: React.FC<ICommentBoxProps> = ({
-  commentMediaUrl,
-  isEdited = false,
-}) => {
+const CommentBox: React.FC<ICommentBoxProps> = ({}) => {
   const { authUser } = useAuthContext();
   const resourceContext = useResourceContext();
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
@@ -38,19 +29,15 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
     relatedSourceMap,
     content,
     updateResource,
+    isBeingEdited,
+    commentsQuery,
   } = resourceContext;
 
-  const handleEditModeOpen = () => {
-    setIsEditMode(true);
-  };
-
-  const handleEditModeClose = () => {
-    setIsEditMode(false);
-  };
+  const { patchCommentFetching } = commentsQuery!;
 
   return (
     <>
-      <Box sx={commentCardSx}>
+      <Box sx={commentCardSx(isBeingEdited, patchCommentFetching)}>
         <Grid container>
           <Grid item xs={12}>
             <Grid container justifyContent="space-between">
@@ -70,9 +57,9 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
                       {getTimeAgo(createdAt)}
                     </Typography>
                   </Grid>
-                  {authUser?.id === userId && !isEditMode && (
+                  {authUser?.id === userId && !isBeingEdited && (
                     <Grid item>
-                      <CommentActions onEditClick={handleEditModeOpen} />
+                      <CommentActions />
                     </Grid>
                   )}
                 </Grid>
@@ -86,19 +73,16 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
 
         <Grid container>
           <Hidden mdDown>
-            {!isEditMode ? (
+            {!isBeingEdited ? (
               <Grid item sx={commentTextSx}>
                 {parseContentText(content.text, relatedSourceMap)}
               </Grid>
             ) : (
               <>
-                <CommentEditor
-                  type="edit"
+                <EditComment
                   initialContentState={DRAFTJS.utils.getContentStateFromStringifiedRawContentState(
                     content.stringifiedRawContent
                   )}
-                  onClickCancel={handleEditModeClose}
-                  onClickSave={handleEditModeClose}
                 />
               </>
             )}
@@ -111,15 +95,44 @@ const CommentBox: React.FC<ICommentBoxProps> = ({
           </Hidden>
         </Grid>
       </Box>
+
+      <Hidden mdUp>
+        {isBeingEdited && (
+          <Box sx={commentEditorSx}>
+            <EditComment
+              initialContentState={DRAFTJS.utils.getContentStateFromStringifiedRawContentState(
+                content.stringifiedRawContent
+              )}
+            />
+          </Box>
+        )}
+      </Hidden>
     </>
   );
 };
 
-const commentCardSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  paddingY: 1,
-  paddingX: 1.5,
-  borderRadius: "0.4rem",
-  backgroundColor: theme.palette.secondary.main,
+const commentCardSx =
+  (isBeingEdited: boolean, loading: boolean) =>
+  (theme: Theme): SystemStyleObject<Theme> => ({
+    paddingY: 1,
+    paddingX: 1.5,
+    borderRadius: "0.4rem",
+    backgroundColor: theme.palette.secondary.main,
+    opacity: loading ? "0.5" : "1",
+    [theme.breakpoints.down("md")]: {
+      opacity: isBeingEdited ? "0.5" : undefined,
+    },
+  });
+
+const commentEditorSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  position: "fixed",
+  width: "100%",
+  bottom: 0,
+  left: 0,
+  padding: 1,
+  zIndex: 100,
+  backgroundColor: theme.palette.background.paper,
+  opacity: 1,
 });
 
 const commentTextSx = (theme: Theme): SystemStyleObject<Theme> => ({

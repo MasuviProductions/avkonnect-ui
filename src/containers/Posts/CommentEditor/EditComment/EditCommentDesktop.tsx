@@ -1,14 +1,14 @@
 import { Button, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import TextEditor from "../../../components/TextEditor";
-import { LABELS } from "../../../constants/labels";
-import { useTextEditorContext } from "../../../contexts/TextEditorContext";
+import TextEditor from "../../../../components/TextEditor";
+import { LABELS } from "../../../../constants/labels";
+import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 
-interface ICommentInlineEditorProps {
+interface IEditCommentDesktopProps {
   onClickCancel?: () => void;
   onClickSave?: () => void;
 }
-const CommentInlineEditor: React.FC<ICommentInlineEditorProps> = ({
+const EditCommentDesktop: React.FC<IEditCommentDesktopProps> = ({
   onClickCancel,
   onClickSave,
 }) => {
@@ -94,4 +94,4 @@ const textEditorContainerSx =
     },
   });
 
-export default CommentInlineEditor;
+export default EditCommentDesktop;

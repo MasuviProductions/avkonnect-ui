@@ -8,7 +8,7 @@ import { LABELS } from "../../../../constants/labels";
 import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../../../interfaces/api/external";
 import { REACTION_CONFIGS } from "../../../../constants/app";
-import { fadedLinkSx, userAvatarHeadlineSx } from "../../../../styles/sx";
+import { fadedLinkSx } from "../../../../styles/sx";
 
 interface IFeedActivityProps {
   onPostOpen: () => void;
@@ -21,7 +21,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
   const {
-    commentsCount,
+    totalCommentsCount,
     reactionsCount,
     userReaction,
     totalReactionsCount,
@@ -60,10 +60,10 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
             </Grid>
           </Grid>
         </Grid>
-        {commentsCount?.comment > 0 && (
+        {totalCommentsCount > 0 && (
           <Grid item onClick={onPostOpen}>
             <Typography sx={fadedLinkSx(12)}>
-              {LABELS.COMMENTS_COUNT(commentsCount?.comment)}
+              {LABELS.COMMENTS_COUNT(totalCommentsCount)}
             </Typography>
           </Grid>
         )}
