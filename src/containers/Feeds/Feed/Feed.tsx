@@ -1,21 +1,30 @@
-import { Box, SxProps, Theme } from "@mui/material";
-import { useState } from "react";
+import { Box, SxProps, Theme, useTheme } from "@mui/material";
 import PostView from "../../Posts/PostView";
-import {
-  IFeedSourceApiModel,
-  IPostContentModel,
-} from "../../../interfaces/api/external";
+import { IFeedSourceApiModel } from "../../../interfaces/api/external";
 import FeedActivity from "./FeedActivity";
 import FeedContent from "./FeedContent";
 import FeedHeader from "./FeedHeader";
 import FeedSource from "./FeedSource";
+import LayoutCard from "../../../components/LayoutCard";
+import { useResourceContext } from "../../../contexts/ResourceContext";
+import { LABELS } from "../../../constants/labels";
+import EditPostEditor from "../../Posts/PostEditor/EditPostEditor";
+import { useState } from "react";
 
 export interface IFeedProps {
-  feedContent: IPostContentModel[];
   feedSource: IFeedSourceApiModel[];
 }
 
-const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
+const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
+  const theme = useTheme();
+
+  const resourceContext = useResourceContext();
+  if (!resourceContext) {
+    throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
+  }
+
+  const { isBeingEdited, updateIsBeingEdited, content } = resourceContext;
+
   const [showPostDetail, setShowPostDetail] = useState(false);
 
   const handlePostDetailOpen = () => {
@@ -26,25 +35,39 @@ const Feed: React.FC<IFeedProps> = ({ feedContent, feedSource }) => {
     setShowPostDetail(false);
   };
 
+  const handlePostEditClose = () => {
+    if (isBeingEdited) {
+      updateIsBeingEdited(false);
+    }
+  };
+
   return (
-    <Box sx={postBoxSx}>
-      <FeedSource feedSource={feedSource} />
-      <FeedHeader />
-      <FeedContent feedContent={feedContent} />
-      <FeedActivity onPostOpen={handlePostDetailOpen} />
-      <PostView showPost={showPostDetail} onPostClose={handlePostDetailClose} />
-    </Box>
+    <>
+      <LayoutCard withBorder={theme.key === "light"}>
+        <Box sx={feedSx}>
+          <FeedSource feedSource={feedSource} />
+          <FeedHeader />
+          <FeedContent />
+          <FeedActivity onPostOpen={handlePostDetailOpen} />
+          <PostView
+            showPost={showPostDetail}
+            onPostClose={handlePostDetailClose}
+          />
+        </Box>
+      </LayoutCard>
+
+      <EditPostEditor
+        showPostEditor={isBeingEdited}
+        onPostEditorClose={handlePostEditClose}
+      />
+    </>
   );
 };
 
-const postBoxSx: SxProps<Theme> = (theme: Theme) => ({
-  margin: "8px 16px",
-  padding: "8px",
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: "6px",
+const feedSx: SxProps<Theme> = (theme: Theme) => ({
+  padding: 1,
   [theme.breakpoints.down("sm")]: {
-    margin: "16px 4px",
-    padding: "12px",
+    padding: 1.5,
   },
 });
 

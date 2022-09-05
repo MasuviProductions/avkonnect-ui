@@ -2,18 +2,18 @@ import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
-import { userAvatarSx } from "../../../styles/sx";
-import { usernameToColor } from "../../../utils/generic";
-import { LABELS } from "../../../constants/labels";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import TextEditor from "../../../components/TextEditor";
-import { useTextEditorContext } from "../../../contexts/TextEditorContext";
+import { userAvatarSx } from "../../../../styles/sx";
+import { usernameToColor } from "../../../../utils/generic";
+import { LABELS } from "../../../../constants/labels";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import TextEditor from "../../../../components/TextEditor";
+import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 
-interface ICommentEditorDesktopProps {
+interface IAddCommentDesktopProps {
   submitButtonText: string;
 }
 
-const CommentEditorDesktop: React.FC<ICommentEditorDesktopProps> = ({
+const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
   submitButtonText,
 }) => {
   const textEditorContext = useTextEditorContext();
@@ -141,4 +141,4 @@ const textEditorContainerSx =
     },
   });
 
-export default CommentEditorDesktop;
+export default AddCommentDesktop;

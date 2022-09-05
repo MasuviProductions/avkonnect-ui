@@ -1,9 +1,10 @@
 import { Grid, Typography } from "@mui/material";
+import ReactionTooltip from "../../../../../components/ReactionTooltip";
 import { REACTION_CONFIGS } from "../../../../../constants/app";
 import { LABELS } from "../../../../../constants/labels";
 import { useResourceContext } from "../../../../../contexts/ResourceContext";
 import { IReactionTypes } from "../../../../../interfaces/api/external";
-import { reactionTextSx, simpleLinkSx } from "../../../../../styles/sx";
+import { reactionTextSx } from "../../../../../styles/sx";
 
 interface ICommentReactionsProps {}
 
@@ -24,21 +25,19 @@ const CommentReactions: React.FC<ICommentReactionsProps> = () => {
     <>
       <Grid container>
         <Grid item px={1}>
-          <Typography
-            paragraph
-            onClick={handleReactionClick("like")}
-            sx={reactionTextSx(userReaction)}
-          >
-            {REACTION_CONFIGS[userReaction || "like"].label}
-          </Typography>
+          <ReactionTooltip>
+            <Typography
+              paragraph
+              onClick={handleReactionClick(userReaction || "like")}
+              sx={reactionTextSx(userReaction)}
+            >
+              {REACTION_CONFIGS[userReaction || "like"].label}
+            </Typography>
+          </ReactionTooltip>
         </Grid>
 
         <Grid item>
-          <Typography
-            paragraph
-            onClick={handleReactionClick("like")}
-            sx={simpleLinkSx(10)}
-          >
+          <Typography paragraph sx={reactionTextSx(userReaction, 10)}>
             {totalReactionsCount}
           </Typography>
         </Grid>

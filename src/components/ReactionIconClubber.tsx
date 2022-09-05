@@ -3,7 +3,7 @@ import {
   IReactionTypes,
   REACTIONS,
 } from "../interfaces/api/external";
-import { Box, Theme } from "@mui/material";
+import { Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { REACTION_CONFIGS } from "../constants/app";
 
@@ -20,23 +20,25 @@ const ReactionIcon: React.FC<{
   if (reactionCount <= 0) {
     return <></>;
   }
-  return <Icon sx={reactionIconSx(reaction as IReactionTypes, zIndex)} />;
+  return <Icon sx={reactionIconSx(reaction, zIndex)} />;
 };
 
 const ReactionIconClubber: React.FC<IReactionIconClubber> = ({
   reactionIconCount,
 }) => {
   return (
-    <Box component="span" mt={1}>
-      {REACTIONS.map((reaction, index) => (
-        <ReactionIcon
-          key={index}
-          reaction={reaction}
-          reactionCount={reactionIconCount[reaction]}
-          zIndex={index}
-        />
-      ))}
-    </Box>
+    <>
+      <>
+        {REACTIONS.map((reaction, index) => (
+          <ReactionIcon
+            key={index}
+            reaction={reaction}
+            reactionCount={reactionIconCount[reaction]}
+            zIndex={index}
+          />
+        ))}
+      </>
+    </>
   );
 };
 
@@ -47,7 +49,7 @@ const reactionIconSx: (
   return (theme: Theme) => ({
     marginLeft: "-5px",
     padding: "2px",
-    fontSize: "17px",
+    fontSize: "16px",
     fill: theme.palette.grey["50"],
     zIndex: zInd ? zInd : 0,
     backgroundColor: theme.palette.reactions[reactionType],

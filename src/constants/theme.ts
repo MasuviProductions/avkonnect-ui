@@ -9,6 +9,7 @@ export const THEMES_LIST: ThemeOptions[] = [
         main: "#222",
       },
       secondary: {
+        light: "#efefef",
         dark: "#cacaca",
         main: "#dadada",
       },
@@ -18,13 +19,13 @@ export const THEMES_LIST: ThemeOptions[] = [
         navbar: "#222",
       },
       text: {
-        primary: "#222",
+        primary: "#000000e6",
         secondary: "#999999",
         navbar: "#b2b2b2",
         link: "#0a66c2",
       },
       reactions: {
-        sad: "#5d6163",
+        sad: "#5600aa",
         laugh: "#ed771c",
         love: "#c21557",
         like: "#207ed6",
@@ -40,6 +41,7 @@ export const THEMES_LIST: ThemeOptions[] = [
         main: "#ffcc22",
       },
       secondary: {
+        light: "#484848",
         dark: "#383838",
         main: "#444",
       },
@@ -55,7 +57,7 @@ export const THEMES_LIST: ThemeOptions[] = [
         link: "#70b5f9",
       },
       reactions: {
-        sad: "#5d6163",
+        sad: "#bb77ff",
         laugh: "#ed771c",
         love: "#c21557",
         like: "#207ed6",

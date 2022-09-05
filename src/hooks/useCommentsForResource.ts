@@ -9,6 +9,7 @@ import {
   ICreateCommentApiRequest,
   IGetCommentsCommentsApiResponse,
   IGetPostCommentsApiResponse,
+  IPatchCommentApiRequest,
   IRelatedSource,
   IResourceTypes,
 } from "../interfaces/api/external";
@@ -17,6 +18,7 @@ import {
   deleteComment,
   getCommentsComments,
   getPostComments,
+  patchComment,
 } from "../utils/api";
 import { transformUsersListToUserIdUserMap } from "../utils/transformers";
 import useInfiniteLoading from "./useInfiniteLoading";
@@ -32,19 +34,22 @@ export interface IUseCommentsForResourceReturn {
   triggerGetCommentsApi: () => void;
   getCommentsStatus: "loading" | "idle" | "error" | "success";
   getCommentsFetching: boolean;
-  appendCommentToResource: (comment: ICommentApiModel) => void;
-  addCommentToResource: (
-    comment: Omit<ICommentContentApiModel, "createdAt">
-  ) => void;
-  removeCommentToResource: (commentId: string) => void;
+  createCommentFetching: boolean;
+  patchCommentFetching: boolean;
+  deleteCommentFetching: boolean;
+  appendComment: (comment: ICommentApiModel) => void;
+  addComment: (comment: Omit<ICommentContentApiModel, "createdAt">) => void;
+  removeComment: (id: string) => void;
+  updateComment: (comment: ICommentContentApiModel) => void;
 }
 
 export const useCommentsForResource = (
-  type: IResourceTypes,
+  resourceType: IResourceTypes,
   id: string,
   withInfiniteLoading: boolean,
   onCommentAdd: () => void,
-  onCommentRemove: () => void
+  onCommentRemove: () => void,
+  onCommentUpdate: (comment: ICommentContentApiModel) => void
 ): IUseCommentsForResourceReturn => {
   const { authUser, accessToken } = useAuthContext();
 
@@ -59,6 +64,9 @@ export const useCommentsForResource = (
   const [createCommentReqBody, setCreateCommentReqBody] = useState<
     ICreateCommentApiRequest | undefined
   >();
+  const [updateCommentReqBody, setUpdateCommentReqBody] = useState<
+    IPatchCommentApiRequest | undefined
+  >();
   const [commentToDelete, setCommentToDelete] = useState<string | undefined>();
 
   const {
@@ -68,11 +76,11 @@ export const useCommentsForResource = (
     status: getCommentsStatus,
     remove: clearGetCommentsQueryData,
   } = useQuery<AVKonnectApiResponse<ICommentsResponseApiModel>>(
-    type === "post"
+    resourceType === "post"
       ? `GET:${API_ENDPOINTS.GET_POST_COMMENTS.key}-${id}`
       : `GET:${API_ENDPOINTS.GET_COMMENTS_COMMENTS.key}-${id}`,
     () =>
-      type === "post"
+      resourceType === "post"
         ? getPostComments(
             accessToken as string,
             id,
@@ -96,7 +104,7 @@ export const useCommentsForResource = (
     data: createCommentResData,
     // refetch: triggerCreateCommentApi,
     // status: createCommentStatus,
-    // isFetching: createCommentFetching,
+    isFetching: createCommentFetching,
     remove: clearCreateCommentQueryData,
   } = useQuery(
     `POST:${API_ENDPOINTS.CREATE_COMMENT.key}-${id}`,
@@ -106,6 +114,23 @@ export const useCommentsForResource = (
         createCommentReqBody as ICreateCommentApiRequest
       ),
     { cacheTime: 0, refetchInterval: false, enabled: !!createCommentReqBody }
+  );
+
+  const {
+    data: patchCommentResData,
+    // refetch: triggerCreateCommentApi,
+    // status: createCommentStatus,
+    isFetching: patchCommentFetching,
+    remove: clearPatchCommentQueryData,
+  } = useQuery(
+    `PATCH:${API_ENDPOINTS.PATCH_COMMENT.key}-${id}`,
+    () =>
+      patchComment(
+        accessToken as string,
+        id,
+        updateCommentReqBody as IPatchCommentApiRequest
+      ),
+    { cacheTime: 0, refetchInterval: false, enabled: !!updateCommentReqBody }
   );
 
   const {
@@ -119,16 +144,18 @@ export const useCommentsForResource = (
     { cacheTime: 0, refetchInterval: false, enabled: !!commentToDelete }
   );
 
-  const removeCommentToResource = (commentId: string) => {
-    setCommentToDelete(commentId);
+  const removeComment = (id: string) => {
+    setCommentToDelete(id);
   };
 
-  const addCommentToResource = (
-    comment: Omit<ICommentContentApiModel, "createdAt">
-  ) => {
+  const updateComment = (comment: ICommentContentApiModel) => {
+    setUpdateCommentReqBody({ comment });
+  };
+
+  const addComment = (comment: Omit<ICommentContentApiModel, "createdAt">) => {
     setCreateCommentReqBody({
       resourceId: id,
-      resourceType: type,
+      resourceType: resourceType,
       comment: comment,
     });
   };
@@ -188,7 +215,7 @@ export const useCommentsForResource = (
     });
   }, []);
 
-  const appendCommentToResource = useCallback(
+  const appendComment = useCallback(
     (comment: ICommentApiModel) => {
       handleUpdateRelatedSources(comment.relatedSources);
       mergeComments([comment]);
@@ -214,17 +241,25 @@ export const useCommentsForResource = (
 
   useEffect(() => {
     if (createCommentResData?.data) {
-      appendCommentToResource(createCommentResData.data);
+      appendComment(createCommentResData.data);
       setCreateCommentReqBody(undefined);
       clearCreateCommentQueryData();
       onCommentAdd();
     }
   }, [
-    appendCommentToResource,
+    appendComment,
     clearCreateCommentQueryData,
     createCommentResData?.data,
     onCommentAdd,
   ]);
+
+  useEffect(() => {
+    if (patchCommentResData?.data) {
+      onCommentUpdate(patchCommentResData.data.contents.slice(-1)[0]!);
+      setUpdateCommentReqBody(undefined);
+      clearPatchCommentQueryData();
+    }
+  }, [clearPatchCommentQueryData, onCommentUpdate, patchCommentResData?.data]);
 
   useEffect(() => {
     if (deleteCommentResData?.data) {
@@ -250,9 +285,13 @@ export const useCommentsForResource = (
     triggerGetCommentsApi,
     getCommentsStatus,
     getCommentsFetching,
-    appendCommentToResource,
-    addCommentToResource,
-    removeCommentToResource,
+    appendComment,
+    addComment,
+    removeComment,
+    updateComment,
+    createCommentFetching,
+    patchCommentFetching,
+    deleteCommentFetching,
   };
 };
 

@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Hidden, Theme } from "@mui/material";
+import { Avatar, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import CommentActivities from "./CommentActivities";
 import CommentBox from "./CommentBox";
@@ -8,19 +8,18 @@ import { useResourceContext } from "../../../contexts/ResourceContext";
 import { LABELS } from "../../../constants/labels";
 
 export interface ICommentProps {
-  commentText: string;
   onReplyClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Comment: React.FC<ICommentProps> = ({ commentText, onReplyClick }) => {
+const Comment: React.FC<ICommentProps> = ({ onReplyClick }) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
   const { sourceInfo } = resourceContext;
-
   const { name, displayPictureUrl } = sourceInfo;
+
   return (
     <Grid container spacing={1} sx={commentContainerSx}>
       <Grid item my={1}>
@@ -36,7 +35,7 @@ const Comment: React.FC<ICommentProps> = ({ commentText, onReplyClick }) => {
       <Grid item xs>
         <Grid container>
           <Grid item xs={12}>
-            <CommentBox commentText={commentText} />
+            <CommentBox />
           </Grid>
 
           <Grid item xs={12}>
