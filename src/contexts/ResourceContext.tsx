@@ -85,6 +85,7 @@ interface IResourceProviderProps
     | "relatedSourceMap"
   > {
   onDeleteResource?: (id: string) => void;
+  onUpdateResource?: () => void;
 }
 
 const ResourceProvider: React.FC<IResourceProviderProps> = ({
@@ -104,6 +105,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   updatedAt,
 
   onDeleteResource,
+  onUpdateResource,
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
@@ -208,11 +210,14 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     }
   };
 
-  const onResourceUpdate = (
-    content: IPostContentApiModel | ICommentContentApiModel
-  ) => {
-    setContentState(content);
-  };
+  const onResourceUpdate = useCallback(
+    (content: IPostContentApiModel | ICommentContentApiModel) => {
+      setContentState(content);
+      updateIsBeingEdited(false);
+      onUpdateResource?.();
+    },
+    [onUpdateResource]
+  );
 
   const onPostDelete = () => {
     onDeleteResource?.(id);
@@ -294,6 +299,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     content: IPostContentApiModel | ICommentContentApiModel
   ) => {
     if (type === "post") {
+      updatePost({ content, hashtags: [] });
     } else {
       commentsQuery.updateComment(content as ICommentContentApiModel);
     }

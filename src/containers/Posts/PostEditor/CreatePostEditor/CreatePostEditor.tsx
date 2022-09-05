@@ -2,26 +2,26 @@ import { Hidden } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
-import API_ENDPOINTS from "../../../constants/api";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import API_ENDPOINTS from "../../../../constants/api";
+import { useAuthContext } from "../../../../contexts/AuthContext";
 import TextEditorProvider, {
   ITextEditorContent,
-} from "../../../contexts/TextEditorContext";
+} from "../../../../contexts/TextEditorContext";
 import {
   ICreatePostApiRequest,
   IPostContentApiModel,
-} from "../../../interfaces/api/external";
-import { createPost } from "../../../utils/api";
-import DRAFTJS from "../../../utils/draftjs";
-import PostEditorModal from "./PostEditorModal";
-import PostEditorOverlay from "./PostEditorOverlay";
+} from "../../../../interfaces/api/external";
+import { createPost } from "../../../../utils/api";
+import DRAFTJS from "../../../../utils/draftjs";
+import PostEditorModal from "../PostEditorModal";
+import PostEditorOverlay from "../PostEditorOverlay";
 
-interface IPostEditorProps {
+interface ICreatePostEditorProps {
   showPostEditor: boolean;
   onPostEditorClose: () => void;
 }
 
-const PostEditor: React.FC<IPostEditorProps> = ({
+const CreatePostEditor: React.FC<ICreatePostEditorProps> = ({
   showPostEditor,
   onPostEditorClose,
 }) => {
@@ -105,4 +105,4 @@ const PostEditor: React.FC<IPostEditorProps> = ({
   );
 };
 
-export default PostEditor;
+export default CreatePostEditor;

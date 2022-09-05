@@ -14,7 +14,7 @@ import {
 } from "../../interfaces/api/external";
 import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
-import PostEditor from "../Posts/PostEditor";
+import CreatePostEditor from "../Posts/PostEditor/CreatePostEditor";
 import Feed from "./Feed/Feed";
 import FeedsSkeleton from "./FeedsSkeleton";
 
@@ -50,7 +50,7 @@ const Feeds: React.FC = () => {
           ? encodeURI(JSON.stringify(nextFeedsSearchKey))
           : undefined
       ),
-    { enabled: false }
+    { enabled: false, refetchInterval: false, refetchOnWindowFocus: false }
   );
 
   const mergeFeeds = useCallback((newFeeds: IUserFeedApiModel[]) => {
@@ -108,6 +108,8 @@ const Feeds: React.FC = () => {
     );
   };
 
+  const handleUpdateResource = () => {};
+
   useEffect(() => {
     if (authUser?.id) {
       triggerGetUserFeedsApi();
@@ -148,7 +150,7 @@ const Feeds: React.FC = () => {
         <Grid container mt={1.5} spacing={1.5} maxWidth="sm">
           <Grid item xs={12}>
             <Button onClick={handleShowPostEditorOpen}>Create Post</Button>
-            <PostEditor
+            <CreatePostEditor
               showPostEditor={showPostEditor}
               onPostEditorClose={handleShowPostEditorClose}
             />
@@ -178,11 +180,9 @@ const Feeds: React.FC = () => {
                 updatedAt={feed.updatedAt}
                 relatedSourceMap={relatedSourcesMap}
                 onDeleteResource={handleDeletePost}
+                onUpdateResource={handleUpdateResource}
               >
-                <Feed
-                  feedContent={feed?.contents}
-                  feedSource={feed.feedSources}
-                />
+                <Feed feedSource={feed.feedSources} />
               </ResourceProvider>
             </Grid>
           ))}

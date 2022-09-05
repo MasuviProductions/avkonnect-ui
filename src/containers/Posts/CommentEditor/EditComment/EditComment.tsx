@@ -1,6 +1,5 @@
 import { Hidden } from "@mui/material";
 import { ContentState } from "draft-js";
-import { useEffect, useState } from "react";
 import { LABELS } from "../../../../constants/labels";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import TextEditorProvider, {
@@ -29,9 +28,9 @@ const EditComment: React.FC<IEditCommentProps> = ({
   }
 
   const { updateResource, updateIsBeingEdited } = resourceContext;
-  const [contentState, setContentState] = useState<ContentState>(
-    DRAFTJS.utils.getNewContentState()
-  );
+
+  const contentState =
+    initialContentState || DRAFTJS.utils.getNewContentState();
 
   const handleCommentUpdate = (content: ITextEditorContent) => {
     const resourceContent: ICommentContentApiModel | IPostContentApiModel = {
@@ -46,10 +45,6 @@ const EditComment: React.FC<IEditCommentProps> = ({
   const handleEditModeClose = () => {
     updateIsBeingEdited(false);
   };
-
-  useEffect(() => {
-    setContentState(initialContentState || ContentState.createFromText(""));
-  }, [initialContentState]);
 
   return (
     <TextEditorProvider

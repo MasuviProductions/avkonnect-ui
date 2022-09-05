@@ -4,7 +4,6 @@ import API_ENDPOINTS from "../constants/api";
 import { useAuthContext } from "../contexts/AuthContext";
 import {
   IPatchPostApiRequest,
-  IPostApiResponse,
   IPostContentApiModel,
 } from "../interfaces/api/external";
 import { deletePost, patchPost } from "../utils/api";
@@ -69,9 +68,9 @@ const usePost = (
   }, [clearDeletePostQuery, deletePostData, onPostDelete]);
 
   useEffect(() => {
-    if (patchPostData) {
+    if (patchPostData?.data) {
       setUpdatePostReqBody(undefined);
-      onPostUpdate(patchPostData.data?.contents?.slice(-1)?.[0]!);
+      onPostUpdate(patchPostData.data.contents?.slice(-1)?.[0]!);
       clearPatchPostQuery();
     }
   }, [clearPatchPostQuery, patchPostData, onPostDelete, onPostUpdate]);
