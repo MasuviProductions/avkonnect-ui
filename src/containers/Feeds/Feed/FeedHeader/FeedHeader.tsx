@@ -16,6 +16,7 @@ import {
 } from "../../../../styles/sx";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { LABELS } from "../../../../constants/labels";
+import PostActions from "./PostActions";
 
 const FeedHeader: React.FC = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const FeedHeader: React.FC = () => {
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
-  const { relatedSourceMap, sourceId, createdAt } = resourceContext;
+  const { relatedSourceMap, sourceId, createdAt, sourceInfo } = resourceContext;
   const { authUser } = useAuthContext();
 
   const handleProfileRedirectClick = () => {
@@ -39,7 +40,7 @@ const FeedHeader: React.FC = () => {
               alt={relatedSourceMap[sourceId].name}
               src={relatedSourceMap[sourceId].displayPictureUrl}
               onClick={handleProfileRedirectClick}
-              sx={userAvatarSx(usernameToColor(authUser?.name as string), 50)}
+              sx={userAvatarSx(usernameToColor(sourceInfo.name as string), 50)}
             />
           </Grid>
 
@@ -69,9 +70,7 @@ const FeedHeader: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <MoreHorizIcon fontSize="large" sx={morePostOptionsSx} />
-      </Grid>
+      <Grid item>{authUser?.id === sourceId && <PostActions />}</Grid>
     </Grid>
   );
 };
@@ -81,15 +80,5 @@ const profileRedirectSx: SxProps<Theme> = {
     cursor: "pointer",
   },
 };
-
-const morePostOptionsSx: SxProps<Theme> = (theme: Theme) => ({
-  padding: "8px",
-  fontSize: "42px",
-  "&:hover": {
-    cursor: "pointer",
-    backgroundColor: theme.palette.background.default,
-    borderRadius: "50%",
-  },
-});
 
 export default FeedHeader;

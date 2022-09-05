@@ -102,6 +102,12 @@ const Feeds: React.FC = () => {
     setShowPostEditor(false);
   };
 
+  const handleDeletePost = (postId: string) => {
+    setUpToDateUserFeeds((prev) =>
+      prev.filter((feed) => feed.postId !== postId)
+    );
+  };
+
   useEffect(() => {
     if (authUser?.id) {
       triggerGetUserFeedsApi();
@@ -171,6 +177,7 @@ const Feeds: React.FC = () => {
                 createdAt={feed.createdAt}
                 updatedAt={feed.updatedAt}
                 relatedSourceMap={relatedSourcesMap}
+                onDeleteResource={handleDeletePost}
               >
                 <Feed
                   feedContent={feed?.contents}
