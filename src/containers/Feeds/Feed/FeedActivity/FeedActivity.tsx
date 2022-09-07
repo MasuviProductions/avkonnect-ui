@@ -8,6 +8,8 @@ import { LABELS } from "../../../../constants/labels";
 import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../../../interfaces/api/external";
 import { REACTION_CONFIGS } from "../../../../constants/app";
+import ReactionModal from "../../../../components/ReactionModal";
+import { useState } from "react";
 
 interface IFeedActivityProps {
   onPostOpen: () => void;
@@ -27,6 +29,9 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     updateUserReaction,
   } = resourceContext;
 
+  const [showUserReactionsModal, setShowUserReactionsModal] =
+    useState<boolean>(false);
+
   const ReactionIcon: React.FC<{ reaction?: IReactionTypes }> = ({
     reaction,
   }) => {
@@ -36,6 +41,14 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
 
   const handleToggleReactionClick = (reaction?: IReactionTypes) => () => {
     updateUserReaction(reaction || "like");
+  };
+
+  const handleUserReactionsModalOpen = () => {
+    setShowUserReactionsModal(true);
+  };
+
+  const handleUserReactionsModalClose = () => {
+    setShowUserReactionsModal(false);
   };
 
   return (
@@ -51,18 +64,40 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
           <Box component="span" ml={0.5} py={1}>
             {userReaction ? (
               totalReactionsCount > 1 ? (
-                <Typography variant="caption">
+                <Typography
+                  variant="caption"
+                  sx={reactionCountSx}
+                  onClick={handleUserReactionsModalOpen}
+                >
                   {LABELS.YOU_AND_OTHERS(totalReactionsCount)}
                 </Typography>
               ) : (
-                <Typography variant="caption">{LABELS.YOU}</Typography>
+                <Typography
+                  variant="caption"
+                  sx={reactionCountSx}
+                  onClick={handleUserReactionsModalOpen}
+                >
+                  {LABELS.YOU}
+                </Typography>
               )
             ) : totalReactionsCount > 0 ? (
-              <Typography variant="caption">{totalReactionsCount}</Typography>
+              <Typography
+                variant="caption"
+                sx={reactionCountSx}
+                onClick={handleUserReactionsModalOpen}
+              >
+                {totalReactionsCount}
+              </Typography>
             ) : (
               <Typography variant="caption">
                 {LABELS.BE_FIRST_TO_REACT}
               </Typography>
+            )}
+            {showUserReactionsModal && (
+              <ReactionModal
+                showModal={showUserReactionsModal}
+                onModalClose={handleUserReactionsModalClose}
+              />
             )}
           </Box>
         </Grid>
@@ -172,6 +207,13 @@ const reactionIconSx: (
       cursor: "pointer",
     },
   });
+};
+
+const reactionCountSx: SxProps<Theme> = {
+  "&:hover": {
+    cursor: "pointer",
+    textDecoration: "underline",
+  },
 };
 
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
