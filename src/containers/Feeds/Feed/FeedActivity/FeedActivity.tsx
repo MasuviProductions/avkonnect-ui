@@ -8,6 +8,7 @@ import { LABELS } from "../../../../constants/labels";
 import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../../../interfaces/api/external";
 import { REACTION_CONFIGS } from "../../../../constants/app";
+import { fadedLinkSx } from "../../../../styles/sx";
 import ReactionModal from "../../../../components/ReactionModal";
 import { useState } from "react";
 
@@ -22,7 +23,7 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
   const {
-    commentsCount,
+    totalCommentsCount,
     reactionsCount,
     userReaction,
     totalReactionsCount,
@@ -53,62 +54,38 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
 
   return (
     <Box>
-      <Grid
-        container
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Grid item pl={1} display="flex" alignItems="center">
-          <ReactionIconClubber reactionIconCount={reactionsCount} />
-          <Box component="span" ml={0.5} py={1}>
-            {userReaction ? (
-              totalReactionsCount > 1 ? (
-                <Typography
-                  variant="caption"
-                  sx={reactionCountSx}
-                  onClick={handleUserReactionsModalOpen}
-                >
-                  {LABELS.YOU_AND_OTHERS(totalReactionsCount)}
-                </Typography>
-              ) : (
-                <Typography
-                  variant="caption"
-                  sx={reactionCountSx}
-                  onClick={handleUserReactionsModalOpen}
-                >
-                  {LABELS.YOU}
-                </Typography>
-              )
-            ) : totalReactionsCount > 0 ? (
+      <Grid container display="flex" justifyContent="space-between" p={1}>
+        <Grid item>
+          <Grid container columnSpacing={0.5}>
+            <Grid item ml={0.5} mt={0.5}>
+              <ReactionIconClubber reactionIconCount={reactionsCount} />
+            </Grid>
+            <Grid item>
               <Typography
-                variant="caption"
-                sx={reactionCountSx}
+                sx={fadedLinkSx(12)}
                 onClick={handleUserReactionsModalOpen}
               >
-                {totalReactionsCount}
+                {userReaction
+                  ? totalReactionsCount > 1
+                    ? LABELS.YOU_AND_OTHERS(totalReactionsCount)
+                    : LABELS.YOU
+                  : totalReactionsCount > 0
+                  ? totalReactionsCount
+                  : LABELS.BE_FIRST_TO_REACT}
               </Typography>
-            ) : (
-              <Typography variant="caption">
-                {LABELS.BE_FIRST_TO_REACT}
-              </Typography>
-            )}
-            {showUserReactionsModal && (
-              <ReactionModal
-                showModal={showUserReactionsModal}
-                onModalClose={handleUserReactionsModalClose}
-              />
-            )}
-          </Box>
+              {showUserReactionsModal && (
+                <ReactionModal
+                  showModal={showUserReactionsModal}
+                  onModalClose={handleUserReactionsModalClose}
+                />
+              )}
+            </Grid>
+          </Grid>
         </Grid>
-        {commentsCount?.comment > 0 && (
+        {totalCommentsCount > 0 && (
           <Grid item onClick={onPostOpen}>
-            <Typography
-              variant="caption"
-              component="span"
-              sx={semiCommentLinkSx}
-            >
-              {LABELS.COMMENTS_COUNT(commentsCount?.comment)}
+            <Typography sx={fadedLinkSx(12)}>
+              {LABELS.COMMENTS_COUNT(totalCommentsCount)}
             </Typography>
           </Grid>
         )}
@@ -209,29 +186,15 @@ const reactionIconSx: (
   });
 };
 
-const reactionCountSx: SxProps<Theme> = {
-  "&:hover": {
-    cursor: "pointer",
-    textDecoration: "underline",
-  },
-};
-
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
   "&:hover": {
     cursor: "pointer",
-    backgroundColor: theme.palette.background.default,
+    textDecoration: "underline",
   },
 });
 
-const semiCommentLinkSx: SxProps<Theme> = {
-  "&:hover": {
-    cursor: "pointer",
-    textDecoration: "underline",
-  },
-};
-
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({
-  borderColor: `${theme.palette.text.secondary}77`,
+  borderColor: `${theme.palette.secondary.light}`,
 });
 
 export default FeedActivity;

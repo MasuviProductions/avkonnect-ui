@@ -11,10 +11,13 @@ import { LABELS } from "../constants/labels";
 import useCommentsForResource, {
   IUseCommentsForResourceReturn,
 } from "../hooks/useCommentsForResource";
+import usePost from "../hooks/usePost";
 import {
   ICommentApiModel,
+  ICommentContentApiModel,
   ICommentCountApiModel,
   ICreateReactionApiRequest,
+  IPostContentApiModel,
   IReactionCountApiModel,
   IReactionTypes,
   IRelatedSource,
@@ -32,6 +35,7 @@ interface IResourceContext {
   sourceInfo: IRelatedSource;
   resourceId?: string;
   resourceType?: IResourceTypes;
+  content: IPostContentApiModel | ICommentContentApiModel;
   relatedSourceMap: Record<string, IRelatedSource>;
   createdAt: Date;
   updatedAt?: Date;
@@ -46,10 +50,18 @@ interface IResourceContext {
   totalCommentsCount: number;
   incrementCommentsCount: (isSubComment?: boolean) => void;
   decrementCommentsCount: (subCommentCount?: number) => void;
+  isBeingEdited: boolean;
+  updateIsBeingEdited: (isEdited: boolean) => void;
 
   commentsQuery?: IUseCommentsForResourceReturn;
   allCommentsFetched: boolean;
-  deleteCommentResource: () => void;
+  deleteResource: () => void;
+  updateResource: (
+    content: IPostContentApiModel | ICommentContentApiModel
+  ) => void;
+  createCommentForResource: (
+    comment: Omit<ICommentContentApiModel, "createdAt">
+  ) => void;
 }
 
 const ResourceContext = createContext<IResourceContext | undefined>(undefined);
@@ -63,6 +75,7 @@ interface IResourceProviderProps
     | "loadedComments"
     | "id"
     | "type"
+    | "content"
     | "sourceId"
     | "sourceType"
     | "resourceId"
@@ -70,11 +83,15 @@ interface IResourceProviderProps
     | "createdAt"
     | "updatedAt"
     | "relatedSourceMap"
-  > {}
+  > {
+  onDeleteResource?: (id: string) => void;
+  onUpdateResource?: () => void;
+}
 
 const ResourceProvider: React.FC<IResourceProviderProps> = ({
   id,
   type,
+  content,
   sourceId,
   sourceType,
   resourceId,
@@ -86,6 +103,9 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   relatedSourceMap,
   createdAt,
   updatedAt,
+
+  onDeleteResource,
+  onUpdateResource,
   children,
 }) => {
   const sourceInfo = relatedSourceMap[sourceId];
@@ -127,15 +147,15 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const incrementCommentsCount = (isSubComment?: boolean) => {
     if (resourceType === "post") {
       parentResourceContext?.incrementCommentsCount(true);
-      setCommentsCountState(prev => ({ ...prev, comment: prev.comment + 1 }));
+      setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
     } else {
       if (isSubComment) {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           subComment: prev.subComment + 1,
         }));
       } else {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           comment: prev.comment + 1,
         }));
@@ -146,18 +166,18 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const decrementCommentsCount = (subCommentCount?: number) => {
     if (resourceType === "post") {
       parentResourceContext?.decrementCommentsCount(1);
-      setCommentsCountState(prev => ({
+      setCommentsCountState((prev) => ({
         ...prev,
         comment: prev.comment - 1,
       }));
     } else {
       if (typeof subCommentCount !== "undefined") {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           subComment: prev.subComment - subCommentCount,
         }));
       } else {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           comment: prev.comment - 1,
         }));
@@ -190,13 +210,39 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     }
   };
 
+  const onResourceUpdate = useCallback(
+    (content: IPostContentApiModel | ICommentContentApiModel) => {
+      setContentState(content);
+      updateIsBeingEdited(false);
+      onUpdateResource?.();
+    },
+    [onUpdateResource]
+  );
+
+  const onPostDelete = () => {
+    onDeleteResource?.(id);
+  };
+
+  const { removePost, updatePost } = usePost(
+    id,
+    onResourceUpdate,
+    onPostDelete
+  );
+
   const commentsQuery = useCommentsForResource(
     type,
     id,
     true,
     incrementCommentsCount,
-    decrementCommentsCount
+    decrementCommentsCount,
+    onResourceUpdate
   );
+
+  const [isBeingEdited, setIsBeingEdited] = useState<boolean>(false);
+
+  const [contentState, setContentState] = useState<
+    IPostContentApiModel | ICommentContentApiModel
+  >(content);
 
   const [userReactionState, setUserReactionState] = useState<
     IReactionTypes | undefined
@@ -211,30 +257,63 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const [loadedCommentsState, setLoadedCommentsState] =
     useState<ICommentApiModel[]>(loadedComments);
 
+  const updateIsBeingEdited = (_isBeingEdited: boolean) => {
+    setIsBeingEdited(_isBeingEdited);
+  };
+
   const incrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState(prev => ({
+    setReactionsCountState((prev) => ({
       ...prev,
       [reaction]: prev[reaction] + 1,
     }));
   };
 
   const decrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState(prev => ({
+    setReactionsCountState((prev) => ({
       ...prev,
       [reaction]: prev[reaction] - 1,
     }));
   };
 
-  const deleteCommentResource = useCallback(() => {
-    if (resourceType === "post") {
-      parentResourceContext?.decrementCommentsCount(commentsCountState.comment);
+  const deleteResource = useCallback(() => {
+    if (type === "post") {
+      removePost();
+    } else {
+      if (resourceType === "post") {
+        parentResourceContext?.decrementCommentsCount(
+          commentsCountState.comment
+        );
+      }
+      parentResourceContext?.commentsQuery?.removeComment(id);
     }
-    parentResourceContext?.commentsQuery?.removeCommentToResource(id);
-  }, [commentsCountState.comment, id, parentResourceContext, resourceType]);
+  }, [
+    commentsCountState.comment,
+    id,
+    parentResourceContext,
+    removePost,
+    resourceType,
+    type,
+  ]);
+
+  const updateResource = (
+    content: IPostContentApiModel | ICommentContentApiModel
+  ) => {
+    if (type === "post") {
+      updatePost({ content, hashtags: [] });
+    } else {
+      commentsQuery.updateComment(content as ICommentContentApiModel);
+    }
+  };
+
+  const createCommentForResource = (
+    comment: Omit<ICommentContentApiModel, "createdAt">
+  ) => {
+    commentsQuery.addComment(comment);
+  };
 
   useEffect(() => {
-    loadedComments.forEach(comment => {
-      commentsQuery.appendCommentToResource(comment);
+    loadedComments.forEach((comment) => {
+      commentsQuery.appendComment(comment);
     });
   }, [commentsQuery, loadedComments]);
 
@@ -255,6 +334,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
       value={{
         id,
         type,
+        content: contentState,
         sourceId,
         sourceType,
         sourceInfo: sourceInfo as IRelatedSource,
@@ -263,6 +343,8 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         userReaction: userReactionState,
         updateUserReaction,
         loadedComments: loadedCommentsState,
+        isBeingEdited,
+        updateIsBeingEdited,
         reactionsCount: reactionsCountState,
         totalReactionsCount: Object.values(reactionsCountState).reduce(
           (reactionCount, totalCount) => reactionCount + totalCount,
@@ -283,7 +365,9 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
         commentsQuery: commentsQuery,
         allCommentsFetched:
           commentsQuery.uptoDateComments.length === commentsCountState.comment,
-        deleteCommentResource,
+        deleteResource,
+        updateResource,
+        createCommentForResource,
       }}
     >
       {children}

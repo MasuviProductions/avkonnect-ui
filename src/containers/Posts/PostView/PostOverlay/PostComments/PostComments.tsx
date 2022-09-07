@@ -1,5 +1,7 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { ContentState } from "draft-js";
+
 import Comment from "../../../Comment";
 import ResourceProvider, {
   useResourceContext,
@@ -8,8 +10,11 @@ import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsF
 import CommentsOverlay from "../CommentsOverlay";
 import { ICommentApiModel } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
+import DRAFTJS from "../../../../../utils/draftjs";
 
-const PostComments: React.FC = () => {
+interface IPostCommentsProps {}
+
+const PostComments: React.FC<IPostCommentsProps> = ({}) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
@@ -23,6 +28,10 @@ const PostComments: React.FC = () => {
   const [commentOverlayComment, setCommentOverlayComment] = useState<
     ICommentApiModel | undefined
   >();
+
+  const [contentState, setContentState] = useState<ContentState>(
+    DRAFTJS.utils.getNewContentState()
+  );
 
   const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
     commentsQuery as IUseCommentsForResourceReturn;
@@ -54,6 +63,7 @@ const PostComments: React.FC = () => {
           <ResourceProvider
             id={comment.id}
             type="comment"
+            content={comment.contents.slice(-1)[0]}
             sourceId={comment.sourceId}
             sourceType={comment.sourceType}
             resourceId={comment.resourceId}
@@ -65,10 +75,7 @@ const PostComments: React.FC = () => {
             createdAt={comment.createdAt}
             userReaction={comment.sourceActivity?.reaction}
           >
-            <Comment
-              commentText={comment.contents[0].text}
-              onReplyClick={handleReplyClick(comment)}
-            />
+            <Comment onReplyClick={handleReplyClick(comment)} />
           </ResourceProvider>
         </Box>
       ))}
@@ -77,6 +84,7 @@ const PostComments: React.FC = () => {
         <ResourceProvider
           id={commentOverlayComment.id}
           type="comment"
+          content={commentOverlayComment.contents.slice(-1)[0]}
           sourceId={commentOverlayComment.sourceId}
           sourceType={commentOverlayComment.sourceType}
           resourceId={commentOverlayComment.resourceId}
@@ -89,7 +97,7 @@ const PostComments: React.FC = () => {
           userReaction={commentOverlayComment.sourceActivity?.reaction}
         >
           <CommentsOverlay
-            commentText={commentOverlayComment.contents[0].text}
+            initialContentState={contentState}
             showOverlay={showCommentsOverlay}
             onOverlayClose={handleOverlayClose}
           />

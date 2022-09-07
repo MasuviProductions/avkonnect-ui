@@ -254,7 +254,7 @@ export type ISourceTypes = "user" | "company";
 export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
 export type IReactionTypes = typeof REACTIONS[number];
 
-export interface IPostContentModel {
+export interface IPostContentApiModel {
   text: string;
   createdAt: Date;
   mediaUrls: string[];
@@ -262,7 +262,7 @@ export interface IPostContentModel {
 }
 
 export interface ICreatePostApiRequest {
-  content: Omit<IPostContentModel, "createdAt">;
+  content: Omit<IPostContentApiModel, "createdAt">;
   hashtags?: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
@@ -282,7 +282,7 @@ interface IRelatedUserInfoResponseModel {
 export interface IPostApiResponse {
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostContentModel[];
+  contents: IPostContentApiModel[];
   hashtags: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
@@ -297,7 +297,7 @@ export interface IPostApiResponse {
 }
 
 export interface IPatchPostApiRequest {
-  content: Omit<IPostContentModel, "createdAt">;
+  content: Omit<IPostContentApiModel, "createdAt">;
   hashtags: string[];
 }
 
@@ -448,7 +448,7 @@ export interface IUserFeedApiModel {
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostContentModel[];
+  contents: IPostContentApiModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;

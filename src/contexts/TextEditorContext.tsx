@@ -112,9 +112,22 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
     return textEditorContent;
   }, [editorState]);
 
+  const resetEditor = () => {
+    setEditorState((prev) => {
+      const resetEditorState = EditorState.push(
+        prev,
+        DRAFTJS.utils.getNewContentState(),
+        "remove-range"
+      );
+      const focusedEditorState = EditorState.moveFocusToEnd(resetEditorState);
+      return focusedEditorState;
+    });
+  };
+
   const saveContent = useCallback(() => {
     const content = getContent();
     onSaveContent(content);
+    resetEditor();
   }, [getContent, onSaveContent]);
 
   useEffect(() => {
@@ -125,7 +138,11 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
           contentState,
           "remove-range"
         );
-        const focusedEditorState = EditorState.moveFocusToEnd(resetEditorState);
+        const cursorAtEndEditorState =
+          EditorState.moveSelectionToEnd(resetEditorState);
+        const focusedEditorState = EditorState.moveFocusToEnd(
+          cursorAtEndEditorState
+        );
         return focusedEditorState;
       });
     }

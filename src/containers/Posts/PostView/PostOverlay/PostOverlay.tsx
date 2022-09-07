@@ -6,7 +6,7 @@ import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
 import { LABELS } from "../../../../constants/labels";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
-import CommentEditor from "../../CommentEditor";
+import AddComment from "../../CommentEditor/AddComment";
 import PostComments from "./PostComments";
 
 interface IPostOverlayProps extends IOverlay {}
@@ -60,7 +60,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
           </Grid>
 
           <Grid item xs={12} sx={commentEditorSx}>
-            <CommentEditor submitButtonText={LABELS.POST_COMMENT} />
+            <AddComment submitButtonText={LABELS.POST_COMMENT} />
           </Grid>
         </Grid>
       </ViewOverlay>

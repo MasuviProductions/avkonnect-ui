@@ -13,6 +13,7 @@ export const LABELS = {
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+  CANCEL: "Cancel",
 
   // Uninitialized Context Error Messages
   RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
@@ -298,10 +299,8 @@ export const LABELS = {
   BE_FIRST_TO_REACT: `Be the first to react!`,
   COMMENTS_COUNT: (commentCount: number): string =>
     commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
-  COMMENT_SOURCE: (commenter: string): string =>
-    `${commenter} commented on this`,
-  REACTION_SOURCE: (reactor: string, emotion: string): string =>
-    `${reactor} ${emotion}`,
+  COMMENTED_ON: `commented on this`,
+  REACTION_SOURCE: (emotion: string): string => `${emotion}`,
 
   // Feed and Post
   SHARE: "Share",

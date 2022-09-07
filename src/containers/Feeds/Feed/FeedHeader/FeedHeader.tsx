@@ -9,9 +9,14 @@ import {
 } from "../../../../utils/generic";
 import { compile } from "path-to-regexp";
 import { APP_ROUTES } from "../../../../constants/app";
-import { userAvatarSx } from "../../../../styles/sx";
+import {
+  simpleLinkSx,
+  userAvatarHeadlineSx,
+  userAvatarSx,
+} from "../../../../styles/sx";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { LABELS } from "../../../../constants/labels";
+import PostActions from "./PostActions";
 
 const FeedHeader: React.FC = () => {
   const router = useRouter();
@@ -20,54 +25,52 @@ const FeedHeader: React.FC = () => {
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
-  const { relatedSourceMap, sourceId, createdAt } = resourceContext;
+  const { relatedSourceMap, sourceId, createdAt, sourceInfo } = resourceContext;
   const { authUser } = useAuthContext();
 
   const handleProfileRedirectClick = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
   };
   return (
-    <Grid
-      container
-      py={1}
-      spacing={2}
-      alignItems="center"
-      justifyContent="space-between"
-    >
-      <Grid item display="flex" alignItems="center">
-        <Avatar
-          alt={relatedSourceMap[sourceId].name}
-          src={relatedSourceMap[sourceId].displayPictureUrl}
-          onClick={handleProfileRedirectClick}
-          sx={userAvatarSx(usernameToColor(authUser?.name as string), 45)}
-        />
-        <Box
-          ml={1}
-          mt={0.5}
-          onClick={handleProfileRedirectClick}
-          sx={profileRedirectSx}
-        >
-          <Typography
-            lineHeight={relatedSourceMap[sourceId].headline ? 0.5 : 1.3}
-          >
-            {relatedSourceMap[sourceId].name}
-          </Typography>
-          <Typography variant="caption" lineHeight={0.5}>
-            {getEllipsedText(relatedSourceMap[sourceId].headline, 35)}
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{ fontSize: "10px" }}
-            lineHeight={relatedSourceMap[sourceId].headline ? 0.7 : 1.6}
-            component="div"
-          >
-            {getTimeAgo(createdAt)}
-          </Typography>
-        </Box>
+    <Grid container p={1} spacing={2}>
+      <Grid item xs mt={0.5}>
+        <Grid container spacing={1}>
+          <Grid item onClick={handleProfileRedirectClick}>
+            <Avatar
+              alt={relatedSourceMap[sourceId].name}
+              src={relatedSourceMap[sourceId].displayPictureUrl}
+              onClick={handleProfileRedirectClick}
+              sx={userAvatarSx(usernameToColor(sourceInfo.name as string), 50)}
+            />
+          </Grid>
+
+          <Grid item xs>
+            <Grid container>
+              <Grid item xs={12}>
+                <Typography sx={simpleLinkSx()}>
+                  {relatedSourceMap[sourceId].name}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography sx={userAvatarHeadlineSx} lineHeight={1.2}>
+                  {getEllipsedText(
+                    relatedSourceMap[sourceId].headline || "--",
+                    35
+                  )}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography sx={userAvatarHeadlineSx} lineHeight={1.2}>
+                  {getTimeAgo(createdAt)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item display="flex" justifyContent="flex-end" alignItems="center">
-        <MoreHorizIcon fontSize="large" sx={morePostOptionsSx} />
-      </Grid>
+      <Grid item>{authUser?.id === sourceId && <PostActions />}</Grid>
     </Grid>
   );
 };
@@ -77,15 +80,5 @@ const profileRedirectSx: SxProps<Theme> = {
     cursor: "pointer",
   },
 };
-
-const morePostOptionsSx: SxProps<Theme> = (theme: Theme) => ({
-  padding: "8px",
-  fontSize: "42px",
-  "&:hover": {
-    cursor: "pointer",
-    backgroundColor: theme.palette.background.default,
-    borderRadius: "50%",
-  },
-});
 
 export default FeedHeader;

@@ -8,13 +8,13 @@ import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { LABELS } from "../../../../constants/labels";
 import CustomMenu from "../../../../components/CusomMenu/CustomMenu";
 import {
-  COMMENT_ACTIONS_MENU,
+  POST_ACTIONS_MENU,
   ICommentActionType,
 } from "../../../../constants/menu";
 
-interface ICommentActionsProps {}
+interface IPostActionsProps {}
 
-const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
+const PostActions: React.FC<IPostActionsProps> = ({}) => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
@@ -24,15 +24,15 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleCommentActionsOpen = (event: MouseEvent<HTMLElement>) => {
+  const handlePostActionsOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleCommentActionsClose = () => {
+  const handlePostActionsClose = () => {
     setAnchorEl(null);
   };
 
-  const handleCommentDelete = () => {
+  const handlePostDelete = () => {
     deleteResource();
   };
 
@@ -40,14 +40,14 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
     const menuItemId = id as ICommentActionType;
     switch (menuItemId) {
       case "delete": {
-        handleCommentDelete();
-        handleCommentActionsClose();
+        handlePostDelete();
+        handlePostActionsClose();
         return;
       }
 
       case "edit": {
         updateIsBeingEdited(true);
-        handleCommentActionsClose();
+        handlePostActionsClose();
         return;
       }
     }
@@ -56,10 +56,7 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
   return (
     <>
       <Box>
-        <IconButton
-          sx={commentsActionIconSx}
-          onClick={handleCommentActionsOpen}
-        >
+        <IconButton sx={postActionsIconSx} onClick={handlePostActionsOpen}>
           <MoreHorizIcon />
         </IconButton>
       </Box>
@@ -67,11 +64,11 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
       <CustomPopper
         id={id}
         anchorElement={anchorEl}
-        onClosePopper={handleCommentActionsClose}
+        onClosePopper={handlePostActionsClose}
         placement="bottom-end"
       >
         <CustomMenu
-          menuItems={COMMENT_ACTIONS_MENU}
+          menuItems={POST_ACTIONS_MENU}
           onClickMenuItem={handleMenuItemClick}
         />
       </CustomPopper>
@@ -79,9 +76,9 @@ const CommentActions: React.FC<ICommentActionsProps> = ({}) => {
   );
 };
 
-const commentsActionIconSx = (theme: Theme): SystemStyleObject<Theme> => ({
+const postActionsIconSx = (theme: Theme): SystemStyleObject<Theme> => ({
   color: theme.palette.text.primary,
   padding: 0,
 });
 
-export default CommentActions;
+export default PostActions;
