@@ -1,16 +1,17 @@
+import { useState, useCallback } from "react";
 import { Box, Grid, Divider, Typography, SxProps, Theme } from "@mui/material";
+import { SystemStyleObject } from "@mui/system";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import CommentIcon from "@mui/icons-material/Comment";
+import ShareIcon from "@mui/icons-material/Share";
 import ReactionIconClubber from "../../../../components/ReactionIconClubber";
 import ReactionTooltip from "../../../../components/ReactionTooltip";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
-import CommentIcon from "@mui/icons-material/Comment";
-import ShareIcon from "@mui/icons-material/Share";
 import { LABELS } from "../../../../constants/labels";
-import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../../../interfaces/api/external";
 import { REACTION_CONFIGS } from "../../../../constants/app";
 import { fadedLinkSx } from "../../../../styles/sx";
 import ReactionModal from "../../../../components/ReactionModal";
-import { useState } from "react";
 
 interface IFeedActivityProps {
   onPostOpen: () => void;
@@ -32,6 +33,8 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
 
   const [showUserReactionsModal, setShowUserReactionsModal] =
     useState<boolean>(false);
+  const [showReactionTooltip, setShowReactionTooltip] =
+    useState<boolean>(false);
 
   const ReactionIcon: React.FC<{ reaction?: IReactionTypes }> = ({
     reaction,
@@ -48,8 +51,16 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
     setShowUserReactionsModal(true);
   };
 
-  const handleUserReactionsModalClose = () => {
+  const handleUserReactionsModalClose = useCallback(() => {
     setShowUserReactionsModal(false);
+  }, []);
+
+  const handleReactionsTooltipOpen = () => {
+    setShowReactionTooltip(true);
+  };
+
+  const handleReactionsTooltipClose = () => {
+    setShowReactionTooltip(false);
   };
 
   return (
@@ -73,12 +84,10 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
                   ? totalReactionsCount
                   : LABELS.BE_FIRST_TO_REACT}
               </Typography>
-              {showUserReactionsModal && (
-                <ReactionModal
-                  showModal={showUserReactionsModal}
-                  onModalClose={handleUserReactionsModalClose}
-                />
-              )}
+              <ReactionModal
+                showModal={showUserReactionsModal}
+                onModalClose={handleUserReactionsModalClose}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -93,39 +102,41 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
       <Divider sx={dividerSx} />
       <Grid container alignItems="center" justifyContent="center" pt={1}>
         <Grid item xs={4}>
-          <>
-            <ReactionTooltip>
-              {userReaction ? (
-                <Box
-                  display="flex"
-                  alignItems="flex-end"
-                  justifyContent="center"
-                  onClick={handleToggleReactionClick(userReaction)}
-                  sx={reactionPresentSx(userReaction)}
-                  py={1}
-                >
-                  <Typography fontWeight="bold" variant="body2" pr={1}>
-                    {REACTION_CONFIGS[userReaction].label}
-                  </Typography>
-                  <ReactionIcon reaction={userReaction} />
-                </Box>
-              ) : (
-                <Box
-                  display="flex"
-                  alignItems="flex-end"
-                  justifyContent="center"
-                  sx={postInteractionSx}
-                  onClick={handleToggleReactionClick()}
-                  py={1}
-                >
-                  <Typography variant="body2" pr={1}>
-                    {LABELS.LIKE}
-                  </Typography>
-                  <ReactionIcon />
-                </Box>
-              )}
-            </ReactionTooltip>
-          </>
+          <ReactionTooltip
+            open={showReactionTooltip}
+            handleOpen={handleReactionsTooltipOpen}
+            handleClose={handleReactionsTooltipClose}
+          >
+            {userReaction ? (
+              <Box
+                display="flex"
+                alignItems="flex-end"
+                justifyContent="center"
+                onClick={handleToggleReactionClick(userReaction)}
+                sx={reactionPresentSx(userReaction)}
+                py={1}
+              >
+                <Typography fontWeight="bold" variant="body2" pr={1}>
+                  {REACTION_CONFIGS[userReaction].label}
+                </Typography>
+                <ReactionIcon reaction={userReaction} />
+              </Box>
+            ) : (
+              <Box
+                display="flex"
+                alignItems="flex-end"
+                justifyContent="center"
+                sx={postInteractionSx}
+                onClick={handleToggleReactionClick()}
+                py={1}
+              >
+                <Typography variant="body2" pr={1}>
+                  {LABELS.LIKE}
+                </Typography>
+                <ThumbUpIcon fontSize="small" />
+              </Box>
+            )}
+          </ReactionTooltip>
         </Grid>
         <Grid
           item
@@ -189,7 +200,7 @@ const reactionIconSx: (
 const postInteractionSx: SxProps<Theme> = (theme: Theme) => ({
   "&:hover": {
     cursor: "pointer",
-    textDecoration: "underline",
+    backgroundColor: theme.palette.background.default,
   },
 });
 

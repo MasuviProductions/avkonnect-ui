@@ -18,18 +18,14 @@ import { getCommentReactions, getPostReactions } from "../utils/api";
 import { transformUsersListToUserIdUserMap } from "../utils/transformers";
 import useInfiniteLoading from "./useInfiniteLoading";
 
-export type IIndividualUptoDateReactionModel = Record<
-  "all" | IReactionTypes,
-  IReactionApiModel[]
->;
-
 interface IUseReactions {
-  uptoDateReactions: IIndividualUptoDateReactionModel;
+  uptoDateReactions: IReactionApiModel[];
   infiniteLoadRef: (node: any) => void;
   triggerGetReactionsApi: () => void;
   relatedSourcesMap: Record<string, IRelatedSource>;
   getReactionsFetching: boolean;
   resetQueryData: () => void;
+  appendReactions: (reactions: IReactionApiModel[]) => void;
 }
 
 const useReactions = (
@@ -39,10 +35,9 @@ const useReactions = (
 ): IUseReactions => {
   const { authUser, accessToken } = useAuthContext();
 
-  const [uptoDateReactions, setUptoDateReactions] =
-    useState<IIndividualUptoDateReactionModel>(
-      {} as IIndividualUptoDateReactionModel
-    );
+  const [uptoDateReactions, setUptoDateReactions] = useState<
+    IReactionApiModel[]
+  >([]);
   const [relatedSourcesMap, setRelatedSourcesMap] = useState<
     Record<string, IRelatedSource>
   >({});
@@ -57,8 +52,8 @@ const useReactions = (
     remove: clearGetReactionsQueryData,
   } = useQuery<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
     resourceType === "post"
-      ? `GET-${API_ENDPOINTS.GET_POST_REACTIONS.key}:${id}`
-      : `GET-${API_ENDPOINTS.GET_COMMENT_REACTIONS.key}:${id}`,
+      ? `GET-${API_ENDPOINTS.GET_POST_REACTIONS.key}:${id}:${reactionType}`
+      : `GET-${API_ENDPOINTS.GET_COMMENT_REACTIONS.key}:${id}:${reactionType}`,
     () =>
       resourceType === "post"
         ? getPostReactions(
@@ -99,43 +94,41 @@ const useReactions = (
   );
 
   const infiniteLoadCallback = useCallback(() => {
-    if (uptoDateReactions) {
-      if (reactionType && uptoDateReactions[reactionType].length > 0) {
-        if (authUser) {
-          triggerGetReactionsApi();
-        }
+    if (uptoDateReactions.length > 0 && nextSearchStartFromKey) {
+      if (authUser) {
+        triggerGetReactionsApi();
       }
     }
-  }, [authUser, reactionType, triggerGetReactionsApi, uptoDateReactions]);
+  }, [
+    authUser,
+    nextSearchStartFromKey,
+    triggerGetReactionsApi,
+    uptoDateReactions.length,
+  ]);
 
   const infiniteLoadRef = useInfiniteLoading(
     getReactionsFetching,
     infiniteLoadCallback
   );
 
-  const mergeReactions = useCallback(
-    (reactions: IReactionApiModel[]) => {
-      setUptoDateReactions(prev => ({
-        ...prev,
-        reactionType: [...prev[reactionType || "all"], ...reactions],
-      }));
-    },
-    [reactionType]
-  );
+  const appendReactions = useCallback((reactions: IReactionApiModel[]) => {
+    // TODO: Filter Duplicates
+    setUptoDateReactions(prev => [...prev, ...reactions]);
+  }, []);
 
   const resetQueryData = useCallback(() => {
     setNextSearchStartFromKey(undefined);
-    setUptoDateReactions({} as IIndividualUptoDateReactionModel);
     clearGetReactionsQueryData();
+    setUptoDateReactions([]);
   }, [clearGetReactionsQueryData]);
 
   useEffect(() => {
     triggerGetReactionsApi();
-  }, [reactionType, triggerGetReactionsApi]);
+  }, [triggerGetReactionsApi]);
 
   useEffect(() => {
     if (getReactionsData?.data) {
-      mergeReactions(getReactionsData?.data?.reactions);
+      appendReactions(getReactionsData?.data?.reactions);
       handleUpdateRelatedSources(getReactionsData?.data?.relatedSources);
       setNextSearchStartFromKey(
         getReactionsData?.dDBPagination?.nextSearchStartFromKey
@@ -145,7 +138,7 @@ const useReactions = (
     getReactionsData?.dDBPagination?.nextSearchStartFromKey,
     getReactionsData?.data,
     handleUpdateRelatedSources,
-    mergeReactions,
+    appendReactions,
   ]);
 
   return {
@@ -155,6 +148,7 @@ const useReactions = (
     relatedSourcesMap,
     getReactionsFetching,
     resetQueryData,
+    appendReactions,
   };
 };
 

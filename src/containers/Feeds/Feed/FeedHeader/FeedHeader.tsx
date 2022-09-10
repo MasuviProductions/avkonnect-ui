@@ -35,7 +35,7 @@ const FeedHeader: React.FC = () => {
     <Grid container p={1} spacing={2}>
       <Grid item xs mt={0.5}>
         <Grid container spacing={1}>
-          <Grid item onClick={handleProfileRedirectClick}>
+          <Grid item>
             <Avatar
               alt={relatedSourceMap[sourceId].name}
               src={relatedSourceMap[sourceId].displayPictureUrl}
@@ -73,12 +73,6 @@ const FeedHeader: React.FC = () => {
       <Grid item>{authUser?.id === sourceId && <PostActions />}</Grid>
     </Grid>
   );
-};
-
-const profileRedirectSx: SxProps<Theme> = {
-  "&:hover": {
-    cursor: "pointer",
-  },
 };
 
 export default FeedHeader;

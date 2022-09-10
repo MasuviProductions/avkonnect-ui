@@ -5,7 +5,9 @@ import { LABELS } from "../../constants/labels";
 import { useResourceContext } from "../../contexts/ResourceContext";
 import { IReactionTypes, REACTIONS } from "../../interfaces/api/external";
 
-interface IReactionsPopperProps {}
+interface IReactionsPopperProps {
+  handleCloseMainTooltip: () => void;
+}
 
 const ReactionIcon: React.FC<{
   reaction: IReactionTypes;
@@ -14,7 +16,9 @@ const ReactionIcon: React.FC<{
   return <Icon sx={reactionIconSx(reaction as IReactionTypes)} />;
 };
 
-const ReactionsPopper: React.FC<IReactionsPopperProps> = () => {
+const ReactionsPopper: React.FC<IReactionsPopperProps> = ({
+  handleCloseMainTooltip,
+}) => {
   const resourceContext = useResourceContext();
 
   if (!resourceContext) {
@@ -23,6 +27,7 @@ const ReactionsPopper: React.FC<IReactionsPopperProps> = () => {
   const { updateUserReaction } = resourceContext;
 
   const handleReactionIconClick = (reaction: IReactionTypes) => () => {
+    handleCloseMainTooltip();
     updateUserReaction(reaction);
   };
 
