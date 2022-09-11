@@ -175,6 +175,11 @@ const API_ENDPOINTS = {
     url: (userId: string, queryString: string) =>
       `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds${queryString}`,
   },
+  GET_USER_POSTS: {
+    key: "get-user-posts",
+    url: (userId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/users/${userId}/posts${queryString}`,
+  },
 };
 
 export enum API_QUERY_KEYS {

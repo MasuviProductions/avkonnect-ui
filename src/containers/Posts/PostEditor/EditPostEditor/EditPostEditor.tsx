@@ -66,6 +66,7 @@ const EditPostEditor: React.FC<IEditPostEditorProps> = ({
 
         <Hidden mdDown>
           <PostEditorModal
+            title={LABELS.EDIT_POST}
             showModal={showPostEditor}
             onModalClose={onPostEditorClose}
           />

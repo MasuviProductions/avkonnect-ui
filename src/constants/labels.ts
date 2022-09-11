@@ -272,6 +272,7 @@ export const LABELS = {
   // Posts
   ADD_POST_PLACEHOLDER: "What's on your mind?",
   CREATE_POST: "Create a post",
+  EDIT_POST: "Edit post",
   SUBMIT_POST: "Post",
 
   // Comments
