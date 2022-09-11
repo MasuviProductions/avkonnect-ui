@@ -18,7 +18,7 @@ import { useAuthContext } from "../../../../contexts/AuthContext";
 import { LABELS } from "../../../../constants/labels";
 import PostActions from "./PostActions";
 
-const FeedHeader: React.FC = () => {
+const PostHeader: React.FC = () => {
   const router = useRouter();
   const resourceContext = useResourceContext();
 
@@ -77,4 +77,4 @@ const FeedHeader: React.FC = () => {
   );
 };
 
-export default FeedHeader;
+export default PostHeader;

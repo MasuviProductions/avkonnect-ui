@@ -30,13 +30,15 @@ const CreatePostPlaceholder: React.FC<ICreatePostPlaceholderProps> = ({
         <Grid item md={10} xs={9}>
           <Button
             variant="outlined"
-            color="success"
             sx={createPostBtnSx}
             onClick={onOpenPostEditor}
+            fullWidth
           >
-            <Box component="span">{LABELS.CREATE_POST_PLACEHOLDER}</Box>
-            <Box component="span">
-              <PenIcon />
+            <Box component="span" mt={0.5}>
+              <PenIcon sx={writeIconSx} />
+            </Box>
+            <Box component="span" ml={1}>
+              {LABELS.CREATE_POST_PLACEHOLDER}
             </Box>
           </Button>
         </Grid>
@@ -46,11 +48,16 @@ const CreatePostPlaceholder: React.FC<ICreatePostPlaceholderProps> = ({
 };
 
 const createPostBtnSx: SxProps<Theme> = (theme: Theme) => ({
-  width: "100%",
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.paper,
+  borderColor: theme.palette.text.primary,
+  color: theme.palette.text.primary,
   borderRadius: "18px",
   justifyContent: "flex-start !important",
   textTransform: "initial",
 });
+
+const writeIconSx: SxProps<Theme> = {
+  fontSize: "14px",
+};
 
 export default CreatePostPlaceholder;

@@ -17,9 +17,9 @@ import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
 import Footer from "../Footer";
 import CreatePostEditor from "../Posts/PostEditor/CreatePostEditor";
-import CreatePostPanel from "./CreatePostPlaceholder";
-import Feed from "./Feed/Feed";
-import FeedsSkeleton from "./FeedsSkeleton";
+import CreatePostPlaceholder from "./CreatePostPlaceholder";
+import PostCard from "../Posts/PostCard/PostCard";
+import HomeSkeleton from "../Home/HomeSkeleton";
 
 const Feeds: React.FC = () => {
   const { accessToken, authUser } = useAuthContext();
@@ -142,7 +142,7 @@ const Feeds: React.FC = () => {
   }, [getUserFeedsError, setSnackbar]);
 
   if (getUserFeedsStatus === "loading") {
-    return <FeedsSkeleton />;
+    return <HomeSkeleton />;
   }
 
   return (
@@ -150,14 +150,16 @@ const Feeds: React.FC = () => {
       <Grid item lg={6} md={7} xs={12}>
         <Grid container mt={2} spacing={1.5} maxWidth="sm">
           <Grid item xs={12}>
-            <CreatePostPanel onOpenPostEditor={handleShowPostEditorOpen} />
+            <CreatePostPlaceholder
+              onOpenPostEditor={handleShowPostEditorOpen}
+            />
             <CreatePostEditor
               showPostEditor={showPostEditor}
               onPostEditorClose={handleShowPostEditorClose}
             />
           </Grid>
           <Grid item xs={12}>
-            <Divider sx={dividerSx} />
+            <Divider />
           </Grid>
           {upToDateUserFeeds?.map((feed, index) => (
             <Grid
@@ -186,7 +188,7 @@ const Feeds: React.FC = () => {
                 onDeleteResource={handleDeletePost}
                 onUpdateResource={handleUpdateResource}
               >
-                <Feed feedSource={feed.feedSources} />
+                <PostCard feedSource={feed.feedSources} />
               </ResourceProvider>
             </Grid>
           ))}
@@ -212,10 +214,6 @@ const Feeds: React.FC = () => {
     </Grid>
   );
 };
-
-const dividerSx: SxProps<Theme> = (theme: Theme) => ({
-  borderColor: theme.palette.grey["A700"],
-});
 
 const feedContainerSx: SxProps<Theme> = (theme: Theme) => ({
   margin: "0px 16px",

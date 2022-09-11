@@ -1,21 +1,21 @@
 import { Box, SxProps, Theme, useTheme } from "@mui/material";
-import PostView from "../../Posts/PostView";
+import PostView from "../PostView";
 import { IFeedSourceApiModel } from "../../../interfaces/api/external";
-import FeedActivity from "./FeedActivity";
-import FeedContent from "./FeedContent";
-import FeedHeader from "./FeedHeader";
-import FeedSource from "./FeedSource";
+import PostActivity from "./PostActivity";
+import PostContent from "./PostContent";
+import PostHeader from "./PostHeader";
+import PostSource from "./PostSource";
 import LayoutCard from "../../../components/LayoutCard";
 import { useResourceContext } from "../../../contexts/ResourceContext";
 import { LABELS } from "../../../constants/labels";
-import EditPostEditor from "../../Posts/PostEditor/EditPostEditor";
+import EditPostEditor from "../PostEditor/EditPostEditor";
 import { useState } from "react";
 
-export interface IFeedProps {
+export interface IPostCardProps {
   feedSource?: IFeedSourceApiModel[];
 }
 
-const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
+const PostCard: React.FC<IPostCardProps> = ({ feedSource }) => {
   const theme = useTheme();
 
   const resourceContext = useResourceContext();
@@ -45,10 +45,10 @@ const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
     <>
       <LayoutCard withBorder={theme.key === "light"}>
         <Box sx={feedSx}>
-          {feedSource && <FeedSource feedSource={feedSource} />}
-          <FeedHeader />
-          <FeedContent />
-          <FeedActivity onPostOpen={handlePostDetailOpen} />
+          {feedSource && <PostSource feedSource={feedSource} />}
+          <PostHeader />
+          <PostContent />
+          <PostActivity onPostOpen={handlePostDetailOpen} />
           <PostView
             showPost={showPostDetail}
             onPostClose={handlePostDetailClose}
@@ -71,4 +71,4 @@ const feedSx: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
-export default Feed;
+export default PostCard;

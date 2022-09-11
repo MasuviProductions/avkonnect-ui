@@ -7,7 +7,7 @@ const SingleFeedSkeleton: React.FC = () => {
       <LayoutCard>
         <Grid container p={2}>
           <Grid item xs={12}>
-            <Grid container>
+            <Grid container spacing={4} alignItems="center">
               <Grid item mt={1} sm={1} xs={2}>
                 <Skeleton variant="circular" width={40} height={40} />
               </Grid>
@@ -27,7 +27,7 @@ const SingleFeedSkeleton: React.FC = () => {
 
 const FeedsSkeleton: React.FC = () => {
   return (
-    <Box mt={1}>
+    <Box mt={2}>
       <Box>
         <SingleFeedSkeleton />
       </Box>

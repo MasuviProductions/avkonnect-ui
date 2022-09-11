@@ -61,9 +61,11 @@ const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <ProfilePosts />
-      </Grid>
+      {authUser && (
+        <Grid item xs={12} md={6}>
+          <ProfilePosts />
+        </Grid>
+      )}
     </Grid>
   );
 };

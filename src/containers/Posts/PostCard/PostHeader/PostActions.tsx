@@ -12,9 +12,7 @@ import {
   ICommentActionType,
 } from "../../../../constants/menu";
 
-interface IPostActionsProps {}
-
-const PostActions: React.FC<IPostActionsProps> = ({}) => {
+const PostActions: React.FC = () => {
   const resourceContext = useResourceContext();
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);

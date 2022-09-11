@@ -13,11 +13,11 @@ import { REACTION_CONFIGS } from "../../../../constants/app";
 import { fadedLinkSx } from "../../../../styles/sx";
 import ReactionModal from "../../../../components/ReactionModal";
 
-interface IFeedActivityProps {
+interface IPostActivityProps {
   onPostOpen?: () => void;
 }
 
-const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
+const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
   const resourceContext = useResourceContext();
 
   if (!resourceContext) {
@@ -219,4 +219,4 @@ const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   borderColor: `${theme.palette.secondary.light}`,
 });
 
-export default FeedActivity;
+export default PostActivity;

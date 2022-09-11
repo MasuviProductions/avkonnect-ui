@@ -1,4 +1,4 @@
-import { Grid, Theme } from "@mui/material";
+import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import Image from "next/image";
 import { SVG } from "../../assets/SVG";
@@ -18,21 +18,16 @@ const SpinLoader: React.FC<ISpinLoaderProps> = ({
   padding,
 }) => {
   return (
-    <Grid container>
-      <Grid
-        item
-        display="flex"
-        justifyContent="center"
-        p={padding ? padding : 6}
-        sx={loaderGridSx(fullWidth)}
-      >
-        <Image
-          src={SVG.Spinner}
-          alt={LABELS.LOADING}
-          width={getSpinLoaderSize(radius)}
-          height={getSpinLoaderSize(radius)}
-          style={{ fill: "#000" }}
-        />
+    <Grid container justifyContent="center">
+      <Grid item p={padding ? padding : 6}>
+        <Box sx={loaderGridSx(fullWidth)}>
+          <Image
+            src={SVG.Spinner}
+            alt={LABELS.LOADING}
+            width={getSpinLoaderSize(radius)}
+            height={getSpinLoaderSize(radius)}
+          />
+        </Box>
       </Grid>
     </Grid>
   );
