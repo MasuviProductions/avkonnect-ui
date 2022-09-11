@@ -5,7 +5,7 @@ import { useResourceContext } from "../../contexts/ResourceContext";
 import useReactions from "../../hooks/useReactions";
 import { IReactionTypes } from "../../interfaces/api/external";
 import SpinLoader from "../SpinLoader";
-import ReactionField from "./ReactionField";
+import ReactionItem from "./ReactionItem";
 
 export interface ITabPanelProps {
   index: "all" | IReactionTypes;
@@ -41,33 +41,29 @@ const ReactionTabPanel: React.FC<ITabPanelProps> = ({
 
   return (
     <Box hidden={value !== index}>
-      {value === index && (
-        <Grid container p={1}>
-          {uptoDateReactions?.map((reactionObj, index) => {
-            return (
-              <Grid
-                item
-                xs={12}
-                p={1}
-                key={index}
-                ref={
-                  index === uptoDateReactions.length - 1
-                    ? infiniteLoadRef
-                    : undefined
-                }
-              >
-                <ReactionField
-                  reaction={reactionObj}
-                  relatedSourcesMap={relatedSourcesMap}
-                />
-              </Grid>
-            );
-          })}
-          {getReactionsFetching && (
-            <SpinLoader isLoading={getReactionsFetching} />
-          )}
-        </Grid>
-      )}
+      <Grid container p={1}>
+        {uptoDateReactions?.map((reactionObj, index) => {
+          return (
+            <Grid
+              item
+              xs={12}
+              p={1}
+              key={index}
+              ref={
+                index === uptoDateReactions.length - 1
+                  ? infiniteLoadRef
+                  : undefined
+              }
+            >
+              <ReactionItem
+                reaction={reactionObj}
+                relatedSourcesMap={relatedSourcesMap}
+              />
+            </Grid>
+          );
+        })}
+        {getReactionsFetching && <SpinLoader fullWidth />}
+      </Grid>
     </Box>
   );
 };

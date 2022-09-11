@@ -7,6 +7,7 @@ import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsF
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import { coloredLinkSx } from "../../../../../styles/sx";
+import SpinLoader from "../../../../../components/SpinLoader";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -44,7 +45,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
   return (
     <>
       <Box>
-        {uptoDateComments.map((comment) => (
+        {uptoDateComments.map(comment => (
           <Box key={comment.id}>
             <ResourceProvider
               id={comment.id}
@@ -70,10 +71,9 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
             </ResourceProvider>
           </Box>
         ))}
+        {getCommentsFetching && <SpinLoader padding={2} fullWidth />}
 
-        {getCommentsFetching ? (
-          <>....</>
-        ) : allCommentsFetched ? (
+        {allCommentsFetched ? (
           <></>
         ) : (
           <Box px={1} pb={1}>

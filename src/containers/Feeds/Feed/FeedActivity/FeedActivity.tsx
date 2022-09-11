@@ -14,7 +14,7 @@ import { fadedLinkSx } from "../../../../styles/sx";
 import ReactionModal from "../../../../components/ReactionModal";
 
 interface IFeedActivityProps {
-  onPostOpen: () => void;
+  onPostOpen?: () => void;
 }
 
 const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
@@ -72,18 +72,29 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
               <ReactionIconClubber reactionIconCount={reactionsCount} />
             </Grid>
             <Grid item>
-              <Typography
-                sx={fadedLinkSx(12)}
-                onClick={handleUserReactionsModalOpen}
-              >
-                {userReaction
-                  ? totalReactionsCount > 1
+              {userReaction && (
+                <Typography
+                  sx={fadedLinkSx(12)}
+                  onClick={handleUserReactionsModalOpen}
+                >
+                  {totalReactionsCount > 1
                     ? LABELS.YOU_AND_OTHERS(totalReactionsCount)
-                    : LABELS.YOU
-                  : totalReactionsCount > 0
-                  ? totalReactionsCount
-                  : LABELS.BE_FIRST_TO_REACT}
-              </Typography>
+                    : LABELS.YOU}
+                </Typography>
+              )}
+              {!userReaction && totalReactionsCount > 0 && (
+                <Typography
+                  sx={fadedLinkSx(12)}
+                  onClick={handleUserReactionsModalOpen}
+                >
+                  {totalReactionsCount}
+                </Typography>
+              )}
+              {totalReactionsCount === 0 && (
+                <Typography sx={fadedLinkSx(12, "default")}>
+                  {LABELS.BE_FIRST_TO_REACT}
+                </Typography>
+              )}
               <ReactionModal
                 showModal={showUserReactionsModal}
                 onModalClose={handleUserReactionsModalClose}
@@ -104,8 +115,8 @@ const FeedActivity: React.FC<IFeedActivityProps> = ({ onPostOpen }) => {
         <Grid item xs={4}>
           <ReactionTooltip
             open={showReactionTooltip}
-            handleOpen={handleReactionsTooltipOpen}
-            handleClose={handleReactionsTooltipClose}
+            onOpen={handleReactionsTooltipOpen}
+            onClose={handleReactionsTooltipClose}
           >
             {userReaction ? (
               <Box

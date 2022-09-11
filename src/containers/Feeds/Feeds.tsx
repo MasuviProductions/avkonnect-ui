@@ -150,7 +150,7 @@ const Feeds: React.FC = () => {
       <Grid item lg={6} md={7} xs={12}>
         <Grid container mt={2} spacing={1.5} maxWidth="sm">
           <Grid item xs={12}>
-            <CreatePostPanel postEditorOpen={handleShowPostEditorOpen} />
+            <CreatePostPanel onOpenPostEditor={handleShowPostEditorOpen} />
             <CreatePostEditor
               showPostEditor={showPostEditor}
               onPostEditorClose={handleShowPostEditorClose}
@@ -193,7 +193,7 @@ const Feeds: React.FC = () => {
         </Grid>
         {getUserFeedsFetching && (
           <Grid item xs={12}>
-            <SpinLoader isLoading={getUserFeedsFetching} />
+            <SpinLoader fullWidth />
           </Grid>
         )}
       </Grid>

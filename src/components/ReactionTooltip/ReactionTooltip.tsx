@@ -27,27 +27,27 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 interface IReactionTooltipProps {
   open: boolean;
-  handleOpen: () => void;
-  handleClose: () => void;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
 const ReactionTooltip: React.FC<IReactionTooltipProps> = ({
   children,
   open,
-  handleOpen,
-  handleClose,
+  onOpen,
+  onClose,
 }) => {
   return (
     <StyledTooltip
       placement="top"
       title={
         <Fragment>
-          <ReactionsPopper handleCloseMainTooltip={handleClose} />
+          <ReactionsPopper onCloseMainTooltip={onClose} />
         </Fragment>
       }
       open={open}
-      onOpen={handleOpen}
-      onClose={handleClose}
+      onOpen={onOpen}
+      onClose={onClose}
     >
       <Box>{children}</Box>
     </StyledTooltip>

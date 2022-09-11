@@ -13,19 +13,15 @@ import {
 } from "../../utils/generic";
 import { APP_ROUTES, REACTION_CONFIGS } from "../../constants/app";
 import { compile } from "path-to-regexp";
-import {
-  simpleLinkSx,
-  userAvatarHeadlineSx,
-  userAvatarSx,
-} from "../../styles/sx";
+import { simpleLinkSx, userAvatarSx } from "../../styles/sx";
 import { SystemStyleObject } from "@mui/system";
 
-interface IReactionFieldProps {
+interface IReactionItemProps {
   reaction: IReactionApiModel;
   relatedSourcesMap: Record<string, IRelatedSource>;
 }
 
-const ReactionField: React.FC<IReactionFieldProps> = ({
+const ReactionItem: React.FC<IReactionItemProps> = ({
   reaction,
   relatedSourcesMap,
 }) => {
@@ -54,7 +50,9 @@ const ReactionField: React.FC<IReactionFieldProps> = ({
               ),
               50
             )}
-          />
+          >
+            {relatedSourcesMap[reaction.sourceId].name[0]}
+          </Avatar>
         </Badge>
       </Grid>
 
@@ -89,4 +87,4 @@ const reactionIconSx: (
   });
 };
 
-export default ReactionField;
+export default ReactionItem;

@@ -6,12 +6,12 @@ import { usernameToColor } from "../../utils/generic";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { LABELS } from "../../constants/labels";
 
-interface ICreatePostPanelProps {
-  postEditorOpen: () => void;
+interface ICreatePostPlaceholderProps {
+  onOpenPostEditor: () => void;
 }
 
-const CreatePostPanel: React.FC<ICreatePostPanelProps> = ({
-  postEditorOpen,
+const CreatePostPlaceholder: React.FC<ICreatePostPlaceholderProps> = ({
+  onOpenPostEditor,
 }) => {
   const { authUser } = useAuthContext();
 
@@ -32,9 +32,9 @@ const CreatePostPanel: React.FC<ICreatePostPanelProps> = ({
             variant="outlined"
             color="success"
             sx={createPostBtnSx}
-            onClick={postEditorOpen}
+            onClick={onOpenPostEditor}
           >
-            {LABELS.CREATE_POST_PLACEHOLDER}
+            <Box component="span">{LABELS.CREATE_POST_PLACEHOLDER}</Box>
             <Box component="span">
               <PenIcon />
             </Box>
@@ -53,4 +53,4 @@ const createPostBtnSx: SxProps<Theme> = (theme: Theme) => ({
   textTransform: "initial",
 });
 
-export default CreatePostPanel;
+export default CreatePostPlaceholder;

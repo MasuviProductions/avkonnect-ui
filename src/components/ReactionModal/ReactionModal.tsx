@@ -63,7 +63,7 @@ const ReactionModal: React.FC<IReactionModalProps> = ({
       <Tabs value={currentReactionTab} onChange={handleReactionTabChange}>
         <Tab
           key={`reaction-tab-all`}
-          label={`All ${totalReactionsCount}`}
+          label={LABELS.REACTION_ALL_TAB(totalReactionsCount)}
           value={"all"}
         />
         {REACTIONS.map((reaction, index) => {

@@ -111,8 +111,15 @@ const useReactions = (
   );
 
   const appendReactions = useCallback((reactions: IReactionApiModel[]) => {
-    // TODO: Filter Duplicates
-    setUptoDateReactions(prev => [...prev, ...reactions]);
+    setUptoDateReactions(prev => {
+      const updatedReactions = reactions.filter(reaction => {
+        const isReactionAlreadyPresent = prev.findIndex(
+          rct => rct.id === reaction.id
+        );
+        return isReactionAlreadyPresent < 0;
+      });
+      return [...prev, ...updatedReactions];
+    });
   }, []);
 
   const resetQueryData = useCallback(() => {

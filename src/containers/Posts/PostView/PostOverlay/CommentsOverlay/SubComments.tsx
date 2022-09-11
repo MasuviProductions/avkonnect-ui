@@ -78,7 +78,7 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
         ))}
         {getCommentsFetching && (
           <Grid item xs={12}>
-            <SpinLoader isLoading={getCommentsFetching} />
+            <SpinLoader fullWidth />
           </Grid>
         )}
       </Box>

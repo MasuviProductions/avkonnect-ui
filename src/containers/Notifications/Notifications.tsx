@@ -195,7 +195,7 @@ const Notifications: ReactFCWithSkeleton = () => {
           ))}
           {getUserNotificationsFetching && (
             <Grid item xs={12}>
-              <SpinLoader isLoading={getUserNotificationsFetching} />
+              <SpinLoader fullWidth />
             </Grid>
           )}
         </Grid>

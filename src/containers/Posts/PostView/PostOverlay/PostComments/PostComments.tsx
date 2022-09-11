@@ -109,7 +109,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
       )}
       {getCommentsFetching && (
         <Grid item xs={12}>
-          <SpinLoader isLoading={getCommentsFetching} />
+          <SpinLoader fullWidth />
         </Grid>
       )}
     </>

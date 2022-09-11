@@ -64,7 +64,7 @@ const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
           ))}
           {getUsersSearchFetching && (
             <Grid item xs={12}>
-              <SpinLoader isLoading={getUsersSearchFetching} />
+              <SpinLoader fullWidth />
             </Grid>
           )}
         </Grid>

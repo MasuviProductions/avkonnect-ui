@@ -139,7 +139,7 @@ const SentConnections: React.FC = () => {
         ))}
         {getUserConnectionsFetching && (
           <Grid item xs={12}>
-            <SpinLoader isLoading={getUserConnectionsFetching} />
+            <SpinLoader fullWidth />
           </Grid>
         )}
       </Grid>

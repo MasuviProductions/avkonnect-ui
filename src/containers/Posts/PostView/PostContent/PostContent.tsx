@@ -9,7 +9,7 @@ const PostContent: React.FC = () => {
       <Grid item xs={12}>
         <FeedHeader />
         <FeedContent />
-        <FeedActivity onPostOpen={() => {}} />
+        <FeedActivity />
       </Grid>
     </Grid>
   );

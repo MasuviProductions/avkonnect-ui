@@ -51,8 +51,8 @@ const CommentReactions: React.FC<ICommentReactionsProps> = () => {
         <Grid item px={1}>
           <ReactionTooltip
             open={showReactionTooltip}
-            handleOpen={handleReactionsTooltipOpen}
-            handleClose={handleReactionsTooltipClose}
+            onOpen={handleReactionsTooltipOpen}
+            onClose={handleReactionsTooltipClose}
           >
             <Typography
               paragraph
