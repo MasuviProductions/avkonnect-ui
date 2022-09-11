@@ -10,9 +10,12 @@ import PostActionBar from "../PostActionBar";
 import TextEditor from "../../../../components/TextEditor/TextEditor";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 
-interface IPostEditorModalProps extends IModalLayoutProps {}
+interface IPostEditorModalProps extends IModalLayoutProps {
+  title: string;
+}
 
 const PostEditorModal: React.FC<IPostEditorModalProps> = ({
+  title,
   showModal,
   onModalClose,
 }) => {
@@ -35,7 +38,7 @@ const PostEditorModal: React.FC<IPostEditorModalProps> = ({
         showModal={showModal}
         onModalClose={onModalClose}
         maxWidth="sm"
-        title={LABELS.CREATE_POST}
+        title={title}
       >
         <Grid container p={2} spacing={2}>
           <Grid item xs={12}>

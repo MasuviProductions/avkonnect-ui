@@ -12,7 +12,7 @@ import EditPostEditor from "../../Posts/PostEditor/EditPostEditor";
 import { useState } from "react";
 
 export interface IFeedProps {
-  feedSource: IFeedSourceApiModel[];
+  feedSource?: IFeedSourceApiModel[];
 }
 
 const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
@@ -45,7 +45,7 @@ const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
     <>
       <LayoutCard withBorder={theme.key === "light"}>
         <Box sx={feedSx}>
-          <FeedSource feedSource={feedSource} />
+          {feedSource && <FeedSource feedSource={feedSource} />}
           <FeedHeader />
           <FeedContent />
           <FeedActivity onPostOpen={handlePostDetailOpen} />

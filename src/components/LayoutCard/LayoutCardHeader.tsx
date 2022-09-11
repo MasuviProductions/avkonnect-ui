@@ -51,7 +51,7 @@ const LayoutCardHeader: React.FC<ILayoutCartHeader> = ({
 };
 
 const layoutCardHeaderContainer: SxProps<Theme> = {
-  paddingTop: 3,
+  paddingTop: 1,
   paddingBottom: 1,
 };
 

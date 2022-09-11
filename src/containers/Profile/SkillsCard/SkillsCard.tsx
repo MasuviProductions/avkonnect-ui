@@ -89,7 +89,7 @@ const SkillsCard: React.FC = () => {
   ) => {
     setSkillUnderUpdate(customKey);
     const updatedSkillsets = cloneDeep(userSkillsets);
-    updatedSkillsets?.every(skillset => {
+    updatedSkillsets?.every((skillset) => {
       if (skillset.name === skillName) {
         skillset.endorsers.push({
           endorserId: authUser?.id as string,
@@ -106,7 +106,7 @@ const SkillsCard: React.FC = () => {
   const handleUnendorseUserSkill = (customKey: string, skillName: string) => {
     setSkillUnderUpdate(customKey);
     const updatedSkillsets = cloneDeep(userSkillsets);
-    updatedSkillsets?.every(skillset => {
+    updatedSkillsets?.every((skillset) => {
       if (skillset.name === skillName) {
         for (let i = 0; i <= skillset.endorsers.length; i += 1) {
           if ((skillset.endorsers[i].endorserId = user.id)) {
@@ -200,7 +200,7 @@ const SkillsCard: React.FC = () => {
   }, [isShowMoreSkillsApplicable, showMoreSkills, userSkillsets]);
 
   useEffect(() => {
-    setProfileStatus(prev => ({
+    setProfileStatus((prev) => ({
       ...prev,
       isSkillAddComplete: !!userSkillsets && userSkillsets.length > 0,
     }));
@@ -211,7 +211,7 @@ const SkillsCard: React.FC = () => {
   }
 
   return (
-    <Box my={1}>
+    <Box mt={1.5}>
       <LayoutCard>
         <LayoutCard.Header
           title={LABELS.SKILLS_TITLE}
@@ -219,10 +219,6 @@ const SkillsCard: React.FC = () => {
         >
           {user.isAuthUser && (
             <>
-              <IconButton onClick={handleAddSkillsModalOpen}>
-                <AddCircleOutlineIcon color="primary" fontSize="large" />
-              </IconButton>
-
               {userSkillsets && userSkillsets.length > 0 && (
                 <IconButton
                   sx={skillsCardEditBtn}
@@ -231,11 +227,14 @@ const SkillsCard: React.FC = () => {
                   <EditIcon fontSize="medium" />
                 </IconButton>
               )}
+              <IconButton onClick={handleAddSkillsModalOpen}>
+                <AddCircleOutlineIcon color="primary" fontSize="large" />
+              </IconButton>
             </>
           )}
         </LayoutCard.Header>
         <Container sx={skillsLayoutCardContainer}>
-          {userSkillsetsEllpised?.map(skillset => (
+          {userSkillsetsEllpised?.map((skillset) => (
             <SkillItem
               key={skillset.name}
               customKey={skillset.name}
