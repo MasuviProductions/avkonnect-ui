@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import UserConnectionCard from "../../../components/Connections/UserConnectionCard";
+import SpinLoader from "../../../components/SpinLoader";
 import API_ENDPOINTS from "../../../constants/api";
 import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -136,6 +137,11 @@ const ExistingConnections: React.FC = () => {
             />
           </Grid>
         ))}
+        {getUserConnectionsFetching && (
+          <Grid item xs={12}>
+            <SpinLoader isLoading={getUserConnectionsFetching} />
+          </Grid>
+        )}
       </Grid>
     </>
   );

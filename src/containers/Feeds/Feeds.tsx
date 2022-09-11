@@ -1,6 +1,7 @@
-import { Button, Grid, SxProps, Theme } from "@mui/material";
+import { Box, Divider, Grid, Hidden, SxProps, Theme } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import SpinLoader from "../../components/SpinLoader";
 import API_ENDPOINTS from "../../constants/api";
 import { FEEDS_PAGINATION_LIMIT } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
@@ -14,7 +15,9 @@ import {
 } from "../../interfaces/api/external";
 import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
+import Footer from "../Footer";
 import CreatePostEditor from "../Posts/PostEditor/CreatePostEditor";
+import CreatePostPanel from "./CreatePostPlaceholder";
 import Feed from "./Feed/Feed";
 import FeedsSkeleton from "./FeedsSkeleton";
 
@@ -54,7 +57,7 @@ const Feeds: React.FC = () => {
   );
 
   const mergeFeeds = useCallback((newFeeds: IUserFeedApiModel[]) => {
-    setUpToDateUserFeeds((prev) => [
+    setUpToDateUserFeeds(prev => [
       ...prev,
       ...(newFeeds as IUserFeedApiModel[]),
     ]);
@@ -62,7 +65,7 @@ const Feeds: React.FC = () => {
 
   const handleUpdateResourceMap = useCallback(
     (relatedSources: IRelatedSource[]) => {
-      setRelatedSourcesMap((prev) => {
+      setRelatedSourcesMap(prev => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           relatedSources
         ) as Record<string, IRelatedSource>;
@@ -103,9 +106,7 @@ const Feeds: React.FC = () => {
   };
 
   const handleDeletePost = (postId: string) => {
-    setUpToDateUserFeeds((prev) =>
-      prev.filter((feed) => feed.postId !== postId)
-    );
+    setUpToDateUserFeeds(prev => prev.filter(feed => feed.postId !== postId));
   };
 
   const handleUpdateResource = () => {};
@@ -146,14 +147,17 @@ const Feeds: React.FC = () => {
 
   return (
     <Grid container sx={feedContainerSx}>
-      <Grid item xs={12}>
-        <Grid container mt={1.5} spacing={1.5} maxWidth="sm">
+      <Grid item lg={6} md={7} xs={12}>
+        <Grid container mt={2} spacing={1.5} maxWidth="sm">
           <Grid item xs={12}>
-            <Button onClick={handleShowPostEditorOpen}>Create Post</Button>
+            <CreatePostPanel postEditorOpen={handleShowPostEditorOpen} />
             <CreatePostEditor
               showPostEditor={showPostEditor}
               onPostEditorClose={handleShowPostEditorClose}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider sx={dividerSx} />
           </Grid>
           {upToDateUserFeeds?.map((feed, index) => (
             <Grid
@@ -187,10 +191,31 @@ const Feeds: React.FC = () => {
             </Grid>
           ))}
         </Grid>
+        {getUserFeedsFetching && (
+          <Grid item xs={12}>
+            <SpinLoader isLoading={getUserFeedsFetching} />
+          </Grid>
+        )}
+      </Grid>
+      <Grid item md={4} xs={12}>
+        <Hidden mdDown>
+          <Box sx={stickyBoxSx}>
+            <Footer footerType="side" />
+          </Box>
+        </Hidden>
+      </Grid>
+      <Grid item xs={12} mt={4}>
+        <Hidden mdUp>
+          <Footer footerType="bottom" />
+        </Hidden>
       </Grid>
     </Grid>
   );
 };
+
+const dividerSx: SxProps<Theme> = (theme: Theme) => ({
+  borderColor: theme.palette.grey["A700"],
+});
 
 const feedContainerSx: SxProps<Theme> = (theme: Theme) => ({
   margin: "0px 16px",
@@ -198,5 +223,10 @@ const feedContainerSx: SxProps<Theme> = (theme: Theme) => ({
     margin: "0px",
   },
 });
+
+const stickyBoxSx: SxProps<Theme> = {
+  position: "sticky",
+  top: "100px",
+};
 
 export default Feeds;

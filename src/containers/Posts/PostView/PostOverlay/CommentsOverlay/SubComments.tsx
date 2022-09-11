@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import ResourceProvider, {
   useResourceContext,
 } from "../../../../../contexts/ResourceContext";
@@ -7,6 +7,7 @@ import { IUseCommentsForResourceReturn } from "../../../../../hooks/useCommentsF
 import { IRelatedSource } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import { useCallback } from "react";
+import SpinLoader from "../../../../../components/SpinLoader";
 
 interface ISubCommentsProps {
   onReplyClick: (
@@ -24,8 +25,12 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
 
   const { commentsQuery } = resourceContext;
 
-  const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
-    commentsQuery as IUseCommentsForResourceReturn;
+  const {
+    uptoDateComments,
+    relatedSourcesMap,
+    infiniteLoadRef,
+    getCommentsFetching,
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleReplyClickWithSourceTag = useCallback(
     (withTaggedSource?: IRelatedSource) =>
@@ -71,6 +76,11 @@ const SubComments: React.FC<ISubCommentsProps> = ({ onReplyClick }) => {
             </ResourceProvider>
           </Box>
         ))}
+        {getCommentsFetching && (
+          <Grid item xs={12}>
+            <SpinLoader isLoading={getCommentsFetching} />
+          </Grid>
+        )}
       </Box>
     </>
   );

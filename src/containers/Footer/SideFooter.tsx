@@ -28,16 +28,16 @@ const SideFooter: React.FC = () => {
         </Grid>
         <Grid item xs={12} mt={1}>
           <Grid container justifyContent="center">
-            <Grid item mr={2}>
+            <Grid item mx={1}>
               <FooterSocialMediaIcon socialMedia="facebook" />
             </Grid>
-            <Grid item mr={2}>
+            <Grid item mx={1}>
               <FooterSocialMediaIcon socialMedia="instagram" />
             </Grid>
-            <Grid item mr={2}>
+            <Grid item mx={1}>
               <FooterSocialMediaIcon socialMedia="twitter" />
             </Grid>
-            <Grid item mr={2}>
+            <Grid item mx={1}>
               <FooterSocialMediaIcon socialMedia="linkedin" />
             </Grid>
           </Grid>

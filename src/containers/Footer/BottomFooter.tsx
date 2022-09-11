@@ -68,16 +68,16 @@ const BottomFooter: React.FC = () => {
                   {LABELS.FOLLOW_US_HEADER}
                 </Typography>
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="facebook" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="instagram" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="twitter" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="linkedin" />
               </Grid>
             </Grid>

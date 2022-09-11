@@ -14,7 +14,7 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
 
-  const { editorState, saveContent } = textEditorContext;
+  const { editorState, saveContent, isEditorEmpty } = textEditorContext;
 
   const handlePostCreate = () => {
     saveContent();
@@ -34,7 +34,7 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
           </Grid>
         </Grid>
         <Grid item>
-          <CustomButton onClick={handlePostCreate}>
+          <CustomButton onClick={handlePostCreate} disabled={isEditorEmpty}>
             {LABELS.SUBMIT_POST}
           </CustomButton>
         </Grid>

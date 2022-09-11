@@ -301,6 +301,7 @@ export const LABELS = {
     commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
   COMMENTED_ON: `commented on this`,
   REACTION_SOURCE: (emotion: string): string => `${emotion}`,
+  CREATE_POST_PLACEHOLDER: `Pen your thoughts...`,
 
   // Feed and Post
   SHARE: "Share",

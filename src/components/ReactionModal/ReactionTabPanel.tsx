@@ -4,6 +4,7 @@ import { LABELS } from "../../constants/labels";
 import { useResourceContext } from "../../contexts/ResourceContext";
 import useReactions from "../../hooks/useReactions";
 import { IReactionTypes } from "../../interfaces/api/external";
+import SpinLoader from "../SpinLoader";
 import ReactionField from "./ReactionField";
 
 export interface ITabPanelProps {
@@ -29,6 +30,7 @@ const ReactionTabPanel: React.FC<ITabPanelProps> = ({
     infiniteLoadRef,
     relatedSourcesMap,
     resetQueryData,
+    getReactionsFetching,
   } = useReactions(type, id, index === "all" ? undefined : index);
 
   useEffect(() => {
@@ -61,6 +63,9 @@ const ReactionTabPanel: React.FC<ITabPanelProps> = ({
               </Grid>
             );
           })}
+          {getReactionsFetching && (
+            <SpinLoader isLoading={getReactionsFetching} />
+          )}
         </Grid>
       )}
     </Box>

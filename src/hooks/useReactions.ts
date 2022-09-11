@@ -48,7 +48,6 @@ const useReactions = (
     data: getReactionsData,
     refetch: triggerGetReactionsApi,
     isFetching: getReactionsFetching,
-    status: getReactionsStatus,
     remove: clearGetReactionsQueryData,
   } = useQuery<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
     resourceType === "post"
@@ -59,7 +58,7 @@ const useReactions = (
         ? getPostReactions(
             accessToken as string,
             id,
-            GET_POST_REACTION_PAGINATION_LIMIT,
+            1 || GET_POST_REACTION_PAGINATION_LIMIT,
             reactionType,
             nextSearchStartFromKey
               ? encodeURI(JSON.stringify(nextSearchStartFromKey))

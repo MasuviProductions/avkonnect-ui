@@ -23,7 +23,7 @@ const Feed: React.FC<IFeedProps> = ({ feedSource }) => {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
-  const { isBeingEdited, updateIsBeingEdited, content } = resourceContext;
+  const { isBeingEdited, updateIsBeingEdited } = resourceContext;
 
   const [showPostDetail, setShowPostDetail] = useState(false);
 
