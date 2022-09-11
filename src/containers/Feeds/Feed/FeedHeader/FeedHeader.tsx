@@ -41,7 +41,9 @@ const FeedHeader: React.FC = () => {
               src={relatedSourceMap[sourceId].displayPictureUrl}
               onClick={handleProfileRedirectClick}
               sx={userAvatarSx(usernameToColor(sourceInfo.name as string), 50)}
-            />
+            >
+              {relatedSourceMap[sourceId].name[0]}
+            </Avatar>
           </Grid>
 
           <Grid item xs>

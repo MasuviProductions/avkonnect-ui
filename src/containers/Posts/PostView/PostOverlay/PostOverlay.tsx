@@ -7,6 +7,7 @@ import { LABELS } from "../../../../constants/labels";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
 import AddComment from "../../CommentEditor/AddComment";
+import PostContent from "../PostContent";
 import PostComments from "./PostComments";
 
 interface IPostOverlayProps extends IOverlay {}
@@ -48,14 +49,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
         <Grid container sx={postOverlayContainerSx}>
           <Grid item xs={12} sx={contentsContainerSx}>
-            {/* TODO */}
-            <Box
-              sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
-            >
-              Number of comments for post:
-              {totalCommentsCount}
-            </Box>
-
+            <PostContent />
             <PostComments />
           </Grid>
 
@@ -72,7 +66,7 @@ const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({});
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   overflowY: "auto",
-  padding: 1.5,
+  paddingX: 1.5,
   paddingBottom: 30,
 });
 

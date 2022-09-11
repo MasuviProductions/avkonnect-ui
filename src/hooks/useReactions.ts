@@ -58,7 +58,7 @@ const useReactions = (
         ? getPostReactions(
             accessToken as string,
             id,
-            1 || GET_POST_REACTION_PAGINATION_LIMIT,
+            GET_POST_REACTION_PAGINATION_LIMIT,
             reactionType,
             nextSearchStartFromKey
               ? encodeURI(JSON.stringify(nextSearchStartFromKey))

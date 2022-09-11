@@ -1,4 +1,5 @@
-import { Avatar, Button, Grid, SxProps, Theme } from "@mui/material";
+import { Avatar, Box, Button, Grid, SxProps, Theme } from "@mui/material";
+import PenIcon from "@mui/icons-material/CreateTwoTone";
 import LayoutCard from "../../components/LayoutCard";
 import { userAvatarSx } from "../../styles/sx";
 import { usernameToColor } from "../../utils/generic";
@@ -22,15 +23,21 @@ const CreatePostPanel: React.FC<ICreatePostPanelProps> = ({
             alt={authUser?.name}
             src={authUser?.displayPictureUrl}
             sx={userAvatarSx(usernameToColor(authUser?.name as string), 50)}
-          />
+          >
+            {authUser?.name[0]}
+          </Avatar>
         </Grid>
         <Grid item md={10} xs={9}>
           <Button
             variant="outlined"
+            color="success"
             sx={createPostBtnSx}
             onClick={postEditorOpen}
           >
             {LABELS.CREATE_POST_PLACEHOLDER}
+            <Box component="span">
+              <PenIcon />
+            </Box>
           </Button>
         </Grid>
       </Grid>
