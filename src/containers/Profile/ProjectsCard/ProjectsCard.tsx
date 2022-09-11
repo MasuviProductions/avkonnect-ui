@@ -177,7 +177,7 @@ const ProjectsCard: React.FC = () => {
   }, [isShowMoreProjectsApplicable, showMoreProjects, userProjects]);
 
   useEffect(() => {
-    setProfileStatus(prev => ({
+    setProfileStatus((prev) => ({
       ...prev,
       isProjectAddComplete: !!userProjects && userProjects.length > 0,
     }));
@@ -188,7 +188,7 @@ const ProjectsCard: React.FC = () => {
   }
 
   return (
-    <Box my={1}>
+    <Box mt={1.5}>
       <LayoutCard>
         <LayoutCard.Header
           title={LABELS.PROJECTS_TITLE}

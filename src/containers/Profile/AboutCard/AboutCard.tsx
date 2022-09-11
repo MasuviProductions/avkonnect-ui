@@ -30,7 +30,7 @@ const AboutCard: ReactFCWithSkeleton<IAboutCartProps> = () => {
   }
 
   return (
-    <Box my={1}>
+    <Box mt={1.5}>
       <LayoutCard>
         <LayoutCard.Header
           title={LABELS.ABOUT_FIELD_LABEL}

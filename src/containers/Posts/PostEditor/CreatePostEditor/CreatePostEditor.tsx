@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 import API_ENDPOINTS from "../../../../constants/api";
+import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import TextEditorProvider, {
   ITextEditorContent,
@@ -96,6 +97,7 @@ const CreatePostEditor: React.FC<ICreatePostEditorProps> = ({
 
         <Hidden mdDown>
           <PostEditorModal
+            title={LABELS.CREATE_POST}
             showModal={showPostEditor}
             onModalClose={onPostEditorClose}
           />

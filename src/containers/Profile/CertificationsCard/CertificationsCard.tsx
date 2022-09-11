@@ -210,7 +210,7 @@ const CertificationsCard: React.FC = () => {
   ]);
 
   useEffect(() => {
-    setProfileStatus(prev => ({
+    setProfileStatus((prev) => ({
       ...prev,
       isCertificationAddComplete:
         !!userCertifications && userCertifications.length > 0,
@@ -226,7 +226,7 @@ const CertificationsCard: React.FC = () => {
   }
 
   return (
-    <Box my={1}>
+    <Box mt={1.5}>
       <LayoutCard>
         <LayoutCard.Header
           title={LABELS.CERTIFICATIONS_TITLE}

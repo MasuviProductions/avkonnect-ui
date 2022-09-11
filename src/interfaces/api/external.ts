@@ -370,7 +370,7 @@ export type ICommentCountType = "comment" | "subComment";
 
 export type ICommentCountApiModel = Record<ICommentCountType, number>;
 
-interface IGetPostInfoApiModel {
+export interface IGetPostInfoApiModel {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -462,5 +462,10 @@ export interface IUserFeedApiModel {
 
 export interface IGetUserFeedsApiResponse {
   feeds: IUserFeedApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetUserPostsApiResponse {
+  postsInfo: IGetPostInfoApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }

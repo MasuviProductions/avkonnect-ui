@@ -47,7 +47,7 @@ const ProfileProgressCard: ReactFCWithSkeleton<IProfileProgressCardProps> =
           <></>
         ) : (
           <LayoutCard>
-            <Box my={1}>
+            <Box mt={1.5}>
               <LayoutCardHeader
                 title={LABELS.USER_PROFILE_PROGRESS_INCOMPLETE}
               ></LayoutCardHeader>

@@ -34,6 +34,7 @@ import {
   IActivityApiModel,
   IGetUserFeedsApiResponse,
   IResourceTypes,
+  IGetUserPostsApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -724,6 +725,27 @@ export const getUserFeeds = async (
   const getUserFeedsResponse = await axios
     .get<AVKonnectApiResponse<IGetUserFeedsApiResponse>>(
       API_ENDPOINTS.GET_USER_FEEDS.url(userId, queryString),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((res) => res.data);
+
+  return getUserFeedsResponse;
+};
+
+export const getUserPosts = async (
+  accessToken: string,
+  userId: string,
+  limit: number,
+  page?: number
+): Promise<AVKonnectApiResponse<IGetUserPostsApiResponse>> => {
+  const queryString = `?limit=${limit}&page=${page || 1}`;
+  const getUserFeedsResponse = await axios
+    .get<AVKonnectApiResponse<IGetUserPostsApiResponse>>(
+      API_ENDPOINTS.GET_USER_POSTS.url(userId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
