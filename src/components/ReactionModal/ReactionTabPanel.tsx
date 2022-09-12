@@ -57,7 +57,13 @@ const ReactionTabPanel: React.FC<ITabPanelProps> = ({
             >
               <ReactionItem
                 reaction={reactionObj}
-                relatedSourcesMap={relatedSourcesMap}
+                relatedSourceName={relatedSourcesMap[reactionObj.sourceId].name}
+                relatedSourceDispPic={
+                  relatedSourcesMap[reactionObj.sourceId].displayPictureUrl
+                }
+                relatedSourceHeadline={
+                  relatedSourcesMap[reactionObj.sourceId].headline || "--"
+                }
               />
             </Grid>
           );

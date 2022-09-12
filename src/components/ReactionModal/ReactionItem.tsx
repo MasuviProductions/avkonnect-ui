@@ -1,16 +1,10 @@
-import { Grid, Avatar, Typography, Badge, styled, Theme } from "@mui/material";
+import { Grid, Avatar, Typography, Badge, Theme } from "@mui/material";
 import {
-  IRelatedSource,
   IReactionApiModel,
   IReactionTypes,
 } from "../../interfaces/api/external";
 import { useRouter } from "next/router";
-import {
-  getEllipsedText,
-  getMUIEllipsedSx,
-  getTimeAgo,
-  usernameToColor,
-} from "../../utils/generic";
+import { getMUIEllipsedSx, usernameToColor } from "../../utils/generic";
 import { APP_ROUTES, REACTION_CONFIGS } from "../../constants/app";
 import { compile } from "path-to-regexp";
 import { simpleLinkSx, userAvatarSx } from "../../styles/sx";
@@ -18,12 +12,16 @@ import { SystemStyleObject } from "@mui/system";
 
 interface IReactionItemProps {
   reaction: IReactionApiModel;
-  relatedSourcesMap: Record<string, IRelatedSource>;
+  relatedSourceName: string;
+  relatedSourceDispPic: string;
+  relatedSourceHeadline: string;
 }
 
 const ReactionItem: React.FC<IReactionItemProps> = ({
   reaction,
-  relatedSourcesMap,
+  relatedSourceName,
+  relatedSourceDispPic,
+  relatedSourceHeadline,
 }) => {
   const router = useRouter();
   const Icon = REACTION_CONFIGS[reaction.reaction].iconActive;
@@ -41,17 +39,12 @@ const ReactionItem: React.FC<IReactionItemProps> = ({
           badgeContent={<Icon sx={reactionIconSx(reaction.reaction)} />}
         >
           <Avatar
-            src={relatedSourcesMap[reaction.sourceId].displayPictureUrl}
-            alt={relatedSourcesMap[reaction.sourceId].name}
+            src={relatedSourceDispPic}
+            alt={relatedSourceName}
             onClick={handleProfileRedirectClick}
-            sx={userAvatarSx(
-              usernameToColor(
-                relatedSourcesMap[reaction.sourceId].name as string
-              ),
-              50
-            )}
+            sx={userAvatarSx(usernameToColor(relatedSourceName as string), 50)}
           >
-            {relatedSourcesMap[reaction.sourceId].name[0]}
+            {relatedSourceName[0]}
           </Avatar>
         </Badge>
       </Grid>
@@ -59,14 +52,12 @@ const ReactionItem: React.FC<IReactionItemProps> = ({
       <Grid item sm={10} xs={8}>
         <Grid container>
           <Grid item xs={12}>
-            <Typography sx={simpleLinkSx()}>
-              {relatedSourcesMap[reaction.sourceId].name}
-            </Typography>
+            <Typography sx={simpleLinkSx()}>{relatedSourceName}</Typography>
           </Grid>
 
           <Grid item xs={12}>
             <Typography sx={getMUIEllipsedSx(2)} lineHeight={1.2} fontSize={12}>
-              {relatedSourcesMap[reaction.sourceId].headline || "--"}
+              {relatedSourceHeadline}
             </Typography>
           </Grid>
         </Grid>

@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
 import SpinLoader from "../../../components/SpinLoader";
 import API_ENDPOINTS from "../../../constants/api";
+import { GET_USER_POST_PAGINATION_LIMIT } from "../../../constants/app";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import ResourceProvider from "../../../contexts/ResourceContext";
 import { useUserContext } from "../../../contexts/UserContext";
@@ -15,7 +16,7 @@ import {
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
 import { getUserPosts } from "../../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../../utils/transformers";
-import CreatePostPlaceholder from "../../Feeds/CreatePostPlaceholder";
+import CreatePostPlaceholder from "../../Posts/CreatePostPlaceholder";
 import PostCard from "../../Posts/PostCard";
 import CreatePostEditor from "../../Posts/PostEditor/CreatePostEditor";
 import ProfilePostsSkeleton from "./ProfilePostsSkeleton";
@@ -44,7 +45,13 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
     remove: clearGetUserPostsQuery,
   } = useQuery(
     `${API_ENDPOINTS.GET_USER_POSTS.key}-${user.id}`,
-    () => getUserPosts(accessToken as string, user.id, 1, nextPageNumber),
+    () =>
+      getUserPosts(
+        accessToken as string,
+        user.id,
+        GET_USER_POST_PAGINATION_LIMIT,
+        nextPageNumber
+      ),
     {
       enabled: false,
       cacheTime: 0,

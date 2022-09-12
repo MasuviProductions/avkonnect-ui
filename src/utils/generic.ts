@@ -16,7 +16,7 @@ import {
   INotificationResourceActivity,
   IRelatedSource,
 } from "../interfaces/api/external";
-import { ISpinLoaderSizeTypes, ITextFieldMessageType } from "../interfaces/app";
+import { ITextFieldMessageType } from "../interfaces/app";
 
 dayjs.extend(relativeTime);
 
@@ -164,21 +164,4 @@ export const getNotificationTypeBasedLink = (
 
 export const getRandomNumber = (digits: number) => {
   return Math.ceil(Math.random() * 10 ** digits);
-};
-
-export const getSpinLoaderSize = (radius?: ISpinLoaderSizeTypes): number => {
-  switch (radius) {
-    case "xl":
-      return 60;
-    case "lg":
-      return 50;
-    case "md":
-      return 40;
-    case "sm":
-      return 30;
-    case "xs":
-      return 20;
-    default:
-      return 50;
-  }
 };

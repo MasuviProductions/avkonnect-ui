@@ -17,7 +17,7 @@ import { getUserFeeds } from "../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../utils/transformers";
 import Footer from "../Footer";
 import CreatePostEditor from "../Posts/PostEditor/CreatePostEditor";
-import CreatePostPlaceholder from "./CreatePostPlaceholder";
+import CreatePostPlaceholder from "../Posts/CreatePostPlaceholder";
 import PostCard from "../Posts/PostCard/PostCard";
 import HomeSkeleton from "../Home/HomeSkeleton";
 

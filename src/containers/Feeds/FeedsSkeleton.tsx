@@ -8,10 +8,10 @@ const SingleFeedSkeleton: React.FC = () => {
         <Grid container p={2}>
           <Grid item xs={12}>
             <Grid container spacing={4} alignItems="center">
-              <Grid item mt={1} sm={1} xs={2}>
+              <Grid item mt={1} md={1.3} sm={1} xs={2}>
                 <Skeleton variant="circular" width={40} height={40} />
               </Grid>
-              <Grid item mt={1} sm={11} xs={10}>
+              <Grid item mt={1} md={10.6} sm={11} xs={10}>
                 <Skeleton variant="rectangular" width="100%" height={30} />
               </Grid>
             </Grid>

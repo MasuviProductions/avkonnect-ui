@@ -1,4 +1,4 @@
-import { Tabs, Tab, Theme } from "@mui/material";
+import { Grid, Tabs, Tab, Theme, SxProps } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect, useState } from "react";
 import { REACTION_CONFIGS } from "../../constants/app";
@@ -60,7 +60,11 @@ const ReactionModal: React.FC<IReactionModalProps> = ({
       title={"Reactions"}
       maxWidth="sm"
     >
-      <Tabs value={currentReactionTab} onChange={handleReactionTabChange}>
+      <Tabs
+        value={currentReactionTab}
+        onChange={handleReactionTabChange}
+        variant="scrollable"
+      >
         <Tab
           key={`reaction-tab-all`}
           label={LABELS.REACTION_ALL_TAB(totalReactionsCount)}
@@ -81,24 +85,28 @@ const ReactionModal: React.FC<IReactionModalProps> = ({
           }
         })}
       </Tabs>
-      <ReactionTabPanel
-        key={`reaction-tabpanel-all`}
-        index={"all"}
-        value={currentReactionTab}
-        clearData={clearData}
-      />
-      {REACTIONS.map((reaction, index) => {
-        if (reactionsCount[reaction as IReactionTypes] > 0) {
-          return (
-            <ReactionTabPanel
-              key={`reaction-tabpanel-${index}`}
-              index={reaction}
-              value={currentReactionTab}
-              clearData={clearData}
-            />
-          );
-        }
-      })}
+      <Grid container sx={rTabPanelContainerSx}>
+        <Grid item xs={12}>
+          <ReactionTabPanel
+            key={`reaction-tabpanel-all`}
+            index={"all"}
+            value={currentReactionTab}
+            clearData={clearData}
+          />
+          {REACTIONS.map((reaction, index) => {
+            if (reactionsCount[reaction as IReactionTypes] > 0) {
+              return (
+                <ReactionTabPanel
+                  key={`reaction-tabpanel-${index}`}
+                  index={reaction}
+                  value={currentReactionTab}
+                  clearData={clearData}
+                />
+              );
+            }
+          })}
+        </Grid>
+      </Grid>
     </ModalLayout>
   );
 };
@@ -112,6 +120,11 @@ const reactionCountIconSx: (
     margin: "0px",
     fill: theme.palette.reactions[reactionType],
   });
+};
+
+const rTabPanelContainerSx: SxProps<Theme> = {
+  height: "350px",
+  overflowY: "auto",
 };
 
 export default ReactionModal;

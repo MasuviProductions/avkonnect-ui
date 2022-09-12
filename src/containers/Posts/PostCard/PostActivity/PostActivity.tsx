@@ -72,29 +72,22 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
               <ReactionIconClubber reactionIconCount={reactionsCount} />
             </Grid>
             <Grid item>
-              {userReaction && (
-                <Typography
-                  sx={fadedLinkSx(12)}
-                  onClick={handleUserReactionsModalOpen}
-                >
-                  {totalReactionsCount > 1
+              <Typography
+                sx={fadedLinkSx(12)}
+                onClick={
+                  totalReactionsCount > 0
+                    ? handleUserReactionsModalOpen
+                    : undefined
+                }
+              >
+                {userReaction
+                  ? totalReactionsCount > 1
                     ? LABELS.YOU_AND_OTHERS(totalReactionsCount)
-                    : LABELS.YOU}
-                </Typography>
-              )}
-              {!userReaction && totalReactionsCount > 0 && (
-                <Typography
-                  sx={fadedLinkSx(12)}
-                  onClick={handleUserReactionsModalOpen}
-                >
-                  {totalReactionsCount}
-                </Typography>
-              )}
-              {totalReactionsCount === 0 && (
-                <Typography sx={fadedLinkSx(12, "default")}>
-                  {LABELS.BE_FIRST_TO_REACT}
-                </Typography>
-              )}
+                    : LABELS.YOU
+                  : totalReactionsCount > 0
+                  ? totalReactionsCount
+                  : LABELS.BE_FIRST_TO_REACT}
+              </Typography>
               <ReactionModal
                 showModal={showUserReactionsModal}
                 onModalClose={handleUserReactionsModalClose}

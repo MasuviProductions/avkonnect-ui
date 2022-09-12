@@ -3,9 +3,9 @@ import { SystemStyleObject } from "@mui/system";
 import { IReactionTypes } from "../../interfaces/api/external";
 
 export const simpleLinkSx =
-  (fontSize?: number, pointer?: string) =>
+  (fontSize?: number) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
-    cursor: pointer ? pointer : "pointer",
+    cursor: "pointer",
     fontWeight: 500,
     fontSize: fontSize || 14,
     color: theme.palette.text.primary,
@@ -25,9 +25,9 @@ export const coloredLinkSx =
   });
 
 export const fadedLinkSx =
-  (fontSize?: number, pointer?: string) =>
+  (fontSize?: number) =>
   (theme: Theme): SystemStyleObject<Theme> => ({
-    ...simpleLinkSx(fontSize, pointer)(theme),
+    ...simpleLinkSx(fontSize)(theme),
     color: theme.palette.text.secondary,
   });
 

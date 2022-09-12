@@ -3,20 +3,30 @@ import { SystemStyleObject } from "@mui/system";
 import Image from "next/image";
 import { SVG } from "../../assets/SVG";
 import { LABELS } from "../../constants/labels";
-import { ISpinLoaderSizeTypes } from "../../interfaces/app";
-import { getSpinLoaderSize } from "../../utils/generic";
+
+type ISpinLoaderSizeTypes = "xs" | "sm" | "md" | "lg" | "xl";
+
+type ISpinLoaderSize = Record<ISpinLoaderSizeTypes, number>;
 
 interface ISpinLoaderProps {
   fullWidth?: boolean;
-  radius?: ISpinLoaderSizeTypes;
+  radiusSize?: ISpinLoaderSizeTypes;
   padding?: number;
 }
 
 const SpinLoader: React.FC<ISpinLoaderProps> = ({
   fullWidth,
-  radius,
+  radiusSize,
   padding,
 }) => {
+  const spinLoaderRadius: ISpinLoaderSize = {
+    xl: 60,
+    lg: 50,
+    md: 40,
+    sm: 30,
+    xs: 20,
+  };
+
   return (
     <Grid container justifyContent="center">
       <Grid item p={padding ? padding : 6}>
@@ -24,8 +34,8 @@ const SpinLoader: React.FC<ISpinLoaderProps> = ({
           <Image
             src={SVG.Spinner}
             alt={LABELS.LOADING}
-            width={getSpinLoaderSize(radius)}
-            height={getSpinLoaderSize(radius)}
+            width={spinLoaderRadius[radiusSize || "md"]}
+            height={spinLoaderRadius[radiusSize || "md"]}
           />
         </Box>
       </Grid>

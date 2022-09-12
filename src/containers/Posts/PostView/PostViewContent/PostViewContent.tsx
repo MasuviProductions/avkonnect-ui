@@ -3,7 +3,7 @@ import PostActivity from "../../PostCard/PostActivity";
 import PostContent from "../../PostCard/PostContent";
 import PostHeader from "../../PostCard/PostHeader";
 
-const SinglePostContent: React.FC = () => {
+const PostViewContent: React.FC = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -15,4 +15,4 @@ const SinglePostContent: React.FC = () => {
   );
 };
 
-export default SinglePostContent;
+export default PostViewContent;

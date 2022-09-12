@@ -8,7 +8,7 @@ import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForR
 import PostComments from "./PostComments";
 import { LABELS } from "../../../../constants/labels";
 import AddComment from "../../CommentEditor/AddComment";
-import SinglePostContent from "../SinglePostContent";
+import PostViewContent from "../PostViewContent";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -49,8 +49,8 @@ const PostModal: React.FC<IPostModalProps> = ({
         maxWidth="sm"
       >
         <Grid container sx={postModalContainerSx}>
-          <Grid item sx={contentsContainerSx}>
-            <SinglePostContent />
+          <Grid item xs={12} sx={contentsContainerSx}>
+            <PostViewContent />
 
             <Box sx={addCommentSx}>
               <AddComment submitButtonText={LABELS.POST_COMMENT} />
@@ -66,6 +66,7 @@ const PostModal: React.FC<IPostModalProps> = ({
 
 const postModalContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   height: "100%",
+  paddingY: "4px",
 });
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({

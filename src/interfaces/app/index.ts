@@ -121,6 +121,3 @@ export interface IReactionConfig {
   iconActive: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   reactionPretext: string;
 }
-
-export const SPIN_LOADER_SIZE = ["xs", "sm", "md", "lg", "xl"] as const;
-export type ISpinLoaderSizeTypes = typeof SPIN_LOADER_SIZE[number];

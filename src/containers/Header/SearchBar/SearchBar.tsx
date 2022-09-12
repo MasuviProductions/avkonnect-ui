@@ -172,7 +172,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
                   )}
                   {getUsersSearchFetching && (
                     <Grid item xs={12}>
-                      <SpinLoader padding={1} radius="sm" fullWidth />
+                      <SpinLoader padding={1} radiusSize="sm" fullWidth />
                     </Grid>
                   )}
 

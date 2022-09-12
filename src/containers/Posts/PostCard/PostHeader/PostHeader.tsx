@@ -32,7 +32,7 @@ const PostHeader: React.FC = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
   };
   return (
-    <Grid container p={1} spacing={2}>
+    <Grid container px={1} pb={1} spacing={2}>
       <Grid item xs mt={0.5}>
         <Grid container spacing={1}>
           <Grid item>
