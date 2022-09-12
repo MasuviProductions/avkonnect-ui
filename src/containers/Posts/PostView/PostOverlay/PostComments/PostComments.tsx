@@ -1,7 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useCallback, useState } from "react";
 import { ContentState } from "draft-js";
-
 import Comment from "../../../Comment";
 import ResourceProvider, {
   useResourceContext,
@@ -11,6 +10,7 @@ import CommentsOverlay from "../CommentsOverlay";
 import { ICommentApiModel } from "../../../../../interfaces/api/external";
 import { LABELS } from "../../../../../constants/labels";
 import DRAFTJS from "../../../../../utils/draftjs";
+import SpinLoader from "../../../../../components/SpinLoader";
 
 interface IPostCommentsProps {}
 
@@ -33,8 +33,12 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
     DRAFTJS.utils.getNewContentState()
   );
 
-  const { uptoDateComments, relatedSourcesMap, infiniteLoadRef } =
-    commentsQuery as IUseCommentsForResourceReturn;
+  const {
+    uptoDateComments,
+    relatedSourcesMap,
+    infiniteLoadRef,
+    getCommentsFetching,
+  } = commentsQuery as IUseCommentsForResourceReturn;
 
   const handleOverlayOpen = () => {
     setShowCommentsOverlay(true);
@@ -102,6 +106,11 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
             onOverlayClose={handleOverlayClose}
           />
         </ResourceProvider>
+      )}
+      {getCommentsFetching && (
+        <Grid item xs={12}>
+          <SpinLoader fullWidth />
+        </Grid>
       )}
     </>
   );

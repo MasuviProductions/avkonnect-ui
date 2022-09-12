@@ -294,6 +294,7 @@ export const LABELS = {
 
   // Feeds
   FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
+  LOADING: "Loading..",
   YOU: "You",
   YOU_AND_OTHERS: (reactionsCount: number): string =>
     `You and ${reactionsCount - 1} Others`,
@@ -302,6 +303,8 @@ export const LABELS = {
     commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
   COMMENTED_ON: `commented on this`,
   REACTION_SOURCE: (emotion: string): string => `${emotion}`,
+  CREATE_POST_PLACEHOLDER: `Pen your thoughts..`,
+  REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
 
   // Feed and Post
   SHARE: "Share",

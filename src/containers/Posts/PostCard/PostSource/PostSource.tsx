@@ -20,11 +20,11 @@ import {
 import { simpleLinkSx, userAvatarSx } from "../../../../styles/sx";
 import { usernameToColor } from "../../../../utils/generic";
 
-interface IFeedSourceProps {
+interface IPostSourceProps {
   feedSource: IFeedSourceApiModel[];
 }
 
-const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
+const PostSource: React.FC<IPostSourceProps> = ({ feedSource }) => {
   const router = useRouter();
   const resourceContext = useResourceContext();
 
@@ -38,7 +38,7 @@ const FeedSource: React.FC<IFeedSourceProps> = ({ feedSource }) => {
     relatedSourceMap: Record<string, IRelatedSource>
   ): [IResourceTypes, IRelatedSource] => {
     let fsResult = feedSource[0];
-    feedSource.forEach((fs) => {
+    feedSource.forEach(fs => {
       if (fs.resourceType === "reaction" && fsResult.resourceType === "post") {
         fsResult = fs;
       }
@@ -108,4 +108,4 @@ const dividerSx: SxProps<Theme> = (theme: Theme) => ({
   borderColor: `${theme.palette.secondary.light}`,
 });
 
-export default FeedSource;
+export default PostSource;

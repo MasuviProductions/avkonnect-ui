@@ -13,7 +13,7 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip
     classes={{ popper: className }}
     enterDelay={500}
-    leaveDelay={1000}
+    leaveDelay={500}
     TransitionComponent={Fade}
     TransitionProps={{ timeout: 200 }}
     {...props}
@@ -25,17 +25,29 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-interface IReactionTooltipProps {}
+interface IReactionTooltipProps {
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
 
-const ReactionTooltip: React.FC<IReactionTooltipProps> = ({ children }) => {
+const ReactionTooltip: React.FC<IReactionTooltipProps> = ({
+  children,
+  open,
+  onOpen,
+  onClose,
+}) => {
   return (
     <StyledTooltip
       placement="top"
       title={
         <Fragment>
-          <ReactionsPopper />
+          <ReactionsPopper onCloseMainTooltip={onClose} />
         </Fragment>
       }
+      open={open}
+      onOpen={onOpen}
+      onClose={onClose}
     >
       <Box>{children}</Box>
     </StyledTooltip>

@@ -35,7 +35,7 @@ export const userAvatarSx: (
   color: string,
   size?: number
 ) => (theme: Theme) => SystemStyleObject<Theme> = (color, size) => {
-  return (theme) => ({
+  return theme => ({
     width: size || 40,
     height: size || 40,
     fontSize: "1rem",

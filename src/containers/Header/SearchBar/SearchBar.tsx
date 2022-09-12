@@ -28,16 +28,15 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { compile } from "path-to-regexp";
 import { useMemo } from "react";
 import useSourceSearch from "../../../hooks/useSourceSearch";
+import SpinLoader from "../../../components/SpinLoader";
 
 interface ISearchBarProps {}
 
 const SearchBar: React.FC<ISearchBarProps> = () => {
   const router = useRouter();
 
-  const { upToDateUsersSearch, searchForSources } = useSourceSearch(
-    MAX_SEARCH_DROPDOWN_LIMIT,
-    false
-  );
+  const { upToDateUsersSearch, searchForSources, getUsersSearchFetching } =
+    useSourceSearch(MAX_SEARCH_DROPDOWN_LIMIT, false);
 
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
   const [showSearchTextField, setShowSearchTextField] =
@@ -152,7 +151,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
             <Box sx={searchDropdownContainer}>
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {upToDateUsersSearch.map((user) => (
+                  {upToDateUsersSearch.map(user => (
                     <Grid item xs={12} key={user.id} p={1}>
                       <SearchedUserItem
                         id={user.id}
@@ -169,6 +168,11 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
                       <Typography variant="body2" color="text.secondary" p={1}>
                         {LABELS.SEARCH_TEXT}
                       </Typography>
+                    </Grid>
+                  )}
+                  {getUsersSearchFetching && (
+                    <Grid item xs={12}>
+                      <SpinLoader padding={1} radiusSize="sm" fullWidth />
                     </Grid>
                   )}
 

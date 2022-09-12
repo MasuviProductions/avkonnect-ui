@@ -18,7 +18,7 @@ import { useAuthContext } from "../../../../contexts/AuthContext";
 import { LABELS } from "../../../../constants/labels";
 import PostActions from "./PostActions";
 
-const FeedHeader: React.FC = () => {
+const PostHeader: React.FC = () => {
   const router = useRouter();
   const resourceContext = useResourceContext();
 
@@ -32,16 +32,18 @@ const FeedHeader: React.FC = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
   };
   return (
-    <Grid container p={1} spacing={2}>
+    <Grid container px={1} pb={1} spacing={2}>
       <Grid item xs mt={0.5}>
         <Grid container spacing={1}>
-          <Grid item onClick={handleProfileRedirectClick}>
+          <Grid item>
             <Avatar
               alt={relatedSourceMap[sourceId].name}
               src={relatedSourceMap[sourceId].displayPictureUrl}
               onClick={handleProfileRedirectClick}
               sx={userAvatarSx(usernameToColor(sourceInfo.name as string), 50)}
-            />
+            >
+              {relatedSourceMap[sourceId].name[0]}
+            </Avatar>
           </Grid>
 
           <Grid item xs>
@@ -75,10 +77,4 @@ const FeedHeader: React.FC = () => {
   );
 };
 
-const profileRedirectSx: SxProps<Theme> = {
-  "&:hover": {
-    cursor: "pointer",
-  },
-};
-
-export default FeedHeader;
+export default PostHeader;

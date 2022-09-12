@@ -24,7 +24,7 @@ import {
   ICreateCommentApiRequest,
   IPatchCommentApiRequest,
   ICommentApiModel,
-  IGetPostReactionsApiResponse,
+  IGetReactionsResponseApiModel,
   IGetPostCommentsApiResponse,
   IGetPostsInfoApiRequest,
   IGetPostsInfoApiResponse,
@@ -546,11 +546,17 @@ export const deleteComment = async (
 
 export const getPostReactions = async (
   accessToken: string,
-  postId: string
-): Promise<AVKonnectApiResponse<IGetPostReactionsApiResponse>> => {
+  postId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
+): Promise<AVKonnectApiResponse<IGetReactionsResponseApiModel>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
   const getPostReactionsResponse = await axios
-    .get<AVKonnectApiResponse<IGetPostReactionsApiResponse>>(
-      API_ENDPOINTS.GET_POST_REACTIONS.url(postId),
+    .get<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
+      API_ENDPOINTS.GET_POST_REACTIONS.url(postId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
@@ -638,6 +644,29 @@ export const getCommentsComments = async (
     .then((res) => res.data);
 
   return getCommentsComments;
+};
+
+export const getCommentReactions = async (
+  accessToken: string,
+  commentId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
+): Promise<AVKonnectApiResponse<IGetReactionsResponseApiModel>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
+  const getCommentReactionsResponse = await axios
+    .get<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
+      API_ENDPOINTS.GET_COMMENT_REACTIONS.url(commentId, queryString),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data);
+  return getCommentReactionsResponse;
 };
 
 export const getCommentActivity = async (

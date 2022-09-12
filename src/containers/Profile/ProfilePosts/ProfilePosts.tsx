@@ -2,7 +2,9 @@ import { Grid } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../../components/LayoutCard";
+import SpinLoader from "../../../components/SpinLoader";
 import API_ENDPOINTS from "../../../constants/api";
+import { GET_USER_POST_PAGINATION_LIMIT } from "../../../constants/app";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import ResourceProvider from "../../../contexts/ResourceContext";
 import { useUserContext } from "../../../contexts/UserContext";
@@ -14,7 +16,9 @@ import {
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
 import { getUserPosts } from "../../../utils/api";
 import { transformUsersListToUserIdUserMap } from "../../../utils/transformers";
-import Feed from "../../Feeds/Feed";
+import CreatePostPlaceholder from "../../Posts/CreatePostPlaceholder";
+import PostCard from "../../Posts/PostCard";
+import CreatePostEditor from "../../Posts/PostEditor/CreatePostEditor";
 import ProfilePostsSkeleton from "./ProfilePostsSkeleton";
 
 interface IProfilePostsProps {}
@@ -32,6 +36,8 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
 
   const [nextPageNumber, setNextPageNumber] = useState<number>(1);
 
+  const [showPostEditor, setShowPostEditor] = useState<boolean>(false);
+
   const {
     data: getUserPostsData,
     isFetching: getUserPostsFetching,
@@ -39,7 +45,13 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
     remove: clearGetUserPostsQuery,
   } = useQuery(
     `${API_ENDPOINTS.GET_USER_POSTS.key}-${user.id}`,
-    () => getUserPosts(accessToken as string, user.id, 1, nextPageNumber),
+    () =>
+      getUserPosts(
+        accessToken as string,
+        user.id,
+        GET_USER_POST_PAGINATION_LIMIT,
+        nextPageNumber
+      ),
     {
       enabled: false,
       cacheTime: 0,
@@ -62,12 +74,12 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
   );
 
   const mergePosts = useCallback((newPosts: IGetPostInfoApiModel[]) => {
-    setUpToDateUserPosts((prev) => [...prev, ...newPosts]);
+    setUpToDateUserPosts(prev => [...prev, ...newPosts]);
   }, []);
 
   const handleUpdateResourceMap = useCallback(
     (relatedSources: IRelatedSource[]) => {
-      setRelatedSourcesMap((prev) => {
+      setRelatedSourcesMap(prev => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           relatedSources
         ) as Record<string, IRelatedSource>;
@@ -82,9 +94,7 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
   );
 
   const handleDeletePost = (postId: string) => {
-    setUpToDateUserPosts((prev) =>
-      prev.filter((post) => post.postId !== postId)
-    );
+    setUpToDateUserPosts(prev => prev.filter(post => post.postId !== postId));
   };
 
   const handleUpdateResource = () => {};
@@ -94,6 +104,14 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
       triggerGetUserPostsApi();
     }
   }, [authUser?.id, triggerGetUserPostsApi]);
+
+  const handleShowPostEditorOpen = () => {
+    setShowPostEditor(true);
+  };
+
+  const handleShowPostEditorClose = () => {
+    setShowPostEditor(false);
+  };
 
   useEffect(() => {
     if (getUserPostsData?.data) {
@@ -118,6 +136,13 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
 
   return (
     <Grid container pt={1.5} spacing={1.5}>
+      <Grid item xs={12} mt={2}>
+        <CreatePostPlaceholder onOpenPostEditor={handleShowPostEditorOpen} />
+        <CreatePostEditor
+          showPostEditor={showPostEditor}
+          onPostEditorClose={handleShowPostEditorClose}
+        />
+      </Grid>
       <Grid item xs={12}>
         <LayoutCard>
           <LayoutCard.Header title="Posts" />
@@ -149,10 +174,16 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
             onDeleteResource={handleDeletePost}
             onUpdateResource={handleUpdateResource}
           >
-            <Feed />
+            <PostCard />
           </ResourceProvider>
         </Grid>
       ))}
+
+      {getUserPostsFetching && (
+        <Grid item xs={12}>
+          <SpinLoader fullWidth />
+        </Grid>
+      )}
     </Grid>
   );
 };

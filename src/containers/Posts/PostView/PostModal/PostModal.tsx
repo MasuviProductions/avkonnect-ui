@@ -1,4 +1,4 @@
-import { Box, Theme } from "@mui/material";
+import { Box, Grid, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
@@ -8,6 +8,7 @@ import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForR
 import PostComments from "./PostComments";
 import { LABELS } from "../../../../constants/labels";
 import AddComment from "../../CommentEditor/AddComment";
+import PostViewContent from "../PostViewContent";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -47,23 +48,17 @@ const PostModal: React.FC<IPostModalProps> = ({
         onModalClose={onModalClose}
         maxWidth="sm"
       >
-        <Box sx={postModalContainerSx}>
-          <Box sx={contentsContainerSx}>
-            {/* TODO */}
-            <Box
-              sx={{ width: "100%", height: "25vh", border: "3px solid red" }}
-            >
-              Number of comments for post:
-              {totalCommentsCount}
-            </Box>
+        <Grid container sx={postModalContainerSx}>
+          <Grid item xs={12} sx={contentsContainerSx}>
+            <PostViewContent />
 
             <Box sx={addCommentSx}>
               <AddComment submitButtonText={LABELS.POST_COMMENT} />
             </Box>
 
             <PostComments />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       </ModalLayout>
     </>
   );
@@ -71,11 +66,12 @@ const PostModal: React.FC<IPostModalProps> = ({
 
 const postModalContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   height: "100%",
+  paddingY: "4px",
 });
 
 const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
   overflowY: "auto",
-  padding: 1.5,
+  paddingX: 1.5,
   paddingBottom: 5,
 });
 

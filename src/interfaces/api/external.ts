@@ -333,7 +333,7 @@ export interface IPatchCommentApiRequest {
   comment: Omit<ICommentContentApiModel, "createdAt">;
 }
 
-interface IReactionApiModel {
+export interface IReactionApiModel {
   sourceType: ISourceTypes;
   resourceType: IResourceTypes;
   resourceId: string;
@@ -341,11 +341,6 @@ interface IReactionApiModel {
   createdAt: Date;
   id: string;
   sourceId: string;
-}
-
-export interface IGetPostReactionsApiResponse {
-  reactions: IReactionApiModel[];
-  relatedSources: IRelatedUserInfoResponseModel[];
 }
 
 export interface IGetPostCommentsApiResponse {
@@ -415,6 +410,11 @@ export interface IActivityApiModel {
 
 export interface IGetCommentsCommentsApiResponse {
   comments: ICommentApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetReactionsResponseApiModel {
+  reactions: IReactionApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 

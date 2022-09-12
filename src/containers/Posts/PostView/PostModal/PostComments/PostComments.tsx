@@ -12,6 +12,7 @@ import { coloredLinkSx } from "../../../../../styles/sx";
 import DRAFTJS from "../../../../../utils/draftjs";
 import { ContentState } from "draft-js";
 import AddComment from "../../../CommentEditor/AddComment";
+import SpinLoader from "../../../../../components/SpinLoader";
 
 interface IPostCommentsProps {}
 const PostComments: React.FC<IPostCommentsProps> = ({}) => {
@@ -54,7 +55,7 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
 
   return (
     <>
-      {uptoDateComments.map((comment) => (
+      {uptoDateComments.map(comment => (
         <Box key={comment.id}>
           <ResourceProvider
             id={comment.id}
@@ -89,10 +90,9 @@ const PostComments: React.FC<IPostCommentsProps> = ({}) => {
           </ResourceProvider>
         </Box>
       ))}
+      {getCommentsFetching && <SpinLoader padding={2} fullWidth />}
 
-      {getCommentsFetching ? (
-        <>....</>
-      ) : allCommentsFetched ? (
+      {allCommentsFetched ? (
         <></>
       ) : (
         <Box px={1} pb={1}>

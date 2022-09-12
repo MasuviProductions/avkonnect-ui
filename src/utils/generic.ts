@@ -14,7 +14,6 @@ import {
 import { LABELS } from "../constants/labels";
 import {
   INotificationResourceActivity,
-  IReactionTypes,
   IRelatedSource,
 } from "../interfaces/api/external";
 import { ITextFieldMessageType } from "../interfaces/app";

@@ -3,9 +3,7 @@ import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { parseContentText } from "../../../../utils/component";
 import { LABELS } from "../../../../constants/labels";
 
-interface IFeedContentProps {}
-
-const FeedContent: React.FC<IFeedContentProps> = ({}) => {
+const PostContent: React.FC = ({}) => {
   const resourceContext = useResourceContext();
 
   if (!resourceContext) {
@@ -19,4 +17,4 @@ const FeedContent: React.FC<IFeedContentProps> = ({}) => {
   );
 };
 
-export default FeedContent;
+export default PostContent;

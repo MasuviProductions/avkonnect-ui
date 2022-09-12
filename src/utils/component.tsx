@@ -26,7 +26,9 @@ export const parseContentText = (
         href={compile(APP_ROUTES.PROFILE.route)({ id: sourceId })}
         passHref
       >
-        <Typography sx={coloredLinkSx()}>{relatedSource?.name}</Typography>
+        <Typography component="span" sx={coloredLinkSx()}>
+          {relatedSource?.name}
+        </Typography>
       </Link>
     );
   });
@@ -35,6 +37,7 @@ export const parseContentText = (
   replacedText = reactStringReplace(replacedText, hashTagRegex, (match, i) => {
     return (
       <Typography
+        component="span"
         key={`hashtag-${i}`}
         sx={coloredLinkSx()}
       >{`#${match}`}</Typography>

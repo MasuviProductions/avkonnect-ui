@@ -124,8 +124,8 @@ const API_ENDPOINTS = {
   },
   GET_POST_REACTIONS: {
     key: "get-post-reactions",
-    url: (postId: string) =>
-      `${AVKONNECT_URL.POSTS()}/posts/${postId}/reactions`,
+    url: (postId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/reactions${queryString}`,
   },
   GET_POST_COMMENTS: {
     key: "get-post-comments",
@@ -140,6 +140,11 @@ const API_ENDPOINTS = {
     key: "get-post-activity",
     url: (postId: string) =>
       `${AVKONNECT_URL.POSTS()}/posts/${postId}/activity`,
+  },
+  GET_COMMENT_REACTIONS: {
+    key: "get-comment-reactions",
+    url: (commentId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/reactions${queryString}`,
   },
   GET_COMMENTS_COMMENTS: {
     key: "get-comments-comments",

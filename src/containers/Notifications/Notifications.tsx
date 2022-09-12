@@ -2,6 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../components/LayoutCard";
+import SpinLoader from "../../components/SpinLoader";
 import API_ENDPOINTS from "../../constants/api";
 import { NOTIFICATION_PAGINATION_LIMIT } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
@@ -170,7 +171,7 @@ const Notifications: ReactFCWithSkeleton = () => {
               item
               xs={12}
               px={1}
-              key={userNotification?.id || index.toString()}
+              key={`notification-${userNotification?.id}`}
               ref={
                 index === uptoDateUserNotifications.length - 1
                   ? infiniteLoadRef
@@ -192,6 +193,11 @@ const Notifications: ReactFCWithSkeleton = () => {
               />
             </Grid>
           ))}
+          {getUserNotificationsFetching && (
+            <Grid item xs={12}>
+              <SpinLoader fullWidth />
+            </Grid>
+          )}
         </Grid>
       </LayoutCard>
     </Box>

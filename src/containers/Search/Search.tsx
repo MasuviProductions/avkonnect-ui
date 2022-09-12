@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import LayoutCard from "../../components/LayoutCard";
+import SpinLoader from "../../components/SpinLoader";
 import UserMiniCard from "../../components/UserMiniCard";
 import { LABELS } from "../../constants/labels";
 import useSourceSearch from "../../hooks/useSourceSearch";
@@ -61,6 +62,11 @@ const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
               </LayoutCard>
             </Grid>
           ))}
+          {getUsersSearchFetching && (
+            <Grid item xs={12}>
+              <SpinLoader fullWidth />
+            </Grid>
+          )}
         </Grid>
       </Container>
     </>
