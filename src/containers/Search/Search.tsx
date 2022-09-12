@@ -1,16 +1,11 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useCallback } from "react";
-import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useEffect } from "react";
 import LayoutCard from "../../components/LayoutCard";
+import SpinLoader from "../../components/SpinLoader";
 import UserMiniCard from "../../components/UserMiniCard";
-import API_ENDPOINTS from "../../constants/api";
 import { LABELS } from "../../constants/labels";
-import { useAuthContext } from "../../contexts/AuthContext";
-import useInfiniteLoading from "../../hooks/useInfiniteLoading";
-import { IUsersSearchApiResponse } from "../../interfaces/api/external";
+import useSourceSearch from "../../hooks/useSourceSearch";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
-import { getUsersSearch } from "../../utils/api";
 import SearchSkeleton from "./SearchSkeleton";
 
 interface SearchProps {
@@ -18,56 +13,21 @@ interface SearchProps {
 }
 
 const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
-  const { accessToken } = useAuthContext();
-  const [nextPageNumber, setNextPageNumber] = useState<number>(1);
-  const [upToDateUsersSearch, setUpToDateUsersSearch] = useState<
-    IUsersSearchApiResponse[]
-  >([]);
-
   const {
-    data: getUsersSearchData,
-    isFetching: getUsersSearchDataFetching,
-    refetch: triggerGetUsersApi,
-  } = useQuery(
-    `${API_ENDPOINTS.USER_SKILLS.key}?${searchString} `,
-    () =>
-      getUsersSearch(accessToken as string, searchString, nextPageNumber, 12),
-    { refetchOnWindowFocus: false, cacheTime: 0 }
-  );
-
-  const infiniteLoadCallback = useCallback(() => {
-    if (getUsersSearchData?.data?.length) {
-      triggerGetUsersApi();
-    }
-  }, [getUsersSearchData?.data?.length, triggerGetUsersApi]);
-
-  const infiniteLoadRef = useInfiniteLoading(
-    getUsersSearchDataFetching,
-    infiniteLoadCallback
-  );
+    upToDateUsersSearch,
+    searchForSources,
+    getUsersSearchFetching,
+    infiniteLoadRef,
+  } = useSourceSearch(10, true);
 
   useEffect(() => {
-    if (getUsersSearchData) {
-      setUpToDateUsersSearch((prev) => [
-        ...prev,
-        ...(getUsersSearchData?.data as IUsersSearchApiResponse[]),
-      ]);
-      setNextPageNumber(
-        getUsersSearchData?.pagination?.page
-          ? getUsersSearchData.pagination.page + 1
-          : 0
-      );
-    }
-  }, [getUsersSearchData]);
-
-  useEffect(() => {
-    setUpToDateUsersSearch([]);
-  }, [searchString]);
+    searchForSources(searchString);
+  }, [searchForSources, searchString]);
 
   return (
     <>
       <Container>
-        {searchString && !getUsersSearchDataFetching && (
+        {searchString && !getUsersSearchFetching && (
           <Box my={3}>
             <Typography variant="h5">{`${
               upToDateUsersSearch.length > 0
@@ -102,6 +62,11 @@ const Search: ReactFCWithSkeleton<SearchProps> = ({ searchString }) => {
               </LayoutCard>
             </Grid>
           ))}
+          {getUsersSearchFetching && (
+            <Grid item xs={12}>
+              <SpinLoader fullWidth />
+            </Grid>
+          )}
         </Grid>
       </Container>
     </>

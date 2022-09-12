@@ -10,7 +10,7 @@ import { LABELS } from "../../../constants/labels";
 import useConnection from "../../../hooks/useConnection";
 import { IUserConnectionApiResponse } from "../../../interfaces/api/external";
 import { ReactFCWithSkeleton } from "../../../interfaces/app";
-import { getMUIElipsedSx, usernameToColor } from "../../../utils/generic";
+import { getMUIEllipsedSx, usernameToColor } from "../../../utils/generic";
 import LayoutCard from "../../LayoutCard";
 import WithdrawConnectionModal from "../WithdrawConnectionModal";
 import UserConnectionCardSkeleton from "./UserConnectionCardSkeleton";
@@ -141,7 +141,7 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
                   variant="body1"
                   textAlign="center"
                   color="text.primary"
-                  sx={getMUIElipsedSx(1)}
+                  sx={getMUIEllipsedSx(1)}
                 >
                   {name}
                 </Typography>
@@ -157,7 +157,7 @@ const UserConnectionCard: ReactFCWithSkeleton<IUserConnectionCardProps> = ({
                   variant="body2"
                   color="text.secondary"
                   textAlign="center"
-                  sx={getMUIElipsedSx(2, 40)}
+                  sx={getMUIEllipsedSx(2, 40)}
                 >
                   {headline || "--"}
                 </Typography>

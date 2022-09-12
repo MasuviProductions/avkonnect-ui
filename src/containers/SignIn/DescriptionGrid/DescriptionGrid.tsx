@@ -25,7 +25,6 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
   return (
     <Grid container justifyContent="center" alignItems="center" p={1}>
       <Grid item xs={12}>
-        {/* TODO: START DESCRIPTION HERE */}
         <Box my={2}>
           <Typography variant="h6">{LABELS.DESCRIPTION_INTRO}</Typography>
           <Typography variant="h6">
@@ -54,7 +53,6 @@ const DescriptionGrid: ReactFCWithSkeleton<IDescriptionGridProps> = ({
         <Box my={1}>
           <Typography variant="h6">{LABELS.DESCRIPTION_PARAGRAPH_2}</Typography>
         </Box>
-        {/* TODO: END DESCRIPTION HERE */}
       </Grid>
       <Grid item sx={floatingBtnSx}>
         <Hidden mdUp>

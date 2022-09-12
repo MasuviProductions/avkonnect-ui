@@ -106,7 +106,7 @@ const dividerSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const avatarSx: SxProps<Theme> = (theme: Theme) => ({
-  backgroundColor: theme.palette.navbar.main,
+  backgroundColor: theme.palette.background.navbar,
   margin: "4px",
   borderRadius: "6px",
 });

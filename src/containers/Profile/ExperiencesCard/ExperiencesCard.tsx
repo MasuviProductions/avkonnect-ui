@@ -148,7 +148,7 @@ const ExperiencesCard: React.FC = () => {
   }, [handleAddExperienceModalClose, putUserExperiencesData?.data]);
 
   useEffect(() => {
-    setProfileStatus(prev => ({
+    setProfileStatus((prev) => ({
       ...prev,
       isExperienceAddComplete: !!userExperiences && userExperiences.length > 0,
     }));
@@ -197,7 +197,7 @@ const ExperiencesCard: React.FC = () => {
   }
 
   return (
-    <Box my={1}>
+    <Box mt={1.5}>
       <LayoutCard>
         <LayoutCard.Header
           title={LABELS.EXPERIENCES_TITLE}

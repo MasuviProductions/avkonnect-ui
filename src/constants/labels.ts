@@ -13,6 +13,11 @@ export const LABELS = {
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+  CANCEL: "Cancel",
+
+  // Uninitialized Context Error Messages
+  RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
+  TEXT_EDITOR_CONTEXT_UNINITIALIZED: "TextEditorContext not initialized",
 
   // Links
   COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
@@ -263,4 +268,51 @@ export const LABELS = {
 
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
+
+  // Posts
+  ADD_POST_PLACEHOLDER: "What's on your mind?",
+  CREATE_POST: "Create a post",
+  EDIT_POST: "Edit post",
+  SUBMIT_POST: "Post",
+
+  // Comments
+  ADD_COMMENT_PLACEHOLDER: "Add a comment..",
+  POST_COMMENT: "Comment",
+  REPLY: "Reply",
+  LOAD_MORE_REPLIES: "Load more replies",
+  VIEW_REPLIES: "View replies",
+  REPLY_COUNT: (replyCount: number) =>
+    `${replyCount} ${replyCount === 1 ? "Reply" : "Replies"}`,
+  VIEW_MORE_COMMENTS: "View more comments",
+
+  // Reactions
+  LOVE: "Love",
+  LIKE: "Like",
+  LAUGH: "Laugh",
+  SAD: "Sad",
+  SUPPORT: "Support",
+
+  // Feeds
+  FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
+  LOADING: "Loading..",
+  YOU: "You",
+  YOU_AND_OTHERS: (reactionsCount: number): string =>
+    `You and ${reactionsCount - 1} Others`,
+  BE_FIRST_TO_REACT: `Be the first to react!`,
+  COMMENTS_COUNT: (commentCount: number): string =>
+    commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
+  COMMENTED_ON: `commented on this`,
+  REACTION_SOURCE: (emotion: string): string => `${emotion}`,
+  CREATE_POST_PLACEHOLDER: `Pen your thoughts..`,
+  REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
+
+  // Feed and Post
+  SHARE: "Share",
+  COMMENT: "Comment",
+  REACTION_PRETEXT_LIKE: "likes this",
+  REACTION_PRETEXT_LOVE: "loves this",
+  REACTION_PRETEXT_LAUGH: "finds this funny",
+  REACTION_PRETEXT_SUPPORT: "supports this",
+  REACTION_PRETEXT_SAD: "expresses their empathy",
+  REACTION_PRETEXT_DEFAULT: "reacted to this",
 };

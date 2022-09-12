@@ -23,8 +23,8 @@ import {
   IPatchPostApiRequest,
   ICreateCommentApiRequest,
   IPatchCommentApiRequest,
-  ICommentApiResponseModel,
-  IGetPostReactionsApiResponse,
+  ICommentApiModel,
+  IGetReactionsResponseApiModel,
   IGetPostCommentsApiResponse,
   IGetPostsInfoApiRequest,
   IGetPostsInfoApiResponse,
@@ -33,6 +33,8 @@ import {
   IReactionApiResponse,
   IActivityApiModel,
   IGetUserFeedsApiResponse,
+  IResourceTypes,
+  IGetUserPostsApiResponse,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -47,7 +49,7 @@ export const fetchAuthUser = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data?.data as IUserProfileApiResponse);
+    .then((res) => res.data?.data as IUserProfileApiResponse);
   return userProfileResponse;
 };
 
@@ -62,7 +64,7 @@ export const fetchUserProfile = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProfileResponse;
 };
 
@@ -78,7 +80,7 @@ export const patchUserProfile = async (
     >(API_ENDPOINTS.USER_PROFILE.url(userId), reqBody, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProfileResponse;
 };
 
@@ -94,7 +96,7 @@ export const fetchUserImageSignedUrl = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProfileResponse;
 };
 
@@ -106,7 +108,7 @@ export const putUserImageToS3 = async (
     .put<any, AxiosResponse<any>>(signedUrl, file, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProfileResponse;
 };
 
@@ -121,7 +123,7 @@ export const getUserSkills = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userSkillsResponse;
 };
 
@@ -137,7 +139,7 @@ export const putUserSkills = async (
     >(API_ENDPOINTS.USER_SKILLS.url(userId), skills, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userSkillsResponse;
 };
 
@@ -152,7 +154,7 @@ export const getUserProjects = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProjectsResponse;
 };
 
@@ -168,7 +170,7 @@ export const putUserProjects = async (
     >(API_ENDPOINTS.USER_PROJECTS.url(userId), projects, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userProjectsResponse;
 };
 
@@ -183,7 +185,7 @@ export const getUserExperiences = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userExperiencesResponse;
 };
 
@@ -199,7 +201,7 @@ export const putUserExperiences = async (
     >(API_ENDPOINTS.USER_EXPERIENCES.url(userId), experiences, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userExperiencesResponse;
 };
 
@@ -214,7 +216,7 @@ export const getUserCertifications = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userCertificationsResponse;
 };
 
@@ -230,7 +232,7 @@ export const putUserCertifications = async (
     >(API_ENDPOINTS.USER_CERTIFICATIONS.url(userId), certifications, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userCertificationsResponse;
 };
 
@@ -246,18 +248,18 @@ export const postUserFeedback = async (
     >(API_ENDPOINTS.USER_FEEDBACK.url(userId), feedback, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return userFeedbackResponse;
 };
 
 export const getUsersSearch = async (
   accessToken: string,
   searchString: string,
-  page: number,
-  limit: number
+  limit: number,
+  page?: number
 ): Promise<AVKonnectApiResponse<IUsersSearchApiResponse[]>> => {
   const queryString = `?search=${searchString}&limit=${limit}&page=${
-    page || 0
+    page || 1
   }`;
   const usersSearchResponse = await axios
     .get<AVKonnectApiResponse<IUsersSearchApiResponse[]>>(
@@ -266,7 +268,7 @@ export const getUsersSearch = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return usersSearchResponse;
 };
 
@@ -287,7 +289,7 @@ export const getUserConnections = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userConnections;
 };
 
@@ -303,7 +305,7 @@ export const getUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userConnection;
 };
 
@@ -320,7 +322,7 @@ export const postUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userConnection;
 };
 
@@ -337,7 +339,7 @@ export const patchUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userConnection;
 };
 
@@ -353,7 +355,7 @@ export const deleteUserConnection = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userConnection;
 };
 
@@ -373,7 +375,7 @@ export const getUserNotifications = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userNotifications;
 };
 
@@ -386,7 +388,7 @@ export const getUserNotificationsUnseenCount = async (
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userNotifications;
 };
 
@@ -399,7 +401,7 @@ export const deleteUserNotificationsUnseenCount = async (
       API_ENDPOINTS.USER_NOTIFICATIONS_COUNT.url(userId),
       { headers: { authorization: `Bearer ${accessToken}` } }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return userNotificationCount;
 };
 
@@ -416,7 +418,7 @@ export const patchReadUserNotification = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return updatedUserNotificationAsRead;
 };
 
@@ -431,7 +433,7 @@ export const createPost = async (
     >(API_ENDPOINTS.CREATE_POST.url(), createPostContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return createPostResponse;
 };
 
@@ -446,7 +448,7 @@ export const getPost = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return getPostResponse;
 };
 
@@ -462,49 +464,52 @@ export const patchPost = async (
     >(API_ENDPOINTS.PATCH_POST.url(postId), patchPostContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return patchPostResponse;
 };
 
 export const deletePost = async (
   accessToken: string,
   postId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<IPostApiResponse>> => {
   const deletePostResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_POST.url(postId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
-    .then(res => res.data);
+    .delete<AVKonnectApiResponse<IPostApiResponse>>(
+      API_ENDPOINTS.DELETE_POST.url(postId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
   return deletePostResponse;
 };
 
 export const createComment = async (
   accessToken: string,
   postUserCommentContent: ICreateCommentApiRequest
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const createCommentResponse = await axios
     .post<
       ICreateCommentApiRequest,
-      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+      AxiosResponse<AVKonnectApiResponse<ICommentApiModel>>
     >(API_ENDPOINTS.CREATE_COMMENT.url(), postUserCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return createCommentResponse;
 };
 
 export const getComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const getCommentResponse = await axios
-    .get<AVKonnectApiResponse<ICommentApiResponseModel>>(
+    .get<AVKonnectApiResponse<ICommentApiModel>>(
       API_ENDPOINTS.GET_COMMENT.url(commentId),
       {
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return getCommentResponse;
 };
 
@@ -512,61 +517,76 @@ export const patchComment = async (
   accessToken: string,
   commentId: string,
   patchCommentContent: IPatchCommentApiRequest
-): Promise<AVKonnectApiResponse<ICommentApiResponseModel>> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const patchCommentResponse = await axios
     .patch<
       IPatchCommentApiRequest,
-      AxiosResponse<AVKonnectApiResponse<ICommentApiResponseModel>>
+      AxiosResponse<AVKonnectApiResponse<ICommentApiModel>>
     >(API_ENDPOINTS.PATCH_COMMENT.url(commentId), patchCommentContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
   return patchCommentResponse;
 };
 
 export const deleteComment = async (
   accessToken: string,
   commentId: string
-): Promise<AVKonnectApiResponse> => {
+): Promise<AVKonnectApiResponse<ICommentApiModel>> => {
   const deleteCommentResponse = await axios
-    .delete<AVKonnectApiResponse>(API_ENDPOINTS.DELETE_COMMENT.url(commentId), {
-      headers: { authorization: `Bearer ${accessToken}` },
-    })
-    .then(res => res.data);
+    .delete<AVKonnectApiResponse<ICommentApiModel>>(
+      API_ENDPOINTS.DELETE_COMMENT.url(commentId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
   return deleteCommentResponse;
 };
 
 export const getPostReactions = async (
   accessToken: string,
-  postId: string
-): Promise<AVKonnectApiResponse<IGetPostReactionsApiResponse>> => {
+  postId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
+): Promise<AVKonnectApiResponse<IGetReactionsResponseApiModel>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
   const getPostReactionsResponse = await axios
-    .get<AVKonnectApiResponse<IGetPostReactionsApiResponse>>(
-      API_ENDPOINTS.GET_POST_REACTIONS.url(postId),
+    .get<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
+      API_ENDPOINTS.GET_POST_REACTIONS.url(postId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return getPostReactionsResponse;
 };
 
 export const getPostComments = async (
   accessToken: string,
-  postId: string
+  postId: string,
+  limit: number,
+  nextSearchStartFromKey?: string
 ): Promise<AVKonnectApiResponse<IGetPostCommentsApiResponse>> => {
+  const queryString = `?limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
+  }`;
+
   const getPostCommentsResponse = await axios
     .get<AVKonnectApiResponse<IGetPostCommentsApiResponse>>(
-      API_ENDPOINTS.GET_POST_COMMENTS.url(postId),
+      API_ENDPOINTS.GET_POST_COMMENTS.url(postId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return getPostCommentsResponse;
 };
 
@@ -581,7 +601,7 @@ export const getPostsInfo = async (
     >(API_ENDPOINTS.GET_POSTS_INFO.url(), getPostsInfoContent, {
       headers: { authorization: `Bearer ${accessToken}` },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return getPostsInfoResponse;
 };
@@ -597,27 +617,56 @@ export const getPostActivity = async (
         headers: { authorization: `Bearer ${accessToken}` },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return getPostActivityResponse;
 };
 
 export const getCommentsComments = async (
   accessToken: string,
-  commentId: string
+  commentId: string,
+  limit: number,
+  nextSearchStartFromKey?: string
 ): Promise<AVKonnectApiResponse<IGetCommentsCommentsApiResponse>> => {
+  const queryString = `?limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
+  }`;
+
   const getCommentsComments = await axios
     .get<AVKonnectApiResponse<IGetCommentsCommentsApiResponse>>(
-      API_ENDPOINTS.GET_COMMENTS_COMMENTS.url(commentId),
+      API_ENDPOINTS.GET_COMMENTS_COMMENTS.url(commentId, queryString),
       {
         headers: {
-          authorizations: `Bearer ${accessToken}`,
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((res) => res.data);
+
+  return getCommentsComments;
+};
+
+export const getCommentReactions = async (
+  accessToken: string,
+  commentId: string,
+  limit: number,
+  reactionType?: string,
+  nextSearchStartFromKey?: string
+): Promise<AVKonnectApiResponse<IGetReactionsResponseApiModel>> => {
+  const queryString = `?limit=${limit}&reaction=${
+    reactionType || ""
+  }&nextSearchStartFromKey=${nextSearchStartFromKey || ""}`;
+  const getCommentReactionsResponse = await axios
+    .get<AVKonnectApiResponse<IGetReactionsResponseApiModel>>(
+      API_ENDPOINTS.GET_COMMENT_REACTIONS.url(commentId, queryString),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
         },
       }
     )
     .then(res => res.data);
-
-  return getCommentsComments;
+  return getCommentReactionsResponse;
 };
 
 export const getCommentActivity = async (
@@ -633,25 +682,25 @@ export const getCommentActivity = async (
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return getCommentActivityResponse;
 };
 
 export const createReaction = async (
   accessToken: string,
-  createReactionContent: ICreateReactionApiRequest
+  createReactionBody: ICreateReactionApiRequest
 ): Promise<AVKonnectApiResponse<IReactionApiResponse>> => {
   const createReactionResponse = await axios
     .post<
       ICreateReactionApiRequest,
       AxiosResponse<AVKonnectApiResponse<IReactionApiResponse>>
-    >(API_ENDPOINTS.CREATE_REACTION.url(), createReactionContent, {
+    >(API_ENDPOINTS.CREATE_REACTION.url(), createReactionBody, {
       headers: {
         authorization: `Bearer ${accessToken}`,
       },
     })
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return createReactionResponse;
 };
@@ -669,43 +718,70 @@ export const getReaction = async (
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return getReactionResponse;
 };
 
 export const deleteReaction = async (
   accessToken: string,
-  reactionId: string
+  resourceType: IResourceTypes,
+  resourceId: string
 ): Promise<AVKonnectApiResponse> => {
   const deleteReactionResponse = await axios
     .delete<AVKonnectApiResponse>(
-      API_ENDPOINTS.DELETE_REACTION.url(reactionId),
+      API_ENDPOINTS.DELETE_REACTION.url(resourceType, resourceId),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
 
   return deleteReactionResponse;
 };
 
 export const getUserFeeds = async (
   accessToken: string,
-  userId: string
+  userId: string,
+  limit: number,
+  nextSearchStartFromKey?: string
 ): Promise<AVKonnectApiResponse<IGetUserFeedsApiResponse>> => {
+  const queryString = `?limit=${limit}&nextSearchStartFromKey=${
+    nextSearchStartFromKey || ""
+  }`;
   const getUserFeedsResponse = await axios
     .get<AVKonnectApiResponse<IGetUserFeedsApiResponse>>(
-      API_ENDPOINTS.GET_USER_FEEDS.url(userId),
+      API_ENDPOINTS.GET_USER_FEEDS.url(userId, queryString),
       {
         headers: {
           authorization: `Bearer ${accessToken}`,
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
+
+  return getUserFeedsResponse;
+};
+
+export const getUserPosts = async (
+  accessToken: string,
+  userId: string,
+  limit: number,
+  page?: number
+): Promise<AVKonnectApiResponse<IGetUserPostsApiResponse>> => {
+  const queryString = `?limit=${limit}&page=${page || 1}`;
+  const getUserFeedsResponse = await axios
+    .get<AVKonnectApiResponse<IGetUserPostsApiResponse>>(
+      API_ENDPOINTS.GET_USER_POSTS.url(userId, queryString),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((res) => res.data);
 
   return getUserFeedsResponse;
 };

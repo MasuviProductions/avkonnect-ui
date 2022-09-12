@@ -6,7 +6,6 @@ import {
   getEllipsedText,
   getLinkedTextIfURLIsPresent,
 } from "../../utils/generic";
-import { URL_MATCH_REGEX_WITH_PROTOCOL } from "../../constants/app";
 
 interface IReadMoreProps {
   text: string;

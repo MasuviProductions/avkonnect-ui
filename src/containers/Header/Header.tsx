@@ -17,7 +17,7 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import React, { useCallback, useState } from "react";
-import { SxProps } from "@mui/system";
+import { SxProps, SystemStyleObject } from "@mui/system";
 import Link from "next/link";
 import Image from "next/image";
 import { THEMES_LIST } from "../../constants/theme";
@@ -86,7 +86,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
 
   return (
     <>
-      <AppBar position="sticky" sx={{ backgroundColor: "navbar.main" }}>
+      <AppBar position="sticky" sx={appBarSx}>
         <Head>
           <title>{getTitle()}</title>
           <meta name="description" content="-by Masuvi Production" />
@@ -96,41 +96,36 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
         <Container maxWidth="lg" sx={{ padding: 0 }}>
           <>
             <Toolbar>
-              <Typography
-                variant="h5"
+              <Box
                 sx={{
                   flexGrow: 1,
-                  color: "navbar.contrastText",
-                  textTransform: "none",
                 }}
               >
-                <>
-                  <Hidden mdUp>
-                    <Link href={APP_ROUTES.ROOT.route} passHref>
-                      <Box sx={logoContainerSx}>
-                        <Image
-                          src={PNG.AvkMobLogo}
-                          alt={LABELS.TITLE_LOGO}
-                          width={50}
-                          height={35}
-                        />
-                      </Box>
-                    </Link>
-                  </Hidden>
-                  <Hidden mdDown>
-                    <Link href={APP_ROUTES.ROOT.route} passHref>
-                      <Box sx={logoContainerSx}>
-                        <Image
-                          src={PNG.AvkDeskLogo}
-                          alt={LABELS.TITLE_LOGO}
-                          width={130}
-                          height={50}
-                        />
-                      </Box>
-                    </Link>
-                  </Hidden>
-                </>
-              </Typography>
+                <Hidden mdUp>
+                  <Link href={APP_ROUTES.ROOT.route} passHref>
+                    <Box sx={logoContainerSx}>
+                      <Image
+                        src={PNG.AvkMobLogo}
+                        alt={LABELS.TITLE_LOGO}
+                        width={50}
+                        height={35}
+                      />
+                    </Box>
+                  </Link>
+                </Hidden>
+                <Hidden mdDown>
+                  <Link href={APP_ROUTES.ROOT.route} passHref>
+                    <Box sx={logoContainerSx}>
+                      <Image
+                        src={PNG.AvkDeskLogo}
+                        alt={LABELS.TITLE_LOGO}
+                        width={130}
+                        height={50}
+                      />
+                    </Box>
+                  </Link>
+                </Hidden>
+              </Box>
 
               {/** TODO: Remove authUser check  */}
               {authUser && (
@@ -142,10 +137,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
               {authUser && (
                 <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
                   <IconButton sx={{ paddingX: 2 }}>
-                    <PeopleIcon
-                      fontSize="large"
-                      sx={{ color: "navbar.contrastText" }}
-                    />
+                    <PeopleIcon fontSize="large" sx={contrastTextSx} />
                   </IconButton>
                 </Link>
               )}
@@ -161,7 +153,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                     >
                       <NotificationsNoneIcon
                         fontSize="large"
-                        sx={contrastIconSx}
+                        sx={contrastTextSx}
                       />
                     </Badge>
                   </IconButton>
@@ -174,7 +166,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 aria-haspopup="true"
                 sx={{ paddingX: 2 }}
               >
-                <ColorLensIcon fontSize="large" sx={contrastIconSx} />
+                <ColorLensIcon fontSize="large" sx={contrastTextSx} />
               </IconButton>
 
               <Menu
@@ -187,7 +179,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 {THEMES_LIST.map((theme) => (
                   <MenuItem
                     key={theme.key}
-                    onClick={() => handleThemeSelect(theme.themeOption)}
+                    onClick={() => handleThemeSelect(theme)}
                   >
                     {theme.name}
                   </MenuItem>
@@ -234,6 +226,10 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   );
 };
 
+const appBarSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  backgroundColor: theme.palette.background.navbar,
+});
+
 const userDropdownContainer: SxProps<Theme> = {
   position: "relative",
 };
@@ -264,12 +260,8 @@ const notificationBadgeSx: SxProps<Theme> = {
 
 const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
 
-const contrastIconSx: SxProps<Theme> = { color: "navbar.contrastText" };
-
-const deskLogoTextSx: SxProps<Theme> = {
-  fontFamily: "'Quicksand' !important",
-  fontSize: "34px",
-  fontWeight: "600",
-};
+const contrastTextSx = (theme: Theme): SystemStyleObject<Theme> => ({
+  color: theme.palette.text.navbar,
+});
 
 export default Header;

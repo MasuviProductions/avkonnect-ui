@@ -3,11 +3,13 @@ import { Session } from "next-auth";
 import { handleServerSideAuthenticationRedirect } from "../utils/generic";
 import { NextPageWithSkeleton, SessionProps } from "../interfaces/app";
 import Home from "../containers/Home";
+import TestContainer from "../containers/TestContainer";
 
 const HomePage: NextPageWithSkeleton = () => {
   return (
     <>
-      <Home />
+      <TestContainer />
+      {/* <Home /> */}
     </>
   );
 };

@@ -27,40 +27,22 @@ import SearchedUserItem from "./SearchedUserItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { compile } from "path-to-regexp";
 import { useMemo } from "react";
+import useSourceSearch from "../../../hooks/useSourceSearch";
+import SpinLoader from "../../../components/SpinLoader";
 
 interface ISearchBarProps {}
 
 const SearchBar: React.FC<ISearchBarProps> = () => {
   const router = useRouter();
-  const { accessToken } = useAuthContext();
+
+  const { upToDateUsersSearch, searchForSources, getUsersSearchFetching } =
+    useSourceSearch(MAX_SEARCH_DROPDOWN_LIMIT, false);
+
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
   const [showSearchTextField, setShowSearchTextField] =
     useState<boolean>(false);
+
   const [searchText, setSearchText] = useState<string>("");
-  const [searchString, setSearchString] = useState<string>("");
-  const [userSearchData, setUserSearchData] = useState<
-    IUsersSearchApiResponse[]
-  >([]);
-
-  const {
-    data: getUsersSearchData,
-    isFetching,
-    refetch: triggerGetUsersApi,
-  } = useQuery(
-    `dropdown-${API_ENDPOINTS.USERS_SEARCH.key}`,
-    () =>
-      getUsersSearch(
-        accessToken as string,
-        searchString,
-        1,
-        MAX_SEARCH_DROPDOWN_LIMIT
-      ),
-    { enabled: false, cacheTime: 0 }
-  );
-
-  const searchDebouncer = useRef(
-    debounce((newSearchString: string) => setSearchString(newSearchString))
-  );
 
   const handleSearchDropdownOpen = useCallback(() => {
     setShowSearchDropdown(true);
@@ -115,26 +97,8 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
   };
 
   useEffect(() => {
-    searchDebouncer.current(searchText);
-  }, [searchText]);
-
-  useEffect(() => {
-    if (searchString) {
-      triggerGetUsersApi();
-    }
-  }, [triggerGetUsersApi, searchString]);
-
-  useEffect(() => {
-    if (!searchString) {
-      setUserSearchData([]);
-    }
-  }, [searchString]);
-
-  useEffect(() => {
-    if (getUsersSearchData?.data) {
-      setUserSearchData(getUsersSearchData.data as IUsersSearchApiResponse[]);
-    }
-  }, [getUsersSearchData, handleSearchDropdownOpen, isFetching]);
+    searchForSources(searchText);
+  }, [searchForSources, searchText]);
 
   const searchFieldComponent = useMemo(() => {
     return (
@@ -174,6 +138,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
                       <ArrowBackIcon fontSize="large" sx={iconColor} />
                     </IconButton>
                   </Grid>
+
                   <Grid item ml={2} xs={8}>
                     {searchFieldComponent}
                   </Grid>
@@ -186,7 +151,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
             <Box sx={searchDropdownContainer}>
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {userSearchData.map((user) => (
+                  {upToDateUsersSearch.map(user => (
                     <Grid item xs={12} key={user.id} p={1}>
                       <SearchedUserItem
                         id={user.id}
@@ -197,15 +162,21 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
                       />
                     </Grid>
                   ))}
-                  {userSearchData.length <= 0 && !searchString && (
+
+                  {upToDateUsersSearch.length <= 0 && !searchText && (
                     <Grid p={1}>
                       <Typography variant="body2" color="text.secondary" p={1}>
                         {LABELS.SEARCH_TEXT}
                       </Typography>
                     </Grid>
                   )}
+                  {getUsersSearchFetching && (
+                    <Grid item xs={12}>
+                      <SpinLoader padding={1} radiusSize="sm" fullWidth />
+                    </Grid>
+                  )}
 
-                  {searchString && (
+                  {searchText && (
                     <Button onClick={handleSearch} sx={showResultsButton}>
                       {LABELS.SEARCH_ALL_RESULTS}
                     </Button>
@@ -239,8 +210,8 @@ const searchBarContainer: SxProps<Theme> = (theme: Theme) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
   },
-  backgroundColor: "navbar.contrastText",
-  color: "navbar.main",
+  backgroundColor: theme.palette.text.navbar,
+  color: theme.palette.background.navbar,
 });
 
 const showResultsButton: SxProps<Theme> = (theme: Theme) => ({
@@ -251,11 +222,11 @@ const showResultsButton: SxProps<Theme> = (theme: Theme) => ({
 const searchBarTextfield: SxProps<Theme> = (theme: Theme) => ({
   ml: 1,
   flex: 1,
-  color: "navbar.main",
+  color: theme.palette.background.navbar,
 });
 
 const iconColor: SxProps<Theme> = (theme: Theme) => ({
-  color: "navbar.contrastText",
+  color: theme.palette.text.navbar,
 });
 
 const searchFieldMobileContainer: SxProps<Theme> = (theme: Theme) => ({
@@ -264,7 +235,7 @@ const searchFieldMobileContainer: SxProps<Theme> = (theme: Theme) => ({
   zIndex: 1,
   top: 0,
   left: 0,
-  backgroundColor: "navbar.main",
+  backgroundColor: theme.palette.background.navbar,
   padding: 1,
 });
 

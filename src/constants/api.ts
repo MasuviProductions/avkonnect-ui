@@ -1,3 +1,4 @@
+import { IResourceTypes } from "../interfaces/api/external";
 import ENV from "./env";
 
 const AVKONNECT_URL = {
@@ -123,13 +124,13 @@ const API_ENDPOINTS = {
   },
   GET_POST_REACTIONS: {
     key: "get-post-reactions",
-    url: (postId: string) =>
-      `${AVKONNECT_URL.POSTS()}/posts/${postId}/reactions`,
+    url: (postId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/reactions${queryString}`,
   },
   GET_POST_COMMENTS: {
     key: "get-post-comments",
-    url: (postId: string) =>
-      `${AVKONNECT_URL.POSTS()}/posts/${postId}/comments`,
+    url: (postId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/posts/${postId}/comments${queryString}`,
   },
   GET_POSTS_INFO: {
     key: "get-posts-info",
@@ -140,10 +141,15 @@ const API_ENDPOINTS = {
     url: (postId: string) =>
       `${AVKONNECT_URL.POSTS()}/posts/${postId}/activity`,
   },
+  GET_COMMENT_REACTIONS: {
+    key: "get-comment-reactions",
+    url: (commentId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/reactions${queryString}`,
+  },
   GET_COMMENTS_COMMENTS: {
     key: "get-comments-comments",
-    url: (commentId: string) =>
-      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/comments`,
+    url: (commentId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/comments${queryString}`,
   },
   GET_COMMENT_ACTIVITY: {
     key: "get-comment-activity",
@@ -161,12 +167,18 @@ const API_ENDPOINTS = {
   },
   DELETE_REACTION: {
     key: "delete-reaction",
-    url: (reactionId: string) =>
-      `${AVKONNECT_URL.POSTS()}/reactions/${reactionId}`,
+    url: (resourceType: IResourceTypes, resourceId: string) =>
+      `${AVKONNECT_URL.POSTS()}/reactions/${resourceType}/${resourceId}`,
   },
   GET_USER_FEEDS: {
     key: "get-user-feeds",
-    url: (userId: string) => `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds`,
+    url: (userId: string, queryString: string) =>
+      `${AVKONNECT_URL.FEEDS()}/users/${userId}/feeds${queryString}`,
+  },
+  GET_USER_POSTS: {
+    key: "get-user-posts",
+    url: (userId: string, queryString: string) =>
+      `${AVKONNECT_URL.POSTS()}/users/${userId}/posts${queryString}`,
   },
 };
 
