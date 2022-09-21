@@ -2,10 +2,13 @@ import { Avatar, SxProps, Theme } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { usernameToColor } from "../../../utils/generic";
 import { SystemStyleObject } from "@mui/system";
-import { IRelatedSource } from "../../../interfaces/api/external";
+import {
+  INotificationResourceActivity,
+  IRelatedSource,
+} from "../../../interfaces/api/external";
 
 export interface INotificationIconProps {
-  notificationType: string;
+  notificationType: INotificationResourceActivity;
   relatedSource: IRelatedSource;
 }
 
@@ -23,6 +26,7 @@ const NotificationIcon: React.FC<INotificationIconProps> = ({
   };
   switch (notificationType) {
     case "connectionConfirmation":
+    case "connectionRequest":
       return (
         <Avatar
           src={relatedSource.displayPictureUrl}
@@ -32,7 +36,23 @@ const NotificationIcon: React.FC<INotificationIconProps> = ({
           {relatedSource.name[0]}
         </Avatar>
       );
-    case "connectionRequest":
+
+    case "postComment":
+    case "postCreation":
+    case "postReaction":
+      return (
+        <Avatar
+          src={relatedSource.displayPictureUrl}
+          alt={`${relatedSource.name}`}
+          sx={handleUserAvatarSx}
+        >
+          {relatedSource.name[0]}
+        </Avatar>
+      );
+
+    case "commentComment":
+    case "commentCreation":
+    case "commentReaction":
       return (
         <Avatar
           src={relatedSource.displayPictureUrl}

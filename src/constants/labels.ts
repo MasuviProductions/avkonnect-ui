@@ -260,6 +260,38 @@ export const LABELS = {
     `You have a connection request from ${userName}. Accept to expand your network!`,
   NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
     `Your request to connect with ${userName} was accepted!`,
+  NOTIFICATION_POST_COMMENT: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } commented on your post. Respond back!`,
+  NOTIFICATION_POST_REACTION: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } reacted to your post. Check it out!`,
+  NOTIFICATION_POST_CREATION: (userName: string): string =>
+    `${userName} has created a new post. See what it is about!`,
+  NOTIFICATION_COMMENT_COMMENT: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } commented on your comment. Go react!`,
+  NOTIFICATION_COMMENT_REACTION: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } reacted to your comment. Check it out!`,
+  NOTIFICATION_COMMENT_CREATION: (userName: string): string =>
+    `${userName} has created a new comment. Check it out!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
 
   // Legal Pages

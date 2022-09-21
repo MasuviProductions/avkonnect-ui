@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Container, Box, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../components/LayoutCard";
@@ -178,11 +178,13 @@ const Notifications: ReactFCWithSkeleton = () => {
                   : undefined
               }
             >
+              {console.log({ index, userNotification })}
               <NotificationCard
                 isRead={userNotification?.read}
                 notificationMessage={generateNotificationMessage(
                   userNotification.resourceActivity,
-                  relatedSourcesMap[userNotification.sourceId]
+                  relatedSourcesMap[userNotification.sourceId],
+                  userNotification.aggregatorCount
                 )}
                 notificationId={userNotification?.id}
                 notificationTime={userNotification?.createdAt}
