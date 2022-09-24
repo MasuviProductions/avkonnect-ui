@@ -190,6 +190,7 @@ const Notifications: ReactFCWithSkeleton = () => {
                 notificationActivity={userNotification?.resourceActivity}
                 relatedSource={relatedSourcesMap[userNotification.sourceId]}
                 onReadNotification={onReadNotification}
+                notificationResourceId={userNotification?.resourceId}
               />
             </Grid>
           ))}

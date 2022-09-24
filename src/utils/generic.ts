@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
+import { compile } from "path-to-regexp";
 import { URLSearchParams } from "url";
 import { APP_ROUTES } from "../constants/app";
 import {
@@ -161,7 +162,8 @@ export const generateNotificationMessage = (
 };
 
 export const getNotificationTypeBasedLink = (
-  notificationActivity: INotificationResourceActivity
+  notificationActivity: INotificationResourceActivity,
+  postId?: string
 ): string => {
   switch (notificationActivity) {
     case "connectionRequest":
@@ -170,11 +172,15 @@ export const getNotificationTypeBasedLink = (
     case "postComment":
     case "postCreation":
     case "postReaction":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
     case "commentComment":
     case "commentCreation":
     case "commentReaction":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
     default:
       return `${APP_ROUTES.ROOT.route}`;
   }

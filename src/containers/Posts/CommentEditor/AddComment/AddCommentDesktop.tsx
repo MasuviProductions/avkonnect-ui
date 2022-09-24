@@ -39,9 +39,9 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
           <Avatar
             alt={name as string}
             src={displayPictureUrl as string}
-            sx={userAvatarSx(usernameToColor(name))}
+            sx={userAvatarSx(usernameToColor(name || ""))}
           >
-            {name[0]}
+            {(name && name[0]) || ""}
           </Avatar>
         </Grid>
 

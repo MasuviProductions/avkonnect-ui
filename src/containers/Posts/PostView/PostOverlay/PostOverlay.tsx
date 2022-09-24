@@ -1,14 +1,10 @@
-import { Box, Grid, Theme } from "@mui/material";
-import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
 import { LABELS } from "../../../../constants/labels";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
-import AddComment from "../../CommentEditor/AddComment";
-import PostViewContent from "../PostViewContent";
-import PostComments from "./PostComments";
+import PostLayoutMobile from "../../PostLayout/PostLayoutMobile";
 
 interface IPostOverlayProps extends IOverlay {}
 
@@ -22,8 +18,7 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
 
-  const { commentsQuery, totalCommentsCount, allCommentsFetched } =
-    resourceContext;
+  const { commentsQuery } = resourceContext;
 
   const { resetQueryData, triggerGetCommentsApi, getCommentsStatus } =
     commentsQuery as IUseCommentsForResourceReturn;
@@ -47,35 +42,10 @@ const PostOverlay: React.FC<IPostOverlayProps> = ({
   return (
     <>
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
-        <Grid container sx={postOverlayContainerSx}>
-          <Grid item xs={12} sx={contentsContainerSx}>
-            <PostViewContent />
-            <PostComments />
-          </Grid>
-
-          <Grid item xs={12} sx={commentEditorSx}>
-            <AddComment submitButtonText={LABELS.POST_COMMENT} />
-          </Grid>
-        </Grid>
+        <PostLayoutMobile />
       </ViewOverlay>
     </>
   );
 };
-
-const postOverlayContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({});
-
-const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  overflowY: "auto",
-  paddingX: 1.5,
-  paddingBottom: 30,
-});
-
-const commentEditorSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  position: "fixed",
-  width: "100%",
-  bottom: 0,
-  padding: 1,
-  backgroundColor: theme.palette.background.paper,
-});
 
 export default PostOverlay;
