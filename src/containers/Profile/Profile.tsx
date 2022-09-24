@@ -16,7 +16,7 @@ interface IProfileProps {}
 const Profile: ReactFCWithSkeleton<IProfileProps> = () => {
   const { authUser } = useAuthContext();
   return (
-    <Grid container columnSpacing={1.5}>
+    <Grid container columnSpacing={1.5} mb={2}>
       <Grid item xs={12}>
         <UserCard />
       </Grid>

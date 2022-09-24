@@ -148,7 +148,7 @@ const Feeds: React.FC = () => {
   return (
     <Grid container sx={feedContainerSx}>
       <Grid item lg={6} md={7} xs={12}>
-        <Grid container mt={2} spacing={1.5} maxWidth="sm">
+        <Grid container my={2} spacing={1.5} maxWidth="sm">
           <Grid item xs={12}>
             <CreatePostPlaceholder
               onOpenPostEditor={handleShowPostEditorOpen}
