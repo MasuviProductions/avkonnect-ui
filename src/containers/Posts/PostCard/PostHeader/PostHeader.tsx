@@ -49,7 +49,7 @@ const PostHeader: React.FC = () => {
           <Grid item xs>
             <Grid container>
               <Grid item xs={12}>
-                <Typography sx={simpleLinkSx()}>
+                <Typography sx={simpleLinkSx()} onClick={handleProfileRedirectClick}>
                   {relatedSourceMap[sourceId].name}
                 </Typography>
               </Grid>
