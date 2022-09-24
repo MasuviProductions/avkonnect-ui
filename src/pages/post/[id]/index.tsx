@@ -1,7 +1,10 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
+import { useRouter } from "next/router";
 import Error from "../../../components/Error/Error";
+import { APP_ROUTES } from "../../../constants/app";
 import PostPageView from "../../../containers/PostPageView";
+import { useAuthContext } from "../../../contexts/AuthContext";
 import ResourceProvider from "../../../contexts/ResourceContext";
 import {
   AVKonnectApiResponse,
@@ -20,8 +23,21 @@ import { transformUsersListToUserIdUserMap } from "../../../utils/transformers";
 type IPostPageProps = IProtectedPageProps<IPostApiResponse>;
 
 const PostPage: NextPageWithSkeleton<IPostPageProps> = ({ data, error }) => {
+  const { authUser } = useAuthContext();
+  const router = useRouter();
+
   if (!data) {
     return <Error.ContentUnavailable />;
+  }
+
+  const handleDeletePost = () => {
+    router.push(`${APP_ROUTES.ROOT.route}`);
+  };
+
+  const handleUpdateResource = () => {};
+
+  if (!authUser) {
+    return <></>;
   }
 
   return (
@@ -43,6 +59,8 @@ const PostPage: NextPageWithSkeleton<IPostPageProps> = ({ data, error }) => {
           IRelatedSource
         >
       }
+      onDeleteResource={handleDeletePost}
+      onUpdateResource={handleUpdateResource}
     >
       <PostPageView />
     </ResourceProvider>
