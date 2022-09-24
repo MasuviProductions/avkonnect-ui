@@ -71,7 +71,7 @@ const ReactionModal: React.FC<IReactionModalProps> = ({
           value={"all"}
         />
         {REACTIONS.map((reaction, index) => {
-          if (reactionsCount[reaction as IReactionTypes] > 0) {
+          if (reactionsCount[reaction] > 0) {
             const Icon = REACTION_CONFIGS[reaction].iconActive;
             return (
               <Tab
@@ -94,7 +94,7 @@ const ReactionModal: React.FC<IReactionModalProps> = ({
             clearData={clearData}
           />
           {REACTIONS.map((reaction, index) => {
-            if (reactionsCount[reaction as IReactionTypes] > 0) {
+            if (reactionsCount[reaction] > 0) {
               return (
                 <ReactionTabPanel
                   key={`reaction-tabpanel-${index}`}

@@ -1,7 +1,7 @@
 import { Grid, Box, Skeleton, Container, Theme, SxProps } from "@mui/material";
 import LayoutCard from "../../components/LayoutCard";
 
-const SingleFeedSkeleton: React.FC = () => {
+export const SingleFeedSkeleton: React.FC = () => {
   return (
     <Container maxWidth="sm" sx={containerSx}>
       <LayoutCard>

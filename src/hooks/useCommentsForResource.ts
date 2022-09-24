@@ -189,7 +189,7 @@ export const useCommentsForResource = (
 
   const handleUpdateRelatedSources = useCallback(
     (relatedSources: IRelatedSource[]) => {
-      setRelatedSourcesMap((prev) => {
+      setRelatedSourcesMap(prev => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           relatedSources
         ) as Record<string, IRelatedSource>;
@@ -204,10 +204,10 @@ export const useCommentsForResource = (
   );
 
   const mergeComments = useCallback((comments: ICommentApiModel[]) => {
-    setUptoDateComments((prev) => {
-      const updatedComments = comments.filter((comment) => {
+    setUptoDateComments(prev => {
+      const updatedComments = comments.filter(comment => {
         const isCommentAlreadyPresent = prev.findIndex(
-          (cmt) => cmt.id === comment.id
+          cmt => cmt.id === comment.id
         );
         return isCommentAlreadyPresent < 0;
       });
@@ -264,8 +264,8 @@ export const useCommentsForResource = (
   useEffect(() => {
     if (deleteCommentResData?.data) {
       setCommentToDelete(undefined);
-      setUptoDateComments((prev) =>
-        prev.filter((comment) => comment.id !== deleteCommentResData?.data?.id)
+      setUptoDateComments(prev =>
+        prev.filter(comment => comment.id !== deleteCommentResData?.data?.id)
       );
       onCommentRemove();
 
