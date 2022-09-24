@@ -136,7 +136,7 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
 
   return (
     <Grid container pt={1.5} spacing={1.5}>
-      {authUser?.id == user.id && (
+      {authUser?.id === user.id && (
         <Grid item xs={12} mt={2}>
           <CreatePostPlaceholder onOpenPostEditor={handleShowPostEditorOpen} />
           <CreatePostEditor
