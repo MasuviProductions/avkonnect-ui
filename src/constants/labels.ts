@@ -291,7 +291,7 @@ export const LABELS = {
       aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
     } reacted to your comment. Check it out!`,
   NOTIFICATION_COMMENT_CREATION: (userName: string): string =>
-    `${userName} has created a new comment. Check it out!`,
+    `${userName} has added a new comment. Check it out!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
 
   // Legal Pages

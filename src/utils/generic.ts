@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
+import { compile } from "path-to-regexp";
 import { URLSearchParams } from "url";
 import { APP_ROUTES } from "../constants/app";
 import {
@@ -120,7 +121,7 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
 export const generateNotificationMessage = (
   notificationActivity: INotificationResourceActivity,
   relatedSource: IRelatedSource,
-  aggregatorCount: number
+  aggregatorCount?: number
 ) => {
   switch (notificationActivity) {
     case "connectionRequest":
@@ -134,26 +135,26 @@ export const generateNotificationMessage = (
     case "postComment":
       return LABELS.NOTIFICATION_POST_COMMENT(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "postCreation":
       return LABELS.NOTIFICATION_POST_CREATION(relatedSource.name as string);
     case "postReaction":
       return LABELS.NOTIFICATION_POST_REACTION(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "commentComment":
       return LABELS.NOTIFICATION_COMMENT_COMMENT(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "commentCreation":
       return LABELS.NOTIFICATION_COMMENT_CREATION(relatedSource.name as string);
     case "commentReaction":
       return LABELS.NOTIFICATION_COMMENT_REACTION(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     default:
       return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
@@ -161,7 +162,8 @@ export const generateNotificationMessage = (
 };
 
 export const getNotificationTypeBasedLink = (
-  notificationActivity: INotificationResourceActivity
+  notificationActivity: INotificationResourceActivity,
+  postId?: string
 ): string => {
   switch (notificationActivity) {
     case "connectionRequest":
@@ -170,11 +172,15 @@ export const getNotificationTypeBasedLink = (
     case "postComment":
     case "postCreation":
     case "postReaction":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
     case "commentComment":
     case "commentCreation":
     case "commentReaction":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
     default:
       return `${APP_ROUTES.ROOT.route}`;
   }
