@@ -154,11 +154,11 @@ export const getNotificationTypeBasedLink = (
 ): string => {
   switch (notificationActivity) {
     case "connectionRequest":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${APP_ROUTES.PROFILE.key}`;
     case "connectionConfirmation":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${APP_ROUTES.PROFILE.key}`;
     default:
-      return `${APP_ROUTES.MY_NETWORK.route}`;
+      return `${APP_ROUTES.PROFILE.key}`;
   }
 };
 

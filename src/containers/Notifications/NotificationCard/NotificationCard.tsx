@@ -53,7 +53,7 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
       }
       onClick={handleReadNotificationClick}
     >
-      <Link href={getNotificationTypeBasedLink(notificationActivity)} passHref>
+      <Link href={`${getNotificationTypeBasedLink(notificationActivity)}/${relatedSource.id}`} passHref>
         <Grid container alignItems="center" px={1}>
           <Grid item md={1} sm={2} xs={2}>
             <NotificationIcon
