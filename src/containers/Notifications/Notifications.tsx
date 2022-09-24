@@ -178,7 +178,6 @@ const Notifications: ReactFCWithSkeleton = () => {
                   : undefined
               }
             >
-              {console.log({ index, userNotification })}
               <NotificationCard
                 isRead={userNotification?.read}
                 notificationMessage={generateNotificationMessage(
@@ -189,7 +188,6 @@ const Notifications: ReactFCWithSkeleton = () => {
                 notificationId={userNotification?.id}
                 notificationTime={userNotification?.createdAt}
                 notificationActivity={userNotification?.resourceActivity}
-                notificationResourceType={userNotification.resourceType}
                 relatedSource={relatedSourcesMap[userNotification.sourceId]}
                 onReadNotification={onReadNotification}
               />

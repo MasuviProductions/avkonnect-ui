@@ -17,7 +17,6 @@ export interface INotificationCardProps {
   notificationMessage: string;
   notificationId: string;
   notificationActivity: INotificationResourceActivity;
-  notificationResourceType: INotificationResourceType;
   notificationTime: Date;
   relatedSource: IRelatedSource;
   onReadNotification: (notificationId: string) => void;
@@ -27,7 +26,6 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
   isRead,
   notificationMessage,
   notificationId,
-  notificationResourceType,
   notificationActivity,
   notificationTime,
   relatedSource,
@@ -55,13 +53,13 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
     >
       <Link href={getNotificationTypeBasedLink(notificationActivity)} passHref>
         <Grid container alignItems="center" px={1}>
-          <Grid item md={1.3} sm={2} xs={2}>
+          <Grid item md={1.1} sm={2} xs={2}>
             <NotificationIcon
               notificationType={notificationActivity}
               relatedSource={relatedSource}
             />
           </Grid>
-          <Grid item md={10.5} sm={9} xs={9} ml={1}>
+          <Grid item md={10.7} sm={9} xs={9} ml={1}>
             <Grid container flexDirection="column" my={1}>
               <Grid item xs={12}>
                 <Typography variant="body1">{notificationMessage}</Typography>
