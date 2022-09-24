@@ -110,7 +110,7 @@ const linkSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const miniHeadingSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.background.navbar,
+  color: theme.palette.text.secondary,
   fontWeight: "600",
 });
 

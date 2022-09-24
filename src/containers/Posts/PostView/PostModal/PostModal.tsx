@@ -1,14 +1,10 @@
-import { Box, Grid, Theme } from "@mui/material";
-import { SystemStyleObject } from "@mui/system";
 import { useEffect } from "react";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import ModalLayout from "../../../../components/ModalLayout";
 import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
 import { IUseCommentsForResourceReturn } from "../../../../hooks/useCommentsForResource";
-import PostComments from "./PostComments";
 import { LABELS } from "../../../../constants/labels";
-import AddComment from "../../CommentEditor/AddComment";
-import PostViewContent from "../PostViewContent";
+import PostLayoutDesktop from "../../PostLayout/PostLayoutDesktop";
 
 interface IPostModalProps extends IModalLayoutProps {
   replyFocused?: boolean;
@@ -24,9 +20,9 @@ const PostModal: React.FC<IPostModalProps> = ({
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
-  const { commentsQuery, totalCommentsCount, commentsCount } = resourceContext;
+  const { commentsQuery } = resourceContext;
 
-  const { resetQueryData, triggerGetCommentsApi, getCommentsFetching } =
+  const { resetQueryData, triggerGetCommentsApi } =
     commentsQuery as IUseCommentsForResourceReturn;
 
   useEffect(() => {
@@ -48,35 +44,10 @@ const PostModal: React.FC<IPostModalProps> = ({
         onModalClose={onModalClose}
         maxWidth="sm"
       >
-        <Grid container sx={postModalContainerSx}>
-          <Grid item xs={12} sx={contentsContainerSx}>
-            <PostViewContent />
-
-            <Box sx={addCommentSx}>
-              <AddComment submitButtonText={LABELS.POST_COMMENT} />
-            </Box>
-
-            <PostComments />
-          </Grid>
-        </Grid>
+        <PostLayoutDesktop />
       </ModalLayout>
     </>
   );
 };
-
-const postModalContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  height: "100%",
-  paddingY: "4px",
-});
-
-const contentsContainerSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  overflowY: "auto",
-  paddingX: 1.5,
-  paddingBottom: 5,
-});
-
-const addCommentSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  paddingY: 1.5,
-});
 
 export default PostModal;
