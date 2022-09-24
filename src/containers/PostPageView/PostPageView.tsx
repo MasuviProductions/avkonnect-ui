@@ -33,7 +33,9 @@ const PostPageView: ReactFCWithSkeleton = () => {
       </Hidden>
       <Hidden mdUp>
         <LayoutCard>
-          <PostLayoutMobile />
+          <Box pt={1}>
+            <PostLayoutMobile />
+          </Box>
         </LayoutCard>
       </Hidden>
     </Box>

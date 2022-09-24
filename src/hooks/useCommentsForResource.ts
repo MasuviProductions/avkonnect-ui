@@ -225,7 +225,6 @@ export const useCommentsForResource = (
 
   useEffect(() => {
     if (getCommentsRes?.data) {
-      console.log("getComment data obtained");
       mergeComments(getCommentsRes?.data?.comments);
       handleUpdateRelatedSources(getCommentsRes.data?.relatedSources || []);
       setNextSearchStartFromKey(
@@ -277,8 +276,6 @@ export const useCommentsForResource = (
     deleteCommentResData?.data,
     onCommentRemove,
   ]);
-
-  console.log("Triggered useCOmment hook");
 
   return {
     uptoDateComments,

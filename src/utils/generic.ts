@@ -121,7 +121,7 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
 export const generateNotificationMessage = (
   notificationActivity: INotificationResourceActivity,
   relatedSource: IRelatedSource,
-  aggregatorCount: number
+  aggregatorCount?: number
 ) => {
   switch (notificationActivity) {
     case "connectionRequest":
@@ -135,26 +135,26 @@ export const generateNotificationMessage = (
     case "postComment":
       return LABELS.NOTIFICATION_POST_COMMENT(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "postCreation":
       return LABELS.NOTIFICATION_POST_CREATION(relatedSource.name as string);
     case "postReaction":
       return LABELS.NOTIFICATION_POST_REACTION(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "commentComment":
       return LABELS.NOTIFICATION_COMMENT_COMMENT(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     case "commentCreation":
       return LABELS.NOTIFICATION_COMMENT_CREATION(relatedSource.name as string);
     case "commentReaction":
       return LABELS.NOTIFICATION_COMMENT_REACTION(
         relatedSource.name as string,
-        aggregatorCount
+        aggregatorCount!
       );
     default:
       return LABELS.NOTIFICATION_DEFAULT_MESSAGE;

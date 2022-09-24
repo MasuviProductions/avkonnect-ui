@@ -19,7 +19,6 @@ import AboutUsPage from "../pages/about-us";
 import NotificationsPage from "../pages/notifications";
 import PrivacyPolicyPage from "../pages/legal/privacy-policy";
 import { LABELS } from "./labels";
-import { Avatar } from "@mui/material";
 import PostPageView from "../containers/PostPageView";
 
 export const SESSION_REFETCH_INTERVAL = 5 * 60;

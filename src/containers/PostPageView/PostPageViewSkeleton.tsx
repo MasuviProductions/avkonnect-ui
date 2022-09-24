@@ -4,14 +4,16 @@ import { SingleFeedSkeleton } from "../Feeds/FeedsSkeleton";
 
 const PostPageViewSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="sm">
-      <LayoutCard>
-        <SingleFeedSkeleton />
-        <Box sx={commentBoxSx}>
-          <Skeleton variant="rectangular" width="100%" height="300px" />
-        </Box>
-      </LayoutCard>
-    </Container>
+    <Box mt={2}>
+      <Container maxWidth="sm">
+        <LayoutCard>
+          <SingleFeedSkeleton />
+          <Box sx={commentBoxSx}>
+            <Skeleton variant="rectangular" width="100%" height="300px" />
+          </Box>
+        </LayoutCard>
+      </Container>
+    </Box>
   );
 };
 
