@@ -26,7 +26,7 @@ const PostPage: NextPageWithSkeleton<IPostPageProps> = ({ data, error }) => {
   const { authUser } = useAuthContext();
   const router = useRouter();
 
-  if (!data) {
+  if (error) {
     return <Error.ContentUnavailable />;
   }
 
@@ -36,7 +36,7 @@ const PostPage: NextPageWithSkeleton<IPostPageProps> = ({ data, error }) => {
 
   const handleUpdateResource = () => {};
 
-  if (!authUser) {
+  if (!authUser || !data) {
     return <></>;
   }
 
@@ -74,20 +74,30 @@ export const getServerSideProps: GetServerSideProps<IPostPageProps> = async (
   const getSSRProps = async (
     session: Session
   ): Promise<GetServerSidePropsResult<IPostPageProps>> => {
-    const userPostRes = await getPost(
-      session.accessToken as string,
-      context.params.id as string
-    );
-    const transformedResponse =
-      transformUserPostResponsetoIProtectedPageProps(userPostRes);
-
-    return {
-      props: {
-        session,
-        data: transformedResponse.data,
-        error: transformedResponse.error,
-      },
-    };
+    let transformedResponse;
+    try {
+      const userPostRes = await getPost(
+        session.accessToken as string,
+        context.params.id as string
+      );
+      transformedResponse =
+        transformUserPostResponsetoIProtectedPageProps(userPostRes);
+    } catch (err) {
+      const userPostRes: AVKonnectApiResponse<IPostApiResponse> = {
+        success: false,
+        data: undefined,
+      };
+      transformedResponse =
+        transformUserPostResponsetoIProtectedPageProps(userPostRes);
+    } finally {
+      return {
+        props: {
+          session,
+          data: transformedResponse?.data,
+          error: transformedResponse?.error,
+        },
+      };
+    }
   };
   return await handleServerSideAuthenticationRedirect(context, getSSRProps);
 };

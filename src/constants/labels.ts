@@ -31,7 +31,7 @@ export const LABELS = {
   PAGE_NOT_FOUND_UH_OH: "Uh-ohh...",
   PAGE_NOT_FOUND_SNOOP: "Were you snooping around?",
   PAGE_NOT_FOUND_404: "404 - Page doesn't Exist...",
-  GO_HOME_BTN: "Go Home",
+  GO_HOME_BTN: "Take me Home",
 
   // Home
   MADE_IN_INDIA: "Made In India",
@@ -200,6 +200,7 @@ export const LABELS = {
     "Our features help you match with other media professionals. You get to meet actors, singers, script writers, journalists, directors and many more from exploring on our platform.",
   DESCRIPTION_PARAGRAPH_2:
     "AVkonnect offers numerous opportunities for advancement in your career or business. We support your growth, and our open community of filmmakers, content creators, media curators, and others will help you along the way.",
+
   // User Projects Labels
   PROJECTS_TITLE: "Projects",
   ADD_PROJECT: "Add project",
@@ -338,7 +339,7 @@ export const LABELS = {
   CREATE_POST_PLACEHOLDER: `Pen your thoughts..`,
   REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
 
-  // Feed and Post
+  // Post
   SHARE: "Share",
   COMMENT: "Comment",
   REACTION_PRETEXT_LIKE: "likes this",
@@ -347,4 +348,11 @@ export const LABELS = {
   REACTION_PRETEXT_SUPPORT: "supports this",
   REACTION_PRETEXT_SAD: "expresses their empathy",
   REACTION_PRETEXT_DEFAULT: "reacted to this",
+
+  // Page Error Messages
+  CONTENT_UNAVAILABLE_TITLE: "The Content you are looking for is Unavailable",
+  CONTENT_BANNED_TITLE:
+    "This Content was Banned for voilating AVKonnect's Terms of Service.",
+  GOTO_TOS_LINK: "Get to know AVKonnect's ToS",
+  CONTENT_DELETED_TITLE: "The Content was deleted by the User or Moderators.",
 };
