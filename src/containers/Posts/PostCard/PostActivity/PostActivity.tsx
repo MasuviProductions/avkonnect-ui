@@ -113,6 +113,7 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
           >
             {userReaction ? (
               <Box
+                height="40px"
                 display="flex"
                 alignItems="flex-end"
                 justifyContent="center"
@@ -127,6 +128,7 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
               </Box>
             ) : (
               <Box
+                height="40px"
                 display="flex"
                 alignItems="flex-end"
                 justifyContent="center"

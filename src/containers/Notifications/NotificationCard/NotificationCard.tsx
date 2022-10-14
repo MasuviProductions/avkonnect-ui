@@ -57,7 +57,8 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
       <Link
         href={getNotificationTypeBasedLink(
           notificationActivity,
-          notificationResourceId
+          notificationResourceId,
+          relatedSource.id
         )}
         passHref
       >

@@ -163,10 +163,14 @@ export const generateNotificationMessage = (
 
 export const getNotificationTypeBasedLink = (
   notificationActivity: INotificationResourceActivity,
-  postId?: string
+  postId?: string,
+  userId?: string
 ): string => {
   switch (notificationActivity) {
     case "connectionRequest":
+      return `${compile(APP_ROUTES.PROFILE.route)({
+        id: userId,
+      })}`;
     case "connectionConfirmation":
       return `${APP_ROUTES.MY_NETWORK.route}`;
     case "postComment":
