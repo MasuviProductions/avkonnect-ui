@@ -26,7 +26,7 @@ export const POST_ACTIONS_MENU: ICustomMenuItem<IPostActionType>[] = [
   },
 ];
 
-export const OWN_POST_ACTIONS = [...POST_ACTIONS,"delete", "edit"] as const;
+export const OWN_POST_ACTIONS = [...POST_ACTIONS, "delete", "edit"] as const;
 export type IOwnPostActionType = typeof OWN_POST_ACTIONS[number];
 export const OWN_POST_ACTIONS_MENU: ICustomMenuItem<IOwnPostActionType>[] = [
   ...POST_ACTIONS_MENU,
