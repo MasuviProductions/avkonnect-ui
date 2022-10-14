@@ -203,3 +203,21 @@ export const getTextFieldColorBasedOnMessageType = (
 export const getRandomNumber = (digits: number) => {
   return Math.ceil(Math.random() * 10 ** digits);
 };
+
+export const copyTextToClipboard = async (text: string) => {
+  if ('clipboard' in navigator) {
+    return await navigator.clipboard.writeText(text);
+  } 
+  else {
+    return document.execCommand('copy', true, text);
+  }
+}
+
+export const getLinkToPost = (id: string) => {
+  const origin = typeof window !== 'undefined' && window.location.origin
+    ? window.location.origin
+    : '';
+
+  const URL = `${origin}${compile(APP_ROUTES.POST_PAGE.route)({ id: id })}`;
+  return URL;
+}

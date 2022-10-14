@@ -347,4 +347,6 @@ export const LABELS = {
   REACTION_PRETEXT_SUPPORT: "supports this",
   REACTION_PRETEXT_SAD: "expresses their empathy",
   REACTION_PRETEXT_DEFAULT: "reacted to this",
+  LINK_COPY_SUCCESSFULL: "Link copied to clipboard",
+  LINK_COPY_FAILED: "Link could not be copied",
 };
