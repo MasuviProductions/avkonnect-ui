@@ -222,6 +222,6 @@ export const getLinkToPost = (id: string) => {
     ? window.location.origin
     : '';
 
-  const URL = `${origin}${compile(APP_ROUTES.POST_PAGE.route)({ id: id })}`;
-  return URL;
+  const url = `${origin}${compile(APP_ROUTES.POST_PAGE.route)({ id: id })}`;
+  return url;
 }
