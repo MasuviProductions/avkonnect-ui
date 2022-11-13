@@ -1,6 +1,5 @@
-import { Box, Button, Grid, Theme } from "@mui/material";
-import { SxProps } from "@mui/system";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Box, Button, Grid, Theme, Menu, MenuItem, ThemeOptions, IconButton } from "@mui/material";
+import { SxProps, SystemStyleObject } from "@mui/system";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import { signOut } from "next-auth/react";
 import LayoutCard from "../../../components/LayoutCard";
@@ -12,17 +11,30 @@ import ProfileDropdownItem from "./ProfileDropdownItem";
 import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { grey } from "@mui/material/colors";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { THEMES_LIST } from "../../../constants/theme";
+import { useState } from "react";
+import Switch from '@mui/material/Switch';
+import {LightMode, DarkMode, Settings, Logout, Label} from '@mui/icons-material';
 
 interface IProfileDropdownProps {
   onClick?: () => void;
   onFeedbackClick?: () => void;
+  onThemeSelect: (selectedTheme: ThemeOptions) => void;
+  theme: ThemeOptions;
 }
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
+  theme,
   onClick,
   onFeedbackClick,
+  onThemeSelect,
 }) => {
   const { authUser } = useAuthContext();
+
+  const handleThemeSwitch = () => {
+    onThemeSelect(theme===THEMES_LIST[0]?THEMES_LIST[1]:THEMES_LIST[0]);
+  };
 
   const handleSignOut = () => {
     signOut({
@@ -62,8 +74,27 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
               </Link>
             </Grid>
 
-            <Grid item xs={12} pb={2}>
-              <Box sx={profileFeedbackItem} py={1}>
+            <Grid item xs={12}>
+              <Box sx={profileDropdown}>
+                <ProfileDropdownItem
+                  title={theme.name}
+                  onClick={handleThemeSwitch}
+                  showArrow={false}
+                  extraElement=
+                  { <Switch
+                      checked={theme!==THEMES_LIST[0]}
+                      onChange={handleThemeSwitch}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                    />}
+                  description={LABELS.CHANGE_THEME}
+                >    
+                  {theme===THEMES_LIST[0]?<LightMode/>:<DarkMode/>}          
+                </ProfileDropdownItem>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Box sx={profileDropdown}>
                 <ProfileDropdownItem
                   title={LABELS.FEEDBACK}
                   description={LABELS.FEEDBACK_HELPER}
@@ -80,7 +111,7 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
                 title={LABELS.LOGOUT}
                 onClick={handleSignOut}
               >
-                <LogoutIcon />
+                <Logout />
               </ProfileDropdownItem>
             </Grid>
           </Grid>
@@ -90,6 +121,7 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
   );
 };
 
+
 const viewProfileButton: SxProps<Theme> = {
   width: "100%",
 };
@@ -98,8 +130,8 @@ const profileDropdownContainer: SxProps<Theme> = {
   width: "280px",
 };
 
-const profileFeedbackItem: SxProps<Theme> = (theme: Theme) => ({
-  borderTop: `2px solid ${theme.palette.secondary.dark}`,
+const profileDropdown: SxProps<Theme> = (theme: Theme) => ({
+  // borderTop: `2px solid ${theme.palette.secondary.dark}`,
   borderBottom: `2px solid ${theme.palette.secondary.dark}`,
 });
 

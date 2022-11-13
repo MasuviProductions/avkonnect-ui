@@ -15,6 +15,10 @@ export const LABELS = {
   SHOW_LESS: "Show less",
   CANCEL: "Cancel",
 
+  // Settings
+  SETTINGS_AND_PRIVACY: "Settings & Privacy",
+  CHANGE_THEME: "Change theme",
+
   // Uninitialized Context Error Messages
   RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
   TEXT_EDITOR_CONTEXT_UNINITIALIZED: "TextEditorContext not initialized",

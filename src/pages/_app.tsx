@@ -57,7 +57,7 @@ const MyApp = ({
                 <UserNotificationsContextProvider>
                   <UserProfileModalContextProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <Header onThemeSelect={onThemeSelect} />
+                      <Header onThemeSelect={onThemeSelect} theme={theme}/>
                       <Container maxWidth="lg" sx={containerSx}>
                         <WithPageSkeleton>
                           <Component {...pageProps} />
