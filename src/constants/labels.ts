@@ -310,6 +310,12 @@ export const LABELS = {
   CREATE_POST: "Create a post",
   EDIT_POST: "Edit post",
   SUBMIT_POST: "Post",
+  POST_CREATE_SUCCESS: "Posted successfully",
+  POST_CREATE_FAILURE: "Couldn't create post",
+  POST_EDIT_SUCCESS: "Post edited successfully",
+  POST_EDIT_FAILURE: "Post edited successfully",
+  POST_DELETE_SUCCESS: "Post deleted successfully",
+  POST_DELETE_FAILURE: "Couldn't delete post",
 
   // Comments
   ADD_COMMENT_PLACEHOLDER: "Add a comment..",
@@ -320,6 +326,12 @@ export const LABELS = {
   REPLY_COUNT: (replyCount: number) =>
     `${replyCount} ${replyCount === 1 ? "Reply" : "Replies"}`,
   VIEW_MORE_COMMENTS: "View more comments",
+  COMMENT_CREATE_SUCCESS: "Commented successfully",
+  COMMENT_CREATE_FAILURE: "Couldn't comment",
+  COMMENT_EDIT_SUCCESS: "Comment edited successfully",
+  COMMENT_EDIT_FAILURE: "Couldn't edit comment",
+  COMMENT_DELETE_SUCCESS: "Comment deleted successfully",
+  COMMENT_DELETE_FAILURE: "Couldn't delete comment",
 
   // Reactions
   LOVE: "Love",

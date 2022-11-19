@@ -7,6 +7,8 @@ import {
   IPostContentApiModel,
 } from "../interfaces/api/external";
 import { deletePost, patchPost } from "../utils/api";
+import { useSnackbarContext } from "../contexts/SnackbarContext";
+import { LABELS } from "../constants/labels";
 
 const usePost = (
   postId: string,
@@ -51,6 +53,7 @@ const usePost = (
       refetchOnWindowFocus: false,
     }
   );
+  const { setSnackbar } = useSnackbarContext();
 
   const updatePost = (post: IPatchPostApiRequest) => {
     setUpdatePostReqBody(post);
@@ -59,6 +62,24 @@ const usePost = (
   const removePost = () => {
     triggerDeletePostApi();
   };
+
+  useEffect(() => {
+    if (deletePostStatus==="success") {
+      setSnackbar?.({ message: LABELS.POST_DELETE_SUCCESS, messageType: "success" });
+    }
+    if (deletePostStatus==="error") {
+      setSnackbar?.({ message: LABELS.POST_DELETE_FAILURE, messageType: "error" });
+    }
+  }, [deletePostStatus, setSnackbar]);
+
+  useEffect(() => {
+    if (patchPostStatus==="success") {
+      setSnackbar?.({ message: LABELS.POST_EDIT_SUCCESS, messageType: "success" });
+    }
+    if (patchPostStatus==="error") {
+      setSnackbar?.({ message: LABELS.POST_EDIT_FAILURE, messageType: "error" });
+    }
+  }, [patchPostStatus, setSnackbar]);
 
   useEffect(() => {
     if (deletePostData) {

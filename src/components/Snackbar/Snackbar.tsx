@@ -59,6 +59,7 @@ const snackbarAlert: SxProps<Theme> = (theme: Theme) => ({
   width: "100%",
   backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
+  boxShadow: `0px 0px 10px ${theme.palette.text.secondary}77`,
 });
 
 export default Snackbar;

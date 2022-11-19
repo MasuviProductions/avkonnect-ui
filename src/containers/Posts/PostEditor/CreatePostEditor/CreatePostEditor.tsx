@@ -16,6 +16,7 @@ import { createPost } from "../../../../utils/api";
 import DRAFTJS from "../../../../utils/draftjs";
 import PostEditorModal from "../PostEditorModal";
 import PostEditorOverlay from "../PostEditorOverlay";
+import { useSnackbarContext } from "../../../../contexts/SnackbarContext";
 
 interface ICreatePostEditorProps {
   showPostEditor: boolean;
@@ -65,13 +66,19 @@ const CreatePostEditor: React.FC<ICreatePostEditorProps> = ({
     setCreatePostReqBody(postReqBody);
   };
 
+  const { setSnackbar } = useSnackbarContext();
+
   useEffect(() => {
     if (createPostStatus === "success") {
       setCreatePostReqBody(undefined);
       clearCreatePostQuery();
       onPostEditorClose();
+      setSnackbar?.({ message: LABELS.POST_CREATE_SUCCESS, messageType: "success" });
+    }    
+    if (createPostStatus === "error") {
+      setSnackbar?.({ message: LABELS.POST_CREATE_FAILURE, messageType: "error" });
     }
-  }, [clearCreatePostQuery, createPostStatus, onPostEditorClose]);
+  }, [clearCreatePostQuery, createPostStatus, onPostEditorClose, setSnackbar]);
 
   return (
     <>
