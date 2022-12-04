@@ -12,15 +12,18 @@ import ProfileDropdownItem from "./ProfileDropdownItem";
 import Link from "next/link";
 import { compile } from "path-to-regexp";
 import { grey } from "@mui/material/colors";
+import {Settings} from "@mui/icons-material";
 
 interface IProfileDropdownProps {
   onClick?: () => void;
   onFeedbackClick?: () => void;
+  onSettingsClick?: () => void;
 }
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
   onClick,
   onFeedbackClick,
+  onSettingsClick,
 }) => {
   const { authUser } = useAuthContext();
 
@@ -61,9 +64,21 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
                 </Button>
               </Link>
             </Grid>
+            
+            <Grid item xs={12}>
+              <Box sx={profileDropdown}>
+                <ProfileDropdownItem
+                  title={LABELS.SETTINGS_AND_PRIVACY}
+                  onClick={onSettingsClick}
+                  showArrow={false}
+                >
+                  <Settings />
+                </ProfileDropdownItem>
+              </Box>
+            </Grid>
 
             <Grid item xs={12} pb={2}>
-              <Box sx={profileFeedbackItem} py={1}>
+              <Box sx={profileDropdown} py={1}>
                 <ProfileDropdownItem
                   title={LABELS.FEEDBACK}
                   description={LABELS.FEEDBACK_HELPER}
@@ -98,8 +113,8 @@ const profileDropdownContainer: SxProps<Theme> = {
   width: "280px",
 };
 
-const profileFeedbackItem: SxProps<Theme> = (theme: Theme) => ({
-  borderTop: `2px solid ${theme.palette.secondary.dark}`,
+const profileDropdown: SxProps<Theme> = (theme: Theme) => ({
+  // borderTop: `2px solid ${theme.palette.secondary.dark}`,
   borderBottom: `2px solid ${theme.palette.secondary.dark}`,
 });
 

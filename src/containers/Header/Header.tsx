@@ -32,6 +32,7 @@ import FeedbackForm from "./FeedbackForm";
 import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
 import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
+import {useRouter} from "next/router";
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
@@ -45,6 +46,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   const [showProfileDropdown, setShowProfileDropdown] =
     useState<boolean>(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleThemeSelect = (themeOption: ThemeOptions) => {
     handleThemeClose();
@@ -66,6 +68,12 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
   const handleProfileDropdownClose = useCallback(() => {
     setShowProfileDropdown(false);
   }, []);
+
+           
+  const handleSettingsClick = () => {
+    handleProfileDropdownClose();
+    router.push(APP_ROUTES.SETTINGS.route);
+  }
 
   const handleFeedbackModalOpen = () => {
     handleProfileDropdownClose();
@@ -203,6 +211,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                         <ProfileDropdown
                           onClick={handleProfileDropdownClose}
                           onFeedbackClick={handleFeedbackModalOpen}
+                          onSettingsClick={handleSettingsClick}
                         />
                       </Box>
                     )}
