@@ -24,7 +24,7 @@ const getPlainText = (editorState: EditorState): string => {
   const currentContent = editorState.getCurrentContent();
   let plainText = "";
   currentContent.getBlocksAsArray().forEach((item) => {
-    plainText = item.getText() + plainText;
+    plainText += item.getText() + "\n";
   });
   return plainText;
 };
