@@ -14,6 +14,7 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
   CANCEL: "Cancel",
+  SHARE_VIA: "Share via",
 
   // Uninitialized Context Error Messages
   RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
@@ -339,8 +340,10 @@ export const LABELS = {
   REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
 
   // Feed and Post
-  SHARE: "Share",
+  SEND: "Send",
   COMMENT: "Comment",
+  SHARE_POST: "Share this post",
+  COPY_LINK_TO_POST: "Copy link to post",
   REACTION_PRETEXT_LIKE: "likes this",
   REACTION_PRETEXT_LOVE: "loves this",
   REACTION_PRETEXT_LAUGH: "finds this funny",

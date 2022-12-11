@@ -1,4 +1,5 @@
-import { useState, MouseEvent } from "react";
+import { DeleteForever, Edit, Link, Share } from "@mui/icons-material";
+import { useState, MouseEvent, useMemo, useEffect } from "react";
 import { IconButton, Box, Theme } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { SystemStyleObject } from "@mui/system";
@@ -30,10 +31,25 @@ const PostActions: React.FC = () => {
 
   const { setSnackbar } = useSnackbarContext();
 
-  const handleCopyLink = () => {
-    const URL = getLinkToPost(id);
+  const shareUrl = getLinkToPost(id);
 
-    copyTextToClipboard(URL)
+  const navigatorShareObj = {
+    title: LABELS.SHARE_POST,
+    url: shareUrl,
+  }
+  
+  useEffect(()=>{
+    POST_ACTIONS_MENU[0].label=(navigator as any).canShare?.(navigatorShareObj) ? LABELS.SHARE_VIA : LABELS.COPY_LINK_TO_POST;
+    POST_ACTIONS_MENU[0].icon=(navigator as any).canShare?.(navigatorShareObj) ? Share : Link; 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
+  const handleShareClick = () => {
+    navigator.share(navigatorShareObj);
+  };
+
+  const handleCopyClick = () => {
+    copyTextToClipboard(shareUrl)
       .then(() => {
         setSnackbar?.(() => ({
           message: LABELS.LINK_COPY_SUCCESSFULL,
@@ -77,7 +93,7 @@ const PostActions: React.FC = () => {
       }
       
       case "copyLink": {
-        handleCopyLink();
+        (navigator as any).canShare?.(navigatorShareObj) ? handleShareClick() : handleCopyClick();
         handlePostActionsClose();
         return;
       }
