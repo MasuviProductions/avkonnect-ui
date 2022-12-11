@@ -5,7 +5,6 @@ import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 import CustomButton from "../../../../components/CustomButton";
 import { LABELS } from "../../../../constants/labels";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
-import { useEffect } from "react";
 
 interface IPostActionBarProps {}
 
@@ -34,7 +33,6 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
             <Grid item></Grid>
           </Grid>
         </Grid>
-        {isEditorEmpty.toString()}
         <Grid item>
           <CustomButton onClick={handlePostCreate} disabled={isEditorEmpty}>
             {LABELS.SUBMIT_POST}
