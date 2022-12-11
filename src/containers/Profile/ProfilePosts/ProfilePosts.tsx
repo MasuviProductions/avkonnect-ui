@@ -180,7 +180,7 @@ const ProfilePosts: ReactFCWithSkeleton<IProfilePostsProps> = () => {
             <PostCard />
           </ResourceProvider>
         </Grid>
-      )).reverse()}
+      ))}
 
       {getUserPostsFetching && (
         <Grid item xs={12}>
