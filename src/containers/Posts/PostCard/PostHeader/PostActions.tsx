@@ -1,8 +1,9 @@
-import { DeleteForever, Edit, Link, Share } from "@mui/icons-material";
+import { Link, Share } from "@mui/icons-material";
 import { useState, MouseEvent, useMemo, useEffect } from "react";
 import { IconButton, Box, Theme } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { SystemStyleObject } from "@mui/system";
+import _ from "lodash";
 
 import CustomPopper from "../../../../components/CustomPopper/CustomPopper";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
@@ -10,17 +11,22 @@ import { LABELS } from "../../../../constants/labels";
 import CustomMenu from "../../../../components/CusomMenu/CustomMenu";
 import {
   POST_ACTIONS_MENU,
-  IOwnPostActionType,
-  OWN_POST_ACTIONS_MENU,
+  IUserPostActionType,
+  USER_POST_ACTIONS_MENU,
 } from "../../../../constants/menu";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { useSnackbarContext } from "../../../../contexts/SnackbarContext";
 import { copyTextToClipboard, getLinkToPost } from "../../../../utils/generic";
 
+interface INavigatorShareObj {
+  title: string;
+  url: string;
+}
+
 const PostActions: React.FC = () => {
   const resourceContext = useResourceContext();
   const { authUser } = useAuthContext();
-  
+
   if (!resourceContext) {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
@@ -33,16 +39,31 @@ const PostActions: React.FC = () => {
 
   const shareUrl = getLinkToPost(id);
 
-  const navigatorShareObj = {
-    title: LABELS.SHARE_POST,
-    url: shareUrl,
-  }
-  
-  useEffect(()=>{
-    POST_ACTIONS_MENU[0].label=(navigator as any).canShare?.(navigatorShareObj) ? LABELS.SHARE_VIA : LABELS.COPY_LINK_TO_POST;
-    POST_ACTIONS_MENU[0].icon=(navigator as any).canShare?.(navigatorShareObj) ? Share : Link; 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  const navigatorShareObj: INavigatorShareObj = useMemo(
+    () => ({
+      title: LABELS.SHARE_POST,
+      url: shareUrl,
+    }),
+    [shareUrl]
+  );
+
+  const isShareAPIAvailable = !!(navigator as any).canShare(navigatorShareObj);
+
+  const postActionsMenu = useMemo(() => {
+    const actionsMenu = _.cloneDeep(
+      authUser?.id === sourceId ? USER_POST_ACTIONS_MENU : POST_ACTIONS_MENU
+    );
+    actionsMenu.forEach((menuItem) => {
+      if (menuItem.id === "copyLink") {
+        menuItem.label = isShareAPIAvailable
+          ? LABELS.SHARE_VIA
+          : LABELS.COPY_LINK_TO_POST;
+        menuItem.icon = isShareAPIAvailable ? Share : Link;
+      }
+    });
+
+    return actionsMenu;
+  }, [authUser?.id, sourceId, isShareAPIAvailable]);
 
   const handleShareClick = () => {
     navigator.share(navigatorShareObj);
@@ -63,7 +84,7 @@ const PostActions: React.FC = () => {
         }));
         console.log(err);
       });
-  }
+  };
 
   const handlePostActionsOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -78,7 +99,7 @@ const PostActions: React.FC = () => {
   };
 
   const handleMenuItemClick = (id: string) => {
-    const menuItemId = id as IOwnPostActionType;
+    const menuItemId = id as IUserPostActionType;
     switch (menuItemId) {
       case "delete": {
         handlePostDelete();
@@ -91,9 +112,9 @@ const PostActions: React.FC = () => {
         handlePostActionsClose();
         return;
       }
-      
+
       case "copyLink": {
-        (navigator as any).canShare?.(navigatorShareObj) ? handleShareClick() : handleCopyClick();
+        isShareAPIAvailable ? handleShareClick() : handleCopyClick();
         handlePostActionsClose();
         return;
       }
@@ -115,7 +136,7 @@ const PostActions: React.FC = () => {
         placement="bottom-end"
       >
         <CustomMenu
-          menuItems={authUser?.id === sourceId ? OWN_POST_ACTIONS_MENU : POST_ACTIONS_MENU}
+          menuItems={postActionsMenu}
           onClickMenuItem={handleMenuItemClick}
         />
       </CustomPopper>

@@ -11,7 +11,6 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import ProfileDropdownItem from "./ProfileDropdownItem";
 import Link from "next/link";
 import { compile } from "path-to-regexp";
-import { grey } from "@mui/material/colors";
 
 interface IProfileDropdownProps {
   onClick?: () => void;
