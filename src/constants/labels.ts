@@ -14,6 +14,7 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
   CANCEL: "Cancel",
+  DARK_MODE: "Dark mode",
 
   // Settings
   SETTINGS_AND_PRIVACY: "Settings & Privacy",

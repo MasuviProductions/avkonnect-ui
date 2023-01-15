@@ -123,7 +123,7 @@ const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
 
               {authUser && (
                 <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
-                  <IconButton sx={{ paddingX: 2 }}>
+                  <IconButton sx={iconBtnSx}>
                     <PeopleIcon fontSize="large" sx={contrastTextSx} />
                   </IconButton>
                 </Link>
@@ -149,7 +149,7 @@ const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
 
               {authUser && (
                 <ClickAwayListener onClickAway={handleProfileDropdownClose}>
-                  <Box sx={userDropdownContainer}>
+                  <Box sx={userDropdownContainer} ml={1}>
                     <UserMiniCard
                       id={authUser.id}
                       name={authUser.name}
@@ -163,7 +163,7 @@ const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
                       <Box sx={userDropdown}>
                         <ProfileDropdown
                           theme={theme}
-                          onThemeSelect={onThemeSelect} 
+                          onThemeSelect={onThemeSelect}
                           onClick={handleProfileDropdownClose}
                           onFeedbackClick={handleFeedbackModalOpen}
                         />
@@ -221,7 +221,7 @@ const notificationBadgeSx: SxProps<Theme> = {
   },
 };
 
-const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
+const iconBtnSx: SxProps<Theme> = { paddingX: 2 };
 
 const contrastTextSx = (theme: Theme): SystemStyleObject<Theme> => ({
   color: theme.palette.text.navbar,
