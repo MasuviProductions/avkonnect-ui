@@ -22,6 +22,8 @@ import {
 } from "../utils/api";
 import { transformUsersListToUserIdUserMap } from "../utils/transformers";
 import useInfiniteLoading from "./useInfiniteLoading";
+import { useSnackbarContext } from "../contexts/SnackbarContext";
+import { LABELS } from "../constants/labels";
 
 export type ICommentsResponseApiModel = IGetPostCommentsApiResponse &
   IGetCommentsCommentsApiResponse;
@@ -68,6 +70,7 @@ export const useCommentsForResource = (
     IPatchCommentApiRequest | undefined
   >();
   const [commentToDelete, setCommentToDelete] = useState<string | undefined>();
+  const { setSnackbar } = useSnackbarContext();
 
   const {
     data: getCommentsRes,
@@ -103,7 +106,7 @@ export const useCommentsForResource = (
   const {
     data: createCommentResData,
     // refetch: triggerCreateCommentApi,
-    // status: createCommentStatus,
+    status: createCommentStatus,
     isFetching: createCommentFetching,
     remove: clearCreateCommentQueryData,
   } = useQuery(
@@ -119,7 +122,7 @@ export const useCommentsForResource = (
   const {
     data: patchCommentResData,
     // refetch: triggerCreateCommentApi,
-    // status: createCommentStatus,
+    status: patchCommentStatus,
     isFetching: patchCommentFetching,
     remove: clearPatchCommentQueryData,
   } = useQuery(
@@ -135,7 +138,7 @@ export const useCommentsForResource = (
 
   const {
     data: deleteCommentResData,
-    // status: deleteCommentStatus,
+    status: deleteCommentStatus,
     isFetching: deleteCommentFetching,
     remove: clearDeleteCommentQueryData,
   } = useQuery(
@@ -222,6 +225,33 @@ export const useCommentsForResource = (
     },
     [handleUpdateRelatedSources, mergeComments]
   );
+
+  useEffect(() => {
+    if (createCommentStatus==="success") {
+      setSnackbar?.({ message: LABELS.COMMENT_CREATE_SUCCESS, messageType: "success" });
+    }
+    if (createCommentStatus==="error") {
+      setSnackbar?.({ message: LABELS.COMMENT_CREATE_FAILURE, messageType: "error" });
+    }
+  }, [createCommentStatus, setSnackbar]);
+
+  useEffect(() => {
+    if (deleteCommentStatus==="success") {
+      setSnackbar?.({ message: LABELS.COMMENT_DELETE_SUCCESS, messageType: "success" });
+    }
+    if (deleteCommentStatus==="error") {
+      setSnackbar?.({ message: LABELS.COMMENT_DELETE_FAILURE, messageType: "error" });
+    }
+  }, [deleteCommentStatus, setSnackbar]);
+
+  useEffect(() => {
+    if (patchCommentStatus==="success") {
+      setSnackbar?.({ message: LABELS.COMMENT_EDIT_SUCCESS, messageType: "success" });
+    }
+    if (patchCommentStatus==="error") {
+      setSnackbar?.({ message: LABELS.COMMENT_EDIT_FAILURE, messageType: "error" });
+    }
+  }, [patchCommentStatus, setSnackbar]);
 
   useEffect(() => {
     if (getCommentsRes?.data) {

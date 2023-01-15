@@ -57,7 +57,10 @@ const SignIn: ReactFCWithSkeleton = () => {
         </Hidden>
       </Box>
     );
-  else return <></>;
+  else {
+    router.push(APP_ROUTES.ROOT.route);
+    return <></>;
+  }
 };
 
 SignIn.Skeleton = SignInSkeleton;

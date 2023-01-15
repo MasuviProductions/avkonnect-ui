@@ -109,9 +109,10 @@ const SkillsCard: React.FC = () => {
     updatedSkillsets?.every((skillset) => {
       if (skillset.name === skillName) {
         for (let i = 0; i <= skillset.endorsers.length; i += 1) {
-          if ((skillset.endorsers[i].endorserId = user.id)) {
-            skillset.endorsers[i] =
-              skillset.endorsers[skillset.endorsers.length - 1];
+          if (skillset.endorsers[i].endorserId === authUser?.id) {
+            skillset.endorsers[i] = {
+              ...skillset.endorsers[skillset.endorsers.length - 1],
+            };
             skillset.endorsers.pop();
             break;
           }

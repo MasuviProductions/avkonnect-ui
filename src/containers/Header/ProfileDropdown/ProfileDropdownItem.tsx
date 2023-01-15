@@ -7,6 +7,7 @@ interface IProfileDropdownItemProps {
   description?: string;
   onClick?: () => void;
   showArrow?: boolean;
+  extraElement?: JSX.Element;
 }
 
 const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
@@ -14,6 +15,7 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
   description,
   onClick,
   showArrow = true,
+  extraElement,
   children,
 }) => {
   return (
@@ -24,7 +26,7 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
         justifyContent="space-between"
         alignItems="center"
       >
-        <Grid item xs={showArrow ? 10 : 12}>
+        <Grid item xs={showArrow || extraElement ? 7 : 12} >
           <Grid container>
             {!!children && <Grid item>{children}</Grid>}
             <Grid item px={1} ml={1}>
@@ -39,6 +41,11 @@ const ProfileDropdownItem: React.FC<IProfileDropdownItemProps> = ({
             </Grid>
           </Grid>
         </Grid>
+        {extraElement && (
+          <Grid item>
+            {extraElement}
+          </Grid>
+        )}
         {showArrow && (
           <Grid item>
             <ArrowForwardIcon />
