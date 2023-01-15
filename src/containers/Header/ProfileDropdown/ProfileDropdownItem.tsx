@@ -1,10 +1,8 @@
-import { Box, Grid, SvgIconTypeMap, Theme, Typography } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { Box, Grid, Theme, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForwardIos";
 import { SxProps } from "@mui/system";
 
 interface IProfileDropdownItemProps {
-  // Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   title: string;
   description?: string;
   onClick?: () => void;

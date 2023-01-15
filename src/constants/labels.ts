@@ -14,6 +14,7 @@ export const LABELS = {
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
   CANCEL: "Cancel",
+  SHARE_VIA: "Share via",
   DARK_MODE: "Dark mode",
 
   // Settings
@@ -356,12 +357,16 @@ export const LABELS = {
   REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
 
   // Feed and Post
-  SHARE: "Share",
+  SEND: "Send",
   COMMENT: "Comment",
+  SHARE_POST: "Share this post",
+  COPY_LINK_TO_POST: "Copy link to post",
   REACTION_PRETEXT_LIKE: "likes this",
   REACTION_PRETEXT_LOVE: "loves this",
   REACTION_PRETEXT_LAUGH: "finds this funny",
   REACTION_PRETEXT_SUPPORT: "supports this",
   REACTION_PRETEXT_SAD: "expresses their empathy",
   REACTION_PRETEXT_DEFAULT: "reacted to this",
+  LINK_COPY_SUCCESSFULL: "Link copied to clipboard",
+  LINK_COPY_FAILED: "Link could not be copied",
 };
