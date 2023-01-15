@@ -163,7 +163,7 @@ const TextEditorProvider: React.FC<ITextEditorProvider> = ({
         mentionSuggestionsComponent: MentionSuggestionsComponent,
         saveContent: saveContent,
         focusEditor,
-        isEditorEmpty: !editorState.getCurrentContent().hasText(),
+        isEditorEmpty: editorState.getCurrentContent().getPlainText().trim().length===0 ,
       }}
     >
       {children}

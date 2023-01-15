@@ -44,5 +44,5 @@ export const parseContentText = (
     );
   });
 
-  return <Typography variant="body2">{replacedText}</Typography>;
+  return <Typography variant="body2" style={{whiteSpace: 'pre-line'}}>{replacedText}</Typography>;
 };
