@@ -1,31 +1,38 @@
-import { Box, Button, Grid, Theme } from "@mui/material";
+import { Box, Button, Grid, Theme, ThemeOptions } from "@mui/material";
 import { SxProps } from "@mui/system";
-import LogoutIcon from "@mui/icons-material/Logout";
 import FeedbackIcon from "@mui/icons-material/Feedback";
+import Switch from "@mui/material/Switch";
+import { DarkMode, Logout, Settings } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { compile } from "path-to-regexp";
 import LayoutCard from "../../../components/LayoutCard";
 import UserMiniCard from "../../../components/UserMiniCard";
 import { APP_ROUTES } from "../../../constants/app";
 import { LABELS } from "../../../constants/labels";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import ProfileDropdownItem from "./ProfileDropdownItem";
-import Link from "next/link";
-import { compile } from "path-to-regexp";
-import { grey } from "@mui/material/colors";
-import {Settings} from "@mui/icons-material";
+import { THEMES_LIST } from "../../../constants/theme";
 
 interface IProfileDropdownProps {
   onClick?: () => void;
   onFeedbackClick?: () => void;
   onSettingsClick?: () => void;
+  onThemeSelect: (selectedTheme: ThemeOptions) => void;
+  theme: ThemeOptions;
 }
 
 const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
+  theme,
   onClick,
   onFeedbackClick,
+  onThemeSelect,
   onSettingsClick,
 }) => {
   const { authUser } = useAuthContext();
+  const handleThemeSwitch = () => {
+    onThemeSelect(theme === THEMES_LIST[0] ? THEMES_LIST[1] : THEMES_LIST[0]);
+  };
 
   const handleSignOut = () => {
     signOut({
@@ -64,21 +71,29 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
                 </Button>
               </Link>
             </Grid>
-            
+
             <Grid item xs={12}>
               <Box sx={profileDropdown}>
                 <ProfileDropdownItem
-                  title={LABELS.SETTINGS_AND_PRIVACY}
-                  onClick={onSettingsClick}
+                  title={LABELS.DARK_MODE}
+                  onClick={handleThemeSwitch}
                   showArrow={false}
+                  extraElement={
+                    <Switch
+                      checked={theme !== THEMES_LIST[0]}
+                      onChange={handleThemeSwitch}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                  }
+                  description={LABELS.CHANGE_THEME}
                 >
-                  <Settings />
+                  <DarkMode />
                 </ProfileDropdownItem>
               </Box>
             </Grid>
 
-            <Grid item xs={12} pb={2}>
-              <Box sx={profileDropdown} py={1}>
+            <Grid item xs={12}>
+              <Box sx={profileDropdown}>
                 <ProfileDropdownItem
                   title={LABELS.FEEDBACK}
                   description={LABELS.FEEDBACK_HELPER}
@@ -91,12 +106,27 @@ const ProfileDropdown: React.FC<IProfileDropdownProps> = ({
             </Grid>
 
             <Grid item xs={12}>
-              <ProfileDropdownItem
-                title={LABELS.LOGOUT}
-                onClick={handleSignOut}
-              >
-                <LogoutIcon />
-              </ProfileDropdownItem>
+              <Box sx={profileDropdown}>
+                <ProfileDropdownItem
+                  title={LABELS.SETTINGS_AND_PRIVACY}
+                  onClick={onSettingsClick}
+                  showArrow={false}
+                  // description={LABELS.CHANGE_THEME}
+                >
+                  <Settings />
+                </ProfileDropdownItem>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Box sx={{pt:'1px'}}>
+                <ProfileDropdownItem
+                  title={LABELS.LOGOUT}
+                  onClick={handleSignOut}
+                >
+                  <Logout />
+                </ProfileDropdownItem>
+              </Box>
             </Grid>
           </Grid>
         </LayoutCard>
@@ -115,7 +145,8 @@ const profileDropdownContainer: SxProps<Theme> = {
 
 const profileDropdown: SxProps<Theme> = (theme: Theme) => ({
   // borderTop: `2px solid ${theme.palette.secondary.dark}`,
-  borderBottom: `2px solid ${theme.palette.secondary.dark}`,
+  borderBottom: `1px solid ${theme.palette.secondary.dark}`,
+  padding:'1px 0 1px'
 });
 
 export default ProfileDropdown;

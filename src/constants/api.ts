@@ -72,6 +72,15 @@ const API_ENDPOINTS = {
     url: (userId: string, queryString: string): string =>
       `${AVKONNECT_URL.USERS()}/${userId}/connections${queryString}`,
   },
+  USER_SETTINGS: {
+    key: "user-settings",
+    url: (userId: string): string =>
+      `${AVKONNECT_URL.USERS()}/${userId}/settings`,
+  },
+  USERS_INFO: {
+    key: "users-info",
+    url: `${AVKONNECT_URL.USERS()}/getUsersInfo`,
+  },
   USER_NOTIFICATIONS: {
     key: "user-notifications",
     url: (userId: string, queryString: string) =>

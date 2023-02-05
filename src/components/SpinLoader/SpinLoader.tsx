@@ -29,7 +29,7 @@ const SpinLoader: React.FC<ISpinLoaderProps> = ({
 
   return (
     <Grid container justifyContent="center">
-      <Grid item p={padding ? padding : 6}>
+      <Grid item p={padding!==undefined ? padding : 6}>
         <Box sx={loaderGridSx(fullWidth)}>
           <Image
             src={SVG.Spinner}

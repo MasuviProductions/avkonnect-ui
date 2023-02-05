@@ -35,9 +35,14 @@ import {
   IGetUserFeedsApiResponse,
   IResourceTypes,
   IGetUserPostsApiResponse,
+  IUserSettingsApiResponse,
+  IPatchUserSettingsApiRequest,
+  IUsersInfoApiResponse,
+  IUserAvatarApiModel,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
+import { IUser } from "../contexts/UserContext";
 
 export const fetchAuthUser = async (
   accessToken: string
@@ -110,6 +115,52 @@ export const putUserImageToS3 = async (
     })
     .then((res) => res.data);
   return userProfileResponse;
+};
+
+export const getUsersInfo = async (
+  accessToken: string,
+  userIds: string[]
+): Promise<AVKonnectApiResponse<IUserAvatarApiModel[]>> => {
+  const usersInfo = await axios
+    .post<
+      IUserAvatarApiModel[],
+      AxiosResponse<AVKonnectApiResponse<IUserAvatarApiModel[]>>
+    >(API_ENDPOINTS.USERS_INFO.url, userIds, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return usersInfo;
+};
+
+export const getUserSettings = async (
+  accessToken: string,
+  userId: string,
+): Promise<AVKonnectApiResponse<IUserSettingsApiResponse>> => {
+  const userSettings = await axios
+    .get<AVKonnectApiResponse<IUserSettingsApiResponse>>(
+      API_ENDPOINTS.USER_SETTINGS.url(userId),
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userSettings;
+};
+
+export const patchUserSettings = async (
+  accessToken: string,
+  userId: string,
+  patchUserSettingsContent: IPatchUserSettingsApiRequest
+): Promise<AVKonnectApiResponse<IUserSettingsApiResponse>> => {
+  const patchUserSettingsResponse = await axios
+    .patch<
+      IPatchUserSettingsApiRequest,
+      AxiosResponse<AVKonnectApiResponse<IUserSettingsApiResponse>>
+    >(API_ENDPOINTS.USER_SETTINGS.url(userId), patchUserSettingsContent, {
+      headers: { authorization: `Bearer ${accessToken}` },
+    })
+    .then((res) => res.data);
+  return patchUserSettingsResponse;
 };
 
 export const getUserSkills = async (

@@ -22,17 +22,37 @@ import { LABELS } from "../../../constants/labels";
 import LayoutCard from "../../../components/LayoutCard";
 import { SxProps } from "@mui/system";
 import { APP_ROUTES, MAX_SEARCH_DROPDOWN_LIMIT } from "../../../constants/app";
-import { IUsersSearchApiResponse } from "../../../interfaces/api/external";
+import {
+  IUserAvatarApiModel,
+  IUsersSearchApiResponse,
+} from "../../../interfaces/api/external";
 import SearchedUserItem from "./SearchedUserItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { compile } from "path-to-regexp";
 import { useMemo } from "react";
 import useSourceSearch from "../../../hooks/useSourceSearch";
 import SpinLoader from "../../../components/SpinLoader";
+import AddRemoveUserItem from "./AddRemoveUserItem";
+import { IFieldOperationValue } from "../../../contexts/UserSettingsContext";
 
-interface ISearchBarProps {}
+interface ISearchBarProps {
+  addRemoveEnable?: boolean;
+  handleAddRemoveClick?: (
+    user: IUserAvatarApiModel,
+    operation: IFieldOperationValue
+  ) => void;
+  usersList?: IUserAvatarApiModel[];
+  addIcon?: JSX.Element;
+  isLoading?: boolean;
+}
 
-const SearchBar: React.FC<ISearchBarProps> = () => {
+const SearchBar: React.FC<ISearchBarProps> = ({
+  addRemoveEnable,
+  handleAddRemoveClick,
+  usersList,
+  addIcon,
+  isLoading,
+}) => {
   const router = useRouter();
 
   const { upToDateUsersSearch, searchForSources, getUsersSearchFetching } =
@@ -102,22 +122,46 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
 
   const searchFieldComponent = useMemo(() => {
     return (
-      <Paper sx={searchBarContainer}>
-        <IconButton onClick={handleSearch} sx={{ p: 1 }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-        <InputBase
-          sx={searchBarTextfield}
-          placeholder={LABELS.SEARCH_FOR}
-          inputProps={{ "aria-label": "search" }}
-          value={searchText}
-          onChange={handleSearchTextChange}
-          onKeyDown={handleSearchKeyDown}
-          onFocus={handleSearchDropdownOpen}
-        />
-      </Paper>
+      <Grid container>
+        <Grid item>
+          <Paper
+            sx={
+              addRemoveEnable ? searchBarAddRemoveContainer : searchBarContainer
+            }
+          >
+            <IconButton
+              onClick={handleSearch}
+              sx={{ p: 1 }}
+              aria-label="search"
+            >
+              <SearchIcon />
+            </IconButton>
+            <InputBase
+              sx={searchBarTextfield}
+              placeholder={LABELS.SEARCH_FOR}
+              inputProps={{ "aria-label": "search" }}
+              value={searchText}
+              onChange={handleSearchTextChange}
+              onKeyDown={handleSearchKeyDown}
+              onFocus={handleSearchDropdownOpen}
+            />
+          </Paper>
+        </Grid>
+        {isLoading && (
+          <Grid item>
+            <SpinLoader padding={0} />
+          </Grid>
+        )}
+      </Grid>
     );
-  }, [handleSearch, handleSearchDropdownOpen, handleSearchKeyDown, searchText]);
+  }, [
+    addRemoveEnable,
+    handleSearch,
+    handleSearchDropdownOpen,
+    handleSearchKeyDown,
+    isLoading,
+    searchText,
+  ]);
 
   return (
     <>
@@ -148,20 +192,53 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
           </Hidden>
 
           {showSearchDropdown && (
-            <Box sx={searchDropdownContainer}>
+            <Box
+              sx={
+                addRemoveEnable
+                  ? searchDropdownAddRemoveContainer
+                  : searchDropdownContainer
+              }
+            >
               <LayoutCard withBorder>
                 <Grid container sx={searchDropdown}>
-                  {upToDateUsersSearch.map(user => (
-                    <Grid item xs={12} key={user.id} p={1}>
-                      <SearchedUserItem
-                        id={user.id}
-                        name={user.name}
-                        headline={user.headline}
-                        displayPictureUrl={user.displayPictureUrl}
-                        onSearchItemClick={handleSearchItemClick}
-                      />
-                    </Grid>
-                  ))}
+                  {upToDateUsersSearch.map((user) => {
+                    const userExists = usersList?.find(
+                      (userInList) => userInList.id === user.id
+                    )
+                      ? true
+                      : false;
+
+                    return (
+                      <Grid item xs={12} key={user.id} p={1}>
+                        {addRemoveEnable ? (
+                          <AddRemoveUserItem
+                            addIcon={addIcon}
+                            id={user.id}
+                            name={user.name}
+                            headline={user.headline}
+                            displayPictureUrl={user.displayPictureUrl}
+                            onSearchItemClick={() => {
+                              setShowSearchDropdown(false);
+                              handleAddRemoveClick &&
+                                handleAddRemoveClick(
+                                  user,
+                                  userExists ? "deletion" : "addition"
+                                );
+                            }}
+                            exists={userExists}
+                          />
+                        ) : (
+                          <SearchedUserItem
+                            id={user.id}
+                            name={user.name}
+                            headline={user.headline}
+                            displayPictureUrl={user.displayPictureUrl}
+                            onSearchItemClick={handleSearchItemClick}
+                          />
+                        )}
+                      </Grid>
+                    );
+                  })}
 
                   {upToDateUsersSearch.length <= 0 && !searchText && (
                     <Grid p={1}>
@@ -176,7 +253,7 @@ const SearchBar: React.FC<ISearchBarProps> = () => {
                     </Grid>
                   )}
 
-                  {searchText && (
+                  {!addRemoveEnable && searchText && (
                     <Button onClick={handleSearch} sx={showResultsButton}>
                       {LABELS.SEARCH_ALL_RESULTS}
                     </Button>
@@ -202,6 +279,17 @@ const searchDropdownContainer: SxProps<Theme> = (theme: Theme) => ({
   zIndex: 1,
 });
 
+const searchDropdownAddRemoveContainer: SxProps<Theme> = (theme: Theme) => ({
+  position: "absolute",
+  width: 380,
+  [theme.breakpoints.down("sm")]: {
+    left: 0,
+    width: "100%",
+  },
+  top: "140px",
+  zIndex: 1,
+});
+
 const searchBarContainer: SxProps<Theme> = (theme: Theme) => ({
   p: "2px 4px",
   display: "flex",
@@ -210,6 +298,15 @@ const searchBarContainer: SxProps<Theme> = (theme: Theme) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
   },
+  backgroundColor: theme.palette.text.navbar,
+  color: theme.palette.background.navbar,
+});
+
+const searchBarAddRemoveContainer: SxProps<Theme> = (theme: Theme) => ({
+  p: "2px 4px",
+  display: "flex",
+  alignItems: "center",
+  width: 380,
   backgroundColor: theme.palette.text.navbar,
   color: theme.palette.background.navbar,
 });

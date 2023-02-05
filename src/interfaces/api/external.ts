@@ -1,4 +1,5 @@
 import { IGender } from "../../constants/forms/user-info";
+import { ISettingsUpdateDetail, IUserSettings } from "../../contexts/UserSettingsContext";
 
 export interface AVKonnectApiResponseError {
   message: string;
@@ -174,6 +175,12 @@ export interface IUserFeedbackApiResponse {
 }
 
 export type IUsersSearchApiResponse = IUserAvatarApiModel;
+
+export type IUsersInfoApiResponse = IUserAvatarApiModel[];
+
+export type IUserSettingsApiResponse = IUserSettings;
+
+export type IPatchUserSettingsApiRequest = ISettingsUpdateDetail[];
 
 interface IUserConnectionApiModel {
   id: string;

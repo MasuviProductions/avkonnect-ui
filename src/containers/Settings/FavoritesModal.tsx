@@ -1,3 +1,4 @@
+import { BlockOutlined } from "@mui/icons-material";
 import {
   Autocomplete,
   Box,
@@ -7,7 +8,6 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import { AddCircle, RemoveCircle, BlockOutlined } from "@mui/icons-material";
 import { SxProps } from "@mui/system";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQuery } from "react-query";
@@ -36,26 +36,26 @@ import { postUserFeedback } from "../../utils/api";
 import SearchBar from "../Header/SearchBar";
 import Search from "../Search";
 
-interface IBlockingModalProps extends IModal {
-  blockedUsers?: IUserAvatarApiModel[];
+interface IFavoritesModalProps extends IModal {
+  favorites?: IUserAvatarApiModel[];
   handleAddRemoveUsers?: (
     user: IUserAvatarApiModel,
     operation: IFieldOperationValue
   ) => void;
-  isLoading?:boolean;
+  isLoading: boolean;
 }
 
-const BlockingModal: React.FC<IBlockingModalProps> = ({
+const FavoritesModal: React.FC<IFavoritesModalProps> = ({
   showModal,
   onModalClose,
-  blockedUsers,
+  favorites,
   handleAddRemoveUsers,
   isLoading,
-}) => {  
+}) => {
   return (
     <>
       <ModalLayout
-        title={LABELS.SETTINGS_BLOCKING_INFO}
+        title={LABELS.SETTINGS_FAVORITES}
         showModal={showModal}
         onModalClose={onModalClose}
       >
@@ -63,20 +63,19 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
           <Grid container py={2} spacing={3}>
             <Grid item xs={12}>
               <SearchBar
-              isLoading={isLoading}
+                isLoading={isLoading}
                 addRemoveEnable
-                addIcon={<BlockOutlined />}
-                usersList={blockedUsers}
+                usersList={favorites}
                 handleAddRemoveClick={handleAddRemoveUsers}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <Typography>{LABELS.BLOCKED_USERS}</Typography>
+              <Typography>{LABELS.FAVORITE_USERS}</Typography>
             </Grid>
             <Grid item container spacing={2} xs={12}>
-              {blockedUsers?.length ? (
-                blockedUsers.map((user) => (
+              {favorites?.length ? (
+                favorites.map((user) => (
                   <Grid item xs={12} sm={6} md={3} key={user.id}>
                     <LayoutCard withBorder withBoxShadow>
                       <Box p={2}>
@@ -87,8 +86,8 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
                           displayPictureUrl={user.displayPictureUrl}
                           onCardClick={() => {}}
                           handleAddRemoveClick={handleAddRemoveUsers}
-                          usersList={blockedUsers}
-                          actionLabel={LABELS.UNBLOCK}
+                          usersList={favorites}
+                          actionLabel={LABELS.UNFAVORITE}
                         />
                       </Box>
                     </LayoutCard>
@@ -97,7 +96,7 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
               ) : (
                 <Grid item xs={12} minHeight={200}>
                   <Typography pt={10} textAlign="center">
-                    {LABELS.BLOCKED_USERS_INSTRUCTIONS}
+                    {LABELS.FAVORITE_USERS_INSTRUCTIONS}
                   </Typography>
                 </Grid>
               )}
@@ -109,12 +108,4 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
   );
 };
 
-// const userCard: SxProps<Theme> = (theme: Theme) => ({
-//   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-//   transition: "box-shadow 0.3s ease-in-out",
-//   "&:hover": {
-//     boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-//   },
-// });
-
-export default BlockingModal;
+export default FavoritesModal;
