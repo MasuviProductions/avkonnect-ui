@@ -13,7 +13,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import CustomButton from "../../components/CustomButton";
 import LayoutCard from "../../components/LayoutCard";
-import ModalLayout, { IModal } from "../../components/ModalLayout/ModalLayout";
 import SpinLoader from "../../components/SpinLoader";
 import UserMiniCard from "../../components/UserMiniCard";
 import VerticalUserMiniCard from "../../components/UserMiniCard/VerticalUserMiniCard";
@@ -35,42 +34,41 @@ import {
 import { postUserFeedback } from "../../utils/api";
 import SearchBar from "../Header/SearchBar";
 import Search from "../Search";
+import ViewOverlay, { IOverlay } from "../../components/ViewOverlay/ViewOverlay";
 
-interface IBlockingModalProps extends IModal {
+interface IBlockingOverlayProps extends IOverlay {
   blockedUsers?: IUserAvatarApiModel[];
   handleAddRemoveUsers?: (
     user: IUserAvatarApiModel,
     operation: IFieldOperationValue
   ) => void;
-  isLoading?:boolean;
+  isLoading?: boolean;
 }
 
-const BlockingModal: React.FC<IBlockingModalProps> = ({
-  showModal,
-  onModalClose,
+const BlockingOverlay: React.FC<IBlockingOverlayProps> = ({
+  showOverlay,
+  onOverlayClose,
   blockedUsers,
   handleAddRemoveUsers,
   isLoading,
-}) => {  
+}) => {
   return (
     <>
-      <ModalLayout
-        title={LABELS.SETTINGS_BLOCKING_INFO}
-        showModal={showModal}
-        onModalClose={onModalClose}
+      <ViewOverlay
+        HeaderElement={
+          <SearchBar
+            isLoading={isLoading}
+            addRemoveEnable
+            addIcon={<BlockOutlined />}
+            usersList={blockedUsers}
+            handleAddRemoveClick={handleAddRemoveUsers}
+          />
+        }
+        showOverlay={showOverlay}
+        onOverlayClose={onOverlayClose}
       >
         <Container>
           <Grid container py={2} spacing={3}>
-            <Grid item xs={12}>
-              <SearchBar
-              isLoading={isLoading}
-                addRemoveEnable
-                addIcon={<BlockOutlined />}
-                usersList={blockedUsers}
-                handleAddRemoveClick={handleAddRemoveUsers}
-              />
-            </Grid>
-
             <Grid item xs={12}>
               <Typography>{LABELS.BLOCKED_USERS}</Typography>
             </Grid>
@@ -104,7 +102,7 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
             </Grid>
           </Grid>
         </Container>
-      </ModalLayout>
+      </ViewOverlay>
     </>
   );
 };
@@ -117,4 +115,4 @@ const BlockingModal: React.FC<IBlockingModalProps> = ({
 //   },
 // });
 
-export default BlockingModal;
+export default BlockingOverlay;

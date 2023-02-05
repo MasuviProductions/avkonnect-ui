@@ -1,4 +1,12 @@
-import { Box, Button, Grid, Select, Theme, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Hidden,
+  Select,
+  Theme,
+  Typography,
+} from "@mui/material";
 import { SxProps } from "@mui/system";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForwardIos";
 import LayoutCard from "../../components/LayoutCard";
@@ -22,6 +30,7 @@ import API_ENDPOINTS from "../../constants/api";
 import { useQuery } from "react-query";
 import { getUsersInfo } from "../../utils/api";
 import { useAuthContext } from "../../contexts/AuthContext";
+import BlockingOverlay from "./BlockingOverlay";
 
 const privacyOptions: {
   key: IUserSettingsPrivacyOption;
@@ -532,13 +541,24 @@ const Settings: ReactFCWithSkeleton = () => {
 
       {showBlockingModal && (
         <>
-          <BlockingModal
-            isLoading={isUpdatingUserSettings}
-            blockedUsers={blockedUsers}
-            handleAddRemoveUsers={handleBlockUnblockUsers}
-            showModal={showBlockingModal}
-            onModalClose={handleBlockingModalClose}
-          />
+          <Hidden mdDown>
+            <BlockingModal
+              isLoading={isUpdatingUserSettings}
+              blockedUsers={blockedUsers}
+              handleAddRemoveUsers={handleBlockUnblockUsers}
+              showModal={showBlockingModal}
+              onModalClose={handleBlockingModalClose}
+            />
+          </Hidden>
+          <Hidden mdUp>
+            <BlockingOverlay
+              isLoading={isUpdatingUserSettings}
+              blockedUsers={blockedUsers}
+              handleAddRemoveUsers={handleBlockUnblockUsers}
+              showOverlay={showBlockingModal}
+              onOverlayClose={handleBlockingModalClose}
+            />
+          </Hidden>
         </>
       )}
       {showFavoritesModal && (

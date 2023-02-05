@@ -18,10 +18,10 @@ const VerticalUserMiniCardSkeleton: React.FC = () => {
               spacing={2}
             >
               <Grid item xs={12}>
-                <Skeleton variant="rectangular" width={120} height={12} />
+                <Skeleton variant="rectangular" width={60} height={12} />
               </Grid>
               <Grid item xs={12}>
-                <Skeleton variant="rectangular" width={150} height={8} />
+                <Skeleton variant="rectangular" width={70} height={8} />
               </Grid>
             </Grid>
             <Grid

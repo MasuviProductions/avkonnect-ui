@@ -8,11 +8,14 @@ export interface IOverlay {
   onOverlayClose: () => void;
 }
 
-interface IViewOverlayProps extends IOverlay {}
+interface IViewOverlayProps extends IOverlay {
+  HeaderElement?: JSX.Element;
+}
 
 const ViewOverlay: React.FC<IViewOverlayProps> = ({
   showOverlay,
   onOverlayClose,
+  HeaderElement,
   children,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(showOverlay);
@@ -22,8 +25,8 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
     onOverlayClose();
   };
   useEffect(() => {
-    history.pushState(null, '', location.href);
-    window.onpopstate = e => {
+    history.pushState(null, "", location.href);
+    window.onpopstate = (e) => {
       history.go(1);
       handleDrawerClose();
     };
@@ -37,12 +40,13 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose}>
         <Grid container sx={overlayContainerSx}>
           <Grid item sx={overlayHeaderSx}>
-            <Grid container>
+            <Grid container direction="row" justifyContent="space-between">
               <Grid item>
                 <IconButton onClick={handleDrawerClose}>
                   <ArrowBackIcon sx={backbuttonSx} />
                 </IconButton>
               </Grid>
+              <Grid item>{HeaderElement}</Grid>
             </Grid>
           </Grid>
 

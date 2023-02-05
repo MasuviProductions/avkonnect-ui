@@ -122,7 +122,7 @@ const SearchBar: React.FC<ISearchBarProps> = ({
 
   const searchFieldComponent = useMemo(() => {
     return (
-      <Grid container>
+      <Grid container direction="row">
         <Grid item>
           <Paper
             sx={
@@ -282,11 +282,12 @@ const searchDropdownContainer: SxProps<Theme> = (theme: Theme) => ({
 const searchDropdownAddRemoveContainer: SxProps<Theme> = (theme: Theme) => ({
   position: "absolute",
   width: 380,
+  top: "140px",
   [theme.breakpoints.down("sm")]: {
     left: 0,
     width: "100%",
+    top: "60px",
   },
-  top: "140px",
   zIndex: 1,
 });
 
@@ -307,6 +308,9 @@ const searchBarAddRemoveContainer: SxProps<Theme> = (theme: Theme) => ({
   display: "flex",
   alignItems: "center",
   width: 380,
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
   backgroundColor: theme.palette.text.navbar,
   color: theme.palette.background.navbar,
 });
