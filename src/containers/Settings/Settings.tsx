@@ -24,7 +24,7 @@ import {
 import { THEMES_LIST } from "../../constants/theme";
 import Switch from "@mui/material/Switch";
 import MenuItem from "@mui/material/MenuItem";
-import FavoritesModal from "./FavoritesModal";
+// import FavouritesModal from "./FavouritesModal";
 import { IUserAvatarApiModel } from "../../interfaces/api/external";
 import API_ENDPOINTS from "../../constants/api";
 import { useQuery } from "react-query";
@@ -76,7 +76,7 @@ const Settings: ReactFCWithSkeleton = () => {
     setBlockedUserIds(userSettings?.visibility?.userBlockingInfo);
     setConnectionInvite(userSettings?.communications?.connectionInvite);
     setRecentOnly(userSettings?.feedPreference?.recentOnly as boolean);
-    setFavoriteUserIds(userSettings?.feedPreference?.favourites);
+    // setFavouriteUserIds(userSettings?.feedPreference?.favourites);
   }, [userSettings]);
 
   const { data: getBlockedUsersData, refetch: triggerGetBlockedUsersApi } =
@@ -112,41 +112,41 @@ const Settings: ReactFCWithSkeleton = () => {
     setBlockedUsers(getBlockedUsersData?.data as IUserAvatarApiModel[]);
   }, [getBlockedUsersData?.data]);
 
-  const {
-    data: getFavoriteUsersData,
-    refetch: triggerGetFavoriteUsersApi,
-    isFetching: isLoadingFavoriteUsers,
-  } = useQuery(`${API_ENDPOINTS.USER_SETTINGS.key}:favourite`, () =>
-    getUsersInfo(accessToken as string, favoriteUserIds as string[])
-  );
+  // const {
+  //   data: getFavouriteUsersData,
+  //   refetch: triggerGetFavouriteUsersApi,
+  //   isFetching: isLoadingFavouriteUsers,
+  // } = useQuery(`${API_ENDPOINTS.USER_SETTINGS.key}:favourite`, () =>
+  //   getUsersInfo(accessToken as string, favouriteUserIds as string[])
+  // );
 
-  const [favoriteUserIds, setFavoriteUserIds] = useState<string[]>(
-    userSettings?.feedPreference?.favourites
-  );
-  const [favoriteUsers, setFavoriteUsers] = useState<IUserAvatarApiModel[]>(
-    getFavoriteUsersData?.data as IUserAvatarApiModel[] // getUsersByID(userSettings?.visibility?.userBlockingInfo)
-  );
+  // const [favouriteUserIds, setFavouriteUserIds] = useState<string[]>(
+  //   userSettings?.feedPreference?.favourites
+  // );
+  // const [favouriteUsers, setFavouriteUsers] = useState<IUserAvatarApiModel[]>(
+  //   getFavouriteUsersData?.data as IUserAvatarApiModel[] // getUsersByID(userSettings?.visibility?.userBlockingInfo)
+  // );
 
-  const handleFavoriteUnfavoriteUsers = (
-    user: IUserAvatarApiModel,
-    operation: IFieldOperationValue
-  ) => {
-    const patchSettings = {
-      fieldName: "feedPreference",
-      fieldKey: "favourites",
-      fieldValue: user.id,
-      fieldOperation: operation,
-    };
-    setUpdatedSettings(patchSettings);
-  };
+  // const handleFavouriteUnfavouriteUsers = (
+  //   user: IUserAvatarApiModel,
+  //   operation: IFieldOperationValue
+  // ) => {
+  //   const patchSettings = {
+  //     fieldName: "feedPreference",
+  //     fieldKey: "favourites",
+  //     fieldValue: user.id,
+  //     fieldOperation: operation,
+  //   };
+  //   setUpdatedSettings(patchSettings);
+  // };
 
-  useEffect(() => {
-    triggerGetFavoriteUsersApi();
-  }, [favoriteUserIds, triggerGetFavoriteUsersApi]);
+  // useEffect(() => {
+  //   triggerGetFavouriteUsersApi();
+  // }, [favouriteUserIds, triggerGetFavouriteUsersApi]);
 
-  useEffect(() => {
-    setFavoriteUsers(getFavoriteUsersData?.data as IUserAvatarApiModel[]);
-  }, [getFavoriteUsersData?.data]);
+  // useEffect(() => {
+  //   setFavouriteUsers(getFavouriteUsersData?.data as IUserAvatarApiModel[]);
+  // }, [getFavouriteUsersData?.data]);
 
   const [darkMode, setDarkMode] = useState<boolean>(
     userSettings?.display?.theme === "dark"
@@ -283,14 +283,15 @@ const Settings: ReactFCWithSkeleton = () => {
     setShowBlockingModal(false);
   };
 
-  const [showFavoritesModal, setShowFavoritesModal] = useState<boolean>(false);
+  const [showFavouritesModal, setShowFavouritesModal] =
+    useState<boolean>(false);
 
-  const handleFavoritesModalOpen = () => {
+  const handleFavouritesModalOpen = () => {
     triggerGetUserSettingsApi();
-    setShowFavoritesModal(true);
+    setShowFavouritesModal(true);
   };
-  const handleFavoritesModalClose = () => {
-    setShowFavoritesModal(false);
+  const handleFavouritesModalClose = () => {
+    setShowFavouritesModal(false);
   };
 
   const settingItems = [
@@ -494,10 +495,10 @@ const Settings: ReactFCWithSkeleton = () => {
           ),
         },
         // {
-        //   title: LABELS.SETTINGS_FAVORITES,
-        //   description: LABELS.SETTINGS_FAVORITES_DESCRIPTION,
+        //   title: LABELS.SETTINGS_FAVOURITES,
+        //   description: LABELS.SETTINGS_FAVOURITES_DESCRIPTION,
         //   uiElement: (
-        //     <Button onClick={handleFavoritesModalOpen}>
+        //     <Button onClick={handleFavouritesModalOpen}>
         //       {LABELS.SETTINGS_ADD_REMOVE_USERS}
         //       <ArrowForwardIcon />
         //     </Button>
@@ -561,17 +562,17 @@ const Settings: ReactFCWithSkeleton = () => {
           </Hidden>
         </>
       )}
-      {showFavoritesModal && (
+      {/* {showFavouritesModal && (
         <>
-          <FavoritesModal
+          <FavouritesModal
             isLoading={isUpdatingUserSettings}
-            favorites={favoriteUsers}
-            handleAddRemoveUsers={handleFavoriteUnfavoriteUsers}
-            showModal={showFavoritesModal}
-            onModalClose={handleFavoritesModalClose}
+            favourites={favouriteUsers}
+            handleAddRemoveUsers={handleFavouriteUnfavouriteUsers}
+            showModal={showFavouritesModal}
+            onModalClose={handleFavouritesModalClose}
           />
         </>
-      )}
+      )} */}
     </>
   );
 };

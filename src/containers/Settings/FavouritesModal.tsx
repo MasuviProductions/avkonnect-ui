@@ -36,8 +36,8 @@ import { postUserFeedback } from "../../utils/api";
 import SearchBar from "../Header/SearchBar";
 import Search from "../Search";
 
-interface IFavoritesModalProps extends IModal {
-  favorites?: IUserAvatarApiModel[];
+interface IFavouritesModalProps extends IModal {
+  favourites?: IUserAvatarApiModel[];
   handleAddRemoveUsers?: (
     user: IUserAvatarApiModel,
     operation: IFieldOperationValue
@@ -45,17 +45,17 @@ interface IFavoritesModalProps extends IModal {
   isLoading: boolean;
 }
 
-const FavoritesModal: React.FC<IFavoritesModalProps> = ({
+const FavouritesModal: React.FC<IFavouritesModalProps> = ({
   showModal,
   onModalClose,
-  favorites,
+  favourites,
   handleAddRemoveUsers,
   isLoading,
 }) => {
   return (
     <>
       <ModalLayout
-        title={LABELS.SETTINGS_FAVORITES}
+        title={LABELS.SETTINGS_FAVOURITES}
         showModal={showModal}
         onModalClose={onModalClose}
       >
@@ -65,17 +65,17 @@ const FavoritesModal: React.FC<IFavoritesModalProps> = ({
               <SearchBar
                 isLoading={isLoading}
                 addRemoveEnable
-                usersList={favorites}
+                usersList={favourites}
                 handleAddRemoveClick={handleAddRemoveUsers}
               />
             </Grid>
 
             <Grid item xs={12}>
-              <Typography>{LABELS.FAVORITE_USERS}</Typography>
+              <Typography>{LABELS.FAVOURITE_USERS}</Typography>
             </Grid>
             <Grid item container spacing={2} xs={12}>
-              {favorites?.length ? (
-                favorites.map((user) => (
+              {favourites?.length ? (
+                favourites.map((user) => (
                   <Grid item xs={12} sm={6} md={3} key={user.id}>
                     <LayoutCard withBorder withBoxShadow>
                       <Box p={2}>
@@ -86,8 +86,8 @@ const FavoritesModal: React.FC<IFavoritesModalProps> = ({
                           displayPictureUrl={user.displayPictureUrl}
                           onCardClick={() => {}}
                           handleAddRemoveClick={handleAddRemoveUsers}
-                          usersList={favorites}
-                          actionLabel={LABELS.UNFAVORITE}
+                          usersList={favourites}
+                          actionLabel={LABELS.UNFAVOURITE}
                         />
                       </Box>
                     </LayoutCard>
@@ -96,7 +96,7 @@ const FavoritesModal: React.FC<IFavoritesModalProps> = ({
               ) : (
                 <Grid item xs={12} minHeight={200}>
                   <Typography pt={10} textAlign="center">
-                    {LABELS.FAVORITE_USERS_INSTRUCTIONS}
+                    {LABELS.FAVOURITE_USERS_INSTRUCTIONS}
                   </Typography>
                 </Grid>
               )}
@@ -108,4 +108,4 @@ const FavoritesModal: React.FC<IFavoritesModalProps> = ({
   );
 };
 
-export default FavoritesModal;
+export default FavouritesModal;

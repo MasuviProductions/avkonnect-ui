@@ -19,10 +19,10 @@ export const LABELS = {
   BLOCK: "Block",
   BLOCKED_USERS: "Blocked Users",
   BLOCKED_USERS_INSTRUCTIONS: "No blocked users found.",
-  FAVORITE_USERS: "Favorite users",
-  FAVORITE_USERS_INSTRUCTIONS: "No favorite users found.",
+  FAVOURITE_USERS: "Favourite users",
+  FAVOURITE_USERS_INSTRUCTIONS: "No favourite users found.",
   UNBLOCK: "Unblock",
-  UNFAVORITE: "Remove",
+  UNFAVOURITE: "Remove",
 
   // Uninitialized Context Error Messages
   RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
@@ -295,9 +295,9 @@ export const LABELS = {
   SETTINGS_BLOCK_UNBLOCK_USERS: "Block/Unblock Users",
   SETTINGS_RECENT_ONLY: "Recent Only",
   SETTINGS_RECENT_ONLY_DESCRIPTION: "Enable to get recents posts only",
-  SETTINGS_FAVORITES: "Favorites",
-  SETTINGS_FAVORITES_DESCRIPTION: "Manage Favorite users",
-  SETTINGS_ADD_REMOVE_USERS: "Add/Remove Favorites",
+  SETTINGS_FAVOURITES: "Favourites",
+  SETTINGS_FAVOURITES_DESCRIPTION: "Manage Favourite users",
+  SETTINGS_ADD_REMOVE_USERS: "Add/Remove Favourites",
 
   // Notifications Labels
   NOTIFICATIONS_HEADER: "Your Notifications",
