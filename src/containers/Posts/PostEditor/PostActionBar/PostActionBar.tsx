@@ -1,10 +1,13 @@
-import { Grid, IconButton, Theme } from "@mui/material";
+import { Grid, Hidden, IconButton, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
 import CustomButton from "../../../../components/CustomButton";
 import { LABELS } from "../../../../constants/labels";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
+import { useState } from "react";
+import MediaUploadModal from "../MediaUploadModal/MediaUploadModal";
+import MediaUploadOverlay from "../MediaUploadOverlay/MediaUploadOverlay";
 
 interface IPostActionBarProps {}
 
@@ -13,11 +16,19 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
   if (!textEditorContext) {
     throw Error(LABELS.TEXT_EDITOR_CONTEXT_UNINITIALIZED);
   }
+  const [showMediaUpload, setShowMediaUpload] = useState<boolean>(false);
 
   const { editorState, saveContent, isEditorEmpty } = textEditorContext;
 
   const handlePostCreate = () => {
     saveContent();
+  };
+
+  const onMediaUploadOpen = () => {
+    setShowMediaUpload(true);
+  };
+  const onMediaUploadClose = () => {
+    setShowMediaUpload(false);
   };
 
   return (
@@ -27,7 +38,10 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
           <Grid container spacing={1}>
             <Grid item>
               <IconButton>
-                <PhotoCameraBackIcon sx={actionIconsSx} />
+                <PhotoCameraBackIcon
+                  onClick={onMediaUploadOpen}
+                  sx={actionIconsSx}
+                />
               </IconButton>
             </Grid>
             <Grid item></Grid>
@@ -39,6 +53,21 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
           </CustomButton>
         </Grid>
       </Grid>
+
+      <Hidden mdUp>
+        <MediaUploadOverlay
+          showOverlay={showMediaUpload}
+          onOverlayClose={onMediaUploadClose}
+        />
+      </Hidden>
+
+      <Hidden mdDown>
+        <MediaUploadModal
+          title={LABELS.CREATE_POST}
+          showModal={showMediaUpload}
+          onModalClose={onMediaUploadClose}
+        />
+      </Hidden>
     </>
   );
 };
