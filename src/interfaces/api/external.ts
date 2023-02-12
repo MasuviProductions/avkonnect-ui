@@ -469,3 +469,7 @@ export interface IGetUserPostsApiResponse {
   postsInfo: IGetPostInfoApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
+
+export interface IGetRootPostInfoForComment {
+  postId: string;
+}
