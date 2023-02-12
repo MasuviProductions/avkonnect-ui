@@ -180,6 +180,11 @@ const API_ENDPOINTS = {
     url: (userId: string, queryString: string) =>
       `${AVKONNECT_URL.POSTS()}/users/${userId}/posts${queryString}`,
   },
+  GET_ROOT_POST_INFO_FOR_COMMENT: {
+    key: "get-root-post-info-for-comment",
+    url: (commentId: string) =>
+      `${AVKONNECT_URL.POSTS()}/comments/${commentId}/getRootPostInfo`,
+  },
 };
 
 export enum API_QUERY_KEYS {

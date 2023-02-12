@@ -1,17 +1,17 @@
+import { useMemo, useState } from "react";
 import { Box, Grid, Theme, Typography, useTheme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import {
   getNotificationTypeBasedLink,
   getTimeAgo,
 } from "../../../utils/generic";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import NotificationIcon from "../NotificationIcon/NotificationIcon";
 import {
   INotificationResourceActivity,
-  INotificationResourceType,
   IRelatedSource,
-  IResourceTypes,
 } from "../../../interfaces/api/external";
+import useGetNotificationRedirectUrl from "../../../hooks/useGetNotificationRedirectUrl";
 
 export interface INotificationCardProps {
   isRead: boolean;
@@ -35,12 +35,29 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
   onReadNotification,
 }) => {
   const theme = useTheme();
+  const router = useRouter();
 
-  const handleReadNotificationClick = () => {
+  const {
+    notificationRedirectUrl,
+    triggerRequestToGetNotificationsRedirectLink,
+  } = useGetNotificationRedirectUrl(
+    notificationActivity,
+    notificationResourceId,
+    relatedSource.id
+  );
+
+  const handleNotificationClick = () => {
     if (!isRead) {
       onReadNotification(notificationId);
     }
+    triggerRequestToGetNotificationsRedirectLink();
   };
+
+  useMemo(() => {
+    if (notificationRedirectUrl) {
+      router.push(notificationRedirectUrl);
+    }
+  }, [notificationRedirectUrl, router]);
 
   return (
     <Box
@@ -52,37 +69,28 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
             : notificationUnReadBoxSx(theme)),
         } as SystemStyleObject<Theme>
       }
-      onClick={handleReadNotificationClick}
+      onClick={handleNotificationClick}
     >
-      <Link
-        href={getNotificationTypeBasedLink(
-          notificationActivity,
-          notificationResourceId,
-          relatedSource.id
-        )}
-        passHref
-      >
-        <Grid container alignItems="center" px={1}>
-          <Grid item>
-            <NotificationIcon
-              notificationType={notificationActivity}
-              relatedSource={relatedSource}
-            />
-          </Grid>
-          <Grid item sm={10} xs={9.5} ml={2}>
-            <Grid container flexDirection="column" my={1}>
-              <Grid item xs={12}>
-                <Typography variant="body1">{notificationMessage}</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">
-                  {getTimeAgo(notificationTime)}
-                </Typography>
-              </Grid>
+      <Grid container alignItems="center" px={1}>
+        <Grid item>
+          <NotificationIcon
+            notificationType={notificationActivity}
+            relatedSource={relatedSource}
+          />
+        </Grid>
+        <Grid item sm={10} xs={9.5} ml={2}>
+          <Grid container flexDirection="column" my={1}>
+            <Grid item xs={12}>
+              <Typography variant="body1">{notificationMessage}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2">
+                {getTimeAgo(notificationTime)}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
-      </Link>
+      </Grid>
     </Box>
   );
 };
