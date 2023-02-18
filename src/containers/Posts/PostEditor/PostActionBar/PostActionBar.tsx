@@ -1,4 +1,4 @@
-import { Grid, Hidden, IconButton, Theme } from "@mui/material";
+import { Grid, Hidden, IconButton, Theme, Tooltip } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
@@ -37,12 +37,14 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
         <Grid item>
           <Grid container spacing={1}>
             <Grid item>
-              <IconButton>
-                <PhotoCameraBackIcon
-                  onClick={onMediaUploadOpen}
-                  sx={actionIconsSx}
-                />
-              </IconButton>
+              <Tooltip title={LABELS.UPLOAD_MEDIA} placement="right">
+                <IconButton>
+                  <PhotoCameraBackIcon
+                    onClick={onMediaUploadOpen}
+                    sx={actionIconsSx}
+                  />
+                </IconButton>
+              </Tooltip>
             </Grid>
             <Grid item></Grid>
           </Grid>
@@ -63,7 +65,7 @@ const PostActionBar: React.FC<IPostActionBarProps> = ({}) => {
 
       <Hidden mdDown>
         <MediaUploadModal
-          title={LABELS.CREATE_POST}
+          title={LABELS.UPLOAD_MEDIA}
           showModal={showMediaUpload}
           onModalClose={onMediaUploadClose}
         />

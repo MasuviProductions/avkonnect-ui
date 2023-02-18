@@ -371,6 +371,6 @@ export const LABELS = {
   LINK_COPY_FAILED: "Link could not be copied",
 
   // Upload media
-  UPLOAD_MEDIA:"Upload an image/video",
-  COMING_SOON: "Coming Soon"
+  UPLOAD_MEDIA: "Add a photo",
+  COMING_SOON: "This feature is coming soon. Hold tight!",
 };

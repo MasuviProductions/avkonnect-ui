@@ -3,7 +3,6 @@ import { SystemStyleObject } from "@mui/system";
 import ViewOverlay from "../../../../components/ViewOverlay";
 import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
 import { LABELS } from "../../../../constants/labels";
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 
 interface IMediaUploadOverlayProps extends IOverlay {}
 
@@ -14,8 +13,7 @@ const MediaUploadOverlay: React.FC<IMediaUploadOverlayProps> = ({
   return (
     <>
       <ViewOverlay showOverlay={showOverlay} onOverlayClose={onOverlayClose}>
-        <Grid container sx={MediaUploadOverlayContainerSx}>
-          <SentimentVerySatisfiedIcon />
+        <Grid container alignItems="center" sx={MediaUploadOverlayContainerSx}>
           <Grid item xs={12} sx={MediaUploadContainerSx}>
             <Typography align="center">{LABELS.COMING_SOON}</Typography>
           </Grid>
