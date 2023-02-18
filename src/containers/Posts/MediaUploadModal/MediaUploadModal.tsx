@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
-import ModalLayout from "../../../../components/ModalLayout";
-import { IModalLayoutProps } from "../../../../components/ModalLayout/ModalLayout";
+import ModalLayout from "../../../components/ModalLayout";
+import { IModalLayoutProps } from "../../../components/ModalLayout/ModalLayout";
 import "draft-js/dist/Draft.css";
-import { LABELS } from "../../../../constants/labels";
+import { LABELS } from "../../../constants/labels";
 
 interface IMediaUploadModalProps extends IModalLayoutProps {
   title: string;

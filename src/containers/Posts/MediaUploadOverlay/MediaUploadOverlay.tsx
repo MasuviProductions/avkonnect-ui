@@ -1,8 +1,8 @@
 import { Grid, Theme, Typography } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
-import ViewOverlay from "../../../../components/ViewOverlay";
-import { IOverlay } from "../../../../components/ViewOverlay/ViewOverlay";
-import { LABELS } from "../../../../constants/labels";
+import ViewOverlay from "../../../components/ViewOverlay";
+import { IOverlay } from "../../../components/ViewOverlay/ViewOverlay";
+import { LABELS } from "../../../constants/labels";
 
 interface IMediaUploadOverlayProps extends IOverlay {}
 

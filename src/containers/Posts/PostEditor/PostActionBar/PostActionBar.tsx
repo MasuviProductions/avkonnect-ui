@@ -6,8 +6,8 @@ import CustomButton from "../../../../components/CustomButton";
 import { LABELS } from "../../../../constants/labels";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
 import { useState } from "react";
-import MediaUploadModal from "../MediaUploadModal/MediaUploadModal";
-import MediaUploadOverlay from "../MediaUploadOverlay/MediaUploadOverlay";
+import MediaUploadModal from "../../MediaUploadModal/MediaUploadModal";
+import MediaUploadOverlay from "../../MediaUploadOverlay/MediaUploadOverlay";
 
 interface IPostActionBarProps {}
 
