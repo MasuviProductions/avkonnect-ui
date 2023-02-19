@@ -1,4 +1,4 @@
-import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
+import { Avatar, Button, Grid, Theme, IconButton, Hidden } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
@@ -8,6 +8,8 @@ import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import TextEditor from "../../../../components/TextEditor";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
+import { useState } from "react";
+import MediaUploadOverlay from "../../MediaUploadOverlay";
 
 interface IAddCommentHandheldProps {
   submitButtonText: string;
@@ -27,7 +29,14 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
 
   const name = authUser?.name as string;
   const displayPictureUrl = authUser?.displayPictureUrl as string;
+  const [showMediaUpload, setShowMediaUpload] = useState<boolean>(false);
 
+  const onMediaUploadOpen = () => {
+    setShowMediaUpload(true);
+  };
+  const onMediaUploadClose = () => {
+    setShowMediaUpload(false);
+  };
   const handleCommentCreate = () => {
     saveContent();
   };
@@ -60,7 +69,11 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
           <Grid container justifyContent="space-between">
             <Grid item>
               <IconButton>
-                <PhotoCameraBackIcon sx={actionIconsSx} fontSize="small" />
+                <PhotoCameraBackIcon
+                  onClick={onMediaUploadOpen}
+                  sx={actionIconsSx}
+                  fontSize="small"
+                />
               </IconButton>
             </Grid>
 
@@ -77,6 +90,11 @@ const AddCommentHandheld: React.FC<IAddCommentHandheldProps> = ({
           </Grid>
         </Grid>
       </Grid>
+
+      <MediaUploadOverlay
+        showOverlay={showMediaUpload}
+        onOverlayClose={onMediaUploadClose}
+      />
     </>
   );
 };

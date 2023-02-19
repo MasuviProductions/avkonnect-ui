@@ -369,4 +369,8 @@ export const LABELS = {
   REACTION_PRETEXT_DEFAULT: "reacted to this",
   LINK_COPY_SUCCESSFULL: "Link copied to clipboard",
   LINK_COPY_FAILED: "Link could not be copied",
+
+  // Upload media
+  UPLOAD_MEDIA: "Add a photo",
+  COMING_SOON: "This feature is coming soon. Hold tight!",
 };
