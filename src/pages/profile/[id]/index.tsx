@@ -68,7 +68,9 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
   const getSSRProps = async (
     session: Session
   ): Promise<GetServerSidePropsResult<IProfilePageProps>> => {
-    let transformedResponse;
+    let transformedResponse:
+      | ReturnType<typeof transformUserProfileResponsetoIProtectedPageProps>
+      | undefined;
     try {
       const userProfileRes = await fetchUserProfile(
         session.accessToken as string,

@@ -1,6 +1,5 @@
-import { Box, Grid, Avatar, Typography, SxProps, Theme } from "@mui/material";
+import { Grid, Avatar, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
 import {
   getEllipsedText,
@@ -29,6 +28,7 @@ const PostHeader: React.FC = () => {
   const handleProfileRedirectClick = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
   };
+
   return (
     <Grid container px={1} pb={1} spacing={2}>
       <Grid item xs mt={0.5}>
@@ -47,7 +47,10 @@ const PostHeader: React.FC = () => {
           <Grid item xs>
             <Grid container>
               <Grid item xs={12}>
-                <Typography sx={simpleLinkSx()} onClick={handleProfileRedirectClick}>
+                <Typography
+                  sx={simpleLinkSx()}
+                  onClick={handleProfileRedirectClick}
+                >
                   {relatedSourceMap[sourceId].name}
                 </Typography>
               </Grid>
@@ -70,7 +73,9 @@ const PostHeader: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>{<PostActions />}</Grid>
+      <Grid item>
+        <PostActions />
+      </Grid>
     </Grid>
   );
 };

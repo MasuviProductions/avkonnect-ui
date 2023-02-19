@@ -363,6 +363,7 @@ export const LABELS = {
   COMMENT: "Comment",
   SHARE_POST: "Share this post",
   COPY_LINK_TO_POST: "Copy link to post",
+  REACTION_PRETEXT_DEFAULT: "reacted to this",
   REACTION_PRETEXT_LIKE: "likes this",
   REACTION_PRETEXT_LOVE: "loves this",
   REACTION_PRETEXT_LAUGH: "finds this funny",

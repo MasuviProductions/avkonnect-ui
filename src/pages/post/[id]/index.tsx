@@ -74,7 +74,9 @@ export const getServerSideProps: GetServerSideProps<IPostPageProps> = async (
   const getSSRProps = async (
     session: Session
   ): Promise<GetServerSidePropsResult<IPostPageProps>> => {
-    let transformedResponse;
+    let transformedResponse:
+      | ReturnType<typeof transformUserPostResponsetoIProtectedPageProps>
+      | undefined;
     try {
       const userPostRes = await getPost(
         session.accessToken as string,
