@@ -21,7 +21,13 @@ const ViewOverlay: React.FC<IViewOverlayProps> = ({
     setIsDrawerOpen(false);
     onOverlayClose();
   };
-
+  useEffect(() => {
+    history.pushState(null, '', location.href);
+    window.onpopstate = e => {
+      history.go(1);
+      handleDrawerClose();
+    };
+  });
   useEffect(() => {
     setIsDrawerOpen(showOverlay);
   }, [showOverlay]);

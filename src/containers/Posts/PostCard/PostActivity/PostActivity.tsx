@@ -3,7 +3,7 @@ import { Box, Grid, Divider, Typography, SxProps, Theme } from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import CommentIcon from "@mui/icons-material/Comment";
-import ShareIcon from "@mui/icons-material/Share";
+import SendIcon from "@mui/icons-material/Send";
 import ReactionIconClubber from "../../../../components/ReactionIconClubber";
 import ReactionTooltip from "../../../../components/ReactionTooltip";
 import { useResourceContext } from "../../../../contexts/ResourceContext";
@@ -113,6 +113,7 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
           >
             {userReaction ? (
               <Box
+                height="40px"
                 display="flex"
                 alignItems="flex-end"
                 justifyContent="center"
@@ -127,6 +128,7 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
               </Box>
             ) : (
               <Box
+                height="40px"
                 display="flex"
                 alignItems="flex-end"
                 justifyContent="center"
@@ -167,9 +169,9 @@ const PostActivity: React.FC<IPostActivityProps> = ({ onPostOpen }) => {
           sx={postInteractionSx}
         >
           <Typography pr={1} variant="body2">
-            {LABELS.SHARE}
+            {LABELS.SEND}
           </Typography>
-          <ShareIcon fontSize="small" />
+          <SendIcon fontSize="small" />
         </Grid>
       </Grid>
     </Box>

@@ -163,10 +163,14 @@ export const generateNotificationMessage = (
 
 export const getNotificationTypeBasedLink = (
   notificationActivity: INotificationResourceActivity,
-  postId?: string
+  postId?: string,
+  userId?: string
 ): string => {
   switch (notificationActivity) {
     case "connectionRequest":
+      return `${compile(APP_ROUTES.PROFILE.route)({
+        id: userId,
+      })}`;
     case "connectionConfirmation":
       return `${APP_ROUTES.MY_NETWORK.route}`;
     case "postComment":
@@ -203,3 +207,21 @@ export const getTextFieldColorBasedOnMessageType = (
 export const getRandomNumber = (digits: number) => {
   return Math.ceil(Math.random() * 10 ** digits);
 };
+
+export const copyTextToClipboard = async (text: string) => {
+  if ('clipboard' in navigator) {
+    return await navigator.clipboard.writeText(text);
+  } 
+  else {
+    return document.execCommand('copy', true, text);
+  }
+}
+
+export const getLinkToPost = (id: string) => {
+  const origin = typeof window !== 'undefined' && window.location.origin
+    ? window.location.origin
+    : '';
+
+  const url = `${origin}${compile(APP_ROUTES.POST_PAGE.route)({ id: id })}`;
+  return url;
+}

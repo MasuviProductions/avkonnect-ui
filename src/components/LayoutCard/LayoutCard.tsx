@@ -17,7 +17,7 @@ const LayoutCard: React.FC<ILayoutCardProps> & {
   };
 
   return (
-    <Container fixed sx={handleLayoutCartContainerSx} disableGutters>
+    <Container sx={handleLayoutCartContainerSx} disableGutters>
       {children}
     </Container>
   );

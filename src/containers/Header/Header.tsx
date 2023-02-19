@@ -35,29 +35,16 @@ import { useUserNotificationsContext } from "../../contexts/UserNotificationsCon
 
 interface IHeaderProps {
   onThemeSelect: (selectedTheme: ThemeOptions) => void;
+  theme: ThemeOptions;
 }
 
-const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
+const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
   const { userNotificationsCount } = useUserNotificationsContext();
   const { authUser } = useAuthContext();
 
-  const [themeAnchorEl, setThemeAnchorEl] = useState<null | HTMLElement>(null);
   const [showProfileDropdown, setShowProfileDropdown] =
     useState<boolean>(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState<boolean>(false);
-
-  const handleThemeSelect = (themeOption: ThemeOptions) => {
-    handleThemeClose();
-    onThemeSelect(themeOption);
-  };
-
-  const handleThemeClose = () => {
-    setThemeAnchorEl(null);
-  };
-
-  const handleThemeOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setThemeAnchorEl(event.currentTarget);
-  };
 
   const handleProfileDropdownOpen = useCallback(() => {
     setShowProfileDropdown(true);
@@ -136,7 +123,7 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
 
               {authUser && (
                 <Link href={compile(APP_ROUTES.MY_NETWORK.route)()} passHref>
-                  <IconButton sx={{ paddingX: 2 }}>
+                  <IconButton sx={iconBtnSx}>
                     <PeopleIcon fontSize="large" sx={contrastTextSx} />
                   </IconButton>
                 </Link>
@@ -160,35 +147,9 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                 </Link>
               )}
 
-              <IconButton
-                onClick={handleThemeOpen}
-                aria-label="change theme"
-                aria-haspopup="true"
-                sx={{ paddingX: 2 }}
-              >
-                <ColorLensIcon fontSize="large" sx={contrastTextSx} />
-              </IconButton>
-
-              <Menu
-                id="theme-selector"
-                anchorEl={themeAnchorEl}
-                keepMounted
-                open={Boolean(themeAnchorEl)}
-                onClose={handleThemeClose}
-              >
-                {THEMES_LIST.map((theme) => (
-                  <MenuItem
-                    key={theme.key}
-                    onClick={() => handleThemeSelect(theme)}
-                  >
-                    {theme.name}
-                  </MenuItem>
-                ))}
-              </Menu>
-
               {authUser && (
                 <ClickAwayListener onClickAway={handleProfileDropdownClose}>
-                  <Box sx={userDropdownContainer}>
+                  <Box sx={userDropdownContainer} ml={1}>
                     <UserMiniCard
                       id={authUser.id}
                       name={authUser.name}
@@ -201,6 +162,8 @@ const Header: React.FC<IHeaderProps> = ({ onThemeSelect }) => {
                     {showProfileDropdown && (
                       <Box sx={userDropdown}>
                         <ProfileDropdown
+                          theme={theme}
+                          onThemeSelect={onThemeSelect}
                           onClick={handleProfileDropdownClose}
                           onFeedbackClick={handleFeedbackModalOpen}
                         />
@@ -258,7 +221,7 @@ const notificationBadgeSx: SxProps<Theme> = {
   },
 };
 
-const iconBtnSx: SxProps<Theme> = { paddingX: 1 };
+const iconBtnSx: SxProps<Theme> = { paddingX: 2 };
 
 const contrastTextSx = (theme: Theme): SystemStyleObject<Theme> => ({
   color: theme.palette.text.navbar,

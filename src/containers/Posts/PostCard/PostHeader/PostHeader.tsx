@@ -14,7 +14,6 @@ import {
   userAvatarHeadlineSx,
   userAvatarSx,
 } from "../../../../styles/sx";
-import { useAuthContext } from "../../../../contexts/AuthContext";
 import { LABELS } from "../../../../constants/labels";
 import PostActions from "./PostActions";
 
@@ -26,7 +25,6 @@ const PostHeader: React.FC = () => {
     throw Error(LABELS.RESOURCE_CONTEXT_UNINITIALIZED);
   }
   const { relatedSourceMap, sourceId, createdAt, sourceInfo } = resourceContext;
-  const { authUser } = useAuthContext();
 
   const handleProfileRedirectClick = () => {
     router.push(compile(APP_ROUTES.PROFILE.route)({ id: sourceId }));
@@ -72,7 +70,7 @@ const PostHeader: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>{authUser?.id === sourceId && <PostActions />}</Grid>
+      <Grid item>{<PostActions />}</Grid>
     </Grid>
   );
 };

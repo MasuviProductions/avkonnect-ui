@@ -1,4 +1,12 @@
-import { Avatar, Button, Grid, Theme, IconButton } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Theme,
+  IconButton,
+  Tooltip,
+  Hidden,
+} from "@mui/material";
 import { SystemStyleObject } from "@mui/system";
 import PhotoCameraBackIcon from "@mui/icons-material/PhotoCameraBack";
 
@@ -8,6 +16,8 @@ import { LABELS } from "../../../../constants/labels";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import TextEditor from "../../../../components/TextEditor";
 import { useTextEditorContext } from "../../../../contexts/TextEditorContext";
+import { useState } from "react";
+import MediaUploadModal from "../../MediaUploadModal";
 
 interface IAddCommentDesktopProps {
   submitButtonText: string;
@@ -27,7 +37,14 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
 
   const name = authUser?.name as string;
   const displayPictureUrl = authUser?.displayPictureUrl as string;
+  const [showMediaUpload, setShowMediaUpload] = useState<boolean>(false);
 
+  const onMediaUploadOpen = () => {
+    setShowMediaUpload(true);
+  };
+  const onMediaUploadClose = () => {
+    setShowMediaUpload(false);
+  };
   const handleCommentCreate = () => {
     saveContent();
   };
@@ -63,12 +80,15 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
                 <Grid item flex={1}>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <IconButton>
-                        <PhotoCameraBackIcon
-                          sx={actionIconsSx}
-                          fontSize="small"
-                        />
-                      </IconButton>
+                      <Tooltip title={LABELS.UPLOAD_MEDIA}>
+                        <IconButton>
+                          <PhotoCameraBackIcon
+                            onClick={onMediaUploadOpen}
+                            sx={actionIconsSx}
+                            fontSize="small"
+                          />
+                        </IconButton>
+                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -90,6 +110,12 @@ const AddCommentDesktop: React.FC<IAddCommentDesktopProps> = ({
           </Grid>
         </Grid>
       </Grid>
+
+      <MediaUploadModal
+        title={LABELS.UPLOAD_MEDIA}
+        showModal={showMediaUpload}
+        onModalClose={onMediaUploadClose}
+      />
     </>
   );
 };
