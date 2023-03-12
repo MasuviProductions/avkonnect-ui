@@ -47,7 +47,7 @@ const ProfileProgressCard: ReactFCWithSkeleton<IProfileProgressCardProps> =
           <></>
         ) : (
           <LayoutCard>
-            <Box my={1}>
+            <Box mt={1.5}>
               <LayoutCardHeader
                 title={LABELS.USER_PROFILE_PROGRESS_INCOMPLETE}
               ></LayoutCardHeader>
@@ -126,6 +126,7 @@ const profileProgressStepperSx: SxProps<Theme> = (theme: Theme) => ({
     {
       fill: `${theme.palette.text.primary}`,
     },
+
   ".MuiStep-horizontal > .MuiStepLabel-horizontal > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root.Mui-active > text, .MuiStep-vertical > .MuiStepLabel-vertical > .MuiStepLabel-iconContainer > .MuiSvgIcon-fontSizeMedium.MuiStepIcon-root > text":
     {
       fill: `${theme.palette.background.default}`,

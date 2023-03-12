@@ -21,12 +21,14 @@ const BottomFooter: React.FC = () => {
         <Grid container alignItems="center" textAlign="center">
           <Grid item p={2} md={4} sm={4} xs={12} mt={1}>
             <Link href={APP_ROUTES.ROOT.route} passHref>
-              <Image
-                src={PNG.AvkDeskLogo}
-                alt={LABELS.TITLE_LOGO}
-                width="150"
-                height="50"
-              />
+              <Box component="span">
+                <Image
+                  src={PNG.AvkDeskLogo}
+                  alt={LABELS.TITLE_LOGO}
+                  width="150"
+                  height="50"
+                />
+              </Box>
             </Link>
           </Grid>
           <Grid item md={4} sm={4} xs={12} mb={1}>
@@ -66,16 +68,16 @@ const BottomFooter: React.FC = () => {
                   {LABELS.FOLLOW_US_HEADER}
                 </Typography>
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="facebook" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="instagram" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="twitter" />
               </Grid>
-              <Grid item mr={2}>
+              <Grid item mx={1}>
                 <FooterSocialMediaIcon socialMedia="linkedin" />
               </Grid>
             </Grid>
@@ -93,9 +95,9 @@ const BottomFooter: React.FC = () => {
 
 const bottomFooterBoxSx: SxProps<Theme> = (theme: Theme) => ({
   width: "100%",
-  backgroundColor: theme.palette.navbar.main,
+  backgroundColor: theme.palette.background.navbar,
   borderRadius: "6px 6px 0px 0px",
-  boxShadow: `0px 0px 5px ${theme.palette.navbar.main}`,
+  boxShadow: `0px 0px 5px ${theme.palette.background.navbar}`,
 });
 
 const linkSx: SxProps<Theme> = (theme: Theme) => ({
@@ -108,7 +110,7 @@ const linkSx: SxProps<Theme> = (theme: Theme) => ({
 });
 
 const miniHeadingSx: SxProps<Theme> = (theme: Theme) => ({
-  color: theme.palette.navbar.contrastText,
+  color: theme.palette.text.secondary,
   fontWeight: "600",
 });
 

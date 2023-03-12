@@ -60,7 +60,6 @@ export const isFieldValueLimited = (
 ): boolean => {
   for (let index = 0; index < limitations.length; index += 1) {
     let isValid = true;
-    // TODO: Check for regex
     let validRegex = limitations[index].regex;
     let maxCharacters = limitations[index].maxCharacters;
     if (maxCharacters && value.length <= maxCharacters) {

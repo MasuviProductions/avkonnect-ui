@@ -1,9 +1,28 @@
+import { IReactionTypes } from "../interfaces/api/external";
+
 declare module "@mui/material/styles" {
-  interface Palette {
-    navbar: Palette["navbar"];
+  interface ThemeOptions {
+    key: "dark" | "light";
+    name: string;
   }
+
+  interface Theme extends ThemeOptions {}
+
+  interface TypeBackground {
+    navbar: string;
+  }
+
+  interface TypeText {
+    navbar: string;
+    link: string;
+  }
+
+  interface Palette {
+    reactions: Record<IReactionTypes, string>;
+  }
+
   interface PaletteOptions {
-    navbar: PaletteOptions["navbar"];
+    reactions: Record<IReactionTypes, string>;
   }
 }
 

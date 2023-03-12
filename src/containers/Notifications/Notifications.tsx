@@ -1,8 +1,10 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Container, Box, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LayoutCard from "../../components/LayoutCard";
+import SpinLoader from "../../components/SpinLoader";
 import API_ENDPOINTS from "../../constants/api";
+import { NOTIFICATION_PAGINATION_LIMIT } from "../../constants/app";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useSnackbarContext } from "../../contexts/SnackbarContext";
@@ -12,7 +14,6 @@ import useRemountKey from "../../hooks/useRemountKey";
 import {
   INotificationsApiModel,
   IRelatedSource,
-  IUserProfileApiModel,
 } from "../../interfaces/api/external";
 import { ReactFCWithSkeleton } from "../../interfaces/app";
 import {
@@ -57,7 +58,7 @@ const Notifications: ReactFCWithSkeleton = () => {
       getUserNotifications(
         accessToken as string,
         authUser?.id as string,
-        10,
+        NOTIFICATION_PAGINATION_LIMIT,
         nextNotificationsSearchKey
           ? encodeURI(JSON.stringify(nextNotificationsSearchKey))
           : undefined
@@ -131,14 +132,14 @@ const Notifications: ReactFCWithSkeleton = () => {
 
   useEffect(() => {
     if (getUserNotificationsData) {
-      setUptoDateUserNotifications((prev) => {
+      setUptoDateUserNotifications(prev => {
         return [
           ...prev,
           ...(getUserNotificationsData?.data
             ?.notifications as INotificationsApiModel[]),
         ];
       });
-      setRelatedSourcesMap((prev) => {
+      setRelatedSourcesMap(prev => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           getUserNotificationsData.data?.relatedSources || []
         ) as Record<string, IRelatedSource>;
@@ -170,7 +171,7 @@ const Notifications: ReactFCWithSkeleton = () => {
               item
               xs={12}
               px={1}
-              key={userNotification?.id || index.toString()}
+              key={`notification-${userNotification?.id}`}
               ref={
                 index === uptoDateUserNotifications.length - 1
                   ? infiniteLoadRef
@@ -181,17 +182,23 @@ const Notifications: ReactFCWithSkeleton = () => {
                 isRead={userNotification?.read}
                 notificationMessage={generateNotificationMessage(
                   userNotification.resourceActivity,
-                  relatedSourcesMap[userNotification.sourceId]
+                  relatedSourcesMap[userNotification.sourceId],
+                  userNotification.aggregatorCount
                 )}
                 notificationId={userNotification?.id}
                 notificationTime={userNotification?.createdAt}
                 notificationActivity={userNotification?.resourceActivity}
-                notificationResourceType={userNotification.resourceType}
                 relatedSource={relatedSourcesMap[userNotification.sourceId]}
                 onReadNotification={onReadNotification}
+                notificationResourceId={userNotification?.resourceId}
               />
             </Grid>
           ))}
+          {getUserNotificationsFetching && (
+            <Grid item xs={12}>
+              <SpinLoader fullWidth />
+            </Grid>
+          )}
         </Grid>
       </LayoutCard>
     </Box>

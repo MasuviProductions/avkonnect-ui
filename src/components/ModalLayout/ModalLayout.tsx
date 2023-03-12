@@ -19,12 +19,14 @@ export interface IModal {
 export interface IModalLayoutProps extends IModal {
   title?: string;
   showTitleBorder?: boolean;
+  withContentPadding?: boolean;
   maxWidth?: false | Breakpoint;
 }
 const ModalLayout: React.FC<IModalLayoutProps> = ({
   children,
   title,
   showTitleBorder = true,
+  withContentPadding = true,
   maxWidth = "md",
   showModal,
   onModalClose,
@@ -49,7 +51,9 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
             sx={handleHeaderContainerSx}
           >
             <Grid item>
-              <Typography variant="h6">{title}</Typography>
+              <Typography variant="h6" fontWeight="regular">
+                {title}
+              </Typography>
             </Grid>
             <Grid item>
               <IconButton onClick={onModalClose} sx={closeButton}>
@@ -57,7 +61,7 @@ const ModalLayout: React.FC<IModalLayoutProps> = ({
               </IconButton>
             </Grid>
           </Grid>
-          <Grid item xs={12} py={2}>
+          <Grid item xs={12} py={withContentPadding ? 2 : 0}>
             <Grid container>
               <Grid item xs={12} sx={childContainer}>
                 {children}

@@ -13,6 +13,11 @@ export const LABELS = {
   PRESENT_DATE: "Present",
   SHOW_MORE: "Show more",
   SHOW_LESS: "Show less",
+  CANCEL: "Cancel",
+
+  // Uninitialized Context Error Messages
+  RESOURCE_CONTEXT_UNINITIALIZED: "ResourceContext was not initialized",
+  TEXT_EDITOR_CONTEXT_UNINITIALIZED: "TextEditorContext not initialized",
 
   // Links
   COMPANY_WA_LINK: "https://api.whatsapp.com/send?phone=918431337068",
@@ -255,6 +260,38 @@ export const LABELS = {
     `You have a connection request from ${userName}. Accept to expand your network!`,
   NOTIFICATION_CONNECTION_CONFIRMATION: (userName: string): string =>
     `Your request to connect with ${userName} was accepted!`,
+  NOTIFICATION_POST_COMMENT: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } commented on your post. Respond back!`,
+  NOTIFICATION_POST_REACTION: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } reacted to your post. Check it out!`,
+  NOTIFICATION_POST_CREATION: (userName: string): string =>
+    `${userName} has created a new post. See what it is about!`,
+  NOTIFICATION_COMMENT_COMMENT: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } commented on your comment. Go react!`,
+  NOTIFICATION_COMMENT_REACTION: (
+    userName: string,
+    aggregatorCount: number
+  ): string =>
+    `${userName}${
+      aggregatorCount > 1 ? ` and ${aggregatorCount - 1} others have` : ` has`
+    } reacted to your comment. Check it out!`,
+  NOTIFICATION_COMMENT_CREATION: (userName: string): string =>
+    `${userName} has added a new comment. Check it out!`,
   NOTIFICATION_DEFAULT_MESSAGE: "You have a notification!",
 
   // Legal Pages
@@ -263,4 +300,51 @@ export const LABELS = {
 
   // Form Fields Generic
   FORM_FIELD_MANDATORY_ERROR_MSG: "This field is mandatory",
+
+  // Posts
+  ADD_POST_PLACEHOLDER: "What's on your mind?",
+  CREATE_POST: "Create a post",
+  EDIT_POST: "Edit post",
+  SUBMIT_POST: "Post",
+
+  // Comments
+  ADD_COMMENT_PLACEHOLDER: "Add a comment..",
+  POST_COMMENT: "Comment",
+  REPLY: "Reply",
+  LOAD_MORE_REPLIES: "Load more replies",
+  VIEW_REPLIES: "View replies",
+  REPLY_COUNT: (replyCount: number) =>
+    `${replyCount} ${replyCount === 1 ? "Reply" : "Replies"}`,
+  VIEW_MORE_COMMENTS: "View more comments",
+
+  // Reactions
+  LOVE: "Love",
+  LIKE: "Like",
+  LAUGH: "Laugh",
+  SAD: "Sad",
+  SUPPORT: "Support",
+
+  // Feeds
+  FEED_LOAD_FAIL: "Could not load AVKonnect Feeds. Check your connection.",
+  LOADING: "Loading..",
+  YOU: "You",
+  YOU_AND_OTHERS: (reactionsCount: number): string =>
+    `You and ${reactionsCount - 1} Others`,
+  BE_FIRST_TO_REACT: `Be the first to react!`,
+  COMMENTS_COUNT: (commentCount: number): string =>
+    commentCount === 1 ? `${commentCount} comment` : `${commentCount} comments`,
+  COMMENTED_ON: `commented on this`,
+  REACTION_SOURCE: (emotion: string): string => `${emotion}`,
+  CREATE_POST_PLACEHOLDER: `Pen your thoughts..`,
+  REACTION_ALL_TAB: (reactionCount: number) => `All ${reactionCount}`,
+
+  // Feed and Post
+  SHARE: "Share",
+  COMMENT: "Comment",
+  REACTION_PRETEXT_LIKE: "likes this",
+  REACTION_PRETEXT_LOVE: "loves this",
+  REACTION_PRETEXT_LAUGH: "finds this funny",
+  REACTION_PRETEXT_SUPPORT: "supports this",
+  REACTION_PRETEXT_SAD: "expresses their empathy",
+  REACTION_PRETEXT_DEFAULT: "reacted to this",
 };

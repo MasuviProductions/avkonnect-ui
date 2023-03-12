@@ -230,7 +230,12 @@ export interface INotificationsApiModel {
 
 export type IRelatedSource = Pick<
   IUserProfileApiModel,
-  "name" | "headline" | "displayPictureUrl"
+  | "name"
+  | "headline"
+  | "displayPictureUrl"
+  | "backgroundImageUrl"
+  | "id"
+  | "email"
 >;
 
 export interface INotificationsApiResponse {
@@ -242,28 +247,25 @@ export interface INotificationCountApiResponse {
   pendingNotificationCount: number;
 }
 
-type IResourceTypes = "post" | "comment";
+export type IResourceTypes = "post" | "comment" | "reaction";
 
-type ISourceTypes = "user" | "company";
+export type ISourceTypes = "user" | "company";
 
-type IReactionTypes = "like" | "love" | "support" | "laugh" | "sad";
+export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
+export type IReactionTypes = typeof REACTIONS[number];
 
-interface IPostRequestContentApiModel {
-  text: string;
-  mediaUrls?: string[];
-}
-
-export interface ICreatePostApiRequest {
-  content: IPostRequestContentApiModel;
-  hashtags?: string[];
-  visibleOnlyToConnections: boolean;
-  commentsOnlyByConnections: boolean;
-}
-
-interface IPostResponseContentModel {
+export interface IPostContentApiModel {
   text: string;
   createdAt: Date;
   mediaUrls: string[];
+  stringifiedRawContent: string;
+}
+
+export interface ICreatePostApiRequest {
+  content: Omit<IPostContentApiModel, "createdAt">;
+  hashtags?: string[];
+  visibleOnlyToConnections: boolean;
+  commentsOnlyByConnections: boolean;
 }
 
 interface IRelatedUserInfoResponseModel {
@@ -280,7 +282,7 @@ interface IRelatedUserInfoResponseModel {
 export interface IPostApiResponse {
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel[];
+  contents: IPostContentApiModel[];
   hashtags: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
@@ -290,45 +292,48 @@ export interface IPostApiResponse {
   updatedAt: Date;
   id: string;
   activity: IActivityApiModel;
+  sourceActivity?: ISourceActivityApiModel;
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
 export interface IPatchPostApiRequest {
-  content: IPostRequestContentApiModel;
+  content: Omit<IPostContentApiModel, "createdAt">;
   hashtags: string[];
 }
 
-interface ICommentApiModel {
+export interface ICommentContentApiModel {
   text: string;
   mediaUrls: string[];
   createdAt: Date;
+  stringifiedRawContent: string;
 }
 
 export interface ICreateCommentApiRequest {
   resourceId: string;
   resourceType: IResourceTypes;
-  comment: Omit<ICommentApiModel, "createdAt">;
+  comment: Omit<ICommentContentApiModel, "createdAt">;
 }
 
-export interface ICommentApiResponseModel {
+export interface ICommentApiModel {
   resourceId: string;
   resourceType: IResourceTypes;
   id: string;
   sourceId: string;
   sourceType: ISourceTypes;
   createdAt: Date;
-  contents: ICommentApiModel[];
+  contents: ICommentContentApiModel[];
   isDeleted: boolean;
   isBanned: boolean;
   activity: IActivityApiModel;
+  sourceActivity?: ISourceActivityApiModel;
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
 export interface IPatchCommentApiRequest {
-  comment: ICommentApiModel;
+  comment: Omit<ICommentContentApiModel, "createdAt">;
 }
 
-interface IReactionApiModel {
+export interface IReactionApiModel {
   sourceType: ISourceTypes;
   resourceType: IResourceTypes;
   resourceId: string;
@@ -338,13 +343,8 @@ interface IReactionApiModel {
   sourceId: string;
 }
 
-export interface IGetPostReactionsApiResponse {
-  reactions: IReactionApiModel[];
-  relatedSources: IRelatedUserInfoResponseModel[];
-}
-
 export interface IGetPostCommentsApiResponse {
-  comments: Omit<ICommentApiResponseModel, "relatedSources">;
+  comments: ICommentApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
@@ -354,24 +354,28 @@ export interface IGetPostsInfoApiRequest {
   postIds: string[];
 }
 
-type IReactionCountApiModel = Record<IReactionTypes, number>;
+export type IReactionCountApiModel = Record<IReactionTypes, number>;
 
-interface IPostInfoSourceActivityApiModel {
-  sourceComments: ICommentApiModel[];
+interface ISourceActivityApiModel {
+  comments?: ICommentContentApiModel[];
+  reaction?: IReactionTypes;
 }
 
-interface IGetPostInfoApiModel {
+export type ICommentCountType = "comment" | "subComment";
+
+export type ICommentCountApiModel = Record<ICommentCountType, number>;
+
+export interface IGetPostInfoApiModel {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: ICommentApiModel[];
+  contents: ICommentContentApiModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
-  reactionsCount: IReactionCountApiModel;
-  commentsCount: number;
-  sourceActivity: IPostInfoSourceActivityApiModel;
+  activity: IActivityApiModel;
+  sourceActivity?: ISourceActivityApiModel;
   hashtags: string[];
   isBanned: boolean;
   isDeleted: boolean;
@@ -394,7 +398,7 @@ interface IReportInfoApiModel {
 }
 
 export interface IActivityApiModel {
-  commentsCount: number;
+  commentsCount: ICommentCountApiModel;
   resourceType: IResourceTypes;
   resourceId: string;
   updatedAt: Date;
@@ -405,7 +409,12 @@ export interface IActivityApiModel {
 }
 
 export interface IGetCommentsCommentsApiResponse {
-  comments: Omit<ICommentApiResponseModel, "relatedSources">;
+  comments: ICommentApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetReactionsResponseApiModel {
+  reactions: IReactionApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }
 
@@ -426,23 +435,24 @@ export interface IReactionApiResponse {
   relatedSource: IRelatedUserInfoResponseModel;
 }
 
-interface IFeedSourceApiModel {
+export interface IFeedSourceApiModel {
   sourceId: string;
   resourceId: string;
   sourceType: ISourceTypes;
   resourceType: IResourceTypes;
 }
 
-interface IUserFeedApiModel {
+export interface IUserFeedApiModel {
   postId: string;
   createdAt: Date;
   updatedAt: Date;
   sourceId: string;
   sourceType: ISourceTypes;
-  contents: IPostResponseContentModel;
+  contents: IPostContentApiModel[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
   activity: IActivityApiModel;
+  sourceActivity?: ISourceActivityApiModel;
   hashtags: string[];
   isBanned: boolean;
   isDeleted: boolean;
@@ -452,5 +462,10 @@ interface IUserFeedApiModel {
 
 export interface IGetUserFeedsApiResponse {
   feeds: IUserFeedApiModel[];
+  relatedSources: IRelatedUserInfoResponseModel[];
+}
+
+export interface IGetUserPostsApiResponse {
+  postsInfo: IGetPostInfoApiModel[];
   relatedSources: IRelatedUserInfoResponseModel[];
 }

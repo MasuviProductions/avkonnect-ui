@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { GetServerSidePropsResult } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
+import { compile } from "path-to-regexp";
 import { URLSearchParams } from "url";
 import { APP_ROUTES } from "../constants/app";
 import {
@@ -17,8 +18,28 @@ import {
   IRelatedSource,
 } from "../interfaces/api/external";
 import { ITextFieldMessageType } from "../interfaces/app";
+import updateLocale from "dayjs/plugin/updateLocale";
 
 dayjs.extend(relativeTime);
+
+dayjs.extend(updateLocale);
+dayjs.updateLocale("en", {
+  relativeTime: {
+    future: "in %s",
+    past: "%s ago",
+    s: "%ds",
+    m: "1m",
+    mm: "%dm",
+    h: "1hr",
+    hh: "%dhr",
+    d: "1d",
+    dd: "%dd",
+    M: "1mo",
+    MM: "%dmo",
+    y: "1yr",
+    yy: "%dyr",
+  },
+});
 
 export const getQueryStringParams = (url: string): URLSearchParams => {
   const params = new URL(url).searchParams;
@@ -81,7 +102,7 @@ export const getEllipsedText = (text: string, len: number): string => {
   return `${text.substring(0, len)}...`;
 };
 
-export const getMUIElipsedSx = (
+export const getMUIEllipsedSx = (
   lines?: number,
   fixedHeight?: number
 ): SxProps<Theme> => {
@@ -119,7 +140,8 @@ export const getLinkedTextIfURLIsPresent = (para: string) => {
 
 export const generateNotificationMessage = (
   notificationActivity: INotificationResourceActivity,
-  relatedSource: IRelatedSource
+  relatedSource: IRelatedSource,
+  aggregatorCount?: number
 ) => {
   switch (notificationActivity) {
     case "connectionRequest":
@@ -130,8 +152,57 @@ export const generateNotificationMessage = (
       return LABELS.NOTIFICATION_CONNECTION_CONFIRMATION(
         relatedSource.name as string
       );
+    case "postComment":
+      return LABELS.NOTIFICATION_POST_COMMENT(
+        relatedSource.name as string,
+        aggregatorCount!
+      );
+    case "postCreation":
+      return LABELS.NOTIFICATION_POST_CREATION(relatedSource.name as string);
+    case "postReaction":
+      return LABELS.NOTIFICATION_POST_REACTION(
+        relatedSource.name as string,
+        aggregatorCount!
+      );
+    case "commentComment":
+      return LABELS.NOTIFICATION_COMMENT_COMMENT(
+        relatedSource.name as string,
+        aggregatorCount!
+      );
+    case "commentCreation":
+      return LABELS.NOTIFICATION_COMMENT_CREATION(relatedSource.name as string);
+    case "commentReaction":
+      return LABELS.NOTIFICATION_COMMENT_REACTION(
+        relatedSource.name as string,
+        aggregatorCount!
+      );
     default:
       return LABELS.NOTIFICATION_DEFAULT_MESSAGE;
+  }
+};
+
+export const getNotificationTypeBasedLink = (
+  notificationActivity: INotificationResourceActivity,
+  postId?: string
+): string => {
+  switch (notificationActivity) {
+    case "connectionRequest":
+    case "connectionConfirmation":
+      return `${APP_ROUTES.MY_NETWORK.route}`;
+    case "postComment":
+    case "postCreation":
+    case "postReaction":
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
+    case "commentComment":
+    case "commentCreation":
+    case "commentReaction":
+      return `${compile(APP_ROUTES.POST_PAGE.route)({
+        id: postId,
+      })}`;
+    default:
+      return `${APP_ROUTES.ROOT.route}`;
   }
 };
 
@@ -149,15 +220,6 @@ export const getTextFieldColorBasedOnMessageType = (
   return messageType === "warning" ? "warning" : undefined;
 };
 
-export const getNotificationTypeBasedLink = (
-  notificationActivity: INotificationResourceActivity
-): string => {
-  switch (notificationActivity) {
-    case "connectionRequest":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
-    case "connectionConfirmation":
-      return `${APP_ROUTES.MY_NETWORK.route}`;
-    default:
-      return `${APP_ROUTES.MY_NETWORK.route}`;
-  }
+export const getRandomNumber = (digits: number) => {
+  return Math.ceil(Math.random() * 10 ** digits);
 };
