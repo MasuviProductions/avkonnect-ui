@@ -58,7 +58,7 @@ const CommentBox: React.FC<ICommentBoxProps> = ({}) => {
                     </Typography>
                   </Grid>
                   {authUser?.id === userId && !isBeingEdited && (
-                    <Grid item>
+                    <Grid item style={{ paddingLeft: 4 }}>
                       <CommentActions />
                     </Grid>
                   )}
