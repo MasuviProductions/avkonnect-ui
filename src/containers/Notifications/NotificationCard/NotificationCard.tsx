@@ -62,13 +62,13 @@ const NotificationCard: React.FC<INotificationCardProps> = ({
         passHref
       >
         <Grid container alignItems="center" px={1}>
-          <Grid item>
+          <Grid item xs={2} sm={1}>
             <NotificationIcon
               notificationType={notificationActivity}
               relatedSource={relatedSource}
             />
           </Grid>
-          <Grid item sm={10} xs={9.5} ml={2}>
+          <Grid item sm={10} xs={9} ml={2}>
             <Grid container flexDirection="column" my={1}>
               <Grid item xs={12}>
                 <Typography variant="body1">{notificationMessage}</Typography>
