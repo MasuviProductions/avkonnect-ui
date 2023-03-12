@@ -287,7 +287,7 @@ export const LABELS = {
   SETTINGS_PHONE_NO_DESCRIPTION: "Select who can see your phone number",
   SETTINGS_ACTIVE_STATUS: "Active status",
   SETTINGS_ACTIVE_STATUS_DESCRIPTION: "Select who can see your active status",
-  SETTINGS_CONNECTION_INVITE: "Active status",
+  SETTINGS_CONNECTION_INVITE: "Connection invite",
   SETTINGS_CONNECTION_INVITE_DESCRIPTION:
     "Select who can send you connection request",
   SETTINGS_BLOCKING_INFO: "Block Users",
