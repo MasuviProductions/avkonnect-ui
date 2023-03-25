@@ -17,6 +17,7 @@ import MyNetwork from "../pages/my-network";
 import SignInPage from "../pages/sign-in";
 import AboutUsPage from "../pages/about-us";
 import NotificationsPage from "../pages/notifications";
+import SettingsPage from "../pages/settings";
 import PrivacyPolicyPage from "../pages/legal/privacy-policy";
 import { LABELS } from "./labels";
 import PostPageView from "../containers/PostPageView";
@@ -58,6 +59,11 @@ export const APP_ROUTES = {
     route: "/notifications",
     key: "notifications",
     skeleton: NotificationsPage.Skeleton,
+  },
+  SETTINGS: {
+    route: "/settings",
+    key: "settings",
+    skeleton: SettingsPage.Skeleton,
   },
   LEGAL_PRIVACY_POLICY: {
     route: "/legal/privacy-policy",
