@@ -68,20 +68,32 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
   const getSSRProps = async (
     session: Session
   ): Promise<GetServerSidePropsResult<IProfilePageProps>> => {
-    const userProfileRes = await fetchUserProfile(
-      session.accessToken as string,
-      context.params.id as string
-    );
-    const transformedResponse =
-      transformUserProfileResponsetoIProtectedPageProps(userProfileRes);
-
-    return {
-      props: {
-        session,
-        data: transformedResponse.data,
-        error: transformedResponse.error,
-      },
-    };
+    let transformedResponse:
+      | ReturnType<typeof transformUserProfileResponsetoIProtectedPageProps>
+      | undefined;
+    try {
+      const userProfileRes = await fetchUserProfile(
+        session.accessToken as string,
+        context.params.id as string
+      );
+      transformedResponse =
+        transformUserProfileResponsetoIProtectedPageProps(userProfileRes);
+    } catch (err) {
+      const userPostRes: AVKonnectApiResponse<IUserProfileApiResponse> = {
+        success: false,
+        data: undefined,
+      };
+      transformedResponse =
+        transformUserProfileResponsetoIProtectedPageProps(userPostRes);
+    } finally {
+      return {
+        props: {
+          session,
+          data: transformedResponse?.data,
+          error: transformedResponse?.error,
+        },
+      };
+    }
   };
   return await handleServerSideAuthenticationRedirect(context, getSSRProps);
 };

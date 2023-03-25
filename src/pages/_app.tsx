@@ -24,9 +24,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import { SESSION_REFETCH_INTERVAL } from "../constants/app";
 import UserNotificationsContextProvider from "../contexts/UserNotificationsContext";
-import UserSettingsContextProvider, {
-  useUserSettingsContext,
-} from "../contexts/UserSettingsContext";
+import UserSettingsContextProvider from "../contexts/UserSettingsContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

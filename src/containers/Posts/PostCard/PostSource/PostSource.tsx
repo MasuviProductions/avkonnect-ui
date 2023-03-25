@@ -38,7 +38,7 @@ const PostSource: React.FC<IPostSourceProps> = ({ feedSource }) => {
     relatedSourceMap: Record<string, IRelatedSource>
   ): [IResourceTypes, IRelatedSource] => {
     let fsResult = feedSource[0];
-    feedSource.forEach(fs => {
+    feedSource.forEach((fs) => {
       if (fs.resourceType === "reaction" && fsResult.resourceType === "post") {
         fsResult = fs;
       }
@@ -99,9 +99,9 @@ const PostSource: React.FC<IPostSourceProps> = ({ feedSource }) => {
         <Divider sx={dividerSx} />
       </>
     );
-  } else {
-    return <></>;
   }
+
+  return <></>;
 };
 
 const dividerSx: SxProps<Theme> = (theme: Theme) => ({

@@ -35,6 +35,7 @@ import {
   IGetUserFeedsApiResponse,
   IResourceTypes,
   IGetUserPostsApiResponse,
+  IGetRootPostInfoForComment,
   IUserSettingsApiResponse,
   IPatchUserSettingsApiRequest,
   IUsersInfoApiResponse,
@@ -716,7 +717,7 @@ export const getCommentReactions = async (
         },
       }
     )
-    .then(res => res.data);
+    .then((res) => res.data);
   return getCommentReactionsResponse;
 };
 
@@ -835,4 +836,22 @@ export const getUserPosts = async (
     .then((res) => res.data);
 
   return getUserFeedsResponse;
+};
+
+export const getRootPostInfoForComment = async (
+  accessToken: string,
+  commentId: string
+): Promise<AVKonnectApiResponse<IGetRootPostInfoForComment>> => {
+  const getRootPostInfoForCommentRes = await axios
+    .get<AVKonnectApiResponse<IGetRootPostInfoForComment>>(
+      API_ENDPOINTS.GET_ROOT_POST_INFO_FOR_COMMENT.url(commentId),
+      {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then((res) => res.data);
+
+  return getRootPostInfoForCommentRes;
 };
