@@ -2,25 +2,20 @@ import {
   AppBar,
   Container,
   IconButton,
-  Menu,
-  MenuItem,
   ThemeOptions,
   Toolbar,
-  Typography,
   Theme,
   Box,
   Hidden,
   ClickAwayListener,
   Badge,
 } from "@mui/material";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
 import PeopleIcon from "@mui/icons-material/People";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import React, { useCallback, useState } from "react";
 import { SxProps, SystemStyleObject } from "@mui/system";
 import Link from "next/link";
 import Image from "next/image";
-import { THEMES_LIST } from "../../constants/theme";
 import { LABELS } from "../../constants/labels";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Head from "next/head";
@@ -33,13 +28,24 @@ import { PNG } from "../../assets/PNG";
 import { compile } from "path-to-regexp";
 import { useUserNotificationsContext } from "../../contexts/UserNotificationsContext";
 import {useRouter} from "next/router";
+import { useUserSettingsContext } from "../../contexts/UserSettingsContext";
 
 interface IHeaderProps {
-  onThemeSelect: (selectedTheme: ThemeOptions) => void;
   theme: ThemeOptions;
 }
 
-const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
+const Header: React.FC<IHeaderProps> = ({ theme }) => {
+  const { onThemeSelect, setUpdatedSettings } = useUserSettingsContext();
+  const handleThemeChange = (theme: ThemeOptions) => {
+    onThemeSelect(theme);
+    const patchSettings = {
+      fieldName: "display",
+      fieldKey: "theme",
+      fieldValue: theme.key,
+    };
+    setUpdatedSettings(patchSettings);
+  };
+
   const { userNotificationsCount } = useUserNotificationsContext();
   const { authUser } = useAuthContext();
 
@@ -56,11 +62,10 @@ const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
     setShowProfileDropdown(false);
   }, []);
 
-           
   const handleSettingsClick = () => {
     handleProfileDropdownClose();
     router.push(APP_ROUTES.SETTINGS.route);
-  }
+  };
 
   const handleFeedbackModalOpen = () => {
     handleProfileDropdownClose();
@@ -171,7 +176,7 @@ const Header: React.FC<IHeaderProps> = ({ theme, onThemeSelect }) => {
                       <Box sx={userDropdown}>
                         <ProfileDropdown
                           theme={theme}
-                          onThemeSelect={onThemeSelect}
+                          onThemeSelect={handleThemeChange}
                           onClick={handleProfileDropdownClose}
                           onFeedbackClick={handleFeedbackModalOpen}
                           onSettingsClick={handleSettingsClick}

@@ -24,7 +24,9 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDayjs from "@mui/lab/AdapterDayjs";
 import { SESSION_REFETCH_INTERVAL } from "../constants/app";
 import UserNotificationsContextProvider from "../contexts/UserNotificationsContext";
-import UserSettingsContextProvider from "../contexts/UserSettingsContext";
+import UserSettingsContextProvider, {
+  useUserSettingsContext,
+} from "../contexts/UserSettingsContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -58,16 +60,16 @@ const MyApp = ({
                 <UserNotificationsContextProvider>
                   <UserProfileModalContextProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <Header onThemeSelect={onThemeSelect} theme={theme} />
-                      <Container maxWidth="lg" sx={containerSx}>
-                        <WithPageSkeleton>
-                          <UserSettingsContextProvider
-                            onThemeSelect={onThemeSelect}
-                          >
+                      <UserSettingsContextProvider
+                        onThemeSelect={onThemeSelect}
+                      >
+                        <Header theme={theme} />
+                        <Container maxWidth="lg" sx={containerSx}>
+                          <WithPageSkeleton>
                             <Component {...pageProps} />
-                          </UserSettingsContextProvider>
-                        </WithPageSkeleton>
-                      </Container>
+                          </WithPageSkeleton>
+                        </Container>
+                      </UserSettingsContextProvider>
                     </LocalizationProvider>
                   </UserProfileModalContextProvider>
                 </UserNotificationsContextProvider>

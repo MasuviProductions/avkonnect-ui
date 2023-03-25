@@ -67,7 +67,7 @@ export interface ISettingsUpdateDetail {
   fieldValue: string | boolean;
   fieldOperation?: IFieldOperationValue;
 }
-interface IUserSettingsProps {
+interface IUserSettingsContextProps {
   userSettings: IUserSettings;
   setUpdatedSettings: Dispatch<
     SetStateAction<ISettingsUpdateDetail | undefined>
@@ -77,7 +77,7 @@ interface IUserSettingsProps {
   isUpdatingUserSettings: boolean;
 }
 
-const defaultUserValues: IUserSettings = {
+const defaultSettingsValues: IUserSettings = {
   id: "",
   display: { theme: "light" },
   privacy: {
@@ -101,27 +101,32 @@ const defaultUserValues: IUserSettings = {
   },
 };
 
-const UserSettingsContext = createContext<IUserSettingsProps>({
-  userSettings: defaultUserValues,
+const UserSettingsContext = createContext<IUserSettingsContextProps>({
+  userSettings: defaultSettingsValues,
   setUpdatedSettings: () => {},
   onThemeSelect: () => {},
   triggerGetUserSettingsApi: () => {},
   isUpdatingUserSettings: true,
 });
 
-const useUserSettingsContext = (): IUserSettingsProps => {
+const useUserSettingsContext = (): IUserSettingsContextProps => {
   return useContext(UserSettingsContext);
 };
-
-const UserSettingsContextProvider: React.FC<IUserSettingsProps> = ({
+interface IUserSettingsContextProviderProps {
+  userId?: string;
+  onThemeSelect: (selectedTheme: ThemeOptions) => void;
+}
+const UserSettingsContextProvider: React.FC<IUserSettingsContextProviderProps> = ({
+  userId,
   children,
   onThemeSelect,
 }) => {
   const { authUser, accessToken } = useAuthContext();
   const { setSnackbar } = useSnackbarContext();
+  const user_id = userId || authUser?.id;
 
   const [userSettings, setUserSettings] =
-    useState<IUserSettings>(defaultUserValues);
+    useState<IUserSettings>(defaultSettingsValues);
   const [updatedSettings, setUpdatedSettings] =
     useState<ISettingsUpdateDetail>();
 
@@ -130,8 +135,8 @@ const UserSettingsContextProvider: React.FC<IUserSettingsProps> = ({
     error: getUserSettingsError,
     refetch: triggerGetUserSettingsApi,
   } = useQuery(
-    `GET:${API_ENDPOINTS.USER_SETTINGS.key}:${authUser?.id}`,
-    () => getUserSettings(accessToken as string, authUser?.id as string),
+    `GET:${API_ENDPOINTS.USER_SETTINGS.key}:${user_id}`,
+    () => getUserSettings(accessToken as string, user_id as string),
     { refetchOnWindowFocus: false }
   );
 
@@ -141,9 +146,9 @@ const UserSettingsContextProvider: React.FC<IUserSettingsProps> = ({
     refetch: triggerPatchUserSettingsApi,
     isRefetching: isUpdatingUserSettings,
   } = useQuery(
-    `PATCH:${API_ENDPOINTS.USER_SETTINGS.key}:${authUser?.id}`,
+    `PATCH:${API_ENDPOINTS.USER_SETTINGS.key}:${user_id}`,
     () =>
-      patchUserSettings(accessToken as string, authUser?.id as string, [
+      patchUserSettings(accessToken as string, user_id as string, [
         updatedSettings as ISettingsUpdateDetail,
       ]),
     { refetchOnWindowFocus: false, enabled: false }
