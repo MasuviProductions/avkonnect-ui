@@ -62,6 +62,9 @@ const CreatePostEditor: React.FC<ICreatePostEditorProps> = ({
       hashtags: [],
       visibleOnlyToConnections: false,
       commentsOnlyByConnections: false,
+      // TODO: Remove hardcoding
+      postStatus: "created",
+      postMediaStatus: "success",
     };
     setCreatePostReqBody(postReqBody);
   };
@@ -73,10 +76,16 @@ const CreatePostEditor: React.FC<ICreatePostEditorProps> = ({
       setCreatePostReqBody(undefined);
       clearCreatePostQuery();
       onPostEditorClose();
-      setSnackbar?.({ message: LABELS.POST_CREATE_SUCCESS, messageType: "success" });
-    }    
+      setSnackbar?.({
+        message: LABELS.POST_CREATE_SUCCESS,
+        messageType: "success",
+      });
+    }
     if (createPostStatus === "error") {
-      setSnackbar?.({ message: LABELS.POST_CREATE_FAILURE, messageType: "error" });
+      setSnackbar?.({
+        message: LABELS.POST_CREATE_FAILURE,
+        messageType: "error",
+      });
     }
   }, [clearCreatePostQuery, createPostStatus, onPostEditorClose, setSnackbar]);
 

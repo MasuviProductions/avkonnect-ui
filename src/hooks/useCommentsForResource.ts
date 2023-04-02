@@ -160,6 +160,9 @@ export const useCommentsForResource = (
       resourceId: id,
       resourceType: resourceType,
       comment: comment,
+      //TODO: Remove hardcoding
+      commentStatus: "created",
+      commentMediaStatus: "success",
     });
   };
 
@@ -192,7 +195,7 @@ export const useCommentsForResource = (
 
   const handleUpdateRelatedSources = useCallback(
     (relatedSources: IRelatedSource[]) => {
-      setRelatedSourcesMap(prev => {
+      setRelatedSourcesMap((prev) => {
         const sourcesMap = transformUsersListToUserIdUserMap(
           relatedSources
         ) as Record<string, IRelatedSource>;
@@ -207,10 +210,10 @@ export const useCommentsForResource = (
   );
 
   const mergeComments = useCallback((comments: ICommentApiModel[]) => {
-    setUptoDateComments(prev => {
-      const updatedComments = comments.filter(comment => {
+    setUptoDateComments((prev) => {
+      const updatedComments = comments.filter((comment) => {
         const isCommentAlreadyPresent = prev.findIndex(
-          cmt => cmt.id === comment.id
+          (cmt) => cmt.id === comment.id
         );
         return isCommentAlreadyPresent < 0;
       });
@@ -227,29 +230,47 @@ export const useCommentsForResource = (
   );
 
   useEffect(() => {
-    if (createCommentStatus==="success") {
-      setSnackbar?.({ message: LABELS.COMMENT_CREATE_SUCCESS, messageType: "success" });
+    if (createCommentStatus === "success") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_CREATE_SUCCESS,
+        messageType: "success",
+      });
     }
-    if (createCommentStatus==="error") {
-      setSnackbar?.({ message: LABELS.COMMENT_CREATE_FAILURE, messageType: "error" });
+    if (createCommentStatus === "error") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_CREATE_FAILURE,
+        messageType: "error",
+      });
     }
   }, [createCommentStatus, setSnackbar]);
 
   useEffect(() => {
-    if (deleteCommentStatus==="success") {
-      setSnackbar?.({ message: LABELS.COMMENT_DELETE_SUCCESS, messageType: "success" });
+    if (deleteCommentStatus === "success") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_DELETE_SUCCESS,
+        messageType: "success",
+      });
     }
-    if (deleteCommentStatus==="error") {
-      setSnackbar?.({ message: LABELS.COMMENT_DELETE_FAILURE, messageType: "error" });
+    if (deleteCommentStatus === "error") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_DELETE_FAILURE,
+        messageType: "error",
+      });
     }
   }, [deleteCommentStatus, setSnackbar]);
 
   useEffect(() => {
-    if (patchCommentStatus==="success") {
-      setSnackbar?.({ message: LABELS.COMMENT_EDIT_SUCCESS, messageType: "success" });
+    if (patchCommentStatus === "success") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_EDIT_SUCCESS,
+        messageType: "success",
+      });
     }
-    if (patchCommentStatus==="error") {
-      setSnackbar?.({ message: LABELS.COMMENT_EDIT_FAILURE, messageType: "error" });
+    if (patchCommentStatus === "error") {
+      setSnackbar?.({
+        message: LABELS.COMMENT_EDIT_FAILURE,
+        messageType: "error",
+      });
     }
   }, [patchCommentStatus, setSnackbar]);
 
@@ -294,8 +315,8 @@ export const useCommentsForResource = (
   useEffect(() => {
     if (deleteCommentResData?.data) {
       setCommentToDelete(undefined);
-      setUptoDateComments(prev =>
-        prev.filter(comment => comment.id !== deleteCommentResData?.data?.id)
+      setUptoDateComments((prev) =>
+        prev.filter((comment) => comment.id !== deleteCommentResData?.data?.id)
       );
       onCommentRemove();
 

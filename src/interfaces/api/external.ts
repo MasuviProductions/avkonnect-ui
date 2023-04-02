@@ -45,6 +45,32 @@ export interface IAuthUserApiResponse {
   displayPictureUrl: string;
 }
 
+export interface IImage<T extends string = string> {
+  resolution: string;
+  url: string;
+  type: T;
+}
+
+export interface IUserImage {
+  mediaUrls: Array<IUserMediaUrl>;
+  mediaStatus: string;
+}
+
+type IUserMediaUrl = IImage<
+  | "displayPictureOriginal"
+  | "displayPictureThumbnail"
+  | "displayPictureMax"
+  | "displayPictureStandard"
+  | "backgroundPictureOriginal"
+  | "backgroundPictureThumbnail"
+  | "backgroundPictureMax"
+  | "backgroundPictureStandard"
+>;
+
+export type IProfilePictureImages = IUserImage;
+
+export type IBackgroundPictureImages = IUserImage;
+
 export interface IUserProfileApiModel {
   aboutUser: string;
   followeeCount: number;
@@ -65,6 +91,8 @@ export interface IUserProfileApiModel {
   phone: string;
   gender: string;
   location: string;
+  profilePictureImages: IProfilePictureImages;
+  backgroundPictureImages: IBackgroundPictureImages;
 }
 
 export type IUserProfileApiResponse = IUserProfileApiModel;
@@ -254,10 +282,22 @@ export type ISourceTypes = "user" | "company";
 export const REACTIONS = ["like", "support", "love", "laugh", "sad"] as const;
 export type IReactionTypes = typeof REACTIONS[number];
 
+export type IPostImageType =
+  | "postImageOriginal"
+  | "postImageThumbnail"
+  | "postImageMax"
+  | "postImageStandard";
+
+export interface IMediaUrl<T> {
+  resolution: string;
+  url: string;
+  type: T;
+}
+
 export interface IPostContentApiModel {
   text: string;
   createdAt: Date;
-  mediaUrls: string[];
+  mediaUrls: Array<Array<IMediaUrl<IPostImageType>>>;
   stringifiedRawContent: string;
 }
 
@@ -266,6 +306,8 @@ export interface ICreatePostApiRequest {
   hashtags?: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
+  postStatus: string;
+  postMediaStatus: string;
 }
 
 interface IRelatedUserInfoResponseModel {
@@ -279,6 +321,14 @@ interface IRelatedUserInfoResponseModel {
   location: string;
 }
 
+export type IPostStatus = "created" | "draft";
+export type IPostMediaStatus =
+  | "uploading"
+  | "uploaded"
+  | "processing"
+  | "failed"
+  | "success";
+
 export interface IPostApiResponse {
   sourceId: string;
   sourceType: ISourceTypes;
@@ -286,6 +336,8 @@ export interface IPostApiResponse {
   hashtags: string[];
   visibleOnlyToConnections: boolean;
   commentsOnlyByConnections: boolean;
+  postStatus: IPostStatus;
+  postMediaStatus: IPostMediaStatus;
   isDeleted: boolean;
   isBanned: boolean;
   createdAt: Date;
@@ -301,9 +353,15 @@ export interface IPatchPostApiRequest {
   hashtags: string[];
 }
 
+export type ICommentImageType =
+  | "commentImageOriginal"
+  | "commentImageThumbnail"
+  | "commentImageMax"
+  | "commentImageStandard";
+
 export interface ICommentContentApiModel {
   text: string;
-  mediaUrls: string[];
+  mediaUrls: Array<Array<IMediaUrl<ICommentImageType>>>;
   createdAt: Date;
   stringifiedRawContent: string;
 }
@@ -312,6 +370,8 @@ export interface ICreateCommentApiRequest {
   resourceId: string;
   resourceType: IResourceTypes;
   comment: Omit<ICommentContentApiModel, "createdAt">;
+  commentStatus: string;
+  commentMediaStatus: string;
 }
 
 export interface ICommentApiModel {
@@ -456,6 +516,9 @@ export interface IUserFeedApiModel {
   hashtags: string[];
   isBanned: boolean;
   isDeleted: boolean;
+  postStatus: IPostStatus;
+  postMediaStatus: IPostMediaStatus;
+
   feedId: string;
   feedSources: IFeedSourceApiModel[];
 }

@@ -128,6 +128,8 @@ const transformUserPostResponsetoIProtectedPageProps = (
       commentsOnlyByConnections: response.data.commentsOnlyByConnections,
       isDeleted: response.data.isDeleted,
       isBanned: response.data.isBanned,
+      postStatus: response.data.postStatus,
+      postMediaStatus: response.data.postMediaStatus,
     };
 
     return { data: transformedData, error: null };

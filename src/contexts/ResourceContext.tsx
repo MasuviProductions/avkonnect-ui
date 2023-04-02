@@ -146,15 +146,15 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const incrementCommentsCount = (isSubComment?: boolean) => {
     if (resourceType === "post") {
       parentResourceContext?.incrementCommentsCount(true);
-      setCommentsCountState(prev => ({ ...prev, comment: prev.comment + 1 }));
+      setCommentsCountState((prev) => ({ ...prev, comment: prev.comment + 1 }));
     } else {
       if (isSubComment) {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           subComment: prev.subComment + 1,
         }));
       } else {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           comment: prev.comment + 1,
         }));
@@ -165,18 +165,18 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   const decrementCommentsCount = (subCommentCount?: number) => {
     if (resourceType === "post") {
       parentResourceContext?.decrementCommentsCount(1);
-      setCommentsCountState(prev => ({
+      setCommentsCountState((prev) => ({
         ...prev,
         comment: prev.comment - 1,
       }));
     } else {
       if (typeof subCommentCount !== "undefined") {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           subComment: prev.subComment - subCommentCount,
         }));
       } else {
-        setCommentsCountState(prev => ({
+        setCommentsCountState((prev) => ({
           ...prev,
           comment: prev.comment - 1,
         }));
@@ -261,14 +261,14 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   };
 
   const incrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState(prev => ({
+    setReactionsCountState((prev) => ({
       ...prev,
       [reaction]: prev[reaction] + 1,
     }));
   };
 
   const decrementReactionCount = (reaction: IReactionTypes) => {
-    setReactionsCountState(prev => ({
+    setReactionsCountState((prev) => ({
       ...prev,
       [reaction]: prev[reaction] - 1,
     }));
@@ -298,7 +298,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
     content: IPostContentApiModel | ICommentContentApiModel
   ) => {
     if (type === "post") {
-      updatePost({ content, hashtags: [] });
+      updatePost({ content: content as IPostContentApiModel, hashtags: [] });
     } else {
       commentsQuery.updateComment(content as ICommentContentApiModel);
     }
@@ -311,7 +311,7 @@ const ResourceProvider: React.FC<IResourceProviderProps> = ({
   };
 
   useEffect(() => {
-    loadedComments.forEach(comment => {
+    loadedComments.forEach((comment) => {
       commentsQuery.appendComment(comment);
     });
   }, [commentsQuery, loadedComments]);
