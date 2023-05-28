@@ -36,6 +36,10 @@ import {
   IResourceTypes,
   IGetUserPostsApiResponse,
   IGetRootPostInfoForComment,
+  IMediaContent,
+  IMediaType,
+  IMediaStatus,
+  IUpdateMediaStatusBody,
 } from "../interfaces/api/external";
 import API_ENDPOINTS from "../constants/api";
 import axios, { AxiosResponse } from "axios";
@@ -99,6 +103,40 @@ export const fetchUserImageSignedUrl = async (
     )
     .then((res) => res.data);
   return userProfileResponse;
+};
+
+export const postMediaEntry = async (
+  accessToken: string,
+  mediaEntry: IMediaContent
+): Promise<AVKonnectApiResponse<IMediaContent>> => {
+  const userFeedbackResponse = await axios
+    .post<IMediaContent, AxiosResponse<AVKonnectApiResponse<IMediaContent>>>(
+      API_ENDPOINTS.CREATE_MEDIA_ENTRY.url(),
+      mediaEntry,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userFeedbackResponse;
+};
+
+export const updateMediaStatus = async (
+  accessToken: string,
+  resourceType: string,
+  fileName: string,
+  patchBody: IUpdateMediaStatusBody
+): Promise<AVKonnectApiResponse<IUpdateMediaStatusBody>> => {
+  const userFeedbackResponse = await axios
+    .patch<IUpdateMediaStatusBody, AxiosResponse<AVKonnectApiResponse<IUpdateMediaStatusBody>>>(
+      API_ENDPOINTS.UPDATE_MEDIA_STATUS.url(resourceType, fileName),
+      patchBody,
+      {
+        headers: { authorization: `Bearer ${accessToken}` },
+      }
+    )
+    .then((res) => res.data);
+  return userFeedbackResponse;
 };
 
 export const putUserImageToS3 = async (

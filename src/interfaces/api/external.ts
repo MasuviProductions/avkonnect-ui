@@ -536,3 +536,47 @@ export interface IGetUserPostsApiResponse {
 export interface IGetRootPostInfoForComment {
   postId: string;
 }
+
+export type IMediaType = "image" | "video";
+
+export type IMediaStatus =
+  | "uploading"
+  | "uploaded"
+  | "processing"
+  | "success"
+  | "error";
+
+export interface IUpdateMediaStatusBody {
+  status: IMediaStatus;
+}
+
+// meta data will contain all kinds of info about the media
+
+export interface IMetaData {
+  originalUrl: string; // s3 url of the original media file
+  fileName: string; // original name of the file
+  resolution: string; // height x width
+  fileSize: number; // size of the file in bytes
+  colorSpace: string; // the color space of the media
+  creator: string; // creator of the file
+}
+
+// media URLs will contain the metadata of media along with the s3 URL
+
+export interface IMediaUrls {
+  url: string;
+  meta: IMetaData;
+}
+
+// media content has the data for each media uploaded
+
+export interface IMediaContent {
+  resourceId: string; // postId or userId
+  resourceType: string; // post or user
+  mediaType: IMediaType; // image or video
+  createdAt?: Date;
+  fileName: string; // filename should be unique
+  status: IMediaStatus; // status of the media
+  metaData?: IMetaData;
+  mediaUrls: IMediaUrls[];
+}

@@ -1,4 +1,4 @@
-import { IResourceTypes } from "../interfaces/api/external";
+import { IMediaType, IResourceTypes } from "../interfaces/api/external";
 import ENV from "./env";
 
 const AVKONNECT_URL = {
@@ -6,12 +6,14 @@ const AVKONNECT_URL = {
   NOTIFICATIONS_BASE: ENV.AVKONNECT_NOTIFICATIONS_URL,
   POSTS_BASE: ENV.AVKONNECT_POSTS_URL,
   FEEDS_BASE: ENV.AVKONNECT_FEEDS_URL,
+  MEDIA_BASE: ENV.AVKONNECT_MEDIA_URL,
   AUTH: (): string => `${AVKONNECT_URL.BASE}/api/v1/auth`,
   USERS: (): string => `${AVKONNECT_URL.BASE}/api/v1/users`,
   NOTIFICATIONS: (): string =>
     `${AVKONNECT_URL.NOTIFICATIONS_BASE}/api/notifications/v1`,
   POSTS: (): string => `${AVKONNECT_URL.POSTS_BASE}/api/posts/v1`,
   FEEDS: (): string => `${AVKONNECT_URL.FEEDS_BASE}/api/feeds/v1`,
+  MEDIA: (): string => `${AVKONNECT_URL.MEDIA_BASE}/api/v1`,
 };
 
 const API_ENDPOINTS = {
@@ -184,6 +186,15 @@ const API_ENDPOINTS = {
     key: "get-root-post-info-for-comment",
     url: (commentId: string) =>
       `${AVKONNECT_URL.POSTS()}/comments/${commentId}/getRootPostInfo`,
+  },
+  CREATE_MEDIA_ENTRY: {
+    key: "post-media-entry",
+    url: () => `${AVKONNECT_URL.MEDIA()}/media/createMedia`,
+  },
+  UPDATE_MEDIA_STATUS: {
+    key: "update-media-status",
+    url: (resourceType: string, fileName: string) =>
+      `${AVKONNECT_URL.MEDIA()}/media/updateMediaStatus/${resourceType}/${fileName}`,
   },
 };
 
