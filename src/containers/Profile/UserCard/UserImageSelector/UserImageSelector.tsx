@@ -6,9 +6,12 @@ import {
   useEffect,
   useState,
 } from "react";
+import { v4 } from "uuid";
 import { Area } from "react-easy-crop/types";
 import { useQuery } from "react-query";
 import {
+  IMediaContent,
+  IUpdateMediaStatusBody,
   IUserImageType,
   IUserProfilePatchApiRequest,
 } from "../../../../interfaces/api/external";
@@ -21,7 +24,9 @@ import { LABELS } from "../../../../constants/labels";
 import {
   fetchUserImageSignedUrl,
   patchUserProfile,
+  postMediaEntry,
   putUserImageToS3,
+  updateMediaStatus,
 } from "../../../../utils/api";
 import { getCroppedImg } from "../../../../utils/imageProcessing";
 import { getPublicUrlFromS3SignedUrl } from "../../../../utils/generic";
@@ -57,6 +62,33 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   const [s3PutUrl, setS3PutUrl] = useState<string>();
   const [patchUserReq, setPatchUserReq] =
     useState<IUserProfilePatchApiRequest>();
+  const [createMediaEntryReq, setCreateMediaEntryReq] =
+    useState<IMediaContent>();
+  const [updateMediaStatusReq, setUpdateMediaStatusReq] =
+    useState<IUpdateMediaStatusBody>();
+  const [fileName, setFileName] = useState("");
+
+  const { status: createMediaStatus } = useQuery(
+    API_ENDPOINTS.CREATE_MEDIA_ENTRY.key,
+    () =>
+      postMediaEntry(
+        accessToken as string,
+        createMediaEntryReq as IMediaContent
+      ),
+    { enabled: !!createMediaEntryReq, cacheTime: 0 }
+  );
+
+  const { status: updateMediaReqStatus } = useQuery(
+    API_ENDPOINTS.UPDATE_MEDIA_STATUS.key,
+    () =>
+      updateMediaStatus(
+        accessToken as string,
+        "user",
+        fileName,
+        updateMediaStatusReq as IUpdateMediaStatusBody
+      ),
+    { enabled: !!updateMediaStatusReq, cacheTime: 0 }
+  );
 
   const { status: s3PutImageToS3Status, refetch: s3PutImageToS3ApiTrigger } =
     useQuery(
@@ -103,7 +135,9 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
 
   const handleApplyBtnClick: MouseEventHandler<HTMLButtonElement> | undefined =
     (_event) => {
-      userSignedUrlDataApiTrigger();
+      const newUuid = v4();
+      setFileName(`${imageType}_${newUuid}`);
+      // userSignedUrlDataApiTrigger();
     };
 
   const handleRemoveBtnClick: MouseEventHandler<HTMLButtonElement> | undefined =
@@ -130,8 +164,30 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
   );
 
   useEffect(() => {
+    console.log(createMediaStatus);
+    if (createMediaStatus === "success") {
+      userSignedUrlDataApiTrigger();
+    }
+  }, [createMediaStatus, userSignedUrlDataApiTrigger]);
+
+  useEffect(() => {
     setActiveImageUrl(selectedImageUrl || imageUrl);
   }, [selectedImageUrl, imageUrl]);
+
+  useEffect(() => {
+    if (fileName) {
+      const mediaEntryBody: IMediaContent = {
+        resourceId: authUser?.id as string,
+        resourceType: "user",
+        mediaType: "image",
+        fileName: fileName,
+        status: "uploading",
+        mediaUrls: [],
+        createdAt: new Date(Date.now()),
+      };
+      setCreateMediaEntryReq(mediaEntryBody);
+    }
+  }, [authUser?.id, fileName]);
 
   useEffect(() => {
     if (userSignedUrlData) {
@@ -141,6 +197,7 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
 
   useEffect(() => {
     if (s3PutImageToS3Status === "success") {
+      setUpdateMediaStatusReq({ status: "uploaded" });
       const patchUserReqBody: IUserProfilePatchApiRequest = {};
       const publicUrl = getPublicUrlFromS3SignedUrl(s3PutUrl as string);
       if (imageType === "background_image") {
@@ -156,7 +213,9 @@ const UserImageSelector: React.FC<IUserImageSelectorProps> = ({
     if (
       s3PutImageToS3Status === "error" ||
       userSignedUrlStatus === "error" ||
-      patchUserStatus === "error"
+      patchUserStatus === "error" ||
+      createMediaStatus === "error" ||
+      updateMediaReqStatus === "error"
     ) {
       setSnackbar?.(() => ({
         message: LABELS.SAVE_FAILED,
